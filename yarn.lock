@@ -944,6 +944,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/inter-tight/-/inter-tight-4.5.0.tgz#5950e3cf5f79d23569c50f956c01e0c8596d83df"
   integrity sha512-3uTmmCnY18Wog2InCvzSRWqcnEZim6igM2RUhOImw9ukK5tVfINA5A8Vfv+VVbcnf9ocpaGedfWT4FfNo3hbxQ==
 
+"@fontsource/inter@^4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.13.tgz#db4b0177992091816962c4a4a24b1e060cc750bf"
+  integrity sha512-nABtF6jNZZHrotLRiGBByhG7NKJGJHgMbX5W8v6C/7nSdyiWtMRfZX7AMIECDLYGUOEArZDeVO/SbkgwKLrLJw==
+
 "@humanwhocodes/config-array@^0.10.5":
   version "0.10.7"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.10.7.tgz#6d53769fd0c222767e6452e8ebda825c22e9f0dc"
