@@ -2,6 +2,7 @@ import React from 'react'
 import {Box,Flex,Wrap,WrapItem,Badge,HStack, VStack} from '@chakra-ui/react'
 import Image from 'next/future/image'
 import {Event} from '../../../data/events'
+import {useRouter} from 'next/router'
 
 interface EventListProps {
     events: Event[]
@@ -24,8 +25,15 @@ interface EventListItemProps {
     data: Event
 }
 const EventListItem = ({data}:EventListItemProps) =>{
+
+    const router = useRouter()
+    
+    const navigateToEventPage=(eventId:string)=>{
+        router.push(`/events/${eventId}`)
+    }
+
     return(
-        <Box >
+        <Box onClick={()=>navigateToEventPage(data.eventId)}>
             <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} width='100' height='150' alt={data.thumbnailAlt}/>
             <VStack align='left' spacing={3} p='4'>
                 <HStack spacing={3}>
