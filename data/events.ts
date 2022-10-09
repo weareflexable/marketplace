@@ -10,7 +10,7 @@ export type Event = {
     thumbnail: string,
     thumbnailAlt: string,
     category: string,
-    eventId: string,
+    serviceId: string,
     totalTickets: number
 }
 
@@ -24,7 +24,7 @@ export const events: Event[] = [{
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
     category: 'Construction',
-    eventId:'1',
+    serviceId:'1',
     totalTickets:34
 },
 {
@@ -37,7 +37,7 @@ export const events: Event[] = [{
     thumbnail:'/assets/placeholder.jpeg'  ,
     thumbnailAlt: 'Description about the image',
     category: 'Tech',
-    eventId:'2',
+    serviceId:'2',
     totalTickets:64
 },
 {
@@ -50,7 +50,7 @@ export const events: Event[] = [{
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
     category: 'Heath',
-    eventId:'3',
+    serviceId:'3',
     totalTickets:741
 },
 {
@@ -63,7 +63,7 @@ export const events: Event[] = [{
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
     category: 'Fashion',
-    eventId:'4',
+    serviceId:'4',
     totalTickets:654
 },
 {
@@ -76,7 +76,7 @@ export const events: Event[] = [{
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
     category: 'Government',
-    eventId:'5',
+    serviceId:'5',
     totalTickets:134
 }]
 

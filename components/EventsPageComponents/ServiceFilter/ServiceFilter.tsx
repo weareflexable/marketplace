@@ -10,15 +10,16 @@ import {
     AccordionIcon,
     Text,
     HStack,
-    Flex
+    Flex,
+    Checkbox
 } from '@chakra-ui/react'
 
 
 export default function ServiceFilter(){
     return(
-        <VStack>
-            <Heading as='h4' size='lg'>Service Filter</Heading>
-            <Accordion>
+        <Flex direction='column' p='2' borderEndRadius='4' w='100%' >
+            <Heading mb='3' as='h4'  size='sm'>Service Filter</Heading>
+            <Accordion w='100%' bg='#f6f6f6' allowToggle>
             <AccordionItem>
                 <AccordionButton>
                     <Box flex='1' textAlign='left'>
@@ -43,14 +44,15 @@ export default function ServiceFilter(){
                 </AccordionPanel>
             </AccordionItem>
             </Accordion>
-        </VStack>
+        </Flex>
     )
 }
 
 
 const FilterList = ()=>{
     return(
-        <Flex>
+        <Flex direction='column'>
+            <FilterListItem/>
             <FilterListItem/>
         </Flex>
     )
@@ -58,6 +60,11 @@ const FilterList = ()=>{
 
 const FilterListItem =()=>{
     return(
-        <HStack>List item</HStack>
+        <Flex w='100%' alignItems='center' justifyContent='space-between'>
+            <Box>
+                Angles
+            </Box>
+            <Checkbox/>
+        </Flex>
     )
 }

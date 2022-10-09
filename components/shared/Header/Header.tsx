@@ -5,7 +5,9 @@ import Link from 'next/link'
 export default function Header(){
     return(
         <Flex alignItems='center' justifyContent='space-between' p='1em' w='100%' h='3em'>
-            <Box>Logo</Box>
+            <Box>
+                <Link href='/'><a>Logo</a></Link>
+            </Box>
             <Flex as='nav'>
                 <Link href='/'>
                     <a>Booking history</a>

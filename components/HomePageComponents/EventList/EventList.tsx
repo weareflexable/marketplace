@@ -13,7 +13,7 @@ const EventList = ({events}:EventListProps) =>{
     return(
         <Wrap spacing={5} margin={'0 auto'}> 
             {events.map(event=>(
-                <WrapItem key={event.serviceID} maxW='30%' borderWidth='1px' borderRadius='lg' overflow='hidden'>
+                <WrapItem key={event.serviceId} maxW='30%' borderWidth='1px' borderRadius='lg' overflow='hidden'>
                     <EventListItem data={event}/>
                 </WrapItem>
             ))}
@@ -28,12 +28,12 @@ const EventListItem = ({data}:EventListItemProps) =>{
 
     const router = useRouter()
     
-    const navigateToEventPage=(eventId:string)=>{
-        router.push(`/events/${eventId}`)
+    const navigateToServicePage=(serviceId:string)=>{
+        router.push(`/services/${serviceId}`)
     }
 
     return(
-        <Box onClick={()=>navigateToEventPage(data.eventId)}>
+        <Box onClick={()=>navigateToServicePage(data.serviceId)}>
             <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} width='100' height='150' alt={data.thumbnailAlt}/>
             <VStack align='left' spacing={3} p='4'>
                 <HStack spacing={3}>

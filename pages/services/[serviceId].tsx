@@ -10,29 +10,28 @@ import ServiceList from '../../components/EventsPageComponents/ServiceList/Servi
 export default function EventPage(){
 
     const {pathname, query} = useRouter()
-    const [eventData, setEventData] = useState<EventServices|null>(null)
-
+    const [eventData, setEventData] = useState<EventServices|[]>([]);
+    const [bookings, setBookings] = useState([])
 
     useEffect(() => {
      const eventId = query.eventId;
-     const targetEvent = eventServices.find(service=> service.id === eventId)
-     setEventData(targetEvent)
-     console.log(targetEvent)
+     const service = eventServices.find(service=> service.id === eventId)
+     setEventData(service||[])
+     console.log(service)
     }, [])
 
     return(
         <Box>
             <Header/>
             <Flex>
-                <Flex flex='1' h='100vh' p='3'>
+                <Flex flex='1' h='100%' p='2'>
                     <ServiceFilter/>
                 </Flex>
-                <Flex bg='#f4f4f4' h='100vh' flex='2' p='3'>
-                    ServiceListing
-                    <ServiceList/>
+                <Flex h='100vh' flex='2' p='3'>
+                    <ServiceList data={eventData??eventData}/>
                 </Flex>
-                <Flex flex='1' h='100vh' p='3'>
-                    <ServiceBookings/>
+                <Flex flex='1' h='100%' p='2'>
+                    <ServiceBookings bookings={bookings}/>
                 </Flex>
             </Flex>
         </Box>
