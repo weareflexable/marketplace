@@ -1,70 +1,41 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
     Box,
     Heading,
-    VStack,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    Text,
-    HStack,
     Flex,
     Checkbox
 } from '@chakra-ui/react'
 
 
-export default function ServiceFilter(){
+interface ServiceFilterProps{
+    onGetFilter: (value:string)=>void
+}
+export default function ServiceFilter({onGetFilter}:ServiceFilterProps){
     return(
         <Flex direction='column' p='2' borderEndRadius='4' w='100%' >
             <Heading mb='3' as='h4'  size='sm'>Service Filter</Heading>
-            <Accordion w='100%' bg='#f6f6f6' allowToggle>
-            <AccordionItem>
-                <AccordionButton>
-                    <Box flex='1' textAlign='left'>
-                        <Text>Bottle Service</Text> 
-                    </Box>
-                    <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel pb={4}>
-                    <FilterList/>
-                </AccordionPanel>
-            </AccordionItem>
-
-            <AccordionItem>
-                <AccordionButton>
-                    <Box flex='1' textAlign='left'>
-                        <Text>Line Skip</Text> 
-                    </Box>
-                    <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel pb={4}>
-                     <FilterList/>
-                </AccordionPanel>
-            </AccordionItem>
-            </Accordion>
+            <Filter value='lineSkip' name='Line Skip'>
+                <Checkbox onChange={(event)=>onGetFilter(event.target.value)} value='lineSkip'/>
+            </Filter>
+            <Filter value='bottleService' name='Bottle Service'>
+                <Checkbox onChange={(event)=>onGetFilter(event.target.value)} value='bottleService'/>
+            </Filter>
         </Flex>
     )
 }
 
-
-const FilterList = ()=>{
-    return(
-        <Flex direction='column'>
-            <FilterListItem/>
-            <FilterListItem/>
-        </Flex>
-    )
+interface FilterProps{
+    name: string,
+    value: string,
+    children: ReactNode
 }
-
-const FilterListItem =()=>{
+const Filter: React.FC<FilterProps> =({name, children})=>{
     return(
         <Flex w='100%' alignItems='center' justifyContent='space-between'>
             <Box>
-                Angles
+                {name}
             </Box>
-            <Checkbox/>
+            {children}
         </Flex>
     )
 }

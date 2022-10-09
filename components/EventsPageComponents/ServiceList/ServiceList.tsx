@@ -17,7 +17,9 @@ interface Service{
     productName: string,
     price: string,
     thumbnail: string,
-    thumbnailAlt: string
+    thumbnailAlt: string,
+    availableTickets: number,
+    serviceType: string
 }
 interface EventServices {
     id?: string,
@@ -25,32 +27,51 @@ interface EventServices {
     lineSkip: Array<Service>
 }
 
-const services = [
+const services: Service[] = [
     {
         productName: 'Ted talk show',
         price: '54',
         thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        thumbnailAlt:'Image description',
+        availableTickets:40,
+        serviceType:'lineSkip'
     },
     {
         productName: 'Tyler Perry',
         price: '53',
         thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        thumbnailAlt:'Image description',
+        availableTickets:45,
+        serviceType:'bottleService'
     },
     {
         productName: 'Health benefits of eating fruits',
         price: '14',
         thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        thumbnailAlt:'Image description',
+        availableTickets:51,
+        serviceType:'lineSkip'
     }
 ]
 
-export default function ServiceList({data}:any){
+interface ServiceListProps{
+    // data: object
+    filters: Array<string>
+}
 
-    const bottleService = data.bottleService
-    console.log(bottleService)
-    console.log(typeof bottleService)
+export default function ServiceList({filters}:ServiceListProps){
+
+    
+    const filterServices = (filters:Array<string>, services:Service[])=>{
+            const filteredResult = services.filter((service:Service)=>{
+                return filters.includes(service.serviceType)
+            })
+            return filteredResult;
+    }
+
+    // Using derived state to filter services
+    const filteredServices = filterServices(filters, services);
+    // console.log(filter)
 
     return(
         <>
@@ -59,7 +80,7 @@ export default function ServiceList({data}:any){
             <ServiceSearchBar/>
 
             <SimpleGrid columns={2} spacing='3'>
-                {services.map((service: any)=>(
+                {filteredServices.map((service: any)=>(
                     <Service data={service}/>
                 ))}
 
@@ -73,9 +94,9 @@ const Service = ({data}:any)=>{
 
     return( 
             <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>console.log(data.id)}>
-            <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' />
+            {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <VStack align='left' spacing={3} p='4'>
-                <Box as='h4' lineHeight='tight' noOfLines={1}>
+                <Box as='h4' mb='0' lineHeight='tight' fontWeight='medium' noOfLines={1}>
                     {data.productName}
                 </Box>    
                 <Box>
@@ -83,6 +104,9 @@ const Service = ({data}:any)=>{
                     <Box as='span' color='gray.600' fontSize='sm'>
                         /person
                     </Box>
+                </Box>
+                <Box>
+                    Avalaible tickets: {data.availableTickets}
                 </Box>
             </VStack>
         </Box>
