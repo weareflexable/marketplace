@@ -10,7 +10,7 @@ export default function ServiceBookings({bookings}:BookingsProps){
 
     // const bookingsCost = bookings.reduce((prev,acc)=>prev.price+acc.price) 
     return(
-        <Flex direction='column' w='100%' p='2'>
+        <Flex  border='1px solid #e5e5e5' direction='column' w='100%' p='2'>
             <Heading as='h4' mb='3' size='sm' >Service Bookings</Heading>
             <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
                 <BookingList/>

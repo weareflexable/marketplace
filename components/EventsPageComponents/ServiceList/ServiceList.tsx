@@ -6,7 +6,8 @@ import {
     WrapItem,
     Heading,
     VStack,
-    HStack
+    HStack,
+    SimpleGrid
 } from '@chakra-ui/react'
 import ServiceSearchBar from '../ServiceSearchBar/ServiceSearchBar'
 import Image from 'next/future/image'
@@ -53,16 +54,16 @@ export default function ServiceList({data}:any){
 
     return(
         <>
-        <Box p='1em' >
+        <Box p='1em' w='100%'  border='1px solid #e5e5e5' >
             <Heading as='h2' mb='4' size='md'>Find the right service for you</Heading>
             <ServiceSearchBar/>
-            <Heading mb='4' as='h5' size='sm'>Line skip</Heading>
-            <Wrap spacing='3'>
+
+            <SimpleGrid columns={2} spacing='3'>
                 {services.map((service: any)=>(
                     <Service data={service}/>
                 ))}
 
-            </Wrap>
+            </SimpleGrid>
         </Box>
         </>
     )
@@ -71,7 +72,6 @@ export default function ServiceList({data}:any){
 const Service = ({data}:any)=>{
 
     return( 
-        <WrapItem>
             <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>console.log(data.id)}>
             <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' />
             <VStack align='left' spacing={3} p='4'>
@@ -86,6 +86,5 @@ const Service = ({data}:any)=>{
                 </Box>
             </VStack>
         </Box>
-        </WrapItem>
     )
 }

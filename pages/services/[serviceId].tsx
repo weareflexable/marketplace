@@ -27,7 +27,7 @@ export default function EventPage(){
                 <Flex flex='1' h='100%' p='2'>
                     <ServiceFilter/>
                 </Flex>
-                <Flex h='100vh' flex='2' p='3'>
+                <Flex h='100%' flex='2'>
                     <ServiceList data={eventData??eventData}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
