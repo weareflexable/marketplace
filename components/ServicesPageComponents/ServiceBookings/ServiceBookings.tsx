@@ -9,13 +9,15 @@ interface BookingsProps{
 
 export default function ServiceBookings({bookings}:BookingsProps){
 
+
     function calculateBookingsTotal(bookings:Service[]){
         let total:number = 0;
         for(let service of bookings){
-            total=+service.price;
+            total+=service.price;
         }
-        return total;
+    return total
     }
+    
     const totalPrice = calculateBookingsTotal(bookings)
     console.log(totalPrice)
 
@@ -27,7 +29,7 @@ export default function ServiceBookings({bookings}:BookingsProps){
                     {bookings.map(booking=>(
                         <BookingListItem key={booking.id} service={booking}/>
                     ))}
-                    <BookingTotal/>
+                    <BookingTotal totalPrice={totalPrice}/>
                 </BookingList>
             </Flex>
         </Flex>
@@ -55,14 +57,19 @@ const BookingListItem =({service}:BookingListItemProps)=>{
     )
 }
 
-
-const BookingTotal = ()=>{
+interface BookingTotalProps{
+    totalPrice: number
+}
+const BookingTotal = ({totalPrice}:BookingTotalProps)=>{
     return(
         <Button mt='3'>
-            <HStack spacing={2}>
-                <Text color='GrayText' fontWeight='medium'>Total:</Text>
-                <Text color='ButtonText' fontWeight='medium'>$0.00</Text>
-            </HStack>
+            <Flex w='100%' justify='space-between' alignItems='center'>
+                <Text color='gray.900' fontWeight='medium'>Book Now</Text>
+                <HStack spacing={2}>
+                    <Text color='GrayText' fontWeight='medium'>Total:</Text>
+                    <Text color='ButtonText' fontWeight='medium'>${totalPrice}</Text>
+                </HStack>
+            </Flex>
         </Button>
     )
 }

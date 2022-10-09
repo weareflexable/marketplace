@@ -1,6 +1,6 @@
 export interface Service{
     productName: string,
-    price: string,
+    price: number,
     thumbnail: string,
     thumbnailAlt: string,
     availableTickets: number,
@@ -16,7 +16,7 @@ interface EventServices {
 export const allServices: Service[] = [
     {
         productName: 'Ted talk show',
-        price: '54',
+        price: 54,
         thumbnail: 'image string',
         thumbnailAlt:'Image description',
         availableTickets:40,
@@ -25,7 +25,7 @@ export const allServices: Service[] = [
     },
     {
         productName: 'Tyler Perry',
-        price: '53',
+        price: 53,
         thumbnail: 'image string',
         thumbnailAlt:'Image description',
         availableTickets:45,
@@ -34,7 +34,7 @@ export const allServices: Service[] = [
     },
     {
         productName: 'Health benefits of eating fruits',
-        price: '14',
+        price: 14,
         thumbnail: 'image string',
         thumbnailAlt:'Image description',
         availableTickets:51,
