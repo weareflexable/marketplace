@@ -58,6 +58,12 @@ export default function ServicesPage(){
 
     }
 
+    const removeTicketHandler = (id:string)=>{
+        const clonedBookings = bookings.slice();
+        const updatedBookings = clonedBookings.filter(booking=>booking.id !== id);
+        setBookings(updatedBookings);
+    }
+
     return(
         <Box>
             <Header/>
@@ -69,7 +75,7 @@ export default function ServicesPage(){
                     <ServiceList filters={serviceFilters} grabTicketHandler={grabTicketHandler} data={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
-                    <ServiceBookings bookings={bookings}/>
+                    <ServiceBookings onRemoveTicket={removeTicketHandler} bookings={bookings}/>
                 </Flex>
             </Flex>
         </Box>

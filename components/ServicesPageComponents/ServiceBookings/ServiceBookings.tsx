@@ -4,10 +4,11 @@ import BookingList from './BookingList/BookingList'
 import { Service } from '../../../data/services'
 
 interface BookingsProps{
-    bookings: Service[]
+    bookings: Service[],
+    onRemoveTicket: (id: string)=>void
 }
 
-export default function ServiceBookings({bookings}:BookingsProps){
+export default function ServiceBookings({bookings,onRemoveTicket}:BookingsProps){
 
 
     function calculateBookingsTotal(bookings:Service[]){
@@ -15,11 +16,13 @@ export default function ServiceBookings({bookings}:BookingsProps){
         for(let service of bookings){
             total+=service.price;
         }
-    return total
+      return total
     }
     
+    // Used derived state, more on this content can be found
+    // here >>>
     const totalPrice = calculateBookingsTotal(bookings)
-    console.log(totalPrice)
+
 
     return(
         <Flex  border='1px solid #e5e5e5' direction='column' w='100%' p='2'>
@@ -27,7 +30,7 @@ export default function ServiceBookings({bookings}:BookingsProps){
             <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
                 <BookingList>
                     {bookings.map(booking=>(
-                        <BookingListItem key={booking.id} service={booking}/>
+                        <BookingListItem key={booking.id} onRemoveTicket={onRemoveTicket} service={booking}/>
                     ))}
                     <BookingTotal totalPrice={totalPrice}/>
                 </BookingList>
@@ -37,10 +40,11 @@ export default function ServiceBookings({bookings}:BookingsProps){
 }
 
 interface BookingListItemProps{
-    service: Service
+    service: Service,
+    onRemoveTicket: (id: string)=>void
 }
 
-const BookingListItem =({service}:BookingListItemProps)=>{
+const BookingListItem =({service,onRemoveTicket}:BookingListItemProps)=>{
     return(
         <Flex p='2' borderRadius='4px' mb='1' bg="#ffffff" justifyContent='space-between' as='li'>
             <Flex direction='column'>
@@ -51,7 +55,7 @@ const BookingListItem =({service}:BookingListItemProps)=>{
                     ${service.price}
                 </Box>
             </Flex>
-            <IconButton aria-label='remove-item'/>
+            <IconButton onClick={()=>onRemoveTicket(service.id)} aria-label='remove-item'/>
 
         </Flex>
     )
