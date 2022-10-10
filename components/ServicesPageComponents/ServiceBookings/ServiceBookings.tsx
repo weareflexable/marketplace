@@ -15,7 +15,7 @@ export default function ServiceBookings({bookings,onRemoveTicket,onIncrementItem
     function calculateBookingsTotal(bookings:Service[]){
         let total:number = 0;
         for(let service of bookings){
-            total+=service.price;
+            total+=(service.price*service.quantity);
         }
       return total
     }
@@ -48,9 +48,7 @@ interface BookingListItemProps{
 
 const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:BookingListItemProps)=>{
 
-    const handleChange = (value:string)=>{
-        console.log(value)
-    }
+    const itemTotal = service.price * service.quantity
 
     return(
         <Flex p='2' borderRadius='4px' mb='1' bg="#ffffff" justifyContent='space-between' as='li'>
@@ -61,7 +59,7 @@ const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:Booking
                 <Box>
                     ${service.price}
                 </Box>
-                <HStack w='150px' maxW='220px'>
+                <HStack spacing='2' w='150px' maxW='220px'>
                 <NumberInput  size='xs' maxW={20} onChange={()=>onIncrementItemQuantity(service.id)} defaultValue={1} max={10} min={1}>
                     <NumberInputField />
                     <NumberInputStepper>
@@ -69,6 +67,7 @@ const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:Booking
                     <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
+                <Text>${itemTotal}</Text>
                 </HStack>
             </Flex>
             <IconButton onClick={()=>onRemoveTicket(service.id)} aria-label='remove-item'/>
