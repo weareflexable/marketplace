@@ -18,7 +18,7 @@ export default function ServicesPage(){
 
 
     // TODO: set filters lazily immediately after fetching services
-    const [serviceFilters, setServiceFilters] = useState<Array<string>>([])
+    const [serviceFilters, setServiceFilters] = useState<Array<string>>(()=>['lineSkip','bottleService'])
 
     // useEffect(() => {
     //  const eventId = query.eventId;
@@ -86,7 +86,7 @@ export default function ServicesPage(){
             <Header/>
             <Flex>
                 <Flex flex='0.8' h='100%' p='2'>
-                    <ServiceFilter onGetFilter={getCurrentFilter}/>
+                    <ServiceFilter filters={serviceFilters} onGetFilter={getCurrentFilter}/>
                 </Flex>
                 <Flex h='100%' flex='2'>
                     <ServiceList filters={serviceFilters} grabTicketHandler={grabTicketHandler} data={allServices}/>

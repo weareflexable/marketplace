@@ -8,17 +8,18 @@ import {
 
 
 interface ServiceFilterProps{
-    onGetFilter: (value:string)=>void
+    onGetFilter: (value:string)=>void,
+    filters: Array<string>
 }
-export default function ServiceFilter({onGetFilter}:ServiceFilterProps){
+export default function ServiceFilter({onGetFilter,filters}:ServiceFilterProps){
     return(
         <Flex direction='column' p='2' borderEndRadius='4' w='100%' >
             <Heading mb='3' as='h4'  size='sm'>Service Filter</Heading>
             <Filter value='lineSkip' name='Line Skip'>
-                <Checkbox onChange={(event)=>onGetFilter(event.target.value)} value='lineSkip'/>
+                <Checkbox isChecked={filters.includes('lineSkip')} onChange={(event)=>onGetFilter(event.target.value)} value='lineSkip'/>
             </Filter>
             <Filter value='bottleService' name='Bottle Service'>
-                <Checkbox onChange={(event)=>onGetFilter(event.target.value)} value='bottleService'/>
+                <Checkbox isChecked={filters.includes('bottleService')} onChange={(event)=>onGetFilter(event.target.value)} value='bottleService'/>
             </Filter>
         </Flex>
     )
