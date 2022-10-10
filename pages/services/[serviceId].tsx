@@ -102,7 +102,6 @@ export default function ServicesPage(){
             <Header/>
             <Flex>
                 <Flex flex='0.8' h='100%' p='2'>
-                    <ServiceFilter filters={serviceFilters} onGetFilter={getCurrentFilter}/>
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
                     <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>

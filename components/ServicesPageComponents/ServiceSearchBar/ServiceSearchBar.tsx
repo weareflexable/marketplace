@@ -6,8 +6,7 @@ export default function ServiceSearchBar(){
         <Box mb='6'>
           <FormControl>
             <HStack spacing={2}>
-                <Input w='40%' placeholder='Search for service'  type={'search'}/>  
-                <Input w='40%' type={'date'}/>
+                <Input contentEditable w='40%' type={'date'}/>
                 <Button>Search service</Button>  
             </HStack>
           </FormControl>
