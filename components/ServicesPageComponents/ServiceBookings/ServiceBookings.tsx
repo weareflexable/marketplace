@@ -1,14 +1,15 @@
 import React,{useState,useEffect} from 'react'
-import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton} from '@chakra-ui/react'
+import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
 import BookingList from './BookingList/BookingList'
 import { Service } from '../../../data/services'
 
 interface BookingsProps{
     bookings: Service[],
-    onRemoveTicket: (id: string)=>void
+    onRemoveTicket: (id: string)=>void,
+    onIncrementItemQuantity: (id: string)=>void
 }
 
-export default function ServiceBookings({bookings,onRemoveTicket}:BookingsProps){
+export default function ServiceBookings({bookings,onRemoveTicket,onIncrementItemQuantity}:BookingsProps){
 
 
     function calculateBookingsTotal(bookings:Service[]){
@@ -30,10 +31,10 @@ export default function ServiceBookings({bookings,onRemoveTicket}:BookingsProps)
             <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
                 <BookingList>
                     {bookings.map(booking=>(
-                        <BookingListItem key={booking.id} onRemoveTicket={onRemoveTicket} service={booking}/>
+                        <BookingListItem key={booking.id} onIncrementItemQuantity={onIncrementItemQuantity} onRemoveTicket={onRemoveTicket} service={booking}/>
                     ))}
-                    <BookingTotal totalPrice={totalPrice}/>
                 </BookingList>
+                <BookingTotal totalPrice={totalPrice}/>
             </Flex>
         </Flex>
     )
@@ -41,10 +42,16 @@ export default function ServiceBookings({bookings,onRemoveTicket}:BookingsProps)
 
 interface BookingListItemProps{
     service: Service,
-    onRemoveTicket: (id: string)=>void
+    onRemoveTicket: (id: string)=>void,
+    onIncrementItemQuantity: (id:string)=>void
 }
 
-const BookingListItem =({service,onRemoveTicket}:BookingListItemProps)=>{
+const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:BookingListItemProps)=>{
+
+    const handleChange = (value:string)=>{
+        console.log(value)
+    }
+
     return(
         <Flex p='2' borderRadius='4px' mb='1' bg="#ffffff" justifyContent='space-between' as='li'>
             <Flex direction='column'>
@@ -54,6 +61,15 @@ const BookingListItem =({service,onRemoveTicket}:BookingListItemProps)=>{
                 <Box>
                     ${service.price}
                 </Box>
+                <HStack w='150px' maxW='220px'>
+                <NumberInput  size='xs' maxW={20} onChange={()=>onIncrementItemQuantity(service.id)} defaultValue={1} max={10} min={1}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+                </HStack>
             </Flex>
             <IconButton onClick={()=>onRemoveTicket(service.id)} aria-label='remove-item'/>
 

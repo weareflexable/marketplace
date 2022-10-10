@@ -8,7 +8,7 @@ import ServiceBookings from '../../components/ServicesPageComponents/ServiceBook
 import ServiceList from '../../components/ServicesPageComponents/ServiceList/ServiceList'
 
 
-
+// TODO: Rename all instances of booking(s) to cart
 
 export default function ServicesPage(){
 
@@ -41,27 +41,44 @@ export default function ServicesPage(){
         setServiceFilters(clonedFilters)
     }
 
+    // TODO: rename to cartItemExist
     const checkBookingExist = (id:string)=>{
         const clonedBookings = bookings.slice()
         return clonedBookings.filter(booking=>booking.id === id).length>0 ? true: false;
     }
+
+    // TODO: rename to addItemToCart
     const grabTicketHandler = (id:string)=>{
 
+        // dont duplicate items in cart
         const isBookingDuplicate = checkBookingExist(id)
         if(isBookingDuplicate) return
-
-        const targetItem = allServices.find(service=>service.id===id);
-        const clonedBookings = bookings.slice()
-        clonedBookings.push(targetItem);
+  
+        const targetTicket = allServices.find(service=>service.id===id);
+        targetTicket!.quantity++;
+        const clonedBookings = bookings.slice();
+        clonedBookings.push(targetTicket);
         console.log(clonedBookings)
         setBookings(clonedBookings);
 
     }
 
+    // TODO: rename to removeItemFromCart
     const removeTicketHandler = (id:string)=>{
         const clonedBookings = bookings.slice();
+        const targetIndex = clonedBookings.findIndex(booking=>booking.id === id)
+        clonedBookings[targetIndex].quantity = 0;
         const updatedBookings = clonedBookings.filter(booking=>booking.id !== id);
         setBookings(updatedBookings);
+    }
+
+    // TODO: rename to incrementCartItemQuantity
+    const incrementItemQuantity = (id: string)=>{
+        const clonedBookings = bookings.slice();
+        const targetItem = clonedBookings.find(booking=>booking.id === id);
+        targetItem!.quantity++
+        console.log(targetItem);
+        setBookings(clonedBookings);
     }
 
     return(
@@ -75,7 +92,7 @@ export default function ServicesPage(){
                     <ServiceList filters={serviceFilters} grabTicketHandler={grabTicketHandler} data={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
-                    <ServiceBookings onRemoveTicket={removeTicketHandler} bookings={bookings}/>
+                    <ServiceBookings onIncrementItemQuantity={incrementItemQuantity} onRemoveTicket={removeTicketHandler} bookings={bookings}/>
                 </Flex>
             </Flex>
         </Box>

@@ -5,6 +5,7 @@ export interface Service{
     thumbnailAlt: string,
     availableTickets: number,
     serviceType: string,
+    quantity: number,
     id: string
 }
 interface EventServices {
@@ -21,6 +22,7 @@ export const allServices: Service[] = [
         thumbnailAlt:'Image description',
         availableTickets:40,
         serviceType:'lineSkip',
+        quantity: 0,
         id:'1'
     },
     {
@@ -30,6 +32,7 @@ export const allServices: Service[] = [
         thumbnailAlt:'Image description',
         availableTickets:45,
         serviceType:'bottleService',
+        quantity: 0,
         id:'2'
     },
     {
@@ -39,6 +42,7 @@ export const allServices: Service[] = [
         thumbnailAlt:'Image description',
         availableTickets:51,
         serviceType:'lineSkip',
+        quantity: 0,
         id:'3'
     }
 ]

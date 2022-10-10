@@ -36,21 +36,7 @@ const EventListItem = ({data}:EventListItemProps) =>{
         <Box onClick={()=>navigateToServicePage(data.serviceId)}>
             <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} width='100' height='150' alt={data.thumbnailAlt}/>
             <VStack align='left' spacing={3} p='4'>
-                <HStack spacing={3}>
-                    <Badge borderRadius='full' px='2' colorScheme='teal'>
-                        {data.category}
-                    </Badge>
-                </HStack>
                 <Box as='h4' lineHeight='tight' noOfLines={1}>
-                    {data.title}
-                </Box>
-                <Box>
-                    {data.price}
-                    <Box as='span' color='gray.600' fontSize='sm'>
-                        /person
-                    </Box>
-                </Box>
-                <Box mt='1' color='gray.800' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase' >
                     {data.organiser}
                 </Box>
                 <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
