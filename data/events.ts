@@ -1,83 +1,53 @@
 
 
 export type Event = {
-    organiser: string,
-    price: number,
-    title: string,
-    startDate: string,
-    endDate: string,
     location: string,
     thumbnail: string,
     thumbnailAlt: string,
-    category: string,
     serviceId: string,
-    totalTickets: number
+    totalServices: number,
+    juiceBar: string
 }
 
 export const events: Event[] = [{
-    organiser:'Brains&Hammer',
-    price: 65,
-    title: 'Exclusive Materials Workshop',
-    startDate:'',
-    endDate: '',
     location:'No 16 West south paw',
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
-    category: 'Construction',
     serviceId:'1',
-    totalTickets:34
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
 },
 {
-    organiser:'Microsoft',
-    title: 'Typescipt Workshop',
-    price: 15,
-    startDate:'',
-    endDate: '',
     location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg'  ,
+    thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
-    category: 'Tech',
     serviceId:'2',
-    totalTickets:64
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
 },
 {
-    organiser:'Avery Juice Bar',
-    title: 'Health benefits to careers',
-    price: 50,
-    startDate:'',
-    endDate: '',
     location:'No 16 West south paw',
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
-    category: 'Heath',
     serviceId:'3',
-    totalTickets:741
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
 },
 {
-    organiser:'Coco Channel Perfumes',
-    title: 'Perfumes for the fashion savvy',
-    price: 43,
-    startDate:'',
-    endDate: '',
     location:'No 16 West south paw',
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
-    category: 'Fashion',
     serviceId:'4',
-    totalTickets:654
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
 },
 {
-    organiser:'World Health Organisation (WHO)',
-    title: 'Humanitarian Aid Facilities',
-    price: 12,
-    startDate:'',
-    endDate: '',
     location:'No 16 West south paw',
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
-    category: 'Government',
     serviceId:'5',
-    totalTickets:134
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
 }]
 
 

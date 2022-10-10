@@ -37,10 +37,10 @@ const EventListItem = ({data}:EventListItemProps) =>{
             <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} width='100' height='150' alt={data.thumbnailAlt}/>
             <VStack align='left' spacing={3} p='4'>
                 <Box as='h4' lineHeight='tight' noOfLines={1}>
-                    {data.organiser}
+                    {data.juiceBar}
                 </Box>
                 <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
-                    {data.totalTickets} Tickets available
+                    {data.totalServices} services available
                 </Box>
             </VStack>
         </Box>

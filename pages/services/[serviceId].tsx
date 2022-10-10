@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex} from '@chakra-ui/react'
+import {Box,Flex, Heading} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -55,7 +55,7 @@ export default function ServicesPage(){
         if(isBookingDuplicate) return
   
         const targetTicket = allServices.find(service=>service.id===id);
-        targetTicket!.quantity++;
+        targetTicket!.quantity = 1;
         const clonedBookings = bookings.slice();
         clonedBookings.push(targetTicket);
         console.log(clonedBookings)
@@ -81,6 +81,22 @@ export default function ServicesPage(){
         setBookings(clonedBookings);
     }
 
+    const createOrder = (cart:Service[])=>{
+        updateInventory(cart);
+        clearCart()
+    }
+
+    const updateInventory = (cart:Service[])=>{
+        cart.forEach(item=>{
+            const target = allServices.find(service=>service.id === item.id)
+            // update card inventory 
+            target!.availableTickets -= item.quantity
+        })
+    }
+    const clearCart = ()=>{
+        setBookings([]);
+    }
+
     return(
         <Box>
             <Header/>
@@ -88,7 +104,8 @@ export default function ServicesPage(){
                 <Flex flex='0.8' h='100%' p='2'>
                     <ServiceFilter filters={serviceFilters} onGetFilter={getCurrentFilter}/>
                 </Flex>
-                <Flex h='100%' flex='2'>
+                <Flex h='100%' direction='column'  flex='2'>
+                    <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
                     <ServiceList filters={serviceFilters} grabTicketHandler={grabTicketHandler} data={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
