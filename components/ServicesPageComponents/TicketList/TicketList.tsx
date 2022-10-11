@@ -24,13 +24,13 @@ interface Service{
 }
 
 
-interface ServiceListProps{
+interface TicketListProps{
     data: any
     filters: Array<string>,
-    grabTicketHandler: (id:string)=>void
+    onAddToCart: (id:string)=>void
 }
 
-export default function ServiceList({data,filters,grabTicketHandler}:ServiceListProps){
+export default function TicketList({data,filters,onAddToCart}:TicketListProps){
 
     
     const filterServices = (filters:Array<string>, services:Service[])=>{
@@ -50,9 +50,9 @@ export default function ServiceList({data,filters,grabTicketHandler}:ServiceList
             <Heading as='h2' mb='4' size='md'>Showing you ticket for current date</Heading>
             <ServiceSearchBar/>
 
-            <SimpleGrid columns={2} spacing='3'>
+            <SimpleGrid columns={1} spacing='3'>
                 {filteredServices.map((service: Service)=>(
-                    <Service onGrabTicket={grabTicketHandler}  key={service.id} data={service}/>
+                    <Ticket onGrabTicket={onAddToCart}  key={service.id} data={service}/>
                 ))}
             </SimpleGrid>
         </Box>
@@ -65,7 +65,7 @@ interface ServiceProps{
     onGrabTicket:(id:string)=>void
 }
 
-function Service ({data, onGrabTicket}:ServiceProps){
+function Ticket ({data, onGrabTicket}:ServiceProps){
 
     return( 
             <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onGrabTicket(data.id)}>

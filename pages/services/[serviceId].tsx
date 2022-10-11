@@ -4,8 +4,8 @@ import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
 import ServiceFilter from '../../components/ServicesPageComponents/ServiceFilter/ServiceFilter'
-import ServiceBookings from '../../components/ServicesPageComponents/ServiceBookings/ServiceBookings'
-import ServiceList from '../../components/ServicesPageComponents/ServiceList/ServiceList'
+import ServiceBookings from '../../components/ServicesPageComponents/Cart/Cart'
+import ServiceList from '../../components/ServicesPageComponents/TicketList/TicketList'
 
 
 // TODO: Rename all instances of booking(s) to cart

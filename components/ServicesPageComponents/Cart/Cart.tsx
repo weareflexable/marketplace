@@ -1,18 +1,18 @@
 import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
-import BookingList from './BookingList/BookingList'
+import CartList from './CartList/CartList'
 import { Service } from '../../../data/services'
 
-interface BookingsProps{
+interface CartProps{
     bookings: Service[],
     onRemoveTicket: (id: string)=>void,
     onIncrementItemQuantity: (id: string)=>void
 }
 
-export default function ServiceBookings({bookings,onRemoveTicket,onIncrementItemQuantity}:BookingsProps){
+export default function Cart({bookings,onRemoveTicket,onIncrementItemQuantity}:CartProps){
 
 
-    function calculateBookingsTotal(bookings:Service[]){
+    function calculateCartTotal(bookings:Service[]){
         let total:number = 0;
         for(let service of bookings){
             total+=(service.price*service.quantity);
@@ -22,31 +22,31 @@ export default function ServiceBookings({bookings,onRemoveTicket,onIncrementItem
     
     // Used derived state, more on this content can be found
     // here >>>
-    const totalPrice = calculateBookingsTotal(bookings)
+    const totalPrice = calculateCartTotal(bookings)
 
 
     return(
         <Flex  border='1px solid #e5e5e5' direction='column' w='100%' p='2'>
             <Heading as='h4' mb='3' size='sm' >Service Bookings</Heading>
             <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
-                <BookingList>
+                <CartList>
                     {bookings.map(booking=>(
-                        <BookingListItem key={booking.id} onIncrementItemQuantity={onIncrementItemQuantity} onRemoveTicket={onRemoveTicket} service={booking}/>
+                        <CartListItem key={booking.id} onIncrementItemQuantity={onIncrementItemQuantity} onRemoveTicket={onRemoveTicket} service={booking}/>
                     ))}
-                </BookingList>
-                <BookingTotal totalPrice={totalPrice}/>
+                </CartList>
+                <CartTotal totalPrice={totalPrice}/>
             </Flex>
         </Flex>
     )
 }
 
-interface BookingListItemProps{
+interface CartListItemProps{
     service: Service,
     onRemoveTicket: (id: string)=>void,
     onIncrementItemQuantity: (id:string)=>void
 }
 
-const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:BookingListItemProps)=>{
+const CartListItem =({service,onRemoveTicket,onIncrementItemQuantity}:CartListItemProps)=>{
 
     const itemTotal = service.price * service.quantity
 
@@ -76,10 +76,10 @@ const BookingListItem =({service,onRemoveTicket,onIncrementItemQuantity}:Booking
     )
 }
 
-interface BookingTotalProps{
+interface CartTotalProps{
     totalPrice: number
 }
-const BookingTotal = ({totalPrice}:BookingTotalProps)=>{
+const CartTotal = ({totalPrice}:CartTotalProps)=>{
     return(
         <Button mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
