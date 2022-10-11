@@ -6,7 +6,8 @@ export interface Service{
     availableTickets: number,
     serviceType: string,
     quantity: number,
-    id: string
+    id: string,
+    description: string
 }
 interface EventServices {
     id?: string,
@@ -23,7 +24,8 @@ export const allServices: Service[] = [
         availableTickets:40,
         serviceType:'lineSkip',
         quantity: 0,
-        id:'1'
+        id:'1',
+        description: 'Summer is around the corner and with the best way of knowing if it truly means something'
     },
     {
         productName: 'Tyler Perry',
@@ -33,17 +35,9 @@ export const allServices: Service[] = [
         availableTickets:45,
         serviceType:'bottleService',
         quantity: 0,
-        id:'2'
+        id:'2',
+        description: 'Summer is around the corner and with the best way of knowing if it truly means something'
     },
-    {
-        productName: 'Health benefits of eating fruits',
-        price: 14,
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description',
-        availableTickets:51,
-        serviceType:'lineSkip',
-        quantity: 0,
-        id:'3'
-    }
+    
 ]
 

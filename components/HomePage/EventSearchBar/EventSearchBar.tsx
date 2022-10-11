@@ -13,5 +13,5 @@ export default function EventSearchBar(){
             </HStack>
           </FormControl>
         </Box>
-    )
+    )  
 }

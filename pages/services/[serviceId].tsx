@@ -5,6 +5,7 @@ import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
+import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 
 
 // TODO: Rename all instances of booking(s) to cart
@@ -12,57 +13,62 @@ import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 export default function ServicesPage(){
 
     // const {pathname, query} = useRouter()
-    const [bookings, setBookings] = useState<Service[]>([]);
+    const [cart, setCart] = useState<Service[]>([]);
 
     // TODO: rename to cartItemExist
-    const checkBookingExist = (id:string)=>{
-        const clonedBookings = bookings.slice()
-        return clonedBookings.filter(booking=>booking.id === id).length>0 ? true: false;
+    const checkCartItemExist = (id:string)=>{
+        const clonedCart = cart.slice()
+        return clonedCart.filter(cartItem=>cartItem.id === id).length>0 ? true: false;
     }
 
 
     const addToCartHandler = (id:string)=>{
 
         // dont duplicate items in cart
-        const isBookingDuplicate = checkBookingExist(id)
-        if(isBookingDuplicate) return
+        // TODO: find better name for this
+        const isDuplicateCartItem = checkCartItemExist(id)
+        if(isDuplicateCartItem) return
   
         const targetTicket = allServices.find(service=>service.id===id);
         targetTicket!.quantity = 1;
-        const clonedBookings = bookings.slice();
-        clonedBookings.push(targetTicket);
-        console.log(clonedBookings)
-        setBookings(clonedBookings);
+        const clonedCart = cart.slice();
+        clonedCart.push(targetTicket);
+        console.log(clonedCart)
+        setCart(clonedCart);
 
     }
 
     const removeCartItemHandler = (id:string)=>{
-        const clonedBookings = bookings.slice();
-        const targetIndex = clonedBookings.findIndex(booking=>booking.id === id)
-        clonedBookings[targetIndex].quantity = 0;
-        const updatedBookings = clonedBookings.filter(booking=>booking.id !== id);
-        setBookings(updatedBookings);
+        const clonedCart = cart.slice();
+        const targetIndex = clonedCart.findIndex(cartItem=>cartItem.id === id)
+        clonedCart[targetIndex].quantity = 0;
+        const updatedBookings = clonedCart.filter(cartItem=>cartItem.id !== id);
+        setCart(updatedBookings);
     }
 
     const incrementCartItemQuantity = (id: string)=>{
-        const clonedBookings = bookings.slice();
-        const targetItem = clonedBookings.find(booking=>booking.id === id);
+        const clonedCart = cart.slice();
+        const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
         targetItem!.quantity++
         console.log(targetItem);
-        setBookings(clonedBookings);
+        setCart(clonedCart);
     }
 
-    const createOrder = (cart:Service[])=>{
+    const showConfirmationModal = ()=>{
+        
+    }
+
+    const createOrder = ()=>{
         // show confirmation modal
         // check if user is logged in
         // call stripe api
         // mint tokens on success
+        showConfirmationModal()
         clearCart()
     }
 
-    
     const clearCart = ()=>{
-        setBookings([]);
+        setCart([]);
     }
 
     return(
@@ -73,10 +79,11 @@ export default function ServicesPage(){
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
                     <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
+                    <TicketSearchBar/>
                     <TicketList onAddToCart={addToCartHandler} services={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
-                    <Cart onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} bookings={bookings}/>
+                    <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
                 </Flex>
             </Flex>
         </Box>

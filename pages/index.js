@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import EventSearchBar from '../components/HomePageComponents/EventSearchBar/EventSearcBar'
-import EventList from '../components/HomePageComponents/EventList/EventList'
+
+import EventSearchBar from '../components/HomePage/EventSearchBar/EventSearchBar'
+import EventList from '../components/HomePage/EventList/EventList'
 import {Flex,Box,Container} from '@chakra-ui/react'
 import {events} from '../data/events'
 
