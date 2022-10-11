@@ -3,9 +3,8 @@ import {Box,Flex, Heading} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
-import ServiceFilter from '../../components/ServicesPageComponents/ServiceFilter/ServiceFilter'
-import ServiceBookings from '../../components/ServicesPageComponents/Cart/Cart'
-import ServiceList from '../../components/ServicesPageComponents/TicketList/TicketList'
+import Cart from '../../components/ServicesPage/Cart/Cart'
+import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 
 
 // TODO: Rename all instances of booking(s) to cart
@@ -47,8 +46,8 @@ export default function ServicesPage(){
         return clonedBookings.filter(booking=>booking.id === id).length>0 ? true: false;
     }
 
-    // TODO: rename to addItemToCart
-    const grabTicketHandler = (id:string)=>{
+
+    const addToCartHandler = (id:string)=>{
 
         // dont duplicate items in cart
         const isBookingDuplicate = checkBookingExist(id)
@@ -63,8 +62,7 @@ export default function ServicesPage(){
 
     }
 
-    // TODO: rename to removeItemFromCart
-    const removeTicketHandler = (id:string)=>{
+    const removeCartItemHandler = (id:string)=>{
         const clonedBookings = bookings.slice();
         const targetIndex = clonedBookings.findIndex(booking=>booking.id === id)
         clonedBookings[targetIndex].quantity = 0;
@@ -72,8 +70,7 @@ export default function ServicesPage(){
         setBookings(updatedBookings);
     }
 
-    // TODO: rename to incrementCartItemQuantity
-    const incrementItemQuantity = (id: string)=>{
+    const incrementCartItemQuantity = (id: string)=>{
         const clonedBookings = bookings.slice();
         const targetItem = clonedBookings.find(booking=>booking.id === id);
         targetItem!.quantity++
@@ -82,17 +79,14 @@ export default function ServicesPage(){
     }
 
     const createOrder = (cart:Service[])=>{
-        updateInventory(cart);
+        // show confirmation modal
+        // check if user is logged in
+        // call stripe api
+        // mint tokens on success
         clearCart()
     }
 
-    const updateInventory = (cart:Service[])=>{
-        cart.forEach(item=>{
-            const target = allServices.find(service=>service.id === item.id)
-            // update card inventory 
-            target!.availableTickets -= item.quantity
-        })
-    }
+    
     const clearCart = ()=>{
         setBookings([]);
     }
@@ -105,10 +99,10 @@ export default function ServicesPage(){
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
                     <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
-                    <ServiceList filters={serviceFilters} grabTicketHandler={grabTicketHandler} data={allServices}/>
+                    <TicketList filters={serviceFilters} onAddToCart={addToCartHandler} data={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
-                    <ServiceBookings onIncrementItemQuantity={incrementItemQuantity} onRemoveTicket={removeTicketHandler} bookings={bookings}/>
+                    <Cart onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} bookings={bookings}/>
                 </Flex>
             </Flex>
         </Box>

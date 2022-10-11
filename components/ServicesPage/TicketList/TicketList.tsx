@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import ServiceSearchBar from '../ServiceSearchBar/ServiceSearchBar'
 import Image from 'next/future/image'
-
+import TicketListItem from './TicketListItem'
 
 interface Service{
     productName: string,
@@ -52,38 +52,10 @@ export default function TicketList({data,filters,onAddToCart}:TicketListProps){
 
             <SimpleGrid columns={1} spacing='3'>
                 {filteredServices.map((service: Service)=>(
-                    <Ticket onGrabTicket={onAddToCart}  key={service.id} data={service}/>
+                    <TicketListItem onAddToCart={onAddToCart}  key={service.id} data={service}/>
                 ))}
             </SimpleGrid>
         </Box>
         </>
     ) 
-}
-
-interface ServiceProps{
-    data: Service,
-    onGrabTicket:(id:string)=>void
-}
-
-function Ticket ({data, onGrabTicket}:ServiceProps){
-
-    return( 
-            <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onGrabTicket(data.id)}>
-            {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
-            <VStack align='left' spacing={3} p='4'>
-                <Box as='h4' mb='0' lineHeight='tight' fontWeight='medium' noOfLines={1}>
-                    {data.productName}
-                </Box>    
-                <Box>
-                    ${data.price}
-                    <Box as='span' color='gray.600' fontSize='sm'>
-                        /person
-                    </Box>
-                </Box>
-                <Box>
-                    Avalaible tickets: {data.availableTickets}
-                </Box>
-            </VStack>
-        </Box>
-    )
 }

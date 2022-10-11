@@ -5,11 +5,11 @@ import { Service } from '../../../data/services'
 
 interface CartProps{
     bookings: Service[],
-    onRemoveTicket: (id: string)=>void,
-    onIncrementItemQuantity: (id: string)=>void
+    onRemoveCartItem: (id: string)=>void,
+    onIncrementCartItemQuantity: (id: string)=>void
 }
 
-export default function Cart({bookings,onRemoveTicket,onIncrementItemQuantity}:CartProps){
+export default function Cart({bookings,onRemoveCartItem,onIncrementCartItemQuantity}:CartProps){
 
 
     function calculateCartTotal(bookings:Service[]){
@@ -31,7 +31,7 @@ export default function Cart({bookings,onRemoveTicket,onIncrementItemQuantity}:C
             <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
                 <CartList>
                     {bookings.map(booking=>(
-                        <CartListItem key={booking.id} onIncrementItemQuantity={onIncrementItemQuantity} onRemoveTicket={onRemoveTicket} service={booking}/>
+                        <CartListItem key={booking.id} onIncrementItemQuantity={onIncrementCartItemQuantity} onRemoveTicket={onRemoveCartItem} service={booking}/>
                     ))}
                 </CartList>
                 <CartTotal totalPrice={totalPrice}/>
@@ -71,7 +71,6 @@ const CartListItem =({service,onRemoveTicket,onIncrementItemQuantity}:CartListIt
                 </HStack>
             </Flex>
             <IconButton onClick={()=>onRemoveTicket(service.id)} aria-label='remove-item'/>
-
         </Flex>
     )
 }
