@@ -87,9 +87,9 @@ interface CartTotalButtonProps{
     totalPrice: number
     onCreateOrder:()=>void;
 }
-const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalProps)=>{
+const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
     return(
-        <Button mt='3'>
+        <Button onClick={onCreateOrder} mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
                 <Text color='gray.900' fontWeight='medium'>Book Now</Text>
                 <HStack spacing={2}>

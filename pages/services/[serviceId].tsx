@@ -1,25 +1,26 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading} from '@chakra-ui/react'
+import {Box,Flex, Heading,useDisclosure} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
+import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
 
 
-// TODO: Rename all instances of booking(s) to cart
 
 export default function ServicesPage(){
+    
+    const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
-    // const {pathname, query} = useRouter()
     const [cart, setCart] = useState<Service[]>([]);
 
     // TODO: rename to cartItemExist
     const checkCartItemExist = (id:string)=>{
         const clonedCart = cart.slice()
         return clonedCart.filter(cartItem=>cartItem.id === id).length>0 ? true: false;
-    }
+    } 
 
 
     const addToCartHandler = (id:string)=>{
@@ -54,16 +55,13 @@ export default function ServicesPage(){
         setCart(clonedCart);
     }
 
-    const showConfirmationModal = ()=>{
-        
-    }
 
     const createOrder = ()=>{
         // show confirmation modal
         // check if user is logged in
         // call stripe api
         // mint tokens on success
-        showConfirmationModal()
+        showPaymentModal()
         clearCart()
     }
 
@@ -86,6 +84,12 @@ export default function ServicesPage(){
                     <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
                 </Flex>
             </Flex>
+            <PaymentModal 
+              onCloseModal={onClose} 
+              isModalOpen={isOpen} 
+              cart={cart}
+              totalCost = {50}
+              />
         </Box>
     )
 }
