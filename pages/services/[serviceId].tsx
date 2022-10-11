@@ -11,34 +11,8 @@ import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 
 export default function ServicesPage(){
 
-    const {pathname, query} = useRouter()
-    // const [eventData, setEventData] = useState<EventServices[]>([]);
+    // const {pathname, query} = useRouter()
     const [bookings, setBookings] = useState<Service[]>([]);
-
-
-    // TODO: set filters lazily immediately after fetching services
-    const [serviceFilters, setServiceFilters] = useState<Array<string>>(()=>['lineSkip','bottleService'])
-
-    // useEffect(() => {
-    //  const eventId = query.eventId;
-    //  const service = eventServices.find(service=> service.id === eventId)
-    //  setEventData(service||[])
-    // }, [])
-
-    const getCurrentFilter=(value:string)=>{
-        const clonedFilters = serviceFilters.slice();
-
-        // remove filter if it exists
-        if(clonedFilters.includes(value)){
-           const updatedFilters = clonedFilters.filter(item=>item !== value)
-           setServiceFilters(updatedFilters);
-           return
-        };
-
-        // add filter if it doesn't exist
-        clonedFilters.push(value);
-        setServiceFilters(clonedFilters)
-    }
 
     // TODO: rename to cartItemExist
     const checkBookingExist = (id:string)=>{
@@ -99,7 +73,7 @@ export default function ServicesPage(){
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
                     <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
-                    <TicketList filters={serviceFilters} onAddToCart={addToCartHandler} data={allServices}/>
+                    <TicketList onAddToCart={addToCartHandler} services={allServices}/>
                 </Flex>
                 <Flex flex='1' h='100%' p='2'>
                     <Cart onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} bookings={bookings}/>

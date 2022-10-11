@@ -9,7 +9,7 @@ import {
     HStack,
     SimpleGrid
 } from '@chakra-ui/react'
-import ServiceSearchBar from '../ServiceSearchBar/ServiceSearchBar'
+import ServiceSearchBar from '../TicketSearchBar/TicketSearchBar'
 import Image from 'next/future/image'
 import TicketListItem from './TicketListItem'
 
@@ -25,23 +25,12 @@ interface Service{
 
 
 interface TicketListProps{
-    data: any
-    filters: Array<string>,
+    services: any
     onAddToCart: (id:string)=>void
 }
 
-export default function TicketList({data,filters,onAddToCart}:TicketListProps){
+export default function TicketList({services,onAddToCart}:TicketListProps){
 
-    
-    const filterServices = (filters:Array<string>, services:Service[])=>{
-            const filteredResult = services.filter((service:Service)=>{
-                return filters.includes(service.serviceType)
-            })
-            return filteredResult;
-    }
-
-    // Using derived state to filter services
-    const filteredServices = filterServices(filters, data);
 
 
     return(
@@ -51,7 +40,7 @@ export default function TicketList({data,filters,onAddToCart}:TicketListProps){
             <ServiceSearchBar/>
 
             <SimpleGrid columns={1} spacing='3'>
-                {filteredServices.map((service: Service)=>(
+                {services.map((service: Service)=>(
                     <TicketListItem onAddToCart={onAddToCart}  key={service.id} data={service}/>
                 ))}
             </SimpleGrid>
