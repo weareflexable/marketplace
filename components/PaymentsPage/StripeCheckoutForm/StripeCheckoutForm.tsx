@@ -24,7 +24,7 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: "https://localhost:3002/myBookings",
       },
       
     });
