@@ -9,8 +9,8 @@ export default function Header(){
                 <Link href='/'><a>Logo</a></Link>
             </Box>
             <Flex as='nav'>
-                <Link href='/'>
-                    <a>Booking history</a>
+                <Link href='/bookings'>
+                    <a>My Bookings</a>
                 </Link>
             </Flex>
         </Flex>

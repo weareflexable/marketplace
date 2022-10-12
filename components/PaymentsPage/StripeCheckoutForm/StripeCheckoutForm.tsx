@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import {Flex,Box,Button,Heading} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement, Elements} from '@stripe/react-stripe-js';
 
 
@@ -24,7 +24,7 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: "https://localhost:3002/myBookings",
       },
       
     });
@@ -41,12 +41,15 @@ const CheckoutForm = () => {
   };
 
   return (
-            <form onSubmit={handleSubmit}>
-        <PaymentElement />
-        <button disabled={!stripe}>Submit</button>
-        </form>
-
-        
+  <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
+      <Box w='400px'>
+          <Heading mb='8' letterSpacing='-0.7px'>Complete payment</Heading>
+          <form onSubmit={handleSubmit}>
+          <PaymentElement />
+          <Button mt='5' type='submit' disabled={!stripe}>Complete payment</Button>
+          </form>
+      </Box>     
+  </Flex>
   )
 };
 
