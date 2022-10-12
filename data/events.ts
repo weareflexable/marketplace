@@ -37,6 +37,14 @@ export const events: Event[] = [{
     location:'No 16 West south paw',
     thumbnail:'/assets/placeholder.jpeg',
     thumbnailAlt: 'Description about the image',
+    serviceId:'3',
+    totalServices:2,
+    juiceBar: 'Mujeex Bar'
+},
+{
+    location:'No 16 West south paw',
+    thumbnail:'/assets/placeholder.jpeg',
+    thumbnailAlt: 'Description about the image',
     serviceId:'4',
     totalServices:2,
     juiceBar: 'Mujeex Bar'

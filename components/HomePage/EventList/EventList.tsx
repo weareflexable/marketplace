@@ -1,6 +1,6 @@
 import React from 'react'
-import {Box,Flex,Wrap,WrapItem,Badge,HStack, VStack} from '@chakra-ui/react'
-import Image from 'next/future/image'
+import {Box,Flex,Wrap,WrapItem,Badge,HStack, VStack,Image, Avatar} from '@chakra-ui/react'
+// import Image from 'next/future/image'
 import {Event} from '../../../data/events'
 import {useRouter} from 'next/router'
 
@@ -11,9 +11,9 @@ interface EventListProps {
 const EventList = ({events}:EventListProps) =>{
 
     return(
-        <Wrap spacing={5} margin={'0 auto'}> 
+        <Wrap w='100%' spacing={2}> 
             {events.map(event=>(
-                <WrapItem key={event.serviceId} maxW='30%' borderWidth='1px' borderRadius='lg' overflow='hidden'>
+                <WrapItem key={event.serviceId}  w='250px' borderWidth='1px' borderRadius='lg' overflow='hidden'>
                     <EventListItem data={event}/>
                 </WrapItem>
             ))}
@@ -34,10 +34,16 @@ const EventListItem = ({data}:EventListItemProps) =>{
 
     return(
         <Box onClick={()=>navigateToServicePage(data.serviceId)}>
-            <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} width='100' height='150' alt={data.thumbnailAlt}/>
+            <Image src='/assets/placeholder.jpeg'  width='100' height='150' alt={data.thumbnailAlt}/>
             <VStack align='left' spacing={3} p='4'>
-                <Box as='h4' lineHeight='tight' noOfLines={1}>
-                    {data.juiceBar}
+                <HStack  spacing={2}>
+                    <Avatar size='sm' name='Kent Dodds' src='https://bit.ly/kent-c-dodds'/>
+                    <Box as='h4' lineHeight='tight' noOfLines={1}>
+                        {data.juiceBar}
+                    </Box>
+                </HStack>
+                <Box>
+                    West Carolina, Florida
                 </Box>
                 <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
                     {data.totalServices} services available
