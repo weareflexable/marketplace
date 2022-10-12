@@ -13,7 +13,7 @@ export default function EventSearchBar(){
     event.preventDefault()
     const country = event.target[0].value;
     const state = event.target[1].value
-   console.log(country, state)
+
   }
 
     return(
@@ -22,7 +22,7 @@ export default function EventSearchBar(){
             <HStack as='form' onSubmit={handleSearchEvent} spacing={2}>
                 <FormControl w='250px' mr={0} isRequired>
                     <Select  placeholder='Select your country'>
-                      <option value='US'>United States of America</option>
+                      <option defaultValue={'United States'} value='US'>United States</option>
                     </Select>
                     <FormErrorMessage>Country is required</FormErrorMessage>
                   </FormControl>

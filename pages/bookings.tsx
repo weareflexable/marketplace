@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react'
+import Layout from '../components/shared/Layout/Layout';
 
 
 const purchasedTickets = [
@@ -32,6 +33,7 @@ export default function MyBookings(){
     // TODO: fallback ui for when user tries to access page without authorization
 
     return(
+    <Layout>
         <Grid templateColumns='repeat(5, 1fr)' gap={6} >
             <GridItem colStart={2} colEnd={4}>
                 <Flex w='600px' direction='column'>
@@ -57,6 +59,7 @@ export default function MyBookings(){
                 </Flex>
             </GridItem>
         </Grid>
+    </Layout>
     )
 }
 
