@@ -4,16 +4,8 @@ import {
     Box,
     VStack,
 } from '@chakra-ui/react'
+import {Service} from '../../../data/services'
 
-interface Service{
-    productName: string,
-    price: string,
-    thumbnail: string,
-    thumbnailAlt: string,
-    availableTickets: number,
-    serviceType: string,
-    id: string
-}
 
 
 interface ServiceProps{
@@ -30,6 +22,9 @@ function TicketList ({data, onAddToCart}:ServiceProps){
                 <Box as='h4' mb='0' lineHeight='tight' fontWeight='medium' noOfLines={1}>
                     {data.productName}
                 </Box>    
+                <Box>
+                    {data.description}
+                </Box>
                 <Box>
                     ${data.price}
                     <Box as='span' color='gray.600' fontSize='sm'>

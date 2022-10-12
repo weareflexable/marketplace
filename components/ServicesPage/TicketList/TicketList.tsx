@@ -1,27 +1,12 @@
 import React from 'react'
 import {
     Box,
-    Wrap,
-    Flex,
-    WrapItem,
     Heading,
-    VStack,
-    HStack,
     SimpleGrid
 } from '@chakra-ui/react'
-import ServiceSearchBar from '../TicketSearchBar/TicketSearchBar'
-import Image from 'next/future/image'
-import TicketListItem from './TicketListItem'
 
-interface Service{
-    productName: string,
-    price: string,
-    thumbnail: string,
-    thumbnailAlt: string,
-    availableTickets: number,
-    serviceType: string,
-    id: string
-}
+import TicketListItem from './TicketListItem'
+import {Service} from '../../../data/services'
 
 
 interface TicketListProps{

@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading,useDisclosure} from '@chakra-ui/react'
+import {Box,Flex, Heading,useDisclosure,Image} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -57,10 +57,6 @@ export default function ServicesPage(){
 
 
     const createOrder = ()=>{
-        // show confirmation modal
-        // check if user is logged in
-        // call stripe api
-        // mint tokens on success
         showPaymentModal()
         clearCart()
     }
@@ -76,6 +72,9 @@ export default function ServicesPage(){
                 <Flex flex='0.8' h='100%' p='2'>
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
+                    <Box height='150px' w='100%'>
+                        <Image width='100%' h='100%' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+                    </Box>
                     <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
                     <TicketSearchBar/>
                     <TicketList onAddToCart={addToCartHandler} services={allServices}/>
