@@ -40,14 +40,10 @@ export default function MyBookings(){
                     <Heading mt='10' mb='6'>My Bookings</Heading>
                     <Tabs variant='soft-rounded'>
                         <TabList>
-                            <Tab>Purchased</Tab>
-                            <Tab>Redeemed</Tab>
-                            <Tab>Expired</Tab>
+                            <Tab>Tickets</Tab>
+                            <Tab>Orders</Tab>
                         </TabList>
                         <TabPanels>
-                            <TabPanel>
-                                <PurchasedTickets/>
-                            </TabPanel>
                             <TabPanel>
                                 <PurchasedTickets/>
                             </TabPanel>

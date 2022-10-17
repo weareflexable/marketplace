@@ -6,6 +6,8 @@ import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCh
 
 
 import {loadStripe} from '@stripe/stripe-js';
+import { useRouter } from 'next/router';
+import { useCheckoutContext } from '../context/CheckoutContext';
 
 const stripePromise = loadStripe('pk_test_vtgL0nmkyDyenRcsGfyka7WE00WECdEnWH');
 
@@ -13,6 +15,9 @@ const stripePromise = loadStripe('pk_test_vtgL0nmkyDyenRcsGfyka7WE00WECdEnWH');
 const Payments = () => {
 
     const [clientSecret, setClientSecret] = useState('')
+    const {totalAmount, cartItems} = useCheckoutContext()
+
+    console.log(totalAmount)
   
     useEffect(()=>{
       const fetchSecret = async ()=>{
@@ -36,7 +41,7 @@ const Payments = () => {
     <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
         { stripePromise && clientSecret && 
         <Elements stripe={stripePromise} options={{clientSecret}}>
-            <CheckoutForm/>
+            <CheckoutForm />
         </Elements>
        }
     </Flex>

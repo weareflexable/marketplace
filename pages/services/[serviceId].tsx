@@ -7,6 +7,7 @@ import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
+import BarHeader from '../../components/ServicesPage/BarHeader/BarHeader'
 
 
 
@@ -72,10 +73,7 @@ export default function ServicesPage(){
                 <Flex flex='0.8' h='100%' p='2'>
                 </Flex>
                 <Flex h='100%' direction='column'  flex='2'>
-                    <Box height='150px' w='100%'>
-                        <Image width='100%' h='100%' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
-                    </Box>
-                    <Heading as='h1' mb='2' size='lg'>Avery Juice Bar</Heading>
+                    <BarHeader/>
                     <TicketSearchBar/>
                     <TicketList onAddToCart={addToCartHandler} services={allServices}/>
                 </Flex>

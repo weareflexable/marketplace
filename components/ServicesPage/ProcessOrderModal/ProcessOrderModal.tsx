@@ -13,6 +13,7 @@ import {
 
 import { Service } from '../../../data/services';
 import { useRouter } from 'next/router';
+import { useCheckoutContext } from '../../../context/CheckoutContext';
 
 
 interface PaymentModalProps{
@@ -23,12 +24,21 @@ interface PaymentModalProps{
 }
 
 
-  export default function ProcessOrderModal({totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
+  export default function ProcessOrderModal({cart, totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
 
+
+    const {setAmount, setCart} = useCheckoutContext();
 
     const router = useRouter()
+    setAmount(totalCost);
+    setCart(cart)
     const proceedToPayment =()=>{
-      router.push('/payments')
+      // check user session
+      // if signed in, then i can proceed
+      // if not, then I redirect to app.flexable.dats
+      router.push(
+        {pathname:'/payments',
+      })
     }
 
     return (
