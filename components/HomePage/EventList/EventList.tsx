@@ -1,30 +1,15 @@
 import React from 'react'
-import {Box,Flex,Wrap,WrapItem,Badge,HStack, VStack,Image, Avatar} from '@chakra-ui/react'
+import {Box,Flex,Wrap,WrapItem,Badge,HStack, Text, VStack,Image, Avatar} from '@chakra-ui/react'
 // import Image from 'next/future/image'
 import {Event} from '../../../data/events'
 import {useRouter} from 'next/router'
 
-interface EventListProps {
-    events: Event[]
-}
 
-const EventList = ({events}:EventListProps) =>{
-
-    return(
-        <Wrap w='100%' spacing={2}> 
-            {events.map(event=>(
-                <WrapItem key={event.serviceId}  w='250px' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-                    <EventListItem data={event}/>
-                </WrapItem>
-            ))}
-        </Wrap>
-    )
-}
 
 interface EventListItemProps {
     data: Event
-}
-const EventListItem = ({data}:EventListItemProps) =>{
+} 
+export const EventListItem = ({data}:EventListItemProps) =>{
 
     const router = useRouter()
     
@@ -33,24 +18,22 @@ const EventListItem = ({data}:EventListItemProps) =>{
     }
 
     return(
-        <Box onClick={()=>navigateToServicePage(data.serviceId)}>
-            <Image src='/assets/placeholder.jpeg'  width='100' height='150' alt={data.thumbnailAlt}/>
-            <VStack align='left' spacing={3} p='4'>
-                <HStack  spacing={2}>
-                    <Avatar size='sm' name='Kent Dodds' src='https://bit.ly/kent-c-dodds'/>
-                    <Box as='h4' lineHeight='tight' noOfLines={1}>
+        <Box w='100%' onClick={()=>navigateToServicePage(data.serviceId)}>
+            <Image src='https://bit.ly/kent-c-dodds' m='0'  width='100%' height='200' alt={data.thumbnailAlt}/>
+            <Flex  p='4'>
+                <Avatar size='sm' name='Kent Dodds' src='https://bit.ly/kent-c-dodds'/>
+                <Flex ml='1' direction='column'>
+                    <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.juiceBar}
-                    </Box>
-                </HStack>
-                <Box>
-                    West Carolina, Florida
-                </Box>
-                <Box color='gray.500' fontWeight='semibold' letterSpacing='wide' fontSize='xs' textTransform='uppercase'>
-                    {data.totalServices} services available
-                </Box>
-            </VStack>
+                    </Text>
+                    <Text color='gray.500' textStyle={'secondary'}>
+                        West Carolina, Florida
+                    </Text>
+                    <Text >
+                        Restaurant
+                    </Text>
+                </Flex>
+            </Flex>
         </Box>
     )
 }
-
-export default EventList

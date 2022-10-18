@@ -6,7 +6,8 @@ export type Event = {
     thumbnailAlt: string,
     serviceId: string,
     totalServices: number,
-    juiceBar: string
+    juiceBar: string,
+    type: string
 }
 
 export const events: Event[] = [{
@@ -15,7 +16,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'1',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Mujeex Bar',
+    type: 'Restaurant'
 },
 {
     location:'No 16 West south paw',
@@ -23,7 +25,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'2',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Marks hotel',
+    type: 'Hotel'
 },
 {
     location:'No 16 West south paw',
@@ -31,7 +34,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'3',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Levante Restaurant',
+    type: 'Restaurant'
 },
 {
     location:'No 16 West south paw',
@@ -39,7 +43,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'3',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Golds Gym',
+    type: 'Gym',
 },
 {
     location:'No 16 West south paw',
@@ -47,7 +52,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'4',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Avery Juice Bar',
+    type: 'Bar'
 },
 {
     location:'No 16 West south paw',
@@ -55,7 +61,8 @@ export const events: Event[] = [{
     thumbnailAlt: 'Description about the image',
     serviceId:'5',
     totalServices:2,
-    juiceBar: 'Mujeex Bar'
+    juiceBar: 'Bill Cage Restaurant',
+    type: 'Restaurant'
 }]
 
 

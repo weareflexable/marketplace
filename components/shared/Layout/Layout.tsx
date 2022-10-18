@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import {Flex,Box} from '@chakra-ui/react'
+import {Flex,Box,SimpleGrid} from '@chakra-ui/react'
 import Header from '../Header/Header'
 import { useRouter } from 'next/router'
 
@@ -13,10 +13,12 @@ export default function Layout({children}:LayoutProps){
     console.log(router.pathname)
 
     return(
-        <Flex w='100%' h='100%' direction='column'>
+        <SimpleGrid columns={8} spacing={3} w='100%' h='100%'>
             <Header/>
-            {children}
-        </Flex>
+            <Box as='main' gridColumnStart={1} gridColumnEnd={9}>
+                {children}
+            </Box>
+        </SimpleGrid>
     )
 }
 

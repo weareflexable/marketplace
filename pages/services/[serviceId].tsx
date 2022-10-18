@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading,useDisclosure,Image} from '@chakra-ui/react'
+import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -69,18 +69,16 @@ export default function ServicesPage(){
     return(
         <Box>
             <Header/>
-            <Flex>
-                <Flex flex='0.8' h='100%' p='2'>
-                </Flex>
-                <Flex h='100%' direction='column'  flex='2'>
+            <SimpleGrid columns={8} spacing='2'>
+                <Flex h='100%' gridColumnStart={2} gridColumnEnd={6} direction='column'  flex='2'>
                     <BarHeader/>
                     <TicketSearchBar/>
                     <TicketList onAddToCart={addToCartHandler} services={allServices}/>
-                </Flex>
-                <Flex flex='1' h='100%' p='2'>
+                </Flex> 
+                <Flex flex='1' gridColumnStart={6} gridColumnEnd={8} h='100%' p='2'>
                     <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
                 </Flex>
-            </Flex>
+            </SimpleGrid>
             <PaymentModal 
               onCloseModal={onClose} 
               isModalOpen={isOpen} 

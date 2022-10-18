@@ -7,7 +7,8 @@ import {
     Text,
     Flex,
     Center,
-    Divider
+    Divider,
+    Heading
 } from '@chakra-ui/react'
 import {Service} from '../../../data/services'
 
@@ -15,18 +16,18 @@ import {Service} from '../../../data/services'
 
 interface ServiceProps{
     data: Service,
-    onAddToCart:(id:string)=>void
+    onTriggerAction:(id:string)=>void
 }
 
-function TicketList ({data, onAddToCart}:ServiceProps){
+function TicketList ({data, onTriggerAction}:ServiceProps){
 
     return( 
-        <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onAddToCart(data.id)}>
+        <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={7} direction='column'>
-                        <Text as='h4' mb='0' textStyle={'h4'} lineHeight='tight' noOfLines={1}>
+                        <Text as='h4' mb='1' textStyle={'h4'} lineHeight='tight' noOfLines={1}>
                             {data.productName}
                         </Text>    
                         <Text textStyle={'secondary'}>

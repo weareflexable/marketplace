@@ -2,6 +2,7 @@
 import "@fontsource/lato";
 import "@fontsource/lato/700.css";
 import "@fontsource/lato/900.css";
+import "@fontsource/merriweather/400.css";
 import "@fontsource/merriweather/700.css";
 import "@fontsource/merriweather/900.css";
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
@@ -41,10 +42,18 @@ const config: ThemeConfig ={
   },
   textStyles:{
     h1: {
-      fontWeight: 'bold',
+      fontWeight: '900',
       lineHeight: '110%',
-      letterSpacing: '-2%', 
+      letterSpacing: '-0.5px', 
     },
+
+    h2:{
+      fontWeight: '700',
+      fontFamily: 'body',
+      fontSize: '1em',
+      letterSpacing: '-0.1px'
+    },
+
     h4:{
       fontFamily:'heading',
       lineHeight:1,
@@ -65,7 +74,7 @@ const config: ThemeConfig ={
     },
     ticketPrice:{
       fontFamily:'heading',
-      fontWeight: 700,
+      fontWeight: 500,
       fontSize: '2.5em',
       margin: 0,
       lineHeight: 1

@@ -7,7 +7,7 @@ export interface Service{
     serviceType: string,
     quantity: number,
     id: string,
-    description: string
+    description: string,
 }
 interface EventServices {
     id?: string,
@@ -17,8 +17,8 @@ interface EventServices {
 
 export const allServices: Service[] = [
     {
-        productName: 'Ted talk show',
-        price: 54,
+        productName: 'Avery juice bar show line pro',
+        price: 154.78,
         thumbnail: 'image string',
         thumbnailAlt:'Image description',
         availableTickets:40,
@@ -28,15 +28,16 @@ export const allServices: Service[] = [
         description: 'Summer is around the corner and with the best way of knowing if it truly means something'
     },
     {
-        productName: 'Tyler Perry',
-        price: 53,
+        productName: 'Tyler Perry bottle service',
+        price: 13.51,
         thumbnail: 'image string',
         thumbnailAlt:'Image description',
-        availableTickets:45,
+        availableTickets:104,
         serviceType:'bottleService',
         quantity: 0,
         id:'2',
-        description: 'Summer is around the corner and with the best way of knowing if it truly means something'
+        
+        description: 'Summer is around the corner and with the best way of knowing if it truly means something incredible things to come after a certain things'
     },
     
 ]

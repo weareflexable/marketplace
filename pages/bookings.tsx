@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout';
+import Ticket from '../components/shared/Ticket/Ticket';
 
 
 const purchasedTickets = [
@@ -38,10 +39,10 @@ export default function MyBookings(){
             <GridItem colStart={2} colEnd={4}>
                 <Flex w='600px' direction='column'>
                     <Heading mt='10' mb='6'>My Bookings</Heading>
-                    <Tabs variant='soft-rounded'>
+                    <Tabs variant='unstyled' >
                         <TabList>
-                            <Tab>Tickets</Tab>
-                            <Tab>Orders</Tab>
+                            <Tab textStyle={'h4'}  _selected={{ color: 'blue'}}>Tickets</Tab>
+                            <Tab textStyle={'h4'} _selected={{ color: 'blue'}}>Orders</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
@@ -65,34 +66,10 @@ const PurchasedTickets = ()=>{
     <Box w='100%' mt='3' >
         <SimpleGrid columns={1} spacing='3'>
             {purchasedTickets.map((ticket)=>(
-                <Ticket key={ticket.id} data={ticket}/>
+                <Ticket key={ticket.id} onTriggerAction={()=>console.log('hello')} data={ticket}/>
             ))}
         </SimpleGrid>
     </Box>
     )
 }
 
-const Ticket = ({data})=>{
-    return(
-        <Box border='1px solid #e5e5e5' cursor='pointer'>
-            {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
-            <VStack align='left' spacing={3} p='4'>
-                <Box as='h4' mb='0' lineHeight='tight' fontWeight='medium' noOfLines={1}>
-                    {data.productName}
-                </Box>    
-                <Box>
-                    {data.description}
-                </Box>
-                <Box>
-                    ${data.price}
-                    <Box as='span' color='gray.600' fontSize='sm'>
-                        /person
-                    </Box>
-                </Box>
-                <Button>
-                    Redeem Ticket
-                </Button>
-            </VStack>
-        </Box>
-    )
-}

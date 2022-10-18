@@ -4,6 +4,7 @@ import theme from '../theme'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {CheckoutContextProvider} from '../context/CheckoutContext'
+import {AuthContextProvider} from '../context/AuthContext'
 
 const queryClient = new QueryClient()
 
@@ -12,12 +13,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider theme={theme}> 
-      <QueryClientProvider client={queryClient}>
-        <CheckoutContextProvider>
-          <Component {...pageProps} />
-        </CheckoutContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <AuthContextProvider>
+          <QueryClientProvider client={queryClient}>
+                <CheckoutContextProvider>
+                  <Component {...pageProps} />
+                </CheckoutContextProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+      </AuthContextProvider>
     </ChakraProvider>
   )
 }

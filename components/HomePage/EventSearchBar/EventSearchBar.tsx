@@ -9,7 +9,7 @@ export default function EventSearchBar(){
 
   const usa = new States.UsaStates()
 
-  const handleSearchEvent = (event)=>{
+  const handleSearchEvent = (event: { preventDefault: () => void; target: { value: any }[] })=>{
     event.preventDefault()
     const country = event.target[0].value;
     const state = event.target[1].value
@@ -17,7 +17,7 @@ export default function EventSearchBar(){
   }
 
     return(
-        <Box p='.5em' margin={'1em auto'} bg='#ffffff' borderRadius='4px'>
+        <Box p='.5em'  margin={'1em auto'} bg='#ffffff' borderRadius='4px'>
 
             <HStack as='form' onSubmit={handleSearchEvent} spacing={2}>
                 <FormControl w='250px' mr={0} isRequired>
