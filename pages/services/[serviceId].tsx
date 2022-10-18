@@ -8,10 +8,21 @@ import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
 import BarHeader from '../../components/ServicesPage/BarHeader/BarHeader'
-
+import {useQuery} from '@tanstack/react-query'
 
 
 export default function ServicesPage(){
+
+    const {query} = useRouter();
+    console.log(query.serviceId) 
+
+    const {isLoading,data,isError} = useQuery(['store-service',query.serviceId],async()=>{
+        const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=2022-Dec-03`) 
+        const body = await res.json()
+        return body
+      })
+
+      console.log(data)
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
