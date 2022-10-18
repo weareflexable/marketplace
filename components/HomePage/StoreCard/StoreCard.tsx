@@ -1,15 +1,16 @@
 import React from 'react'
-import {Box,Flex,Wrap,WrapItem,Badge,HStack, Text, VStack,Image, Avatar} from '@chakra-ui/react'
+import {Box,Flex,Text,Image, Avatar} from '@chakra-ui/react'
 // import Image from 'next/future/image'
-import {Event} from '../../../data/events'
+import {Store} from '../../../Types/Stores.types'
 import {useRouter} from 'next/router'
 
 
 
-interface EventListItemProps {
-    data: Event
+interface StoreCardProps {
+    data: Store
 } 
-export const EventListItem = ({data}:EventListItemProps) =>{
+
+export const StoreCard = ({data}:StoreCardProps) =>{
 
     const router = useRouter()
     
@@ -18,16 +19,16 @@ export const EventListItem = ({data}:EventListItemProps) =>{
     }
 
     return(
-        <Box w='100%' onClick={()=>navigateToServicePage(data.serviceId)}>
-            <Image src='https://bit.ly/kent-c-dodds' m='0'  width='100%' height='200' alt={data.thumbnailAlt}/>
+        <Box w='100%' onClick={()=>navigateToServicePage(data.id)}>
+            <Image src='https://bit.ly/kent-c-dodds' m='0'  width='100%' height='200' alt={'Thumbnail image for cover'}/>
             <Flex  p='4'>
                 <Avatar size='sm' name='Kent Dodds' src='https://bit.ly/kent-c-dodds'/>
                 <Flex ml='1' direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
-                        {data.juiceBar}
+                        {data.name}
                     </Text>
                     <Text color='gray.500' textStyle={'secondary'}>
-                        West Carolina, Florida
+                        {data.city}, {data.country}
                     </Text>
                     <Text >
                         Restaurant
@@ -37,3 +38,5 @@ export const EventListItem = ({data}:EventListItemProps) =>{
         </Box>
     )
 }
+
+export default StoreCard
