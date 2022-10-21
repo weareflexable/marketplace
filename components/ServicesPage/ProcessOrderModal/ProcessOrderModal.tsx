@@ -27,10 +27,10 @@ interface PaymentModalProps{
   export default function ProcessOrderModal({cart, totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
 
 
-    const {setAmount, setCart} = useCheckoutContext();
+    const {setAmount, totalAmount, setCart} = useCheckoutContext();
 
     const router = useRouter()
-    setAmount(totalCost);
+    
     setCart(cart)
     const proceedToPayment =()=>{
       // check user session
@@ -56,7 +56,7 @@ interface PaymentModalProps{
             <ModalFooter>
               <Button variant='ghost' onClick={onCloseModal}>Cancel Order</Button>
               <Button colorScheme='blue' mr={3}  onClick={proceedToPayment} >
-                {`Proceed payment  $${totalCost}`}
+                {`Proceed payment  $${totalAmount}`}
               </Button>
             </ModalFooter>
           </ModalContent>

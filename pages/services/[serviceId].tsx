@@ -9,12 +9,13 @@ import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/Ticke
 import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
 import BarHeader from '../../components/ServicesPage/BarHeader/BarHeader'
 import {useQuery} from '@tanstack/react-query'
+import { useCheckoutContext } from '../../context/CheckoutContext'
 
 
 export default function ServicesPage(){
 
     const {query} = useRouter();
-    console.log(query.serviceId) 
+    const {setAmount} =  useCheckoutContext()
 
     const {isLoading,data,isError} = useQuery(['store-service',query.serviceId],async()=>{
         const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=2022-Dec-03`) 
@@ -22,7 +23,6 @@ export default function ServicesPage(){
         return body
       })
 
-      console.log(data)
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
@@ -68,9 +68,9 @@ export default function ServicesPage(){
     }
 
 
-    const createOrder = ()=>{
+    const createOrder = (totalCost:number)=>{
+        setAmount(totalCost);
         showPaymentModal()
-        clearCart()
     }
 
     const clearCart = ()=>{
@@ -87,7 +87,7 @@ export default function ServicesPage(){
                     <TicketList onAddToCart={addToCartHandler} services={allServices}/>
                 </Flex> 
                 <Flex flex='1' gridColumnStart={6} gridColumnEnd={8} h='100%' p='2'>
-                    <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
+                    {cart.length>0?<Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>:null}
                 </Flex>
             </SimpleGrid>
             <PaymentModal 

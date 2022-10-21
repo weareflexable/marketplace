@@ -7,7 +7,7 @@ interface CartProps{
     tickets: Service[],
     onRemoveCartItem: (id: string)=>void,
     onIncrementCartItemQuantity: (id: string)=>void,
-    onCreateOrder: ()=>void
+    onCreateOrder: (total:number)=>void
 }
 
 export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onCreateOrder}:CartProps){
@@ -40,7 +40,7 @@ export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuanti
                             />
                             ))}
                     </CartList>
-                    <CartTotalButton onCreateOrder={onCreateOrder} totalPrice={totalPrice}/>
+                    <CartTotalButton onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
                 </>: <Text>Add tickets to cart</Text>
                 }
             </Flex>

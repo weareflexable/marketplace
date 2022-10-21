@@ -25,7 +25,7 @@ export default function TicketList({services,onAddToCart}:TicketListProps){
             <Text as='h2' textStyle={'h2'} mb='4'>Showing you ticket for current date</Text>
             <SimpleGrid columns={1} spacing='3'>
                 {services.map((service: Service)=>(
-                    <TicketListItem onAddToCart={onAddToCart}  key={service.id} data={service}/>
+                    <TicketListItem onTriggerAction={onAddToCart}  key={service.id} data={service}/>
                 ))}
             </SimpleGrid>
         </Box>
