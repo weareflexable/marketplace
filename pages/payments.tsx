@@ -21,9 +21,13 @@ const Payments = () => {
   
     useEffect(()=>{
       const fetchSecret = async ()=>{
+        const payload={
+          orgServiceItems: cartItems,
+
+        }
         try{
-        const res = await fetch('/api/clientSecret',{
-          method:'GET'
+        const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/user/service-intent',{
+          method:'POST',
         });
         console.log(res)
         const body = await res.json()

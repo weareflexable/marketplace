@@ -11,6 +11,7 @@ import {
     Heading
 } from '@chakra-ui/react'
 import {Service} from '../../../data/services'
+import dayjs from 'dayjs';
 
 
 
@@ -21,6 +22,8 @@ interface ServiceProps{
 
 function TicketList ({data, onTriggerAction}:ServiceProps){
 
+    console.log(data)
+
     return( 
         <Box border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
@@ -28,7 +31,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                 <Flex py='1em'>
                     <Flex px='1em' flex={7} direction='column'>
                         <Text as='h4' mb='1' textStyle={'h4'} lineHeight='tight' noOfLines={1}>
-                            {data.productName}
+                            {data.name}
                         </Text>    
                         <Text textStyle={'secondary'}>
                             {data.description}
@@ -58,7 +61,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            jan 22, 2022
+                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
                             </Text>
                         </HStack>
 
@@ -67,7 +70,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                                 Avalaible tickets 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {data.availableTickets}
+                            {data.ticketMaxPerDay}
                             </Text>
                         </HStack>
                     </HStack>

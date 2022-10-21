@@ -20,6 +20,7 @@ export default function ServicesPage(){
     const {isLoading,data,isError} = useQuery(['store-service',query.serviceId],async()=>{
         const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=2022-Dec-03`) 
         const body = await res.json()
+        console.log(body)
         return body
       })
 
@@ -42,10 +43,17 @@ export default function ServicesPage(){
         const isDuplicateCartItem = checkCartItemExist(id)
         if(isDuplicateCartItem) return
   
-        const targetTicket = allServices.find(service=>service.id===id);
-        targetTicket!.quantity = 1;
+        let clonedServices = data.payload.serviceItems.slice() 
+        let targetTicket = clonedServices.find(service=>service.id===id);
+
+        // add quantity field to service
+        const serviceWithQuantity = {
+            ...targetTicket,
+            quantity:1
+        }
+
         const clonedCart = cart.slice();
-        clonedCart.push(targetTicket);
+        clonedCart.push(serviceWithQuantity);
         console.log(clonedCart)
         setCart(clonedCart);
 
@@ -84,7 +92,7 @@ export default function ServicesPage(){
                 <Flex h='100%' gridColumnStart={2} gridColumnEnd={6} direction='column'  flex='2'>
                     <BarHeader/>
                     <TicketSearchBar/>
-                    <TicketList onAddToCart={addToCartHandler} services={allServices}/>
+                    <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
                 </Flex> 
                 <Flex flex='1' gridColumnStart={6} gridColumnEnd={8} h='100%' p='2'>
                     {cart.length>0?<Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>:null}
