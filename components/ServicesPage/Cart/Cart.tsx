@@ -62,7 +62,7 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity}:CartListIte
         <Flex p='2' borderRadius='4px' mb='1' bg="#ffffff" justifyContent='space-between' as='li'>
             <Flex direction='column'>
                 <Box>
-                    { ticket.productName}
+                    { ticket.name}
                 </Box>
                 <Box>
                     ${ ticket.price}

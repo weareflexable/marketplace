@@ -8,6 +8,7 @@ import {
 
 import TicketListItem from '../../shared/Ticket/Ticket'
 import {Service} from '../../../data/services'
+import TicketMobile from '../../shared/Ticket/TicketMobile/TicketMobile'
 
 
 interface TicketListProps{
@@ -25,7 +26,10 @@ export default function TicketList({services,onAddToCart}:TicketListProps){
             <Text as='h2' textStyle={'h2'} mb='4'>Showing you ticket for current date</Text>
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: Service)=>(
+                    <>
+                    <TicketMobile onTriggerAction={onAddToCart}  key={service.id} data={service}/>
                     <TicketListItem onTriggerAction={onAddToCart}  key={service.id} data={service}/>
+                    </>
                 ))}
             </SimpleGrid>
         </Box>

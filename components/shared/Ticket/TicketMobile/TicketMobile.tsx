@@ -10,22 +10,22 @@ import {
     Divider,
     Heading
 } from '@chakra-ui/react'
-import {Service} from '../../../data/services'
+
 import dayjs from 'dayjs';
 
 
 
 interface ServiceProps{
-    data: Service,
+    data: any,
     onTriggerAction:(id:string)=>void
 }
 
-function TicketList ({data, onTriggerAction}:ServiceProps){
+function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
     console.log(data)
 
     return( 
-        <Box display={['none','none','block']} border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
+        <Box display={['block','block','none']} border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
@@ -43,38 +43,39 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     </Flex> */}
 
                     {/* price */}
-                    <Flex flex={3}  alignItems='center' justifyContent='center' direction='column'>
-                        {/* <Text as='span' textStyle={'caption'} color='gray.500'>
-                            per person
-                        </Text> */}
-                        <Flex>
-                            <Text textStyle={'ticketPrice'}>${data.price}</Text> 
-                        </Flex>
-                    </Flex>
+                    
                 </Flex>
                 
+
+                {/* bottom panel */}
+
                 <Flex px='1em' alignItems='center' justifyContent='space-between' bg='#f7f7f7'>
-                <HStack spacing={3}  py='12px'>
-                        <HStack spacing='2' >
-                            <Text color='gray.500'   textStyle={'caption'} >
+                    <HStack spacing={3}  py='12px'>
+                        <Flex direction='column' >
+                            <Text color='gray.500' mb='1'  textStyle={'caption'} >
                                 Start time 
                             </Text>
                             <Text textStyle={'caption'}>
                             {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
                             </Text>
-                        </HStack>
+                        </Flex>
                         <Divider orientation='vertical'/>
-                        <HStack spacing='2' >
-                            <Text color='gray.500'  textStyle={'caption'} >
+                        <Flex direction='column' >
+                            <Text mb='1' color='gray.500'  textStyle={'caption'} >
                                 End time 
                             </Text>
                             <Text  textStyle={'caption'}>
                             {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
                             </Text>
-                        </HStack>
+                        </Flex>
                     </HStack>
-                    <Flex  h='100%'>
-                        <Text textStyle='caption'>Add to Cart</Text>
+
+                    <Flex alignItems='flex-start' justifyContent='center' direction='column'>
+                         <Text mb='3' textStyle={'ticketPrice'}>${data.price}</Text> 
+                         <HStack spacing='1'>
+                             <Text textStyle={'caption'}>12</Text>
+                             <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
+                         </HStack>
                     </Flex>
                 </Flex>
             </Flex>
@@ -82,4 +83,4 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
     )
 }
 
-export default TicketList
+export default TicketMobile

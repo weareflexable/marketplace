@@ -55,7 +55,7 @@ const config: ThemeConfig ={
     },
 
     h4:{
-      fontFamily:'heading',
+      fontFamily:'body',
       lineHeight:1,
       fontSize:'1em',
       fontWeight: '900'
@@ -66,16 +66,17 @@ const config: ThemeConfig ={
       cursor:'pointer'
     },
     caption:{
-      fontWeight: 900,
+      fontWeight: 700,
       lineHeight: 1,
-      textTransform:'uppercase',
-      letterSpacing: .5,
-      fontSize: '13px'
+      letterSpacing: 0,
+      fontSize: ['12px','12px','13px']
     },
     ticketPrice:{
-      fontFamily:'heading',
-      fontWeight: 500,
-      fontSize: '2.5em',
+      fontFamily:'body',
+      fontWeight: 700, 
+      fontSize: ['1.5em','1.6em','2.2em'],
+      letterSpacing: '-0.8px',
+      fontVariantNumeric:'oldstyle-nums',
       margin: 0,
       lineHeight: 1
     },

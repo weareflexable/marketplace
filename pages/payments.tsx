@@ -8,8 +8,9 @@ import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCh
 import {loadStripe} from '@stripe/stripe-js';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
+import dayjs from 'dayjs';
 
-const stripePromise = loadStripe('pk_test_vtgL0nmkyDyenRcsGfyka7WE00WECdEnWH');
+const stripePromise = loadStripe('pk_live_51LkqgnLY9m0w00gpcdDH7JaOEXQo3DYhOiLfA8Eebg2ZQhuzGpxYu9PEOcnU9qrQIjn1OyJQO9nW01GrrXfqXaZF002uirDAjV');
 
 
 const Payments = () => {
@@ -17,24 +18,39 @@ const Payments = () => {
     const [clientSecret, setClientSecret] = useState('')
     const {totalAmount, cartItems} = useCheckoutContext()
 
-    console.log(totalAmount)
+
+    const createPayloadObject = (cartItems: Array<any>)=>{
+        const cartDetails: Array<any> = [];
+        // consider using array.map here instead of forEach
+        cartItems.forEach(cart=>{
+          cartDetails.push({orgServiceItemId: cart.id, quantity: cart.quantity})
+        })
+        const payloadObject = { 
+           orgServiceItems: cartDetails,
+          price: totalAmount,
+          date: dayjs().format('YYYY-MMM-D')
+        }
+        return payloadObject
+    }
   
     useEffect(()=>{
       const fetchSecret = async ()=>{
-        const payload={
-          orgServiceItems: cartItems,
-
-        }
+        const payload = createPayloadObject(cartItems)
         try{
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/user/service-intent',{
           method:'POST',
+          body:JSON.stringify(payload),
+          headers:{
+            'Authorization': 'v4.local.URC2UcW0k5Xpn7PFhsjfjOu1z8sIOCWFbBOJnPxzfVOWWOusxpmBSCT1oNJ5edT4vTntsRNifEviLBk4KYrVCB5whgYpqFCSdQJ9-hACAvZ7FDtx9jgUe3aXHj_EszDQQ9WU7MLXDQTq07oK8s-v1HiMbjdW-jkMbtdVPpQ2qEXckX92BQD-uWX4dwy5gTmJfdEVpa_fi4IK_rjwVXo8i01bZ6c'
+          }
         });
-        console.log(res)
         const body = await res.json()
-        setClientSecret(body.clientSecret)
+        console.log(body)
+        setClientSecret(body.payload.clientSecret)
   
       }catch(err){
         console.log(err)
+        throw new Error('Error while fetching secret, try refreshing the page')
       }
       }
       fetchSecret()

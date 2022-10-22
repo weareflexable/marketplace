@@ -81,15 +81,12 @@ export default function ServicesPage(){
         showPaymentModal()
     }
 
-    const clearCart = ()=>{
-        setCart([]);
-    }
 
     return(
         <Box>
             <Header/>
             <SimpleGrid columns={8} spacing='2'>
-                <Flex h='100%' gridColumnStart={2} gridColumnEnd={6} direction='column'  flex='2'>
+                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <BarHeader/>
                     <TicketSearchBar/>
                     <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
