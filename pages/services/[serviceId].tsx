@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid} from '@chakra-ui/react'
+import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid,Skeleton} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -87,12 +87,19 @@ export default function ServicesPage(){
             <Header/>
             <SimpleGrid columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
-                    <BarHeader/>
+                    <Skeleton isLoaded={!isLoading}>
+                        <BarHeader/>
+                    </Skeleton>
                     <TicketSearchBar/>
+
                     <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
                 </Flex> 
                 <Flex flex='1' gridColumnStart={6} gridColumnEnd={8} h='100%' p='2'>
-                    {cart.length>0?<Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>:null}
+                    {cart.length>0?
+                    <Skeleton height='50px' isLoaded={!isLoading}>
+                        <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
+                    </Skeleton>
+                    :null}
                 </Flex>
             </SimpleGrid>
             <PaymentModal 
