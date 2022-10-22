@@ -1,6 +1,6 @@
 import React,{useState,useReducer} from 'react';
 import {Flex,Box,Button,Heading,useToast} from '@chakra-ui/react'
-import {useStripe, useElements, PaymentElement, Elements} from '@stripe/react-stripe-js';
+import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 
 
@@ -14,6 +14,8 @@ const CheckoutForm = () => {
   const toast = useToast()
   const [transactionError,setTransactionError] = useState<string|undefined>('')
   const [transactionStatus, setTransactionStatus] = useState<string>('')
+
+  console.log(elements)
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     // We don't want to let default form submission happen here,
@@ -65,8 +67,8 @@ const CheckoutForm = () => {
   <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
       <Box w='400px'>
           <Heading mb='8' letterSpacing='-0.7px'>Complete payment</Heading>
-          <form onSubmit={handleSubmit}>
-          <PaymentElement />
+          <form id='payment-form' onSubmit={handleSubmit}>
+          <PaymentElement id='payment-element' />
           <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe&&!elements}>Pay ${totalAmount}</Button>
           </form>
       </Box>     

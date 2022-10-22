@@ -9,12 +9,12 @@ import {loadStripe} from '@stripe/stripe-js';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
+import { STRIPE_PUBLISHABLE_KEY } from '../env';
 
-const stripePromise = loadStripe('pk_live_51LkqgnLY9m0w00gpcdDH7JaOEXQo3DYhOiLfA8Eebg2ZQhuzGpxYu9PEOcnU9qrQIjn1OyJQO9nW01GrrXfqXaZF002uirDAjV');
-
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Payments = () => {
-
+  
     const [clientSecret, setClientSecret] = useState('')
     const {totalAmount, cartItems} = useCheckoutContext()
 
@@ -60,7 +60,7 @@ const Payments = () => {
   return (
     <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
         { stripePromise && clientSecret && 
-        <Elements stripe={stripePromise} options={{clientSecret}}>
+        <Elements stripe={stripePromise} options={{clientSecret,loader:'always'}}>
             <CheckoutForm />
         </Elements>
        }
