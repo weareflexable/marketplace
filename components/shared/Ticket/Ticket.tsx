@@ -12,12 +12,13 @@ import {
 } from '@chakra-ui/react'
 import {Service} from '../../../data/services'
 import dayjs from 'dayjs';
+import { MdAddShoppingCart } from 'react-icons/md'
 
 
 
 interface ServiceProps{
     data: Service,
-    onTriggerAction:(id:string)=>void
+    onTriggerAction:(id:string)=>void 
 }
 
 function TicketList ({data, onTriggerAction}:ServiceProps){
@@ -52,8 +53,8 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     </Flex>
                 </Flex>
                 
-                <Flex layerStyle='thirdLayer' px='1em' alignItems='center' justifyContent='space-between'>
-                <HStack spacing={3}  py='12px'>
+                <Flex bg='gray.900'  alignItems='center' justifyContent='space-between'>
+                    <HStack  spacing={3} px='1em'  py='12px'>
                         <HStack spacing='2' >
                             <Text color='gray.500'   textStyle={'caption'} >
                                 Start time 
@@ -72,12 +73,14 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                             </Text>
                         </HStack>
                     </HStack>
-                    <Flex  h='100%'>
-                        <Text textStyle='caption'>Add to Cart</Text>
+                    <Flex as='button' justifyContent='center' alignItems='center' bg='blackAlpha.100' w='60px'  h='100%'>
+                        {/* <Text textStyle='caption'>Add to Cart</Text>  */}
+                        <MdAddShoppingCart/>
+
                     </Flex>
                 </Flex>
-            </Flex>
-        </Box>
+            </Flex> 
+        </Box> 
     )
 } 
 
