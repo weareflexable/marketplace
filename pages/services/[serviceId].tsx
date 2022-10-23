@@ -7,9 +7,9 @@ import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
-import BarHeader from '../../components/ServicesPage/BarHeader/BarHeader'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
+import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
 
 
 export default function ServicesPage(){
@@ -89,7 +89,13 @@ export default function ServicesPage(){
             <SimpleGrid columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton isLoaded={!isLoading}>
-                        <BarHeader/>
+                        <StoreHeader
+                         storeName={data && data.payload.name}
+                         lat = {data && data.payload.lat}
+                         lon = {data && data.payload.lon}
+                         city = { data &&data.payload.city}
+                         imageHash={''}
+                         />
                     </Skeleton>
                     <TicketSearchBar/>
 
