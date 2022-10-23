@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid,Skeleton} from '@chakra-ui/react'
+import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -83,7 +83,8 @@ export default function ServicesPage(){
 
 
     return(
-        <Box>
+    <DarkMode>
+        <Box minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>
             <SimpleGrid columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
@@ -109,5 +110,6 @@ export default function ServicesPage(){
               totalCost = {50}
               />
         </Box>
+    </DarkMode>
     )
 }

@@ -14,6 +14,26 @@ const config: ThemeConfig ={
 }
  const theme = extendTheme({
     ...config,
+  layerStyles:{
+    base: {
+      bg: 'blackAlpha.900',
+      // borderColor: 'gray.500',
+    },
+    secondLayer: {
+      bg: 'blackAlpha.800',
+      border: '1px solid',
+      borderColor: 'blackAlpha.500',
+    },
+    thirdLayer:{
+      bg: 'blackAlpha.500',
+      
+    },
+    selected: {
+      bg: 'teal.500',
+      color: 'teal.700',
+      borderColor: 'orange.500',
+    },
+    },
   styles:{
     global:(props: Record<string, any>)=>({
       'html, body': {
@@ -55,6 +75,7 @@ const config: ThemeConfig ={
     },
 
     h4:{
+      color: 'gray.50' ,
       fontFamily:'body',
       lineHeight:1,
       fontSize:'1em',
@@ -66,6 +87,7 @@ const config: ThemeConfig ={
       cursor:'pointer'
     },
     caption:{
+      color: 'gray.200' ,
       fontWeight: 700,
       lineHeight: 1,
       letterSpacing: 0,
@@ -85,6 +107,7 @@ const config: ThemeConfig ={
       fontSize: '2em'
     },
     secondary:{
+      color: 'gray.100' ,
       fontFamily: 'body',
       lineHeight: 1.3,
       fontWeight: 400,

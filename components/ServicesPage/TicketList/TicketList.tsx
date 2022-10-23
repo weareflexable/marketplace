@@ -2,6 +2,7 @@ import React from 'react'
 import {
     Box,
     Heading,
+    Input,
     SimpleGrid,
     Text
 } from '@chakra-ui/react'
@@ -24,6 +25,7 @@ export default function TicketList({services,onAddToCart}:TicketListProps){
         <>
         <Box p='1em' w='100%'>
             <Text as='h2' textStyle={'h2'} mb='4'>Showing you ticket for current date</Text>
+            <Input type='date' variant='unstyled'/>
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: Service)=>(
                     <>

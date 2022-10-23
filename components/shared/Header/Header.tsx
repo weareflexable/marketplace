@@ -1,5 +1,6 @@
 import React from 'react'
 import {Flex,HStack,Box, Button} from '@chakra-ui/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 
@@ -8,9 +9,9 @@ export default function Header(){
     const {isAuthenticated,setIsAuthenticated} = useAuthContext()
     return(
         <Flex gridColumnStart={1} gridColumnEnd={9}  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' w='100%' h='55px'>
-            <Box>
-                <Link href='/'><a>Flexable</a></Link>
-            </Box>
+            <Link href='/'>
+               <a> <Image src='/logoSmall.png' width={'200px'} height={'15px'} alt='Logo of flexable app'/></a>
+            </Link>
             <Flex as='nav'>
                 {
                     isAuthenticated?

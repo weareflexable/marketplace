@@ -22,10 +22,9 @@ interface ServiceProps{
 
 function TicketList ({data, onTriggerAction}:ServiceProps){
 
-    console.log(data)
 
     return( 
-        <Box display={['none','none','block']} border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
+        <Box layerStyle={'secondLayer'} display={['none','none','block']}  cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
@@ -53,7 +52,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     </Flex>
                 </Flex>
                 
-                <Flex px='1em' alignItems='center' justifyContent='space-between' bg='#f7f7f7'>
+                <Flex layerStyle='thirdLayer' px='1em' alignItems='center' justifyContent='space-between'>
                 <HStack spacing={3}  py='12px'>
                         <HStack spacing='2' >
                             <Text color='gray.500'   textStyle={'caption'} >
@@ -80,6 +79,6 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
             </Flex>
         </Box>
     )
-}
+} 
 
 export default TicketList
