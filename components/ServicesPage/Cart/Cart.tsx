@@ -3,6 +3,7 @@ import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberIn
 import CartList from './CartList/CartList'
 import { Service } from '../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
+import { useAuthContext } from '../../../context/AuthContext'
 
 interface CartProps{
     tickets: Service[],
@@ -91,6 +92,15 @@ interface CartTotalButtonProps{
     onCreateOrder:()=>void;
 }
 const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
+
+    const {isAuthenticated,setIsAuthenticated} = useAuthContext()
+
+    if(!isAuthenticated){
+        return <Button mt='3' onClick={()=>setIsAuthenticated(true)} colorScheme='cyan' w='100%'>
+            <Text>Login to continue</Text>
+        </Button>
+    }
+
     return(
         <Button colorScheme='cyan' onClick={onCreateOrder} mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
