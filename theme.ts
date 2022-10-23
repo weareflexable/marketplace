@@ -107,7 +107,7 @@ const config: ThemeConfig ={
       fontSize: '2em'
     },
     body:{
-      color: 'gray.900' ,
+      color: 'whiteAlpha.800' ,
       fontFamily: 'body',
       lineHeight: 1.3,
       fontWeight: 400,
@@ -116,7 +116,7 @@ const config: ThemeConfig ={
     secondary:{
       color: 'gray.100' ,
       fontFamily: 'body',
-      lineHeight: 1.3,
+      lineHeight: '.8em',
       fontWeight: 400,
       letterSpacing: '-.2px'
     }

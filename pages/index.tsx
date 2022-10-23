@@ -34,7 +34,7 @@ export default function Home() {
           <Layout>
             <Grid h='100vh' gridTemplateColumns={'6'} >
               <GridItem colStart={2} colEnd={6}>
-                <Flex background='#f6f6f6' h='40vh' mb='5' direction='column' justifyContent='flex-end' alignItems='center'>
+                <Flex h='40vh' mb='5' direction='column' justifyContent='flex-end' alignItems='center'>
                   <EventSearchBar/>
                 </Flex>
               </GridItem >

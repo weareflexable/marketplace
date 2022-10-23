@@ -92,7 +92,7 @@ export default function ServicesPage(){
 
     return(
     <DarkMode>
-        <Box minH='100vh' h='100%' layerStyle={'base'}>
+        <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>
             <SimpleGrid mt='2' columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>

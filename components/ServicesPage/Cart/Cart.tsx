@@ -60,10 +60,10 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity}:CartListIte
     const itemTotal = ticket.price *  ticket.quantity
     
     return(
-        <Flex p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
+        <Flex display={['none','none','flex']} p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
             <Flex direction='column' width='100%'>
                 <Flex w='100%' justifyContent='space-between'>
-                    <Text mb='2' layerStyle={'body'}>{ticket.name}</Text>
+                    <Text mb='2' textStyle={'body'}>{ticket.name}</Text>
                     <IconButton onClick={()=>onRemoveTicket( ticket.id)} size='xs' icon={<MdOutlineDeleteOutline/>} aria-label='remove-item'/>
                 </Flex>
 
