@@ -18,22 +18,23 @@ export default function ServicesPage(){
     const {query} = useRouter();
     const {setAmount} =  useCheckoutContext()
     const [cart, setCart] = useState<Service[]>([]);
-    const [serviceDate, setServiceDate] = useState(dayjs().format('YYYY-MMM-DD'))
+    const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
+    
+    const formatedDate = dayjs(serviceDate).format('YYYY-MMM-DD')
 
-    const {isLoading,data,isError} = useQuery(['store-service',query.serviceId],async()=>{
-        const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=2022-Dec-03`) 
+    const {isLoading,data,isError} = useQuery(['store-service',query.serviceId,formatedDate],async()=>{
+        const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=${formatedDate}`) 
         const body = await res.json()
         console.log(body)
         return body
-      })
+      },)
 
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
 
     const changeServiceDate =(date:string)=>{
-        console.log(date)
-        setServiceDate(dayjs(date).format('YYYY-MMM-DD'))
+        setServiceDate(date)
     }
 
     // TODO: rename to cartItemExist
@@ -104,7 +105,10 @@ export default function ServicesPage(){
                          imageHash={''}
                          />
                     </Skeleton>
-                    {/* <TicketSearchBar/> */}
+                    <TicketSearchBar
+                        date={serviceDate}
+                        onChangeDate = {changeServiceDate}
+                    />
 
                     <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
                 </Flex> 
