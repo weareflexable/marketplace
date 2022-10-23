@@ -16,7 +16,7 @@ const config: ThemeConfig ={
     ...config,
   layerStyles:{
     base: {
-      bg: 'blackAlpha.900',
+      bg: 'gray.900',
       // borderColor: 'gray.500',
     },
     secondLayer: {
@@ -75,7 +75,7 @@ const config: ThemeConfig ={
     },
 
     h4:{
-      color: 'gray.50' ,
+      color: 'gray.200' ,
       fontFamily:'body',
       lineHeight:1,
       fontSize:'1.2em',
@@ -105,6 +105,13 @@ const config: ThemeConfig ={
     currency:{
       fontFamily: 'heading',
       fontSize: '2em'
+    },
+    body:{
+      color: 'gray.900' ,
+      fontFamily: 'body',
+      lineHeight: 1.3,
+      fontWeight: 400,
+      letterSpacing: '-.2px'
     },
     secondary:{
       color: 'gray.100' ,

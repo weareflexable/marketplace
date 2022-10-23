@@ -5,6 +5,7 @@ import {
     Input,
     Flex,
     SimpleGrid,
+    Skeleton,
     HStack,
     Text
 } from '@chakra-ui/react'
@@ -26,7 +27,6 @@ export default function TicketList({services,onAddToCart}:TicketListProps){
     return(
         <>
         <Box p='1em' w='100%'>
-
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: Service)=>(
                     <>

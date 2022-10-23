@@ -94,7 +94,7 @@ export default function ServicesPage(){
     <DarkMode>
         <Box minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>
-            <SimpleGrid columns={8} spacing='2'>
+            <SimpleGrid mt='2' columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton isLoaded={!isLoading}>
                         <StoreHeader
@@ -105,17 +105,28 @@ export default function ServicesPage(){
                          imageHash={''}
                          />
                     </Skeleton>
-                    <TicketSearchBar
-                        date={serviceDate}
-                        onChangeDate = {changeServiceDate}
-                    />
 
-                    <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
+                    <Skeleton my='2' isLoaded={!isLoading}>
+                        <TicketSearchBar
+                            date={serviceDate}
+                            onChangeDate = {changeServiceDate}
+                            />
+                    </Skeleton>
+
+                        <Skeleton height='200px' isLoaded={!isLoading}>
+                            <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
+                        </Skeleton>
+
                 </Flex> 
-                <Flex flex='1' gridColumnStart={6} gridColumnEnd={8} h='100%' p='2'>
+                <Flex gridColumnStart={6} gridColumnEnd={8} h='100%'>
                     {cart.length>0?
-                    <Skeleton height='50px' isLoaded={!isLoading}>
-                        <Cart onCreateOrder={createOrder} onIncrementCartItemQuantity={incrementCartItemQuantity} onRemoveCartItem={removeCartItemHandler} tickets={cart}/>
+                    <Skeleton height='50px' w='100%' isLoaded={!isLoading}>
+                        <Cart 
+                            onCreateOrder={createOrder} 
+                            onIncrementCartItemQuantity={incrementCartItemQuantity} 
+                            onRemoveCartItem={removeCartItemHandler} 
+                            tickets={cart}
+                        />
                     </Skeleton>
                     :null}
                 </Flex>

@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
 import CartList from './CartList/CartList'
 import { Service } from '../../../data/services'
+import {MdOutlineDeleteOutline} from 'react-icons/md'
 
 interface CartProps{
     tickets: Service[],
@@ -25,12 +26,12 @@ export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuanti
 
 
     return(
-        <Flex  border='1px solid #e5e5e5' direction='column' w='100%' p='2'>
-            <Heading as='h4' mb='3' size='sm' >Service Bookings</Heading>
-            <Flex direction='column' p='3' borderEndRadius='4'  bg='#f6f6f6'>
+        <Flex mt='1em' flex='1' width='100%' direction='column'>
+            <Text ml='1em' textStyle={'h4'} as='h4' mb='3'>Cart</Text>
+            <Flex direction='column' p='3' flex='1' borderEndRadius='4' >
                 {tickets.length > 0 ? 
                 <>
-                    <CartList>
+                    <Flex as='ul' direction='column' flex='1' w='100%'>
                         {tickets.map(ticket=>(
                             <CartListItem 
                             key={ticket.id} 
@@ -39,7 +40,7 @@ export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuanti
                             ticket={ticket}
                             />
                             ))}
-                    </CartList>
+                    </Flex>
                     <CartTotalButton onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
                 </>: <Text>Add tickets to cart</Text>
                 }
@@ -59,26 +60,28 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity}:CartListIte
     const itemTotal = ticket.price *  ticket.quantity
     
     return(
-        <Flex p='2' borderRadius='4px' mb='1' bg="#ffffff" justifyContent='space-between' as='li'>
-            <Flex direction='column'>
-                <Box>
-                    { ticket.name}
-                </Box>
-                <Box>
-                    ${ ticket.price}
-                </Box>
-                <HStack spacing='2' w='150px' maxW='220px'>
-                <NumberInput  size='xs' maxW={20} onChange={()=>onIncrementItemQuantity( ticket.id)} defaultValue={1} max={10} min={1}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <Text>${itemTotal}</Text>
-                </HStack>
+        <Flex p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
+            <Flex direction='column' width='100%'>
+                <Flex w='100%' justifyContent='space-between'>
+                    <Text mb='2' layerStyle={'body'}>{ticket.name}</Text>
+                    <IconButton onClick={()=>onRemoveTicket( ticket.id)} size='xs' icon={<MdOutlineDeleteOutline/>} aria-label='remove-item'/>
+                </Flex>
+
+                <Flex justifyContent='space-between'  width='100%' flex='1'>
+                    <HStack spacing='1'>
+                        <NumberInput w='150px'  size='xs' maxW={20} onChange={()=>onIncrementItemQuantity( ticket.id)} defaultValue={1} max={10} min={1}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <Text>${ticket.price}</Text>
+                    </HStack>
+                    <Text>${itemTotal}</Text>
+                </Flex>
             </Flex>
-            <IconButton onClick={()=>onRemoveTicket( ticket.id)} aria-label='remove-item'/>
+            
         </Flex>
     )
 }
@@ -89,7 +92,7 @@ interface CartTotalButtonProps{
 }
 const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
     return(
-        <Button onClick={onCreateOrder} mt='3'>
+        <Button colorScheme='cyan' onClick={onCreateOrder} mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
                 <Text color='gray.900' fontWeight='medium'>Book Now</Text>
                 <HStack spacing={2}>

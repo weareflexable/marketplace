@@ -4,6 +4,7 @@ import {
     Box,
     VStack,
     HStack,
+    Skeleton,
     Text,
     Flex,
     Center,
@@ -25,6 +26,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
 
 
     return( 
+        // <Skeleton isLoaded={!data} width='100%' height='50px'>
         <Box layerStyle={'secondLayer'} display={['none','none','block']}  cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
@@ -81,6 +83,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                 </Flex>
             </Flex> 
         </Box> 
+    // </Skeleton>
     )
 } 
 
