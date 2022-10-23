@@ -7,6 +7,8 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
+    Text,
+    Flex,
     Button,
   } from '@chakra-ui/react'
 
@@ -27,7 +29,7 @@ interface PaymentModalProps{
   export default function ProcessOrderModal({cart, totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
 
 
-    const {setAmount, totalAmount, setCart} = useCheckoutContext();
+    const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
 
     const router = useRouter()
     
@@ -46,11 +48,16 @@ interface PaymentModalProps{
         <Modal isOpen={isModalOpen} onClose={onCloseModal}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
+            <ModalHeader textStyle={'body'}>Order summary</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              {/* <Lorem count={2} /> */}
-              Modal body goes here
+
+              {cartItems.map(item=>(
+                <Flex justifyContent={'space-between'} alignItems='center' key={item.id}>
+                  <Text mb={'4'} textStyle={'body'} >{item.name}</Text>
+                  <Text textStyle={'body'}>${totalAmount}</Text>
+                </Flex>
+              ))}
             </ModalBody>
   
             <ModalFooter>
