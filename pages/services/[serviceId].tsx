@@ -10,12 +10,15 @@ import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/Proces
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
+import dayjs from 'dayjs'
 
 
 export default function ServicesPage(){
 
     const {query} = useRouter();
     const {setAmount} =  useCheckoutContext()
+    const [cart, setCart] = useState<Service[]>([]);
+    const [serviceDate, setServiceDate] = useState(dayjs().format('YYYY-MMM-DD'))
 
     const {isLoading,data,isError} = useQuery(['store-service',query.serviceId],async()=>{
         const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=2022-Dec-03`) 
@@ -27,7 +30,11 @@ export default function ServicesPage(){
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
-    const [cart, setCart] = useState<Service[]>([]);
+
+    const changeServiceDate =(date:string)=>{
+        console.log(date)
+        setServiceDate(dayjs(date).format('YYYY-MMM-DD'))
+    }
 
     // TODO: rename to cartItemExist
     const checkCartItemExist = (id:string)=>{
@@ -97,7 +104,7 @@ export default function ServicesPage(){
                          imageHash={''}
                          />
                     </Skeleton>
-                    <TicketSearchBar/>
+                    {/* <TicketSearchBar/> */}
 
                     <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
                 </Flex> 

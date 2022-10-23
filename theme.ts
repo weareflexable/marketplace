@@ -78,7 +78,7 @@ const config: ThemeConfig ={
       color: 'gray.50' ,
       fontFamily:'body',
       lineHeight:1,
-      fontSize:'1em',
+      fontSize:'1.2em',
       fontWeight: '900'
     },
     links:{
