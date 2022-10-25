@@ -4,6 +4,7 @@ import Layout from '../components/shared/Layout/Layout';
 import Ticket from '../components/shared/Ticket/Ticket';
 import { useRouter } from 'next/router';
 import supabase from "../utils/supabase";
+import { useAuthContext } from '../context/AuthContext';
 
 const purchasedTickets = [
     {
@@ -33,13 +34,26 @@ export default function MyBookings(){
 
     // TODO: fetch user specific data
     // TODO: fallback ui for when user tries to access page without authorization
-    const {asPath} = useRouter()
+    const {asPath,push} = useRouter()
+    const {setIsAuthenticated} = useAuthContext();
+
+    const paseto = asPath.split('?')[1]
+
+    if(paseto){
+        // save paseto first
+        localStorage.setItem('paseto', paseto)
+        // authenticate user
+        setIsAuthenticated(true);
+        // check is login request was created from cart
+        const isPaymentPending = localStorage.getItem('paymentStatus')==='pending';
+        if(isPaymentPending){
+            push('/payments')
+        }
+      }
     
     useEffect(() => {
-        const paceto = asPath.split('?')[1]
-        // console.log(accessToken);
-        localStorage.setItem('paceto',paceto)
-    //   console.log
+        // localStorage.setItem('paseto',paseto)
+        // fetch user booking using paceto
     }, [])
 
     return(

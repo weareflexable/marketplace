@@ -38,9 +38,9 @@ interface PaymentModalProps{
       // check user session
       // if signed in, then i can proceed
       // if not, then I redirect to app.flexable.dats
-      router.push(
-        {pathname:'/payments',
-      })
+      
+      router.push('/payments');
+
     }
 
     return (

@@ -98,8 +98,14 @@ const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
 
     const {isAuthenticated,setIsAuthenticated} = useAuthContext()
 
+    const loginBeforePayment = ()=>{
+        // this is to tell browser that payment was initiated before login
+        localStorage.setItem('paymentStatus','pending');
+        window.location.href = 'https://www.auth.flexabledats.com'
+    }
+
     if(!isAuthenticated){
-        return <Button mt='3' onClick={()=>setIsAuthenticated(true)} colorScheme='cyan' w='100%'>
+        return <Button mt='3' onClick={loginBeforePayment} colorScheme='cyan' w='100%'>
             <Text>Login to continue</Text>
         </Button>
     }

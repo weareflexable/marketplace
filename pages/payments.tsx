@@ -10,13 +10,16 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
 import { STRIPE_PUBLISHABLE_KEY } from '../env';
+import { useAuthContext } from '../context/AuthContext';
 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Payments = () => {
   
     const [clientSecret, setClientSecret] = useState('')
-    const {totalAmount, cartItems} = useCheckoutContext()
+    const {totalAmount, cartItems} = useCheckoutContext();
+    const {isAuthenticated, setIsAuthenticated} = useAuthContext()
+
 
 
     const createPayloadObject = (cartItems: Array<any>)=>{
@@ -35,6 +38,12 @@ const Payments = () => {
     }
   
     useEffect(()=>{
+
+      let paseto;
+      if(isAuthenticated){
+        paseto = localStorage.getItem('paseto')
+      }
+
       const fetchSecret = async ()=>{
         const payload = createPayloadObject(cartItems)
         try{
@@ -42,6 +51,7 @@ const Payments = () => {
           method:'POST',
           body:JSON.stringify(payload),
           headers:{
+            // replace with paseto here
             'Authorization': 'v4.local.URC2UcW0k5Xpn7PFhsjfjOu1z8sIOCWFbBOJnPxzfVOWWOusxpmBSCT1oNJ5edT4vTntsRNifEviLBk4KYrVCB5whgYpqFCSdQJ9-hACAvZ7FDtx9jgUe3aXHj_EszDQQ9WU7MLXDQTq07oK8s-v1HiMbjdW-jkMbtdVPpQ2qEXckX92BQD-uWX4dwy5gTmJfdEVpa_fi4IK_rjwVXo8i01bZ6c'
           }
         });
