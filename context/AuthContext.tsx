@@ -6,6 +6,7 @@ const AuthContext = createContext<Values|undefined>(undefined);
 type Values = {
     isAuthenticated: boolean,
     setIsAuthenticated: (isAuthenticate:boolean)=>void
+    logout: ()=>void
 }
 
 interface AuthContextProviderProps{
@@ -16,9 +17,15 @@ const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    const logout = ()=>{
+        setIsAuthenticated(false);
+        localStorage.removeItem('paseto')
+    }
+
     const values: Values = {
         isAuthenticated,
-        setIsAuthenticated
+        setIsAuthenticated,
+        logout
     }
 
 
