@@ -5,6 +5,7 @@ import Ticket from '../components/shared/Ticket/Ticket';
 import { useRouter } from 'next/router';
 import supabase from "../utils/supabase";
 import { useAuthContext } from '../context/AuthContext';
+import { useQuery } from '@tanstack/react-query';
 
 const purchasedTickets = [
     {
@@ -60,6 +61,7 @@ export default function MyBookings(){
     useEffect(() => {
         // localStorage.setItem('paseto',paseto)
         // fetch user booking using paceto
+        // const {data,isLoading} = useQuery('orders',()=>)
     }, [])
 
     return(

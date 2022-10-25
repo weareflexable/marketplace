@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 export default function ServicesPage(){
 
     const {query} = useRouter();
-    const {setAmount} =  useCheckoutContext()
+    const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const [cart, setCart] = useState<Service[]>([]);
     const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
     
@@ -97,6 +97,14 @@ export default function ServicesPage(){
     }
 
 
+    const loginBeforePayment = (totalCost:number)=>{
+        // this is to tell browser that payment was initiated before login
+        localStorage.setItem('paymentStatus','pending');
+        setAmount(totalCost)
+        setCartItems(cart)
+        window.location.href = 'https://localhost:3004/'
+    }
+
     return(
     <DarkMode>
         <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
@@ -133,6 +141,7 @@ export default function ServicesPage(){
                             onIncrementCartItemQuantity={incrementCartItemQuantity} 
                             onDecrementCartItemQuantity={decrementCartItemQuantity} 
                             onRemoveCartItem={removeCartItemHandler} 
+                            loginBeforePayment = {loginBeforePayment}
                             tickets={cart}
                         />
                     </Skeleton>

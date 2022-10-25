@@ -13,7 +13,8 @@ import {useQuery} from '@tanstack/react-query'
 export default function Home() {
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
-    const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?country=US&startOffSet=0')
+    const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?startOffSet=0')
+    // const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?country=US&startOffSet=0')
     const body = await res.json()
     console.log(body)
     return body
@@ -25,12 +26,8 @@ export default function Home() {
   }
 
 
+
   return (
-          // <Head>
-          //   <title>Flexable app</title>
-          //   <meta name="description" content="No more waiting in queue again" />
-          //   <link rel="icon" href="/favicon.ico" />
-          // </Head>
           <Layout>
             <Grid bg="gray.900" h='100vh' gridTemplateColumns={'6'} >
               <GridItem colStart={2} colEnd={6}>
@@ -40,7 +37,7 @@ export default function Home() {
               </GridItem >
               <GridItem px={'2em'} gridColumnStart={1} gridColumnEnd={6}> 
                 <Wrap w='100%' alignItems='center' justifyContent='center'> 
-                    {data.payload ? data.payload.map((store:Store)=>(
+                    {data && data.payload ? data.payload.map((store:Store)=>(
                         <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
                             <StoreCard data={store}/>
                         </WrapItem> 

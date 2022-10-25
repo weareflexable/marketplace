@@ -10,10 +10,11 @@ interface CartProps{
     onRemoveCartItem: (id: string)=>void,
     onIncrementCartItemQuantity: (id: string)=>void,
     onDecrementCartItemQuantity:(id:string)=>void,
-    onCreateOrder: (total:number)=>void
+    onCreateOrder: (total:number)=>void,
+    loginBeforePayment:(total:number)=>void
 }
 
-export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder}:CartProps){
+export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder,loginBeforePayment}:CartProps){
 
 
     function calculateCartTotal(tickets:Service[]){
@@ -44,7 +45,7 @@ export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuanti
                             />
                             ))}
                     </Flex>
-                    <CartTotalButton onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
+                    <CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
                 </>: <Text>Add tickets to cart</Text>
                 }
             </Flex>
@@ -92,20 +93,15 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
 
 interface CartTotalButtonProps{
     totalPrice: number
-    onCreateOrder:()=>void;
+    onCreateOrder:()=>void
+    loginBeforePayment:(total:number)=>void,
 }
-const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
+const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
 
-    const {isAuthenticated,setIsAuthenticated} = useAuthContext()
-
-    const loginBeforePayment = ()=>{
-        // this is to tell browser that payment was initiated before login
-        localStorage.setItem('paymentStatus','pending');
-        window.location.href = 'https://www.auth.flexabledats.com'
-    }
+    const {isAuthenticated} = useAuthContext()
 
     if(!isAuthenticated){
-        return <Button mt='3' onClick={loginBeforePayment} colorScheme='cyan' w='100%'>
+        return <Button mt='3' onClick={()=>loginBeforePayment(totalPrice)} colorScheme='cyan' w='100%'>
             <Text>Login to continue</Text>
         </Button>
     }

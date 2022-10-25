@@ -41,11 +41,13 @@ const Payments = () => {
 
       let paseto;
       if(isAuthenticated){
+        // paseto got set immediately after user was authenticated in in cart page
         paseto = localStorage.getItem('paseto')
       }
 
       const fetchSecret = async ()=>{
         const payload = createPayloadObject(cartItems)
+        console.log('payload',payload)
         try{
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/user/service-intent',{
           method:'POST',
