@@ -1,5 +1,5 @@
-import React,{useEffect} from 'react';
-import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react'
+import React,{useEffect,useState} from 'react';
+import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout';
 import Ticket from '../components/shared/Ticket/Ticket';
 import { useRouter } from 'next/router';
@@ -37,6 +37,8 @@ export default function MyBookings(){
     const {asPath,push} = useRouter()
     const {setIsAuthenticated} = useAuthContext();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const paseto = asPath.split('?')[1]
 
     if(paseto){
@@ -49,6 +51,10 @@ export default function MyBookings(){
         if(isPaymentPending){
             push('/payments')
         }
+      }
+
+      const generateQrCode=(ticket: any)=>{
+        console.log(ticket);
       }
     
     useEffect(() => {
@@ -96,4 +102,5 @@ const PurchasedTickets = ()=>{
     </Box>
     )
 }
+
 
