@@ -40,7 +40,15 @@ export default function MyBookings(){
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const paseto = asPath.split('?')[1]
+    let paseto:string|null|undefined=undefined;
+
+    if(typeof window !== 'undefined'){
+        paseto = localStorage.getItem('paseto')
+
+        if(!paseto){
+            paseto = asPath.split('?')[1]
+        }
+    }
 
     if(paseto){
         // save paseto first
@@ -57,12 +65,21 @@ export default function MyBookings(){
       const generateQrCode=(ticket: any)=>{
         console.log(ticket);
       }
-    
-    useEffect(() => {
-        // localStorage.setItem('paseto',paseto)
-        // fetch user booking using paceto
-        // const {data,isLoading} = useQuery('orders',()=>)
-    }, [])
+
+        const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
+            const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
+                method:'GET',
+                headers:{
+                    'Authorization': paseto
+                  }
+            })
+            const body = await res.json()
+            return body
+          })
+
+          console.log(data,isError)
+
+
 
     return(
     <Layout>

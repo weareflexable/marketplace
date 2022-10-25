@@ -24,14 +24,16 @@ const Payments = () => {
 
     const createPayloadObject = (cartItems: Array<any>)=>{
         const cartDetails: Array<any> = [];
-        
+        let totalPrice = 0;
         // consider using array.map here instead of forEach
         cartItems.forEach(cart=>{
           cartDetails.push({orgServiceItemId: cart.id, quantity: cart.quantity})
+          // calculate total price
+          totalPrice =+ (cart.quantity*cart.price)
         })
         const payloadObject = { 
            orgServiceItems: cartDetails,
-          price: totalAmount*100,
+          price: totalPrice,
           date: dayjs().format('YYYY-MMM-D')
         }
         return payloadObject
@@ -39,7 +41,7 @@ const Payments = () => {
   
     useEffect(()=>{
 
-      let paseto;
+      let paseto:string|null|HeadersInit;
       if(isAuthenticated){
         // paseto got set immediately after user was authenticated in in cart page
         paseto = localStorage.getItem('paseto')
@@ -54,7 +56,7 @@ const Payments = () => {
           body:JSON.stringify(payload),
           headers:{
             // replace with paseto here
-            'Authorization': 'v4.local.URC2UcW0k5Xpn7PFhsjfjOu1z8sIOCWFbBOJnPxzfVOWWOusxpmBSCT1oNJ5edT4vTntsRNifEviLBk4KYrVCB5whgYpqFCSdQJ9-hACAvZ7FDtx9jgUe3aXHj_EszDQQ9WU7MLXDQTq07oK8s-v1HiMbjdW-jkMbtdVPpQ2qEXckX92BQD-uWX4dwy5gTmJfdEVpa_fi4IK_rjwVXo8i01bZ6c'
+            'Authorization': paseto
           }
         });
         const body = await res.json()

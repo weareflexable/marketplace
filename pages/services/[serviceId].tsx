@@ -102,7 +102,7 @@ export default function ServicesPage(){
         localStorage.setItem('paymentStatus','pending');
         setAmount(totalCost)
         setCartItems(cart)
-        window.location.href = 'https://localhost:3004/'
+        window.open('https://auth.flexabledats.com')
     }
 
     return(

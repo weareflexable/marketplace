@@ -1,12 +1,13 @@
 import { Modal, Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button } from "@chakra-ui/react"
-
+import QRCode from "react-qr-code";
 
 interface QrCodeModalProps{
     isModalOpen: boolean,
-    onCloseModal: ()=>void
+    onCloseModal: ()=>void,
+    ticket: object
 }
 
-const QrCodeModal = ({isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+const QrCodeModal = ({ticket, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
           <ModalOverlay />
           <ModalContent>
@@ -15,6 +16,7 @@ const QrCodeModal = ({isModalOpen, onCloseModal}:QrCodeModalProps)=>{
             <ModalBody>
                 <Box>
                     Qr code will be displayed here
+                    <QRCode value="THis is the qr code"/>
                 </Box>
 
             </ModalBody>
