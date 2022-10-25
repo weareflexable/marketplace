@@ -24,6 +24,7 @@ interface ServiceProps{
 
 function TicketList ({data, onTriggerAction}:ServiceProps){
 
+    console.log(data)
 
     return( 
         // <Skeleton isLoaded={!data} width='100%' height='50px'>
@@ -58,7 +59,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                 <Flex bg='gray.900'  alignItems='center' justifyContent='space-between'>
                     <HStack  spacing={3} px='1em'  py='12px'>
                         <HStack spacing='2' >
-                            <Text color='gray.500'   textStyle={'caption'} >
+                            <Text color='gray.500'  textStyle={'caption'} >
                                 Start time 
                             </Text>
                             <Text textStyle={'caption'}>
@@ -72,6 +73,15 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                             </Text>
                             <Text  textStyle={'caption'}>
                             {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
+                            </Text>
+                        </HStack>
+                        <Divider orientation='vertical'/>
+                        <HStack spacing='2' >
+                            <Text color='gray.500'  textStyle={'caption'} >
+                                Tickets left 
+                            </Text>
+                            <Text  textStyle={'caption'}>
+                            {data.ticketMaxPerDay}
                             </Text>
                         </HStack>
                     </HStack>

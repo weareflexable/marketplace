@@ -69,7 +69,7 @@ const CheckoutForm = () => {
           <Heading mb='8' letterSpacing='-0.7px'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe&&!elements}>Pay ${totalAmount}</Button>
+          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Pay ${totalAmount}</Button>
           </form>
       </Box>     
   </Flex>

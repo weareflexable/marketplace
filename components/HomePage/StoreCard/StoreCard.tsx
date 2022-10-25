@@ -19,9 +19,9 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     }
 
     return(
-        <Box w='100%' onClick={()=>navigateToServicePage(data.id)}>
+        <Box bg={'gray.700'} w='300px' onClick={()=>navigateToServicePage(data.id)}>
             <Image src='https://bit.ly/kent-c-dodds' m='0'  width='100%' height='200' alt={'Thumbnail image for cover'}/>
-            <Flex  p='4'>
+            <Flex p='4'>
                 <Avatar size='sm' name='Kent Dodds' src='https://bit.ly/kent-c-dodds'/>
                 <Flex ml='1' direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>

@@ -21,13 +21,14 @@ const Payments = () => {
 
     const createPayloadObject = (cartItems: Array<any>)=>{
         const cartDetails: Array<any> = [];
+        
         // consider using array.map here instead of forEach
         cartItems.forEach(cart=>{
           cartDetails.push({orgServiceItemId: cart.id, quantity: cart.quantity})
         })
         const payloadObject = { 
            orgServiceItems: cartDetails,
-          price: totalAmount,
+          price: totalAmount*100,
           date: dayjs().format('YYYY-MMM-D')
         }
         return payloadObject
@@ -58,9 +59,9 @@ const Payments = () => {
   
 
   return (
-    <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
+    <Flex bg='gray.900' w='100' h='100vh'  justifyContent='center' alignItems='center'>
         { stripePromise && clientSecret && 
-        <Elements stripe={stripePromise} options={{clientSecret,loader:'always'}}>
+        <Elements stripe={stripePromise} options={{clientSecret,appearance:{theme:'night'}}}>
             <CheckoutForm />
         </Elements>
        }
@@ -69,3 +70,5 @@ const Payments = () => {
 };
 
 export default Payments
+
+

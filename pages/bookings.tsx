@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
 import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout';
 import Ticket from '../components/shared/Ticket/Ticket';
-
+import { useRouter } from 'next/router';
+import supabase from "../utils/supabase";
 
 const purchasedTickets = [
     {
@@ -32,6 +33,14 @@ export default function MyBookings(){
 
     // TODO: fetch user specific data
     // TODO: fallback ui for when user tries to access page without authorization
+    const {asPath} = useRouter()
+    
+    useEffect(() => {
+        const paceto = asPath.split('?')[1]
+        // console.log(accessToken);
+        localStorage.setItem('paceto',paceto)
+    //   console.log
+    }, [])
 
     return(
     <Layout>
@@ -65,9 +74,10 @@ const PurchasedTickets = ()=>{
     return(
     <Box w='100%' mt='3' >
         <SimpleGrid columns={1} spacing='3'>
-            {purchasedTickets.map((ticket)=>(
+            {/* {purchasedTickets.map((ticket)=>(
                 <Ticket key={ticket.id} onTriggerAction={()=>console.log('hello')} data={ticket}/>
-            ))}
+            ))} */}
+            <div>hello</div>
         </SimpleGrid>
     </Box>
     )

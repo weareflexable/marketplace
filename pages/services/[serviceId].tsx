@@ -82,6 +82,13 @@ export default function ServicesPage(){
         console.log(targetItem);
         setCart(clonedCart);
     }
+    const decrementCartItemQuantity = (id: string)=>{
+        const clonedCart = cart.slice();
+        const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
+        targetItem!.quantity--
+        console.log(targetItem);
+        setCart(clonedCart);
+    }
 
 
     const createOrder = (totalCost:number)=>{
@@ -124,6 +131,7 @@ export default function ServicesPage(){
                         <Cart 
                             onCreateOrder={createOrder} 
                             onIncrementCartItemQuantity={incrementCartItemQuantity} 
+                            onDecrementCartItemQuantity={decrementCartItemQuantity} 
                             onRemoveCartItem={removeCartItemHandler} 
                             tickets={cart}
                         />

@@ -32,7 +32,7 @@ export default function Home() {
           //   <link rel="icon" href="/favicon.ico" />
           // </Head>
           <Layout>
-            <Grid h='100vh' gridTemplateColumns={'6'} >
+            <Grid bg="gray.900" h='100vh' gridTemplateColumns={'6'} >
               <GridItem colStart={2} colEnd={6}>
                 <Flex h='40vh' mb='5' direction='column' justifyContent='flex-end' alignItems='center'>
                   <EventSearchBar/>
@@ -40,11 +40,11 @@ export default function Home() {
               </GridItem >
               <GridItem px={'2em'} gridColumnStart={1} gridColumnEnd={6}> 
                 <Wrap w='100%' alignItems='center' justifyContent='center'> 
-                    {data && data.payload.map((store:Store)=>(
-                        <WrapItem  key={store.id} flex='1 22%'  borderWidth='1px' overflow='hidden'>
+                    {data.payload ? data.payload.map((store:Store)=>(
+                        <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
                             <StoreCard data={store}/>
                         </WrapItem> 
-                    ))}
+                    )):null}
                 </Wrap>
               </GridItem>
             </Grid>

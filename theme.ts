@@ -94,7 +94,7 @@ const config: ThemeConfig ={
       fontSize: ['12px','12px','13px']
     },
     ticketPrice:{
-      fontFamily:'body',
+      fontFamily:'heading',
       fontWeight: 700, 
       fontSize: ['1.5em','1.6em','2.2em'],
       letterSpacing: '-0.8px',
@@ -116,7 +116,7 @@ const config: ThemeConfig ={
     secondary:{
       color: 'gray.100' ,
       fontFamily: 'body',
-      lineHeight: '.8em',
+      lineHeight: '1.3em',
       fontWeight: 400,
       letterSpacing: '-.2px'
     }

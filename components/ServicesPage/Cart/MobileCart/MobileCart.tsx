@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
-import CartList from './CartList/CartList'
-import { Service } from '../../../data/services'
+import CartList from '../CartList/CartList'
+import { Service } from '../../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
-import { useAuthContext } from '../../../context/AuthContext'
+import { useAuthContext } from '../../../../context/AuthContext'
 
-interface CartProps{
+interface MobileCartProps{
     tickets: Service[],
     onRemoveCartItem: (id: string)=>void,
     onIncrementCartItemQuantity: (id: string)=>void,
@@ -13,7 +13,7 @@ interface CartProps{
     onCreateOrder: (total:number)=>void
 }
 
-export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder}:CartProps){
+export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder}:MobileCartProps){
 
 
     function calculateCartTotal(tickets:Service[]){
