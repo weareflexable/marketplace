@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: marketplace-web
+build:
+  artifacts:
+  - image: 816119410753.dkr.ecr.us-east-2.amazonaws.com/flexable-marketplace-webapp
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    defaultNamespace: flexable
+    manifests:
+    - k8s/marketplace-web-deploy.yml
+    - k8s/marketplace-web-ingress.yml
+    - k8s/marketplace-web-service.yml
