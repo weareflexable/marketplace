@@ -18,7 +18,7 @@ export default function StoreHeader({storeName, city, lat, lon, imageHash}:Store
         <Flex mt='4' position='relative' direction='column'>
             <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
             <Box height='250px' w='100%'>
-                <Image width='100%' h='100%' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+                <Image width='100%' h='100%' src='/benjamins.jpeg' alt='Dan Abramov' />
             </Box>
             <Box p='2' zIndex='3' position='absolute' left='10' bottom='5'>
                 <Heading color={'white'} textStyle={'h1'} as='h1' size='lg'>{storeName}</Heading>
