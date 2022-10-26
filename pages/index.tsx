@@ -42,7 +42,7 @@ export default function Home() {
               </GridItem >
               <GridItem px={'2em'} gridColumnStart={1} gridColumnEnd={6}> 
                 <Wrap w='100%' alignItems='center' justifyContent='center'> 
-                    {data && data.payload ? data.payload.map((store:Store)=>(
+                    {data && data.payload ? data.payload.slice(0,1).map((store:Store)=>(
                         <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
                             <StoreCard data={store}/>
                         </WrapItem> 
