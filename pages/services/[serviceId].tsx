@@ -11,6 +11,7 @@ import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
 import dayjs from 'dayjs'
+import { setStorage } from '../../utils/localStorage'
 
 
 export default function ServicesPage(){
@@ -52,7 +53,7 @@ export default function ServicesPage(){
         if(isDuplicateCartItem) return
   
         let clonedServices = data.payload.serviceItems.slice() 
-        let targetTicket = clonedServices.find(service=>service.id===id);
+        let targetTicket = clonedServices.find((service:any)=>service.id===id);
 
         // add quantity field to service
         const serviceWithQuantity = {
@@ -99,13 +100,23 @@ export default function ServicesPage(){
 
     const loginBeforePayment = (totalCost:number)=>{
         // this is to tell browser that payment was initiated before login
-        localStorage.setItem('paymentStatus','pending');
-        setAmount(totalCost)
-        setCartItems(cart)
-        window.open('https://auth.flexabledats.com')
+            // setStorage('paymentStatus','pending')
+            setAmount(totalCost)
+            setCartItems(cart)
+            window.open('https://auth.flexabledats.com')
+        
     }
 
-    return(
+    useEffect(() => {
+      return () => {
+        if(cart.length>0){
+           setStorage('paymentStatus','pending')
+        }
+      };
+    }, [cart])
+
+        
+        return(
     <DarkMode>
         <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>

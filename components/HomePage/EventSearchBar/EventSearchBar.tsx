@@ -19,7 +19,7 @@ export default function EventSearchBar(){
     return(
         <Box p='.5em'  margin={'1em auto'} bg='#ffffff' borderRadius='4px'>
 
-            <HStack as='form' onSubmit={handleSearchEvent} spacing={2}>
+            <HStack as='form' spacing={2}>
                 <FormControl w='250px' mr={0} isRequired>
                     <Select  placeholder='Select your country'>
                       <option defaultValue={'United States'} value='US'>United States</option>

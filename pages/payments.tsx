@@ -41,7 +41,7 @@ const Payments = () => {
   
     useEffect(()=>{
 
-      let paseto:string|null|HeadersInit;
+      let paseto:string|null = '';
       if(isAuthenticated){
         // paseto got set immediately after user was authenticated in in cart page
         paseto = localStorage.getItem('paseto')
@@ -54,6 +54,7 @@ const Payments = () => {
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/user/service-intent',{
           method:'POST',
           body:JSON.stringify(payload),
+          //@ts-ignore
           headers:{
             // replace with paseto here
             'Authorization': paseto

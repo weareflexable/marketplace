@@ -40,29 +40,31 @@ export default function MyBookings(){
     const {asPath,push} = useRouter()
     const {setIsAuthenticated,isAuthenticated} = useAuthContext();
 
+
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [paseto, setPaseto] = useState<undefined|string>(undefined)
 
-    let paseto:string|null|undefined=undefined;
+    // get paseto from local storage 
+    // useEffect(() => {
+    //   setPaseto(localStorage.getItem('paseto')||undefined);
+    // }, [paseto])
 
-    if(typeof window !== 'undefined'){
-        paseto = localStorage.getItem('paseto')
 
-        if(!paseto){
-            paseto = asPath.split('?')[1]
-        }
-    }
+    // get paseto from path if it exist
+    const pasetoFromUrl =asPath.split('?')[1]
 
-    if(paseto){
-        // save paseto first
-        localStorage.setItem('paseto', paseto)
-        // authenticate user
-        setIsAuthenticated(true);
-        // check is login request was created from cart
-        const isPaymentPending = localStorage.getItem('paymentStatus')==='pending';
-        if(isPaymentPending){
-            push('/payments')
-        }
-      }
+    // if(paseto){
+    //     // save paseto first 
+    //     localStorage.setItem('paseto', paseto): null
+
+    //         // authenticate user
+    //         setIsAuthenticated(true);
+    //         // check is login request was created from cart
+    //         const isPaymentPending = localStorage.getItem('paymentStatus')==='pending'
+    //         if(isPaymentPending){
+    //             push('/payments')
+    //         }
+    //   }
 
       const generateQrCode=(ticket: any)=>{
         console.log(ticket);
@@ -76,8 +78,9 @@ export default function MyBookings(){
         const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
             const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
                 method:'GET',
+                //@ts-ignore
                 headers:{
-                    'Authorization': paseto
+                    'Authorization': pasetoFromUrl
                   }
             })
             const body = await res.json()
@@ -111,7 +114,7 @@ export default function MyBookings(){
                         <TabPanels>
                             <TabPanel>
                                 <Skeleton isLoaded={!isLoading}>
-                                {data && data.payload ? data.payload.map(order=>(
+                                {data && data.payload ? data.payload.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>

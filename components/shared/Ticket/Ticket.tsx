@@ -18,7 +18,7 @@ import { MdAddShoppingCart } from 'react-icons/md'
 
 
 interface ServiceProps{
-    data: Service,
+    data: any,
     onTriggerAction:(id:string)=>void 
 }
 

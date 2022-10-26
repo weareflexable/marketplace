@@ -6,7 +6,7 @@ import {MdOutlineDeleteOutline} from 'react-icons/md'
 import { useAuthContext } from '../../../../context/AuthContext'
 
 interface MobileCartProps{
-    tickets: Service[],
+    tickets: any[],
     onRemoveCartItem: (id: string)=>void,
     onIncrementCartItemQuantity: (id: string)=>void,
     onDecrementCartItemQuantity:(id:string)=>void,
@@ -53,7 +53,7 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
 }
 
 interface CartListItemProps{
-    ticket: Service,
+    ticket: any,
     onRemoveTicket: (id: string)=>void,
     onIncrementItemQuantity: (id:string)=>void,
     onDecrementItemQuantity: (id:string)=>void,

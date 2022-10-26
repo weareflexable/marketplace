@@ -54,7 +54,7 @@ export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuanti
 }
 
 interface CartListItemProps{
-    ticket: Service,
+    ticket: any,
     onRemoveTicket: (id: string)=>void,
     onIncrementItemQuantity: (id:string)=>void,
     onDecrementItemQuantity: (id:string)=>void,
