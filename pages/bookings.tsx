@@ -1,11 +1,13 @@
 import React,{useEffect,useState} from 'react';
-import {Flex,Box,Heading,SimpleGrid,VStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay} from '@chakra-ui/react'
+import {Flex,Box,Heading,Skeleton,SimpleGrid,Text,VStack,HStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Badge} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout';
 import Ticket from '../components/shared/Ticket/Ticket';
 import { useRouter } from 'next/router';
 import supabase from "../utils/supabase";
 import { useAuthContext } from '../context/AuthContext';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import QrCodeModal from '../components/BookingsPage/QrCodeModal/QrCodeModal';
 
 const purchasedTickets = [
     {
@@ -36,7 +38,7 @@ export default function MyBookings(){
     // TODO: fetch user specific data
     // TODO: fallback ui for when user tries to access page without authorization
     const {asPath,push} = useRouter()
-    const {setIsAuthenticated} = useAuthContext();
+    const {setIsAuthenticated,isAuthenticated} = useAuthContext();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,6 +68,11 @@ export default function MyBookings(){
         console.log(ticket);
       }
 
+      const redeemTicket = (order:any)=>{
+        console.log(order)
+        setIsModalOpen(true)
+      }
+
         const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
             const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
                 method:'GET',
@@ -80,10 +87,19 @@ export default function MyBookings(){
           console.log(data,isError)
 
 
+    if(!isAuthenticated){
+        return(
+            <Layout>
+                <Box>
+                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+                </Box>
+            </Layout>
+        )
+    }
 
     return(
     <Layout>
-        <Grid templateColumns='repeat(5, 1fr)' gap={6} >
+        <Grid minH='100vh' h='100%' templateColumns='repeat(5, 1fr)' gap={6} >
             <GridItem colStart={2} colEnd={4}>
                 <Flex w='600px' direction='column'>
                     <Heading mt='10' mb='6'>My Bookings</Heading>
@@ -94,7 +110,28 @@ export default function MyBookings(){
                         </TabList>
                         <TabPanels>
                             <TabPanel>
-                                <PurchasedTickets/>
+                                <Skeleton isLoaded={!isLoading}>
+                                {data && data.payload ? data.payload.map(order=>(
+                                    <Flex p='1em' bg='blackAlpha.700' mb='3' direction='column' key={order.id}>
+                                        <HStack mb='1' spacing='1'>
+                                            <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
+                                            <Badge  ml='1' >
+                                                {order.isPaid?'Paid':'Pending payment'} 
+                                            </Badge>
+                                        </HStack>
+                                        <Flex mb='1' justifyContent='space-between'>
+                                            <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
+                                            <Text textStyle='secondary'>${order.unitPrice}</Text>
+                                        </Flex>
+                                        <HStack mb='1' spacing='1'>
+                                            <Text color='whiteAlpha.300'>Ends on:</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
+                                        </HStack>
+                                        <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Redeem Ticket</Button>
+                                    </Flex>
+                                ))
+                                :null}
+                                </Skeleton>
                             </TabPanel>
                             <TabPanel>
                                 <PurchasedTickets/>
@@ -104,6 +141,11 @@ export default function MyBookings(){
                 </Flex>
             </GridItem>
         </Grid>
+        <QrCodeModal
+            isModalOpen={isModalOpen}
+            onCloseModal={()=>setIsModalOpen(false)}
+            ticket={{}}
+        />
     </Layout>
     )
 }
@@ -116,7 +158,7 @@ const PurchasedTickets = ()=>{
             {/* {purchasedTickets.map((ticket)=>(
                 <Ticket key={ticket.id} onTriggerAction={()=>console.log('hello')} data={ticket}/>
             ))} */}
-            <div>hello</div>
+            
         </SimpleGrid>
     </Box>
     )

@@ -7,6 +7,11 @@ import { useAuthContext } from '../../../context/AuthContext'
 export default function Header(){
 
     const {isAuthenticated,setIsAuthenticated,logout} = useAuthContext()
+
+    const login =()=>{
+        window.open('https://auth.flexabledats.com')
+    }
+
     return(
         <Flex bg='gray.800' gridColumnStart={1} gridColumnEnd={9}  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' w='100%' h='55px'>
             <Link href='/'>
@@ -21,7 +26,7 @@ export default function Header(){
                     </Link>
                     <Button onClick={logout}>Logout</Button>
                     </HStack>
-                    : <Button onClick={()=>setIsAuthenticated(!isAuthenticated)}>Login</Button>
+                    : <Button onClick={login}>Login</Button>
                 }
                 
             </Flex>

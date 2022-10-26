@@ -8,6 +8,8 @@ interface QrCodeModalProps{
 }
 
 const QrCodeModal = ({ticket, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+
+    return(
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
           <ModalOverlay />
           <ModalContent>
@@ -26,7 +28,7 @@ const QrCodeModal = ({ticket, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
             </ModalFooter>
           </ModalContent>
         </Modal>
-       
+       )
 }
 
 export default QrCodeModal
