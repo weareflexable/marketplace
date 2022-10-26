@@ -35,7 +35,7 @@ export default function EventSearchBar(){
                     </Select>
                     <FormErrorMessage>State is required</FormErrorMessage>
                   </FormControl>
-                  <Button type='submit'>Search for Bars</Button>  
+                  <Button type='submit'>Search for Bars</Button>   
             </HStack>
         </Box>
     )  

@@ -28,6 +28,11 @@ export default function Home() {
 
 
   return (
+    <>
+          <Head>
+          <title>Flexable</title>
+          <link rel="icon" href="/favicon.png" />
+        </Head>
           <Layout>
             <Grid bg="gray.900" h='100vh' gridTemplateColumns={'6'} >
               <GridItem colStart={2} colEnd={6}>
@@ -46,6 +51,6 @@ export default function Home() {
               </GridItem>
             </Grid>
          </Layout>
-       
+         </>
   )
 }
