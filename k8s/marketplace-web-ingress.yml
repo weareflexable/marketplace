@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: marketplace-web-ingress
+  namespace: flexable
+  labels:
+    app: marketplace-web
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    alb.ingress.kubernetes.io/group.name: flexable-alb
+spec:
+  tls:
+    - hosts:
+        - marketplace.flexabledats.com
+      secretName: marketplace.flexabledats.com-tls-secret
+  rules:
+    - host: marketplace.flexabledats.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: marketplace-web
+                port:
+                  number: 3000
