@@ -90,7 +90,8 @@ export default function MyBookings(){
             qrCodePayload={
                 ...payload,
                 signature: body.payload.signature,
-                validity: body.payload.validity
+                validity: body.payload.validity,
+                quantity:order.quantity
             }
             // call modal to generate qr
             const options = {method: 'GET'};
