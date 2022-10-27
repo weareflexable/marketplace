@@ -4,15 +4,13 @@ import { Flex} from '@chakra-ui/react'
 import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
 
-
 import {loadStripe} from '@stripe/stripe-js';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
-import { STRIPE_PUBLISHABLE_KEY } from '../env';
 import { useAuthContext } from '../context/AuthContext';
 
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
 const Payments = () => {
   
