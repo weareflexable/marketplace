@@ -24,6 +24,7 @@ const AuthContext = createContext(undefined);
 const AuthContextProvider = ({children})=>{
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser, setCurrentUser] = useState({})
     const {asPath,push} = useRouter()
 
     // const router = useRouter();
@@ -45,6 +46,7 @@ const AuthContextProvider = ({children})=>{
       const user = checkUser();
       if (user) {
         setIsAuthenticated(true); 
+        setCurrentUser(user)
       }
       
       const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -66,9 +68,6 @@ const AuthContextProvider = ({children})=>{
         };
       }, [push, setIsAuthenticated]); // try removing deps
   
-    // async function updateSupabaseCookie(event, session) {
-    //   await axios.post("/api/auth", { event, session });
-    // }
   
 
     const logout = ()=>{
@@ -79,7 +78,8 @@ const AuthContextProvider = ({children})=>{
     const values = {
         isAuthenticated,
         setIsAuthenticated,
-        logout   
+        logout,
+        currentUser   
     }
 
 

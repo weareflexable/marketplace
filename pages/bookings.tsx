@@ -43,10 +43,21 @@ export default function MyBookings(){
     const [isGeneratingCode, setIsGeneratingCode] = useState(false)
     const [qrSignature, setQrSignature] = useState({})
     const [orderFilter,setOrderFilter] = useState('paid')
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [paseto, setPaseto] = useState<undefined|string>(undefined)
+
+
+    const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
+        const paseto = getPlatformPaseto()
+        const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
+            method:'GET',
+            //@ts-ignore
+            headers:{
+                'Authorization': paseto
+              }
+        })
+        const body = await res.json()
+        return body
+      })
 
 
       const redeemTicket=(ticket: any)=>{
@@ -77,7 +88,8 @@ export default function MyBookings(){
                 ...payload,
                 signature: body.payload.signature,
                 validity: body.payload.validity,
-                quantity:order.quantity
+                quantity:order.quantity,
+                userId: isAuthenticated?supabase.auth.user()?.id:''
             }
             setQrSignature(qrCodePayload)
 
@@ -89,18 +101,7 @@ export default function MyBookings(){
 
       }
 
-        const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
-            const paseto = getPlatformPaseto()
-            const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
-                method:'GET',
-                //@ts-ignore
-                headers:{
-                    'Authorization': paseto
-                  }
-            })
-            const body = await res.json()
-            return body
-          })
+      
 
 
 
@@ -124,7 +125,7 @@ export default function MyBookings(){
                     <Heading mt='10' mb='6'>My Bookings</Heading>
                     <Tabs variant='unstyled' >
                         <TabList>
-                            <Tab textStyle={'h4'}  _selected={{ color: 'blue'}}>Tickets</Tab>
+                            <Tab textStyle={'h4'}  _selected={{ color: 'cyan'}}>Tickets</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
