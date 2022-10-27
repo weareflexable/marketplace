@@ -62,7 +62,7 @@ interface CartListItemProps{
 
 const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementItemQuantity}:CartListItemProps)=>{
     
-    const itemTotal = ticket.price *  ticket.quantity
+    const itemTotal = (ticket.price/100) *  ticket.quantity
     
     return(
         <Flex display={['none','none','flex']} p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
@@ -81,7 +81,7 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
                             <NumberDecrementStepper onClick={()=>onDecrementItemQuantity( ticket.id)}/>
                             </NumberInputStepper>
                         </NumberInput>
-                        <Text>${ticket.price}</Text>
+                        <Text>${ticket.price/100}</Text>
                     </HStack>
                     <Text>${itemTotal}</Text>
                 </Flex>
@@ -112,7 +112,7 @@ const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotal
                 <Text color='gray.900' fontWeight='medium'>Book Now</Text>
                 <HStack spacing={2}>
                     <Text color='GrayText' fontWeight='medium'>Total:</Text>
-                    <Text color='ButtonText' fontWeight='medium'>${totalPrice}</Text>
+                    <Text color='ButtonText' fontWeight='medium'>${totalPrice/100}</Text>
                 </HStack>
             </Flex>
         </Button>

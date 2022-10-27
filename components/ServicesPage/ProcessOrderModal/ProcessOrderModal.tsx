@@ -54,7 +54,7 @@ interface PaymentModalProps{
               {cartItems.map(item=>(
                 <Flex justifyContent={'space-between'} alignItems='center' key={item.id}>
                   <Text mb={'4'} textStyle={'body'} >{item.name}</Text>
-                  <Text textStyle={'body'}>${totalAmount}</Text>
+                  <Text textStyle={'body'}>${totalAmount/100}</Text>
                 </Flex>
               ))}
             </ModalBody>
@@ -62,7 +62,7 @@ interface PaymentModalProps{
             <ModalFooter>
               <Button variant='ghost' onClick={onCloseModal}>Cancel Order</Button>
               <Button colorScheme='blue' mr={3}  onClick={proceedToPayment} >
-                {`Proceed payment  $${totalAmount}`}
+                {`Proceed payment  $${totalAmount/100}`}
               </Button>
             </ModalFooter>
           </ModalContent>

@@ -5,12 +5,13 @@ import {MdLocationPin} from 'react-icons/md'
 
 interface StoreHeaderProps{
     imageHash: string,
+    coverImageHash:string,
     storeName: string,
     city: string, 
     lat: number, 
     lon: number
 }
-export default function StoreHeader({storeName, city, lat, lon, imageHash}:StoreHeaderProps){
+export default function StoreHeader({coverImageHash, storeName, city, lat, lon, imageHash}:StoreHeaderProps){
 
     // const {isError, isFetchingImage, imageSrc} = useIpfsImage(imageHash)
 
@@ -18,7 +19,7 @@ export default function StoreHeader({storeName, city, lat, lon, imageHash}:Store
         <Flex mt='4' position='relative' direction='column'>
             <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
             <Box height='250px' w='100%'>
-                <Image width='100%' h='100%' src='/benjamins.jpeg' alt='Dan Abramov' />
+                <Image width='100%' h='100%' src={`https://nftstorage.link/ipfs/${coverImageHash}`} alt='Store header' />
             </Box>
             <Box p='2' zIndex='3' position='absolute' left='10' bottom='5'>
                 <Heading color={'white'} textStyle={'h1'} as='h1' size='lg'>{storeName}</Heading>

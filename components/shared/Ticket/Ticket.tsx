@@ -51,7 +51,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                             per person
                         </Text> */}
                         <Flex>
-                            <Text textStyle={'ticketPrice'}>${data.price}</Text> 
+                            <Text textStyle={'ticketPrice'}>${data.price/100}</Text> 
                         </Flex>
                     </Flex>
                 </Flex>

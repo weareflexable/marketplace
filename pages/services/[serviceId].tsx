@@ -124,6 +124,7 @@ export default function ServicesPage(){
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton isLoaded={!isLoading}>
                         <StoreHeader
+                         coverImageHash={data && data.payload.coverImageHash}
                          storeName={data && data.payload.name}
                          lat = {data && data.payload.lat}
                          lon = {data && data.payload.lon}

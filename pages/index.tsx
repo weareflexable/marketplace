@@ -25,6 +25,8 @@ export default function Home() {
     return body
   })
 
+  
+
   if(isError){
     // TODO: create error boundary to catch this error.
     throw new Error('Error fetching stores')
@@ -39,7 +41,7 @@ export default function Home() {
     // setIsAuthenticated(true)
   }, [])
 
-
+ 
   return (
     <>
           <Head>
