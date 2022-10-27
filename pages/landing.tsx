@@ -4,7 +4,7 @@ import { FaHandshake } from "react-icons/fa";
 
 const Landing = () => {
   return (
-    <main className="h-full bg-gradient-to-b from-black via-black to-primary flex flex-col">
+    <main className="h-full min-h-screen bg-gradient-to-b from-black via-black to-primary flex flex-col">
       <div className=" flex items-center pt-16 md:pt-32 px-6 flex-col">
         <h1 className="text-[#8cb9b4] text-4xl text-center leading-[130%] w-5/6 md:text-5xl ">
           Why wait in the line when you could just... not.

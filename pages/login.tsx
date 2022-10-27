@@ -80,7 +80,7 @@ const New = () => {
   // };
 
   return (
-    <section className="h-full bg-gradient-to-r from-black to-primary">
+    <section className="h-full min-h-screen bg-gradient-to-r from-black to-primary">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="relative flex items-end px-4pb-10  sm:pb-16 md:justify-center lg:pb-24 sm:px-6 lg:px-8">
           <div className="relative">
