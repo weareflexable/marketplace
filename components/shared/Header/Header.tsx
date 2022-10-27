@@ -3,13 +3,15 @@ import {Flex,HStack,Box, Button,Text} from '@chakra-ui/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
+import { useRouter } from 'next/router'
 
 export default function Header(){
 
     const {isAuthenticated,setIsAuthenticated,logout} = useAuthContext()
+    const router = useRouter()
 
     const login =()=>{
-        window.open('https://auth.flexabledats.com')
+        router.push('/login')
     }
 
     return(

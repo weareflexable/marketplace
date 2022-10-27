@@ -16,7 +16,7 @@ import { setStorage } from '../../utils/localStorage'
 
 export default function ServicesPage(){
 
-    const {query} = useRouter();
+    const {query,push} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const [cart, setCart] = useState<Service[]>([]);
     const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
@@ -103,7 +103,7 @@ export default function ServicesPage(){
             // setStorage('paymentStatus','pending')
             setAmount(totalCost)
             setCartItems(cart)
-            window.open('https://auth.flexabledats.com')
+            push('/login')
         
     }
 
