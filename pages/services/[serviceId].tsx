@@ -129,7 +129,7 @@ export default function ServicesPage(){
                          lat = {data && data.payload.lat}
                          lon = {data && data.payload.lon}
                          city = { data &&data.payload.city}
-                         imageHash={''}
+                         state = {data && data.payload.state}
                          />
                     </Skeleton>
 
