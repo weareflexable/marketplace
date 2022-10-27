@@ -103,7 +103,7 @@ export default function ServicesPage(){
             // setStorage('paymentStatus','pending')
             setAmount(totalCost)
             setCartItems(cart)
-            push('/login')
+            push('/landing')
         
     }
 

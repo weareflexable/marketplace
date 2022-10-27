@@ -11,7 +11,7 @@ export default function Header(){
     const router = useRouter()
 
     const login =()=>{
-        router.push('/login')
+        router.push('/landing')
     }
 
     return(
