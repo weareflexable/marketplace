@@ -1,28 +1,29 @@
 import { Session } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
 import React,{useState,useContext,createContext,useEffect, ReactNode} from 'react';
-import { checkUser } from '../utils/auth';
+import { checkUser, signOut } from '../utils/auth';
 import { getPaseto } from '../utils/platform/platform';
 import { getPlatformPaseto, setPlatformPaseto } from '../utils/storage';
 import supabase from '../utils/supabase';
 import axios from 'axios'
+import { get } from 'http';
 
 
-const AuthContext = createContext<Values|undefined>(undefined);
+const AuthContext = createContext(undefined);
 
-type Values = {
-    isAuthenticated: boolean,
-    setIsAuthenticated: (isAuthenticate:boolean)=>void
-    logout: ()=>void
-}
+// type Values = {
+//     isAuthenticated: boolean,
+//     setIsAuthenticated: (isAuthenticate:boolean)=>void
+//     logout: ()=>void
+// }
 
-interface AuthContextProviderProps{
-    children: ReactNode
-}
+// interface AuthContextProviderProps{
+//     children: ReactNode
+// }
 
-const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
+const AuthContextProvider = ({children})=>{
 
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const {asPath,push} = useRouter()
 
     // const router = useRouter();
@@ -30,8 +31,9 @@ const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
 
     useEffect(() => {
       if (isAuthenticated && !getPlatformPaseto()) {
-        // @ts-ignore
+ 
         getPaseto(supabase.auth.session().access_token).then(setPlatformPaseto);
+      
       }
     }, [isAuthenticated]);
     
@@ -39,21 +41,18 @@ const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
      
     useEffect(() => {
       // checks if user already signed in when they land
+        
       const user = checkUser();
       if (user) {
-        setIsAuthenticated(true);
+        setIsAuthenticated(true); 
       }
       
       const { data: authListener } = supabase.auth.onAuthStateChange(
         (event, session) => {
-          updateSupabaseCookie(event, session);
+          // updateSupabaseCookie(event, session);
           if (event === "SIGNED_IN") {
             setIsAuthenticated(true);
-             // @ts-ignore
-            getPaseto(supabase.auth.session().access_token).then(res=>{
-              setPlatformPaseto(res)
-              push('/dashboard') 
-            }); 
+
           }
           if (event === "SIGNED_OUT") {
             setIsAuthenticated(false); 
@@ -65,22 +64,22 @@ const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
              // @ts-ignore
           authListener?.unsubscribe();
         };
-      }, [push]); // try removing deps
+      }, [push, setIsAuthenticated]); // try removing deps
   
-    async function updateSupabaseCookie(event: string, session: Session | null) {
-      await axios.post("/api/auth", { event, session });
-    }
+    // async function updateSupabaseCookie(event, session) {
+    //   await axios.post("/api/auth", { event, session });
+    // }
   
 
     const logout = ()=>{
         setIsAuthenticated(false);
-        localStorage.removeItem('paseto')
+        signOut()
     }
 
-    const values: Values = {
+    const values = {
         isAuthenticated,
         setIsAuthenticated,
-        logout
+        logout   
     }
 
 

@@ -3,7 +3,8 @@ import supabase from "./supabase";
 
 // todo: signIn
 export const signIn = async ({ email, password }) => {
-  const { error, session, user } = await supabase.auth.signIn({
+  // supabase.auth.
+  const { error, session, user } = await supabase.auth.signIn({ 
     email,
     password,
   });

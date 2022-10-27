@@ -8,6 +8,7 @@ import { useAuthContext } from '../context/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import QrCodeModal from '../components/BookingsPage/QrCodeModal/QrCodeModal';
+import { getPlatformPaseto } from '../utils/storage';
 
 const purchasedTickets = [
     {
@@ -70,7 +71,7 @@ export default function MyBookings(){
       }
 
         const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
-            const paseto = localStorage.getItem('paseto')
+            const paseto = getPlatformPaseto()
             const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
                 method:'GET',
                 //@ts-ignore
@@ -119,7 +120,7 @@ export default function MyBookings(){
                                         </HStack>
                                         <Flex mb='1' justifyContent='space-between'>
                                             <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
-                                            <Text textStyle='secondary'>${order.unitPrice}</Text>
+                                            <Text textStyle='secondary'>${order.unitPrice/100}</Text>
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.300'>Ends on:</Text>

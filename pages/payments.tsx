@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
 import { useAuthContext } from '../context/AuthContext';
+import { getPlatformPaseto } from '../utils/storage';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
@@ -42,7 +43,7 @@ const Payments = () => {
       let paseto:string|null = '';
       if(isAuthenticated){
         // paseto got set immediately after user was authenticated in in cart page
-        paseto = localStorage.getItem('paseto')
+        paseto = getPlatformPaseto()
       }
 
       const fetchSecret = async ()=>{
