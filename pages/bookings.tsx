@@ -42,26 +42,12 @@ export default function MyBookings(){
     const {setIsAuthenticated,isAuthenticated} = useAuthContext();
     const [isRedeeming, setIsRedeeming] = useState(false)
     const [qrSignature, setQrSignature] = useState({})
+    const [orderFilter,setOrderFilter] = useState('paid')
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [paseto, setPaseto] = useState<undefined|string>(undefined)
 
-
-
-
-    // if(paseto){
-    //     // save paseto first 
-    //     localStorage.setItem('paseto', paseto): null
-
-    //         // authenticate user
-    //         setIsAuthenticated(true);
-    //         // check is login request was created from cart
-    //         const isPaymentPending = localStorage.getItem('paymentStatus')==='pending'
-    //         if(isPaymentPending){
-    //             push('/payments')
-    //         }
-    //   }
 
       const generateQrCode=(ticket: any)=>{
         console.log(ticket);
@@ -93,6 +79,7 @@ export default function MyBookings(){
                 validity: body.payload.validity,
                 quantity:order.quantity
             }
+            setQrSignature(qrCodePayload)
             // call modal to generate qr
             const options = {method: 'GET'};
             fetch(`https://api.opensea.io/api/v1/asset/0x8d036141f10FE34D739E8C289951F7bE77AB5707/${order.tokenId}/?include_orders=false`, options)
@@ -120,6 +107,8 @@ export default function MyBookings(){
             const body = await res.json()
             return body
           })
+
+
 
 
 
@@ -151,7 +140,7 @@ export default function MyBookings(){
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
-                                            <Badge  ml='1' >
+                                            <Badge colorScheme={order.paymentIntentStatus==='PAYMENT_PAID'?'green':'purple'}  ml='1' >
                                                 {order.paymentIntentStatus} 
                                             </Badge>
                                         </HStack>
