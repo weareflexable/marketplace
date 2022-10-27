@@ -40,7 +40,7 @@ const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeMod
 
                     <HStack spacing='2' mb='1'>
                       <Text>Opensea address:</Text>
-                      <a href='https://testnets.opensea.io/assets/mumbai/0x8d036141f10fe34d739e8c289951f7be77ab5707/44'>View digital access token on opensea</a>
+                      <a target="_blank" rel='noreferrer' href='https://testnets.opensea.io/assets/mumbai/0x8d036141f10fe34d739e8c289951f7be77ab5707/44'>View digital access token on opensea</a>
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
