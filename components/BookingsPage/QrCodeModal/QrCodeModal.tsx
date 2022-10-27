@@ -7,11 +7,11 @@ import Image from 'next/image'
 interface QrCodeModalProps{
     isModalOpen: boolean,
     onCloseModal: ()=>void,
-    isRedeeming: boolean,
+    isGeneratingCode: boolean,
     qrValue: object
 }
 
-const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
     return(
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
@@ -21,12 +21,12 @@ const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeMod
             <ModalCloseButton />
             <ModalBody>
               <VStack p='1em' spacing='2'>
-                {/* <Skeleton isLoaded={isRedeeming}> */}
+                {/* <Skeleton isLoaded={isGeneratingCode}> */}
 
                   <Image width={600} objectFit='fill' height={250} src='/haloween.jpeg' alt='An image of the nft token'/>
                 {/* </Skeleton> */}
 
-                <Skeleton isLoaded={!isRedeeming}>
+                <Skeleton isLoaded={!isGeneratingCode}>
                   <Flex direction='column'>
                     <HStack spacing='2' mb='1'>
                       <Text>Location:</Text>
@@ -64,7 +64,7 @@ const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeMod
                   </Flex>
                 </Skeleton>
 
-                <Skeleton isLoaded={!isRedeeming}>
+                <Skeleton isLoaded={!isGeneratingCode}>
                   <Flex>
                       <QRCode value={JSON.stringify(qrValue)}/>
                   </Flex>

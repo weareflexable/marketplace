@@ -40,7 +40,7 @@ export default function MyBookings(){
     // TODO: fallback ui for when user tries to access page without authorization
     const {asPath,push} = useRouter()
     const {setIsAuthenticated,isAuthenticated} = useAuthContext();
-    const [isRedeeming, setIsRedeeming] = useState(false)
+    const [isGeneratingCode, setIsGeneratingCode] = useState(false)
     const [qrSignature, setQrSignature] = useState({})
     const [orderFilter,setOrderFilter] = useState('paid')
 
@@ -49,11 +49,11 @@ export default function MyBookings(){
     const [paseto, setPaseto] = useState<undefined|string>(undefined)
 
 
-      const generateQrCode=(ticket: any)=>{
+      const redeemTicket=(ticket: any)=>{
         console.log(ticket);
       }
 
-      const redeemTicket = async(order:any)=>{
+      const generateQrCode = async(order:any)=>{
         let qrCodePayload;
         const payload = {
             orgServiceItemId: order.orgServiceItemId,
@@ -62,7 +62,7 @@ export default function MyBookings(){
         setIsModalOpen(true)
 
         try{
-            setIsRedeeming(true)
+            setIsGeneratingCode(true)
             const res = await fetch('https://platform.flexabledats.com/api/v1.0/get-redeem-signature',{
                 method:'POST',
                 body: JSON.stringify(payload),
@@ -71,7 +71,7 @@ export default function MyBookings(){
                     'Authorization': getPlatformPaseto()
                 }
             })
-            setIsRedeeming(false)
+            setIsGeneratingCode(false)
             const body = await res.json()
             qrCodePayload={
                 ...payload,
@@ -80,16 +80,10 @@ export default function MyBookings(){
                 quantity:order.quantity
             }
             setQrSignature(qrCodePayload)
-            // call modal to generate qr
-            const options = {method: 'GET'};
-            fetch(`https://api.opensea.io/api/v1/asset/0x8d036141f10FE34D739E8C289951F7bE77AB5707/${order.tokenId}/?include_orders=false`, options)
-              .then(response => response.json())
-              .then(response => console.log(response))
-              .catch(err => console.error(err));
 
 
         }catch(err){
-            setIsRedeeming(false)
+            setIsGeneratingCode(false)
             console.log(err)
         }
 
@@ -151,7 +145,7 @@ export default function MyBookings(){
                                             <Text color='whiteAlpha.300'>Valid on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.ticketPrice).format('MMM D, YYYY')}</Text>
                                         </HStack>
-                                        {order.paymentIntentStatus !== 'PAYMENT_PAID'? null : <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Show Digital Access Token</Button>}
+                                        {order.paymentIntentStatus !== 'PAYMENT_PAID'? null : <Button colorScheme='teal' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>}
                                     </Flex>
                                 ))
                                 :null}
@@ -163,7 +157,7 @@ export default function MyBookings(){
             </GridItem>
         </Grid>
         <QrCodeModal
-            isRedeeming={isRedeeming}
+            isGeneratingCode={isGeneratingCode}
             qrValue={qrSignature}
             isModalOpen={isModalOpen}
             onCloseModal={()=>setIsModalOpen(false)}
