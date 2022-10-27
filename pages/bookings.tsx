@@ -44,14 +44,8 @@ export default function MyBookings(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [paseto, setPaseto] = useState<undefined|string>(undefined)
 
-    // get paseto from local storage 
-    // useEffect(() => {
-    //   setPaseto(localStorage.getItem('paseto')||undefined);
-    // }, [paseto])
 
 
-    // get paseto from path if it exist
-    const pasetoFromUrl =asPath.split('?')[1]
 
     // if(paseto){
     //     // save paseto first 
@@ -76,11 +70,12 @@ export default function MyBookings(){
       }
 
         const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
+            const paseto = localStorage.getItem('paseto')
             const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
                 method:'GET',
                 //@ts-ignore
                 headers:{
-                    'Authorization': pasetoFromUrl
+                    'Authorization': paseto
                   }
             })
             const body = await res.json()
@@ -130,7 +125,7 @@ export default function MyBookings(){
                                             <Text color='whiteAlpha.300'>Ends on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
-                                        <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Redeem Ticket</Button>
+                                        <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Show Digital Access Token</Button>
                                     </Flex>
                                 ))
                                 :null}

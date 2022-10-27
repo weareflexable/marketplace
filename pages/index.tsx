@@ -6,11 +6,16 @@ import {Flex,Box,Container,Grid,GridItem,Wrap,WrapItem} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import {Store} from '../Types/Stores.types'
 import {useQuery} from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+import { useAuthContext } from '../context/AuthContext'
 
 
 
 
 export default function Home() {
+
+  const {asPath} = useRouter()
+  const {setIsAuthenticated} = useAuthContext()
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
     const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?startOffSet=0')
@@ -25,6 +30,14 @@ export default function Home() {
     throw new Error('Error fetching stores')
   }
 
+  // get paseto from path if it exist
+  const pasetoFromUrl =asPath.split('?')[1]
+
+  useEffect(() => {
+    if(pasetoFromUrl) return
+    localStorage.setItem('paseto',pasetoFromUrl)
+    setIsAuthenticated(true)
+  }, [])
 
 
   return (
