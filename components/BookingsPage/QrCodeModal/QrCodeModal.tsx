@@ -38,15 +38,28 @@ const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeMod
                       <Text>+1 (315) 299-4756</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text>Opensea address:</Text>
-                      <a target="_blank" rel='noreferrer' href='https://testnets.opensea.io/assets/mumbai/0x8d036141f10fe34d739e8c289951f7be77ab5707/44'>View digital access token on opensea</a>
-                    </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text>Quantity:</Text>
                       {/* @ts-ignore */}
                       <Text>{qrValue!.quantity}</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text>Contract Address:</Text>
+                      <Text>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text>Token ID:</Text>
+                      {/* @ts-ignore */}
+                      <Text>{qrValue.tokenId}</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text>Network:</Text>
+                      {/* @ts-ignore */}
+                      <Text>Polygon Mainnet</Text>
                     </HStack>
                   </Flex>
                 </Skeleton>

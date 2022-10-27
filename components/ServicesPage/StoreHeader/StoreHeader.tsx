@@ -25,7 +25,7 @@ export default function StoreHeader({coverImageHash, storeName, city, lat, lon, 
                 <Heading color={'white'} textStyle={'h1'} as='h1' size='lg'>{storeName}</Heading>
                 <HStack spacing='1'>
                     <MdLocationPin/>
-                    <Link color='teal.500' href="https://www.google.com/maps/place/49%C2%B028'04.8%22N+17%C2%B006'54.5%22E/@49.4680001,17.1151401,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0xe2f8df2556e9cc97!8m2!3d49.4680001!4d17.1151401"> {city}, United States</Link>
+                    <Link color='teal.500' href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477"> {city.charAt(0).toUpperCase()}, United States</Link>
                 </HStack>
             </Box>
         </Flex>
