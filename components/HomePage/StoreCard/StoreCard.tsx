@@ -28,7 +28,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
                         {data.name}
                     </Text>
                     <Text color='gray.500' textStyle={'secondary'}>
-                        {data.city}, {data.country}
+                        {data.city?.charAt(0).toUpperCase()+data.city?.slice(1)}, {data.country}
                     </Text>
                     <Text >
                         Bar
