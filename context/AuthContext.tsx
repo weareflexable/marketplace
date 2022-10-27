@@ -1,4 +1,5 @@
-import React,{useState,useContext,createContext, ReactNode} from 'react';
+import { useRouter } from 'next/router';
+import React,{useState,useContext,createContext,useEffect, ReactNode} from 'react';
 
 
 const AuthContext = createContext<Values|undefined>(undefined);
@@ -16,6 +17,15 @@ interface AuthContextProviderProps{
 const AuthContextProvider = ({children}:AuthContextProviderProps)=>{
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const {asPath} = useRouter()
+
+
+    useEffect(() => {
+        const paseto = localStorage.getItem('paseto')
+        if(paseto !== undefined){
+            setIsAuthenticated(true)
+        }
+    }, [])
 
     const logout = ()=>{
         setIsAuthenticated(false);

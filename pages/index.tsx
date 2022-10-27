@@ -15,7 +15,7 @@ import { useAuthContext } from '../context/AuthContext'
 export default function Home() {
 
   const {asPath} = useRouter()
-  const {setIsAuthenticated} = useAuthContext()
+  // const {setIsAuthenticated} = useAuthContext()
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
     const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?startOffSet=0')
@@ -36,7 +36,7 @@ export default function Home() {
   useEffect(() => {
     if(pasetoFromUrl) return
     localStorage.setItem('paseto',pasetoFromUrl)
-    setIsAuthenticated(true)
+    // setIsAuthenticated(true)
   }, [])
 
 
