@@ -4,6 +4,7 @@ import CartList from '../CartList/CartList'
 import { Service } from '../../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
 import { useAuthContext } from '../../../../context/AuthContext'
+import { useRouter } from 'next/router'
 
 interface MobileCartProps{
     tickets: any[],
@@ -96,10 +97,11 @@ interface CartTotalButtonProps{
 }
 const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
 
-    const {isAuthenticated,setIsAuthenticated} = useAuthContext()
+    const {isAuthenticated} = useAuthContext()
+    const router = useRouter()
 
     if(!isAuthenticated){
-        return <Button mt='3' onClick={()=>setIsAuthenticated(true)} colorScheme='cyan' w='100%'>
+        return <Button mt='3' onClick={()=>router.push('landing')} colorScheme='cyan' w='100%'>
             <Text>Login to continue</Text>
         </Button>
     }

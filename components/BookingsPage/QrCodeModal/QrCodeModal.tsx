@@ -13,15 +13,6 @@ interface QrCodeModalProps{
 
 const QrCodeModal = ({isRedeeming, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
-    useEffect(() => {
-      const options = {method: 'GET'};
-    fetch(`https://api.opensea.io/api/v1/asset/0x8d036141f10FE34D739E8C289951F7bE77AB5707/${qrValue.tokenId}/?include_orders=false`, options)
-      .then(response => response.json())
-      .then(response => console.log(response))
-      .catch(err => console.error(err));
-
-    }, [qrValue])
-
     return(
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
           <ModalOverlay />
