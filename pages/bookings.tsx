@@ -131,7 +131,6 @@ export default function MyBookings(){
                     <Tabs variant='unstyled' >
                         <TabList>
                             <Tab textStyle={'h4'}  _selected={{ color: 'blue'}}>Tickets</Tab>
-                            <Tab textStyle={'h4'} _selected={{ color: 'blue'}}>Orders</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
@@ -149,17 +148,14 @@ export default function MyBookings(){
                                             <Text textStyle='secondary'>${order.unitPrice/100}</Text>
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
-                                            <Text color='whiteAlpha.300'>Ends on:</Text>
-                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
+                                            <Text color='whiteAlpha.300'>Valid on:</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.ticketPrice).format('MMM D, YYYY')}</Text>
                                         </HStack>
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null : <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Show Digital Access Token</Button>}
                                     </Flex>
                                 ))
                                 :null}
                                 </Skeleton>
-                            </TabPanel>
-                            <TabPanel>
-                                <PurchasedTickets/>
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
