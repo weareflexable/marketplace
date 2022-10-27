@@ -9,7 +9,8 @@ import {
     Flex,
     Center,
     Divider,
-    Heading
+    Heading,
+    Button
 } from '@chakra-ui/react'
 import {Service} from '../../../data/services'
 import dayjs from 'dayjs';
@@ -85,14 +86,14 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                             </Text>
                         </HStack>
                     </HStack>
-                    <Flex as='button' justifyContent='center' alignItems='center' bg='blackAlpha.100' w='60px'  h='100%'>
-                        {/* <Text textStyle='caption'>Add to Cart</Text>  */}
-                        {/* <Button>
-
-                        </Button> */}
-                        <MdAddShoppingCart/>
-
-                    </Flex>
+                    {/* <Flex as='button' justifyContent='center' alignItems='center' bg='blackAlpha.100' w='60px'  h='100%'> */}
+                        <Button my='2' mr='2'>
+                            <HStack spacing='2'>
+                                <Text color='cyan.200' textStyle='caption'>Add to Cart</Text> 
+                                <MdAddShoppingCart color='cyan.300'/>
+                            </HStack>
+                        </Button>
+                    {/* </Flex> */}
                 </Flex>
             </Flex> 
         </Box> 
