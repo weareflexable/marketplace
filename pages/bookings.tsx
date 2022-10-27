@@ -40,6 +40,8 @@ export default function MyBookings(){
     // TODO: fallback ui for when user tries to access page without authorization
     const {asPath,push} = useRouter()
     const {setIsAuthenticated,isAuthenticated} = useAuthContext();
+    const [isRedeeming, setIsRedeeming] = useState(false)
+    const [qrSignature, setQrSignature] = useState({})
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,9 +67,44 @@ export default function MyBookings(){
         console.log(ticket);
       }
 
-      const redeemTicket = (order:any)=>{
-        console.log(order)
+      const redeemTicket = async(order:any)=>{
+        let qrCodePayload;
+        const payload = {
+            orgServiceItemId: order.orgServiceItemId,
+            tokenId: order.tokenId
+        }
         setIsModalOpen(true)
+
+        try{
+            setIsRedeeming(true)
+            const res = await fetch('https://platform.flexabledats.com/api/v1.0/get-redeem-signature',{
+                method:'POST',
+                body: JSON.stringify(payload),
+                // @ts-ignore
+                headers:{
+                    'Authorization': getPlatformPaseto()
+                }
+            })
+            setIsRedeeming(false)
+            const body = await res.json()
+            qrCodePayload={
+                ...payload,
+                signature: body.payload.signature,
+                validity: body.payload.validity
+            }
+            // call modal to generate qr
+            const options = {method: 'GET'};
+            fetch(`https://api.opensea.io/api/v1/asset/0x8d036141f10FE34D739E8C289951F7bE77AB5707/${order.tokenId}/?include_orders=false`, options)
+              .then(response => response.json())
+              .then(response => console.log(response))
+              .catch(err => console.error(err));
+
+
+        }catch(err){
+            setIsRedeeming(false)
+            console.log(err)
+        }
+
       }
 
         const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
@@ -83,7 +120,6 @@ export default function MyBookings(){
             return body
           })
 
-          console.log(data,isError)
 
 
     if(!isAuthenticated){
@@ -115,7 +151,7 @@ export default function MyBookings(){
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
                                             <Badge  ml='1' >
-                                                {order.isPaid?'Paid':'Pending payment'} 
+                                                {order.paymentIntentStatus} 
                                             </Badge>
                                         </HStack>
                                         <Flex mb='1' justifyContent='space-between'>
@@ -141,9 +177,11 @@ export default function MyBookings(){
             </GridItem>
         </Grid>
         <QrCodeModal
+            isRedeeming={isRedeeming}
+            qrValue={qrSignature}
             isModalOpen={isModalOpen}
             onCloseModal={()=>setIsModalOpen(false)}
-            ticket={{}}
+
         />
     </Layout>
     )

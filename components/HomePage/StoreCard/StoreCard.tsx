@@ -31,7 +31,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
                         {data.city}, {data.country}
                     </Text>
                     <Text >
-                        Restaurant
+                        Bar
                     </Text>
                 </Flex>
             </Flex>

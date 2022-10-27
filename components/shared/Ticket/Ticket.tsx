@@ -87,6 +87,9 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     </HStack>
                     <Flex as='button' justifyContent='center' alignItems='center' bg='blackAlpha.100' w='60px'  h='100%'>
                         {/* <Text textStyle='caption'>Add to Cart</Text>  */}
+                        {/* <Button>
+
+                        </Button> */}
                         <MdAddShoppingCart/>
 
                     </Flex>
