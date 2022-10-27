@@ -152,7 +152,7 @@ export default function MyBookings(){
                                             <Text color='whiteAlpha.300'>Ends on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
-                                        <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Show Digital Access Token</Button>
+                                        {order.paymentIntentStatus !== 'PAYMENT_PAID'? <Button colorScheme='teal' onClick={()=>redeemTicket(order)}>Show Digital Access Token</Button>:null}
                                     </Flex>
                                 ))
                                 :null}
