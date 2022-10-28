@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import {Flex,Box,Heading,Skeleton,SimpleGrid,Text,VStack,HStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Badge} from '@chakra-ui/react'
+import {Flex,Box,Heading,Skeleton,SimpleGrid,Text,VStack,HStack,Grid,GridItem,Button,Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Badge, useMediaQuery} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout';
 import Ticket from '../components/shared/Ticket/Ticket';
 import { useRouter } from 'next/router';
@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import QrCodeModal from '../components/BookingsPage/QrCodeModal/QrCodeModal';
 import { getPlatformPaseto } from '../utils/storage';
 import BookingsFilters from '../components/BookingsPage/BookingFilter/BookingFilter';
+import QrCodeMobile from '../components/BookingsPage/QrCodeModal/QrCodeMobile/QrCodeMobile';
 
 
 
@@ -23,6 +24,9 @@ export default function MyBookings(){
     const [qrSignature, setQrSignature] = useState({})
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [orderFilter, setOrderFilter] = useState('PAYMENT_PAID')
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+    const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
 
     const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
@@ -44,7 +48,7 @@ export default function MyBookings(){
             orgServiceItemId: order.orgServiceItemId,
             tokenId: order.tokenId
         }
-        setIsModalOpen(true)
+       isLargerThan62? setIsModalOpen(true) : setIsDrawerOpen(true)
 
         try{
             setIsGeneratingCode(true)
@@ -156,7 +160,10 @@ export default function MyBookings(){
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
-                                        {order.paymentIntentStatus !== 'PAYMENT_PAID'? null : <Button colorScheme='teal' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>}
+                                        {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 
+                                        :
+                                        <Button colorScheme='cyan' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>
+                                        }
                                     </Flex>
                                 ))
                                 :null}
@@ -165,6 +172,8 @@ export default function MyBookings(){
                 </Flex>
             </GridItem>
         </Grid>
+
+        {/* only show on web */}
         <QrCodeModal
             isGeneratingCode={isGeneratingCode}
             qrValue={qrSignature}
@@ -172,22 +181,19 @@ export default function MyBookings(){
             onCloseModal={()=>setIsModalOpen(false)}
 
         />
+
+        {/* only show on mobile */}
+        <QrCodeMobile
+            isGeneratingCode={isGeneratingCode}
+            qrValue={qrSignature}
+            isDrawerOpen={isDrawerOpen} 
+            onCloseDrawer={()=>setIsDrawerOpen(false)}
+        />
     </Layout>
     )
 }
 
 
-const PurchasedTickets = ()=>{
-    return(
-    <Box w='100%' mt='3' >
-        <SimpleGrid columns={1} spacing='3'>
-            {/* {purchasedTickets.map((ticket)=>(
-                <Ticket key={ticket.id} onTriggerAction={()=>console.log('hello')} data={ticket}/>
-            ))} */}
-            
-        </SimpleGrid>
-    </Box>
-    )
-}
+
 
 

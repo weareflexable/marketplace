@@ -14,10 +14,13 @@ interface QrCodeModalProps{
 const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
     return(
+      <Flex display={['none','none','none','flex']} w='100%'>
+
+      
     <Modal isOpen={isModalOpen} onClose={onCloseModal}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader textStyle={'body'}>Scan qr code</ModalHeader>
+            <ModalHeader textStyle={'body'}>Your Digital Access Token</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <VStack p='1em' spacing='2'>
@@ -81,6 +84,7 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
 
           </ModalContent>
         </Modal>
+        </Flex>
        )
 }
 
