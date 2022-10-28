@@ -14,7 +14,7 @@ export default function Header(){
     }
 
     return(
-        <Flex bg='gray.800' w='100vw'  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' w='100%' h='55px'>
+        <Flex bg='gray.800' w='100vw'  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' h='55px'>
             <Link href='/'>
                <a> <Image src='/logoSmall.png' w={['150px','200px']} height={'15px'} alt='Logo of flexable app'/></a>
             </Link>

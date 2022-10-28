@@ -15,7 +15,7 @@ export default function Layout({children}:LayoutProps){
     return(
         <Flex bg='gray.900' direction='column'  w='100vw' minH='100vh' h='100%'>
             <Header/>
-            <Box as='main' w='100vw'>
+            <Box as='main' h='100%' minH='100vh' w='100vw'>
                 {children}
             </Box>
         </Flex>

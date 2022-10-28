@@ -11,29 +11,7 @@ import QrCodeModal from '../components/BookingsPage/QrCodeModal/QrCodeModal';
 import { getPlatformPaseto } from '../utils/storage';
 import BookingsFilters from '../components/BookingsPage/BookingFilter/BookingFilter';
 
-const purchasedTickets = [
-    {
-        productName: 'Avery Black Classic Line Skip Service',
-        price: 130,
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description',
-        serviceType:'lineSkip',
-        quantity: 1,
-        id:'1',
-        description: 'Summer is around the corner and with the best way of knowing if it truly means something'
-    },
-    {
-        productName: 'Tyler Perry Exclusive Bottle service',
-        price: 102,
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description',
-        serviceType:'bottleService',
-        quantity: 2,
-        id:'2',
-        description: 'Summer is around the corner and with the best way of knowing if it truly means something'
-    },
-    
-]
+
 
 export default function MyBookings(){
 
@@ -104,65 +82,93 @@ export default function MyBookings(){
       
 
       const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
+      
+      
+      const orders=[
+          {
+              id: "708a922d-2407-4f98-9579-a5a510425348",
+              quantity: 1,
+              transactionHash: "0xddae0658e387b1a232af9c1ac1e083369f12590ba74575c9155242350f1dd05b",
+              orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
+              paymentIntentId: "pi_3Lxa7iLY9m0w00gp0IX17qwv",
+              paymentIntentStatus: "PAYMENT_PAID",
+              name: "Line Skip",
+              serviceName: "Benjamin’s On Franklin",
+              endDate: "2022-11-14T00:00:00Z",
+              unitPrice: 2500,
+              currency: "USD",
+              tokenId: 1,
+              orderStatus: "TICKETS_ISSUED",
+              ticketDate: "2022-10-27T00:00:00Z"
+            },
+            {
+                id: "8e05be0f-16e5-4480-aa0c-853a56c4e747",
+                quantity: 1,
+                orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
+                paymentIntentId: "pi_3Lxby2LY9m0w00gp0nEGwvXO",
+            paymentIntentStatus: "PAYMENT_INITIATED",
+            name: "Line Skip",
+            serviceName: "Benjamin’s On Franklin",
+            endDate: "2022-11-14T00:00:00Z",
+            unitPrice: 2500,  
+            currency: "USD",    
+            ticketDate: "2022-10-28T00:00:00Z"
+        }
+    ]
+    
+    const filteredOrderz = orders.filter((order:any)=> orderFilter === order.paymentIntentStatus )
 
-
-
-
-    if(!isAuthenticated){
-        return(
-            <Layout>
-                <Box>
-                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-                </Box>
-            </Layout>
-        )
-    }
+    // if(!isAuthenticated){
+    //     return(
+    //         <Layout>
+    //             <Box>
+    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+    //             </Box>
+    //         </Layout>
+    //     )
+    // }
 
     return(
     <Layout>
-        <Grid minH='100vh' h='100%' templateColumns={['2fr','2fr','repeat(5, 1fr)']} gap={6} >
-            <GridItem colStart={[1,1,2]} colEnd={[3,3,4]}>
-                <Flex direction='column'>
-                    <Heading mt='10' mb='6'>My Bookings</Heading>
-                    <Tabs variant='unstyled' >
-                        <TabList>
-                            <Tab textStyle={'h4'}  _selected={{ color: 'cyan'}}>Tickets</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                            <BookingsFilters onSelectFilter={selectFilterHandler}/>
-                                <Skeleton isLoaded={!isLoading}>
-                                {filteredOrders ? filteredOrders.map((order:any)=>(
-                                    <Flex p='1em' bg='blackAlpha.700' mb='3' direction='column' key={order.id}>
+        <Grid mx='1em' minH='100vh' h='100%' templateColumns={['1fr','1fr','1fr','repeat(5, 1fr)']} gap={6} >
+            <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
+                <Flex width={'100%'} direction='column'>
+                    <Box ml={[6]}>
+                        <Heading  mt='10' mb='6'>My Bookings</Heading>
+                    </Box>
+                    <Flex w='100'>
+                            {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
+
+                                {/* <Skeleton isLoaded={!isLoading}> */}
+                                {orders?filteredOrderz.map((order:any)=>(
+                                    <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
                                             <Badge colorScheme={order.paymentIntentStatus==='PAYMENT_PAID'?'green':'purple'}  ml='1' >
                                                 {order.paymentIntentStatus} 
                                             </Badge>
-                                        </HStack>
+                                        </HStack> 
                                         <Flex mb='1' justifyContent='space-between'>
                                             <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
                                             <Text textStyle='secondary'>${order.unitPrice/100}</Text>
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
-                                            <Text color='whiteAlpha.300'>Valid on:</Text>
-                                            <Text color='whiteAlpha.700'>{dayjs(order.ticketPrice).format('MMM D, YYYY')}</Text>
+                                            <Text color='whiteAlpha.500'>Valid on:</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null : <Button colorScheme='teal' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>}
                                     </Flex>
                                 ))
                                 :null}
-                                </Skeleton>
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
+                               {/* </Skeleton> */}
+                    </Flex>
                 </Flex>
             </GridItem>
         </Grid>
         <QrCodeModal
             isGeneratingCode={isGeneratingCode}
             qrValue={qrSignature}
-            isModalOpen={isModalOpen}
+            isModalOpen={isModalOpen} 
             onCloseModal={()=>setIsModalOpen(false)}
 
         />
