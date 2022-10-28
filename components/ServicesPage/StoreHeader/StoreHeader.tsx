@@ -16,7 +16,7 @@ export default function StoreHeader({coverImageHash, storeName, city, state, lat
     // const {isError, isFetchingImage, imageSrc} = useIpfsImage(imageHash)
 
     return(
-        <Flex mt='4' position='relative' direction='column'>
+        <Flex mt='4' w='100%' position='relative' direction='column'>
             <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
             <Box height='250px' w='100%'>
                 <Image width='100%' h='100%' src={`https://nftstorage.link/ipfs/${coverImageHash}`} alt='Store header' />

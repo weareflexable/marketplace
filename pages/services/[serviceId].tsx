@@ -122,7 +122,7 @@ export default function ServicesPage(){
             <Header/>
             <SimpleGrid mt='2' columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
-                    <Skeleton isLoaded={!isLoading}>
+                    <Skeleton w='100%' isLoaded={!isLoading}>
                         <StoreHeader
                          coverImageHash={data && data.payload.coverImageHash}
                          storeName={data && data.payload.name}

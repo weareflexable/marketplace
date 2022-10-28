@@ -1,6 +1,5 @@
 import React from 'react'
-import {Flex,HStack,Box, Button,Text} from '@chakra-ui/react'
-import Image from 'next/image'
+import {Flex,HStack,Box, Button,Text,Image} from '@chakra-ui/react'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 import { useRouter } from 'next/router'
@@ -17,7 +16,7 @@ export default function Header(){
     return(
         <Flex bg='gray.800' w='100vw'  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' w='100%' h='55px'>
             <Link href='/'>
-               <a> <Image src='/logoSmall.png' width={'200px'} height={'15px'} alt='Logo of flexable app'/></a>
+               <a> <Image src='/logoSmall.png' w={['150px','200px']} height={'15px'} alt='Logo of flexable app'/></a>
             </Link>
             <Flex as='nav'>
                 {
