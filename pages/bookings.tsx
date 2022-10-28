@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import QrCodeModal from '../components/BookingsPage/QrCodeModal/QrCodeModal';
 import { getPlatformPaseto } from '../utils/storage';
+import BookingsFilters from '../components/BookingsPage/BookingFilter/BookingFilter';
 
 const purchasedTickets = [
     {
@@ -42,8 +43,8 @@ export default function MyBookings(){
     const {setIsAuthenticated,isAuthenticated} = useAuthContext();
     const [isGeneratingCode, setIsGeneratingCode] = useState(false)
     const [qrSignature, setQrSignature] = useState({})
-    const [orderFilter,setOrderFilter] = useState('paid')
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [orderFilter, setOrderFilter] = useState('PAYMENT_PAID')
 
 
     const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
@@ -58,11 +59,6 @@ export default function MyBookings(){
         const body = await res.json()
         return body
       })
-
-
-      const redeemTicket=(ticket: any)=>{
-        console.log(ticket);
-      }
 
       const generateQrCode = async(order:any)=>{
         let qrCodePayload;
@@ -101,8 +97,13 @@ export default function MyBookings(){
 
       }
 
+      const selectFilterHandler=(value:string)=>{
+        console.log(value)
+        setOrderFilter(value)
+      }
       
 
+      const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
 
 
 
@@ -129,8 +130,9 @@ export default function MyBookings(){
                         </TabList>
                         <TabPanels>
                             <TabPanel>
+                            <BookingsFilters onSelectFilter={selectFilterHandler}/>
                                 <Skeleton isLoaded={!isLoading}>
-                                {data && data.payload ? data.payload.map((order:any)=>(
+                                {filteredOrders ? filteredOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
