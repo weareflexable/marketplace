@@ -21,13 +21,13 @@ export default function Header(){
             <Flex as='nav'>
                 {
                     isAuthenticated?
-                    <HStack spacing={2}>
+                    <HStack spacing={3}>
                      <Link href='/bookings'>
                         <a><Text fontWeight='medium'>My Bookings</Text></a>
                     </Link>
-                    <Button onClick={logout}>Logout</Button>
+                    <Button variant='link' onClick={logout}>Logout</Button>
                     </HStack>
-                    : <Button onClick={login}>Login</Button>
+                    : <Button colorScheme={'cyan'} onClick={login}>Login</Button>
                 }
                 
             </Flex>

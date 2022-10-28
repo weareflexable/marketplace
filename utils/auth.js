@@ -26,7 +26,7 @@ export const signInWithProvider = async (provider) => {
         provider,
       },
       // only redirects to a page in thesame domain
-      { redirectTo: `https://marketplace.flexabledats.com/bookings` } // no way to pass the paceto using this option
+      { redirectTo: `https://marketplace.flexabledats.com/` } // no way to pass the paceto using this option
       );
       return { session, error };
 
@@ -40,7 +40,7 @@ export const signUp = async ({ email, password }) => {
       email,  
       password,
     },
-    { redirectTo: `https://marketplace.flexabledats.com/bookings` }
+    { redirectTo: `https://marketplace.flexabledats.com/` }
   );
   return { user, session, error };
 };

@@ -53,7 +53,7 @@ const New = () => {
         duration: 9000,
         isClosable: true,
       })
-      router.push(`/bookings`);
+      router.push(`/`);
     }
   };
 

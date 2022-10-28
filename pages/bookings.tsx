@@ -120,9 +120,9 @@ export default function MyBookings(){
 
     return(
     <Layout>
-        <Grid minH='100vh' h='100%' templateColumns='repeat(5, 1fr)' gap={6} >
-            <GridItem colStart={2} colEnd={4}>
-                <Flex w='600px' direction='column'>
+        <Grid minH='100vh' h='100%' templateColumns={['2fr','2fr','repeat(5, 1fr)']} gap={6} >
+            <GridItem colStart={[1,1,2]} colEnd={[3,3,4]}>
+                <Flex direction='column'>
                     <Heading mt='10' mb='6'>My Bookings</Heading>
                     <Tabs variant='unstyled' >
                         <TabList>
