@@ -191,7 +191,7 @@ export default function ServicesPage(){
                 width='50px'
                 height='55px' 
                 position='absolute'
-                bottom ='3%'
+                bottom ='10%'
                 right='10%'
                 >
                     <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
