@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode} from '@chakra-ui/react'
+import {Box,Flex,Text, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -12,6 +12,8 @@ import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
 import dayjs from 'dayjs'
 import { setStorage } from '../../utils/localStorage'
+import { MdAddShoppingCart } from 'react-icons/md'
+import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 
 
 export default function ServicesPage(){
@@ -20,6 +22,7 @@ export default function ServicesPage(){
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const [cart, setCart] = useState<Service[]>([]);
     const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
+    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     
     const formatedDate = dayjs(serviceDate).format('YYYY-MMM-DD')
 
@@ -133,7 +136,7 @@ export default function ServicesPage(){
                          />
                     </Skeleton>
 
-                    <Skeleton my='2' isLoaded={!isLoading}>
+                    <Skeleton my='1' isLoaded={!isLoading}>
                         <TicketSearchBar
                             date={serviceDate}
                             onChangeDate = {changeServiceDate}
@@ -145,9 +148,10 @@ export default function ServicesPage(){
                         </Skeleton>
 
                 </Flex> 
-                <Flex gridColumnStart={6} gridColumnEnd={8} h='100%'>
+
+                    {/* Dont render web cart on mobile */}
+                <Flex display={['none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
                     {cart.length>0?
-                    <Skeleton height='50px' w='100%' isLoaded={!isLoading}>
                         <Cart 
                             onCreateOrder={createOrder} 
                             onIncrementCartItemQuantity={incrementCartItemQuantity} 
@@ -156,10 +160,48 @@ export default function ServicesPage(){
                             loginBeforePayment = {loginBeforePayment}
                             tickets={cart}
                         />
-                    </Skeleton>
                     :null}
                 </Flex>
+
+                {/* Dont render mobile cart on large screen */}
+                <Flex display={['flex','flex','none']} width={'100%'}>
+                    <MobileCart
+                        onCreateOrder={createOrder} 
+                        onIncrementCartItemQuantity={incrementCartItemQuantity} 
+                        onDecrementCartItemQuantity={decrementCartItemQuantity} 
+                        onRemoveCartItem={removeCartItemHandler} 
+                        loginBeforePayment = {loginBeforePayment}
+                        tickets={cart}
+                        isDrawerOpen={isCartDrawerOpen}
+                        onCloseDrawer={()=>setIsCartDrawerOpen(false)}
+                    />
+                </Flex>
+
             </SimpleGrid>
+            {/* cart button to only display on mobile */}
+            {cart.length>0?
+                <Box
+                width='50px'
+                height='55px' 
+                position='absolute'
+                bottom ='3%'
+                right='10%'
+                >
+                    <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
+                        <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text>
+                    </Center>
+
+                     <IconButton 
+                        isRound
+                        onClick={()=>setIsCartDrawerOpen(true)}
+                        colorScheme='teal'
+                        aria-label='Open cart'
+                        size='lg'
+                        icon={<MdAddShoppingCart color='cyan.300'/>}
+                      />
+                </Box>
+            :null}
+
             <PaymentModal 
               onCloseModal={onClose} 
               isModalOpen={isOpen} 

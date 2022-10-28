@@ -13,10 +13,11 @@ interface MobileCartProps{
     onDecrementCartItemQuantity:(id:string)=>void,
     onCreateOrder: (total:number)=>void,
     onCloseDrawer: ()=>void,
+    loginBeforePayment:(total:number)=>void,
     isDrawerOpen:boolean
 }
 
-export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder,onCloseDrawer,isDrawerOpen}:MobileCartProps){
+export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,loginBeforePayment,onDecrementCartItemQuantity,onCreateOrder,onCloseDrawer,isDrawerOpen}:MobileCartProps){
 
 
     function calculateCartTotal(tickets:Service[]){
@@ -55,7 +56,7 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
                         }
                     </Flex>
                 <DrawerFooter borderTopWidth='1px'>
-                    <CartTotalButton onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
+                    <CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
                 </DrawerFooter>    
                 </DrawerBody>
                 </DrawerContent>
@@ -105,15 +106,15 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
 
 interface CartTotalButtonProps{
     totalPrice: number
-    onCreateOrder:()=>void;
+    onCreateOrder:()=>void
+    loginBeforePayment:(total:number)=>void,
 }
-const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
+const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
 
     const {isAuthenticated} = useAuthContext()
-    const router = useRouter()
 
     if(!isAuthenticated){
-        return <Button mt='3' onClick={()=>router.push('landing')} colorScheme='cyan' w='100%'>
+        return <Button mt='3' onClick={()=>loginBeforePayment(totalPrice)} colorScheme='cyan' w='100%'>
             <Text>Login to continue</Text>
         </Button>
     }
@@ -124,7 +125,7 @@ const CartTotalButton = ({totalPrice,onCreateOrder}:CartTotalButtonProps)=>{
                 <Text color='gray.900' fontWeight='medium'>Book Now</Text>
                 <HStack spacing={2}>
                     <Text color='GrayText' fontWeight='medium'>Total:</Text>
-                    <Text color='ButtonText' fontWeight='medium'>${totalPrice}</Text>
+                    <Text color='ButtonText' fontWeight='medium'>${totalPrice/100}</Text>
                 </HStack>
             </Flex>
         </Button>

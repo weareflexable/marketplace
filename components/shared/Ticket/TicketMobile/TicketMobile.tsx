@@ -26,7 +26,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
     const ticketIsAvailable = data.tickets.length>0;
 
     return( 
-        <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' onClick={ticketIsAvailable?()=>onTriggerAction(data.id):()=>{}}>
+        <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
@@ -67,7 +67,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                              <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
                          </HStack>
                          <HStack spacing='1'>
-                            <Button color={'cyan.500'}>Add to cart</Button>
+                            <Button onClick={ticketIsAvailable?()=>onTriggerAction(data.id):()=>{}} color={'cyan.500'}>Add to cart</Button>
                          </HStack>
                     </Flex>
                     </>
