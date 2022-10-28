@@ -46,7 +46,7 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text>Contract Address:</Text>
+                      <Text>Contract:</Text>
                       <Text>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
                     </HStack>
 
@@ -54,6 +54,12 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                       <Text>Token ID:</Text>
                       {/* @ts-ignore */}
                       <Text>{qrValue.tokenId}</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text>NFT:</Text>
+                      {/* @ts-ignore */}
+                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a>
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
