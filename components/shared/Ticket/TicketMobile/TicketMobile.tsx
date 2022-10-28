@@ -63,9 +63,9 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                     </HStack>
 
                     <Flex alignItems='flex-start' justifyContent='center' direction='column'>
-                         <Text mb='3' textStyle={'ticketPrice'}>${data.price}</Text> 
+                         <Text mb='3' textStyle={'ticketPrice'}>${data.price/100}</Text> 
                          <HStack spacing='1'>
-                             <Text textStyle={'caption'}>12</Text>
+                             <Text textStyle={'caption'}>{data.ticketMaxPerDay}</Text>
                              <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
                          </HStack>
                     </Flex>
