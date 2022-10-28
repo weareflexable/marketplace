@@ -88,49 +88,16 @@ export default function MyBookings(){
       const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
       
       
-      const orders=[
-          {
-              id: "708a922d-2407-4f98-9579-a5a510425348",
-              quantity: 1,
-              transactionHash: "0xddae0658e387b1a232af9c1ac1e083369f12590ba74575c9155242350f1dd05b",
-              orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
-              paymentIntentId: "pi_3Lxa7iLY9m0w00gp0IX17qwv",
-              paymentIntentStatus: "PAYMENT_PAID",
-              name: "Line Skip",
-              serviceName: "Benjamin’s On Franklin",
-              endDate: "2022-11-14T00:00:00Z",
-              unitPrice: 2500,
-              currency: "USD",
-              tokenId: 1,
-              orderStatus: "TICKETS_ISSUED",
-              ticketDate: "2022-10-27T00:00:00Z"
-            },
-            {
-                id: "8e05be0f-16e5-4480-aa0c-853a56c4e747",
-                quantity: 1,
-                orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
-                paymentIntentId: "pi_3Lxby2LY9m0w00gp0nEGwvXO",
-            paymentIntentStatus: "PAYMENT_INITIATED",
-            name: "Line Skip",
-            serviceName: "Benjamin’s On Franklin",
-            endDate: "2022-11-14T00:00:00Z",
-            unitPrice: 2500,  
-            currency: "USD",    
-            ticketDate: "2022-10-28T00:00:00Z"
-        }
-    ]
-    
-    const filteredOrderz = orders.filter((order:any)=> orderFilter === order.paymentIntentStatus )
 
-    // if(!isAuthenticated){
-    //     return(
-    //         <Layout>
-    //             <Box>
-    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-    //             </Box>
-    //         </Layout>
-    //     )
-    // }
+    if(!isAuthenticated){
+        return(
+            <Layout>
+                <Box>
+                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+                </Box>
+            </Layout>
+        )
+    }
 
     return(
     <Layout>
@@ -144,7 +111,7 @@ export default function MyBookings(){
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
                                 {/* <Skeleton isLoaded={!isLoading}> */}
-                                {orders?filteredOrderz.map((order:any)=>(
+                                {filteredOrders?filteredOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>

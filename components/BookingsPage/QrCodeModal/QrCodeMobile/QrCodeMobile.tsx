@@ -8,7 +8,7 @@ interface QrCodeMobileProps{
     isDrawerOpen: boolean,
     onCloseDrawer: ()=>void,
     isGeneratingCode: boolean,
-    qrValue: object
+    qrValue: any
 }
 
 const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
@@ -59,7 +59,7 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                       <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
                       {/* @ts-ignore */}
                       <Text color='cyan.700' textStyle={'caption'}>
-                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT on opensea</a>
+                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue!.tokenId}`}>View DAT on opensea</a>
                       </Text>
                     </HStack>
 

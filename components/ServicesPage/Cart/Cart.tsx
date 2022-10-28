@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
-import CartList from './CartList/CartList'
 import { Service } from '../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
 import { useAuthContext } from '../../../context/AuthContext'
