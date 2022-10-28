@@ -11,30 +11,30 @@ import {
     Flex,
     Button,
     HStack,
-    DrawerOverlay,
-    DrawerContent,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
-    DrawerFooter,
+    DrawerContent,
     DrawerHeader,
+    DrawerOverlay,
+    DrawerFooter,
   } from '@chakra-ui/react'
 
 
-import { Service } from '../../../data/services';
+import { Service } from '../../../../data/services';
 import { useRouter } from 'next/router';
-import { useCheckoutContext } from '../../../context/CheckoutContext';
+import { useCheckoutContext } from '../../../../context/CheckoutContext';
 
 
-interface PaymentModalProps{
-  isModalOpen: boolean,
-  onCloseModal: ()=>void,
+interface ProcessOrderDrawerProps{
+  isDrawerOpen: boolean,
+  onCloseDrawer: ()=>void,
   totalCost: number,
   cart: Service[]
 }
 
 
-  export default function ProcessOrderModal({cart, totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
+  export default function ProcessOrderDrawer({cart, totalCost, isDrawerOpen, onCloseDrawer}:ProcessOrderDrawerProps){
 
 
     const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
@@ -51,14 +51,13 @@ interface PaymentModalProps{
     }
 
     return (
-       <Flex display={['flex','flex','flex','none']} w='100%'>
-         <Modal isOpen={isModalOpen} onClose={onCloseModal}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader textStyle={'body'}>Order summary</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-  
+      <>
+       <Drawer placement={'bottom'} size='full' onClose={onCloseDrawer} isOpen={isDrawerOpen}> 
+        <DrawerOverlay />
+        <DrawerContent>
+         <DrawerCloseButton />
+          <DrawerHeader>Order Summary</DrawerHeader>
+          <DrawerBody>
               {cartItems.map(item=>(
                 <Flex p='1em' justifyContent={'space-between'} direction='column' alignItems='center' key={item.id}>
                   <Text mb={'4'} textStyle={'h4'} >{item.name}</Text>
@@ -79,17 +78,18 @@ interface PaymentModalProps{
                   </HStack>
                 </Flex>
               ))}
-  
-           </ModalBody>
-        
-          <ModalFooter>
-            <Button variant='ghost' onClick={onCloseModal}>Cancel Order</Button>
-            <Button colorScheme='blue' mr={3}  onClick={proceedToPayment} >
-              {`Proceed payment  $${totalAmount/100}`}
+          
+
+            <DrawerFooter>
+            <Button mr={3} variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>
+            <Button px='1em' colorScheme='blue'   onClick={proceedToPayment} >
+            {`Proceed payment  $${totalAmount/100}`}
             </Button>
-          </ModalFooter>
-      </ModalContent>
-      </Modal>
-     </Flex>     
+            </DrawerFooter>
+            </DrawerBody>
+            </DrawerContent>
+            </Drawer>
+       
+      </>
     )
   }

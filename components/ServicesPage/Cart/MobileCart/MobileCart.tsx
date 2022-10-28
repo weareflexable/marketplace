@@ -120,12 +120,12 @@ const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotal
     }
 
     return(
-        <Button colorScheme='cyan' onClick={onCreateOrder} mt='3'>
+        <Button w='100%' colorScheme='cyan' onClick={onCreateOrder} mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
                 <Text color='gray.900' fontWeight='medium'>Book Now</Text>
                 <HStack spacing={2}>
                     <Text color='GrayText' fontWeight='medium'>Total:</Text>
-                    <Text color='ButtonText' fontWeight='medium'>${totalPrice/100}</Text>
+                    <Text  color='ButtonText' fontWeight='medium'>${totalPrice/100}</Text>
                 </HStack>
             </Flex>
         </Button>

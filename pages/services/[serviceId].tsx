@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack} from '@chakra-ui/react'
+import {Box,Flex,Text, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -14,6 +14,7 @@ import dayjs from 'dayjs'
 import { setStorage } from '../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
+import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
 
 
 export default function ServicesPage(){
@@ -23,6 +24,9 @@ export default function ServicesPage(){
     const [cart, setCart] = useState<Service[]>([]);
     const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
+    const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
+
+    const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
     
     const formatedDate = dayjs(serviceDate).format('YYYY-MMM-DD')
 
@@ -97,7 +101,7 @@ export default function ServicesPage(){
 
     const createOrder = (totalCost:number)=>{
         setAmount(totalCost);
-        showPaymentModal()
+       isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
     }
 
 
@@ -210,6 +214,13 @@ export default function ServicesPage(){
               isModalOpen={isOpen} 
               cart={cart}
               totalCost = {50}
+              />
+
+              <ProcessOrderDrawer
+                onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
+                isDrawerOpen={isProcessDrawerOpen} 
+                cart={cart}
+                totalCost = {50}
               />
         </Box>
     </DarkMode>
