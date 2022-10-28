@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
+import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, DrawerFooter} from '@chakra-ui/react'
 import CartList from '../CartList/CartList'
 import { Service } from '../../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
@@ -11,10 +11,12 @@ interface MobileCartProps{
     onRemoveCartItem: (id: string)=>void,
     onIncrementCartItemQuantity: (id: string)=>void,
     onDecrementCartItemQuantity:(id:string)=>void,
-    onCreateOrder: (total:number)=>void
+    onCreateOrder: (total:number)=>void,
+    onCloseDrawer: ()=>void,
+    isDrawerOpen:boolean
 }
 
-export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder}:MobileCartProps){
+export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder,onCloseDrawer,isDrawerOpen}:MobileCartProps){
 
 
     function calculateCartTotal(tickets:Service[]){
@@ -30,25 +32,35 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
 
     return(
         <Flex mt='1em' flex='1' width='100%' direction='column'>
-            <Text ml='1em' textStyle={'h4'} as='h4' mb='3'>Cart</Text>
-            <Flex direction='column' p='3' flex='1' borderEndRadius='4' >
-                {tickets.length > 0 ? 
-                <>
-                    <Flex as='ul' direction='column' flex='1' w='100%'>
-                        {tickets.map(ticket=>(
-                            <CartListItem 
-                            key={ticket.id} 
-                            onIncrementItemQuantity={onIncrementCartItemQuantity} 
-                            onDecrementItemQuantity={onDecrementCartItemQuantity}
-                            onRemoveTicket={onRemoveCartItem} 
-                            ticket={ticket}
-                            />
-                            ))}
+            <Drawer placement={'bottom'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
+                <DrawerOverlay />
+                <DrawerContent>
+                <DrawerHeader borderBottomWidth='1px'>Cart Items</DrawerHeader>
+                <DrawerBody>
+                    <Flex direction='column' p='3' flex='1' borderEndRadius='4' >
+                        {tickets.length > 0 ? 
+                        <>
+                            <Flex as='ul' direction='column' flex='1' w='100%'>
+                                {tickets.map(ticket=>(
+                                    <CartListItem 
+                                    key={ticket.id} 
+                                    onIncrementItemQuantity={onIncrementCartItemQuantity} 
+                                    onDecrementItemQuantity={onDecrementCartItemQuantity}
+                                    onRemoveTicket={onRemoveCartItem} 
+                                    ticket={ticket}
+                                    />
+                                    ))}
+                            </Flex>
+                        </>: <Text>Add tickets to cart</Text>
+                        }
                     </Flex>
+                <DrawerFooter borderTopWidth='1px'>
                     <CartTotalButton onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
-                </>: <Text>Add tickets to cart</Text>
-                }
-            </Flex>
+                </DrawerFooter>    
+                </DrawerBody>
+                </DrawerContent>
+            </Drawer>
+            
         </Flex>
     )
 }
