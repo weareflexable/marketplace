@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, DrawerFooter} from '@chakra-ui/react'
-import CartList from '../CartList/CartList'
+import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, DrawerCloseButton, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, DrawerFooter} from '@chakra-ui/react'
 import { Service } from '../../../../data/services'
 import {MdOutlineDeleteOutline} from 'react-icons/md'
 import { useAuthContext } from '../../../../context/AuthContext'
@@ -33,12 +32,13 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
 
     return(
         <Flex mt='1em' flex='1' width='100%' direction='column'>
-            <Drawer placement={'bottom'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
+            <Drawer size='full' colorScheme='alphaBlack.800' placement={'bottom'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
                 <DrawerOverlay />
                 <DrawerContent>
-                <DrawerHeader borderBottomWidth='1px'>Cart Items</DrawerHeader>
+                <DrawerCloseButton />
+                <DrawerHeader color='white'>Cart Items</DrawerHeader>
                 <DrawerBody>
-                    <Flex direction='column' p='3' flex='1' borderEndRadius='4' >
+                    <Flex direction='column' p='1' flex='1' borderEndRadius='4' >
                         {tickets.length > 0 ? 
                         <>
                             <Flex as='ul' direction='column' flex='1' w='100%'>
@@ -55,8 +55,8 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
                         </>: <Text>Add tickets to cart</Text>
                         }
                     </Flex>
-                <DrawerFooter borderTopWidth='1px'>
-                    <CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>
+                <DrawerFooter>
+                    {tickets.length>0?<CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>:null}
                 </DrawerFooter>    
                 </DrawerBody>
                 </DrawerContent>
@@ -75,28 +75,28 @@ interface CartListItemProps{
 
 const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementItemQuantity}:CartListItemProps)=>{
     
-    const itemTotal = ticket.price *  ticket.quantity
+    const itemTotal = (ticket.price/100) *  ticket.quantity
     
     return(
-        <Flex display={['none','none','flex']} p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
+        <Flex  p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
             <Flex direction='column' width='100%'>
                 <Flex w='100%' justifyContent='space-between'>
-                    <Text mb='2' textStyle={'body'}>{ticket.name}</Text>
+                    <Text mb='2'  textStyle={'body'}>{ticket.name}</Text>
                     <IconButton onClick={()=>onRemoveTicket( ticket.id)} size='xs' icon={<MdOutlineDeleteOutline/>} aria-label='remove-item'/>
                 </Flex>
 
                 <Flex justifyContent='space-between'  width='100%' flex='1'>
-                    <HStack spacing='1'>
-                        <NumberInput w='150px'  size='xs' maxW={20} defaultValue={1} max={10} min={1}>
+                    <HStack spacing='2'>
+                        <NumberInput w='150px' color='white'  size='xs' maxW={20} defaultValue={1} max={10} min={1}>
                             <NumberInputField />
                             <NumberInputStepper>
                             <NumberIncrementStepper onClick={()=>onIncrementItemQuantity( ticket.id)}/>
                             <NumberDecrementStepper onClick={()=>onDecrementItemQuantity( ticket.id)}/>
                             </NumberInputStepper>
                         </NumberInput>
-                        <Text>${ticket.price}</Text>
+                        <Text >${ticket.price/100}</Text>
                     </HStack>
-                    <Text>${itemTotal}</Text>
+                    <Text textStyle='body'>${itemTotal}</Text>
                 </Flex>
             </Flex>
             

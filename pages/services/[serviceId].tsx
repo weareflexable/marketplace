@@ -111,6 +111,9 @@ export default function ServicesPage(){
     }
 
     useEffect(() => {
+        // if(cart.length<1){
+        //     setIsCartDrawerOpen(false)
+        // }
       return () => {
         if(cart.length>0){
            setStorage('paymentStatus','pending')
