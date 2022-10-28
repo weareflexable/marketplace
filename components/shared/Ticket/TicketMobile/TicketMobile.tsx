@@ -22,10 +22,10 @@ interface ServiceProps{
 
 function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
-    console.log(data)
+    const ticketIsAvailable = data.tickets.length>0;
 
     return( 
-        <Box display={['block','block','none']} border='1px solid #e5e5e5' cursor='pointer' onClick={()=>onTriggerAction(data.id)}>
+        <Box display={['block','block','none']} border='1px solid #e5e5e5' cursor='pointer' onClick={ticketIsAvailable?()=>onTriggerAction(data.id):()=>{}}>
             {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
@@ -53,21 +53,13 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                     <HStack spacing={3}  py='12px'>
                         <Flex direction='column' >
                             <Text color='gray.500' mb='1'  textStyle={'caption'} >
-                                Start time 
+                                Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
+                            {ticketIsAvailable?dayjs(data.tickets[0].date).format('MMM D, YYYY'):0}
                             </Text>
                         </Flex>
                         <Divider orientation='vertical'/>
-                        <Flex direction='column' >
-                            <Text mb='1' color='gray.500'  textStyle={'caption'} >
-                                End time 
-                            </Text>
-                            <Text  textStyle={'caption'}>
-                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
-                            </Text>
-                        </Flex>
                     </HStack>
 
                     <Flex alignItems='flex-start' justifyContent='center' direction='column'>
