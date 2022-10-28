@@ -49,7 +49,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
                 {/* bottom panel */}
 
-                <Flex px='1em' alignItems='center' justifyContent='space-between' bg='#f7f7f7'>
+                <Flex px='1em' alignItems='center' justifyContent='space-between' bg='blackAlpha.600'>
                     <HStack spacing={3}  py='12px'>
                         <Flex direction='column' >
                             <Text color='gray.500' mb='1'  textStyle={'caption'} >
