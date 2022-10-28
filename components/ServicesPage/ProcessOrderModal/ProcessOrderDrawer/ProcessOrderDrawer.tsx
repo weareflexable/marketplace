@@ -83,7 +83,7 @@ interface ProcessOrderDrawerProps{
             <DrawerFooter>
             <Button mr={3} variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>
             <Button px='1em' colorScheme='blue'   onClick={proceedToPayment} >
-            {`Proceed payment  $${totalAmount/100}`}
+            {`Proceed to payment  $${totalAmount/100}`}
             </Button>
             </DrawerFooter>
             </DrawerBody>

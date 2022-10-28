@@ -33,6 +33,9 @@ export const StoreCard = ({data}:StoreCardProps) =>{
                     <Text color='gray.300' textStyle={'secondary'} >
                         Bar
                     </Text>
+                    <Text mt='3' color='cyan.300' textStyle={'secondary'} >
+                        View services
+                    </Text>
                 </Flex>
             </Flex>
         </Box>
