@@ -107,7 +107,7 @@ export default function MyBookings(){
                     <Box ml={[6]}>
                         <Heading  mt='10' mb='6'>My Bookings</Heading>
                     </Box>
-                    <Flex w='100'>
+                    <Flex direction='column' w='100'>
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
                                 {/* <Skeleton isLoaded={!isLoading}> */}
