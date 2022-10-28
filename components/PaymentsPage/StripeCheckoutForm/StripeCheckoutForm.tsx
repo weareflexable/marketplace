@@ -7,7 +7,7 @@ import { useCheckoutContext } from '../../../context/CheckoutContext';
 
 const CheckoutForm = () => {
 
-  const {totalAmount}=  useCheckoutContext()
+  const {totalAmount,cartItems}=  useCheckoutContext()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -35,10 +35,9 @@ const CheckoutForm = () => {
       confirmParams: {
         return_url: "https://marketplace.flexabledats.com/bookings", // should have a userID where it can fetch booking for it
       },
-      
     });
 
-    
+
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
       console.log(result.error.message);

@@ -61,21 +61,14 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     <HStack  spacing={3} px='1em'  py='12px'>
                         <HStack spacing='2' >
                             <Text color='gray.500'  textStyle={'caption'} >
-                                Start time 
+                                Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
                             {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
                             </Text>
                         </HStack>
                         <Divider orientation='vertical'/>
-                        <HStack spacing='2' >
-                            <Text color='gray.500'  textStyle={'caption'} >
-                                End time 
-                            </Text>
-                            <Text  textStyle={'caption'}>
-                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
-                            </Text>
-                        </HStack>
+
                         <Divider orientation='vertical'/>
                         <HStack spacing='2' >
                             <Text color='gray.500'  textStyle={'caption'} >
