@@ -13,12 +13,12 @@ export default function Layout({children}:LayoutProps){
     console.log(router.pathname)
 
     return(
-        <SimpleGrid bg='gray.900' columns={8} spacing={3} w='100%' h='100%'>
+        <Flex bg='gray.900' direction='column'  w='100vw' minH='100vh' h='100%'>
             <Header/>
-            <Box as='main' gridColumnStart={1} gridColumnEnd={9}>
+            <Box as='main' w='100vw'>
                 {children}
             </Box>
-        </SimpleGrid>
+        </Flex>
     )
 }
 

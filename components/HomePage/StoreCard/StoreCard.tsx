@@ -19,7 +19,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     }
 
     return(
-        <Box bg={'gray.700'} w='300px' onClick={()=>navigateToServicePage(data.id)}>
+        <Box bg={'gray.700'} w={['100%', '100%', '300px']} cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
             <Image src='/benjamins.jpeg' m='0'  width='100%' height='200' alt={'Thumbnail image for cover'}/>
             <Flex p='4'>
                 <Avatar size='sm' name='Kent Dodds' src='/benjamins.jpeg'/>
@@ -27,10 +27,10 @@ export const StoreCard = ({data}:StoreCardProps) =>{
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name}
                     </Text>
-                    <Text color='gray.500' textStyle={'secondary'}>
+                    <Text color='gray.300' textStyle={'secondary'}>
                         {data.city?.charAt(0).toUpperCase()+data.city?.slice(1)}, {data.state?.toUpperCase()}
                     </Text>
-                    <Text >
+                    <Text color='gray.300' textStyle={'secondary'} >
                         Bar
                     </Text>
                 </Flex>

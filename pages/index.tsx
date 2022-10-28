@@ -49,13 +49,12 @@ export default function Home() {
           <link rel="icon" href="/favicon.png" />
         </Head>
           <Layout>
-            <Grid bg="gray.900" h='100vh' gridTemplateColumns={'6'} >
-              <GridItem colStart={2} colEnd={6}>
-                <Flex h='40vh' mb='5' direction='column' justifyContent='center' alignItems='center'>
+
+                <Flex w={['100%']} h={['20vh','40vh']} mb={['3','5']} alignSelf='center' justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
                   <EventSearchBar/>
                 </Flex>
-              </GridItem >
-              <GridItem px={'2em'} gridColumnStart={1} gridColumnEnd={6}> 
+
+              <Flex px={'2em'} w='100vw'> 
                 <Wrap w='100%' alignItems='center' justifyContent='center'> 
                     {data && data.payload ? data.payload.slice(0,1).map((store:Store)=>(
                         <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
@@ -63,8 +62,8 @@ export default function Home() {
                         </WrapItem> 
                     )):null}
                 </Wrap>
-              </GridItem>
-            </Grid>
+              </Flex>
+
          </Layout>
          </>
   )
