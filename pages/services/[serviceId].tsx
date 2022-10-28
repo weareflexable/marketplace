@@ -153,7 +153,7 @@ export default function ServicesPage(){
                 </Flex> 
 
                     {/* Dont render web cart on mobile */}
-                <Flex display={['none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
+                <Flex display={['none','none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
                     {cart.length>0?
                         <Cart 
                             onCreateOrder={createOrder} 
@@ -167,7 +167,7 @@ export default function ServicesPage(){
                 </Flex>
 
                 {/* Dont render mobile cart on large screen */}
-                <Flex display={['flex','flex','none']} width={'100%'}>
+                <Flex display={['flex','flex','flex','none']} width={'100%'}>
                     <MobileCart
                         onCreateOrder={createOrder} 
                         onIncrementCartItemQuantity={incrementCartItemQuantity} 
