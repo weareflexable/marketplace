@@ -29,6 +29,57 @@ export default function MyBookings(){
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
 
+
+    const dummyOrders=[
+        {
+            id: "708a922d-2407-4f98-9579-a5a510425348",
+            quantity: 1,
+            transactionHash: "0xddae0658e387b1a232af9c1ac1e083369f12590ba74575c9155242350f1dd05b",
+            orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
+            paymentIntentId: "pi_3Lxa7iLY9m0w00gp0IX17qwv",
+            paymentIntentStatus: "PAYMENT_PAID",
+            name: "Line Skip",
+            serviceName: "Benjamin’s On Franklin",
+            endDate: "2022-11-14T00:00:00Z",
+            unitPrice: 2500,
+            currency: "USD",
+            tokenId: 1,
+            orderStatus: "TICKETS_ISSUED",
+            ticketDate: "2022-10-27T00:00:00Z",
+            userId: "revoticengineering@gmail.com"
+        },
+        {
+            id: "8e05be0f-16e5-4480-aa0c-853a56c4e747",
+            quantity: 1,
+            orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
+            paymentIntentId: "pi_3Lxby2LY9m0w00gp0nEGwvXO",
+            paymentIntentStatu: "PAYMENT_INITIATED",
+            name: "Line Skip",
+            serviceName: "Benjamin’s On Franklin",
+            endDate: "2022-11-14T00:00:00Z",
+            unitPrice: 2500,
+            currency: "USD",
+            ticketDate: "2022-10-28T00:00:00Z",
+            userId: "revoticengineering@gmail.com"
+        },
+        {
+        id: "2a46c952-fe2b-434a-a40b-f643905bf3ce",
+        quantity: 1,
+        transactionHash: "0x5d87a4d7ecc5ad8719c2c94c882a720ee40a4d62d052a918718ae3c916d98e3b",
+        orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
+        paymentIntentId: "pi_3Lxc0RLY9m0w00gp1aTz60OH",
+        paymentIntentStatus: "PAYMENT_PAID",
+        name: "Line Skip",
+        serviceName: "Benjamin’s On Franklin",
+        endDate: "2022-11-14T00:00:00Z",
+        unitPrice: 2500,
+        currency: "USD",
+        tokenId: 2,
+        orderStatus: "TICKETS_ISSUED",
+        ticketDate: "2022-10-28T00:00:00Z",
+        userId: "revoticengineering@gmail.com"
+        }
+    ]
     const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
         const paseto = getPlatformPaseto()
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
@@ -89,29 +140,31 @@ export default function MyBookings(){
       
       
 
-    if(!isAuthenticated){
-        return(
-            <Layout>
-                <Box>
-                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-                </Box>
-            </Layout>
-        )
-    }
+    // if(!isAuthenticated){
+    //     return(
+    //         <Layout>
+    //             <Box>
+    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+    //             </Box>
+    //         </Layout>
+    //     )
+    // }
 
     return(
     <Layout>
         <Grid mx='1em' minH='100vh' h='100%' templateColumns={['1fr','1fr','1fr','repeat(5, 1fr)']} gap={6} >
             <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
                 <Flex width={'100%'} direction='column'>
-                    <Box ml={[6]}>
-                        <Heading  mt='10' mb='6'>My Bookings</Heading>
+                    <Box  ml={[0,6]}>
+                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My DATS</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
-                            {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
+                            {/* {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null} */}
+                            {dummyOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
                                 {/* <Skeleton isLoaded={!isLoading}> */}
-                                {filteredOrders?filteredOrders.map((order:any)=>(
+                                {/* {filteredOrders?filteredOrders.map((order:any)=>( */}
+                                {dummyOrders?dummyOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
@@ -127,6 +180,13 @@ export default function MyBookings(){
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
+
+                                        <HStack mb='1' spacing='1'>
+                                            <Text color='whiteAlpha.500'>Ticket status:</Text>
+                                            <Text color='whiteAlpha.700'>{order.orderStatus === 'TICKET_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?'EXPIRED': order.status==='REDEEMED'?'REDEEMED':'VALID'}</Text>
+                                        </HStack>
+
+                                        {/* show button only for confirmedOrders */}
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 
                                         :
                                         <Button colorScheme='cyan' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>
