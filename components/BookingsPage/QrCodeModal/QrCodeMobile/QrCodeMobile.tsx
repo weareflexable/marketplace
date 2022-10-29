@@ -44,10 +44,6 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                       <Text color='blackAlpha.700' textStyle={'caption'}>{qrValue!.quantity}</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Contract:</Text>
-                      <Text color='blackAlpha.700' textStyle={'caption'}>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
-                    </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>Token ID:</Text>
@@ -64,9 +60,11 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Network:</Text>
-                      {/* @ts-ignore */}
-                      <Text color='blackAlpha.700' textStyle={'caption'}>Polygon Mainnet</Text>
+                      <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
                     </HStack>
                   </Flex>
                 </Skeleton>

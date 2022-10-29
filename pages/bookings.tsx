@@ -91,15 +91,15 @@ export default function MyBookings(){
 
       
 
-    // if(!isAuthenticated){
-    //     return(
-    //         <Layout>
-    //             <Box>
-    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-    //             </Box>
-    //         </Layout>
-    //     )
-    // }
+    if(!isAuthenticated){
+        return(
+            <Layout>
+                <Box>
+                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+                </Box>
+            </Layout>
+        )
+    }
 
     return(
     <Layout>

@@ -41,17 +41,12 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                       <Text>+1 (315) 299-4756</Text>
                     </HStack>
 
-
                     <HStack spacing='2' mb='1'>
                       <Text>Quantity:</Text>
                       {/* @ts-ignore */}
                       <Text>{qrValue!.quantity}</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text>Contract:</Text>
-                      <Text>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
-                    </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text>Token ID:</Text>
@@ -62,13 +57,15 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                     <HStack spacing='2' mb='1'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a>
+                      <Text color='cyan'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a> </Text>  
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text>Network:</Text>
-                      {/* @ts-ignore */}
-                      <Text>Polygon Mainnet</Text>
+                      <Text>To redeem - cut the line and show this screen to the bouncer</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text fontStyle='italic' fontWeight='medium' >It’s not a party until you arrive</Text>
                     </HStack>
                   </Flex>
                 </Skeleton>
