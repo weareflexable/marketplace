@@ -32,7 +32,7 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
 
     return(
         <Flex mt='1em' flex='1' width='100%' direction='column'>
-            <Drawer size='full' colorScheme='alphaBlack.800' placement={'bottom'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
+            <Drawer size='full' colorScheme='alphaBlack.800' placement={'right'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
                 <DrawerOverlay />
                 <DrawerContent>
                 <DrawerCloseButton />
