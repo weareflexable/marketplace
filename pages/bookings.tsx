@@ -125,7 +125,7 @@ export default function MyBookings(){
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
-                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.ticketDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 
                                         :
