@@ -24,6 +24,7 @@ import {
 import { Service } from '../../../data/services';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
+import dayjs from 'dayjs';
 
 
 interface PaymentModalProps{
@@ -75,7 +76,7 @@ interface PaymentModalProps{
 
                   <HStack mb='1' spacing='4'>
                     <Text color="whiteAlpha.400" textStyle={'caption'}>Valid on</Text>
-                    <Text color="whiteAlpha.700" textStyle={'caption'}>{item.tickets[0].date}</Text>
+                    <Text color="whiteAlpha.700" textStyle={'caption'}>{dayjs(item.tickets[0].date).format('MMM-D-YYYY')}</Text>
                   </HStack>
                 </Flex>
               ))}
