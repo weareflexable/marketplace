@@ -188,6 +188,7 @@ export default function ServicesPage(){
             {/* cart button to only display on mobile */}
             {cart.length>0?
                 <Box
+                display={['block','block','block','none']}
                 width='50px'
                 height='55px' 
                 position='absolute'
