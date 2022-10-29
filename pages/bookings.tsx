@@ -90,17 +90,16 @@ export default function MyBookings(){
       const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
 
       
-      
 
-    if(!isAuthenticated){
-        return(
-            <Layout>
-                <Box>
-                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-                </Box>
-            </Layout>
-        )
-    }
+    // if(!isAuthenticated){
+    //     return(
+    //         <Layout>
+    //             <Box>
+    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+    //             </Box>
+    //         </Layout>
+    //     )
+    // }
 
     return(
     <Layout>
@@ -108,7 +107,7 @@ export default function MyBookings(){
             <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
                 <Flex width={'100%'} direction='column'>
                     <Box  ml={[0,6]}>
-                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My Digital Access Tokens</Heading>
+                        <Heading color='whiteAlpha.800' as='h1' fontSize={['1.5em','2em']}  mt='10' mb='6'>My Digital Access Tokens</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
