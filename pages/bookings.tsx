@@ -40,7 +40,7 @@ export default function MyBookings(){
             paymentIntentStatus: "PAYMENT_PAID",
             name: "Line Skip",
             serviceName: "Benjamin’s On Franklin",
-            endDate: "2022-11-14T00:00:00Z",
+            endDate: "2022-10-14T00:00:00Z",
             unitPrice: 2500,
             currency: "USD",
             tokenId: 1,
@@ -53,7 +53,7 @@ export default function MyBookings(){
             quantity: 1,
             orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
             paymentIntentId: "pi_3Lxby2LY9m0w00gp0nEGwvXO",
-            paymentIntentStatu: "PAYMENT_INITIATED",
+            paymentIntentStatus: "PAYMENT_INITIATED",
             name: "Line Skip",
             serviceName: "Benjamin’s On Franklin",
             endDate: "2022-11-14T00:00:00Z",
@@ -136,7 +136,8 @@ export default function MyBookings(){
       }
       
 
-      const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
+    //   const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
+      const filteredOrders =  dummyOrders.filter((order:any)=> orderFilter === order.paymentIntentStatus )
       
       
 
@@ -156,35 +157,42 @@ export default function MyBookings(){
             <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
                 <Flex width={'100%'} direction='column'>
                     <Box  ml={[0,6]}>
-                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My DATS</Heading>
+                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My DATs</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
                             {/* {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null} */}
-                            {dummyOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
+                            {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
                                 {/* <Skeleton isLoaded={!isLoading}> */}
                                 {/* {filteredOrders?filteredOrders.map((order:any)=>( */}
-                                {dummyOrders?dummyOrders.map((order:any)=>(
+                                {filteredOrders?filteredOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
-                                            <Badge colorScheme={order.paymentIntentStatus==='PAYMENT_PAID'?'green':'purple'}  ml='1' >
-                                                {order.paymentIntentStatus} 
+                                            <Badge colorScheme={'gray'}  ml='1' >
+                                                {/* {order.paymentIntentStatus}  */}
+                                                {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
                                             </Badge>
                                         </HStack> 
                                         <Flex mb='1' justifyContent='space-between'>
                                             <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
-                                            <Text textStyle='secondary'>${order.unitPrice/100}</Text>
+                                            <HStack spacing='3'>
+                                                <HStack spacing='0.5'>
+                                                    <Text color='whiteAlpha.800' textStyle='caption'>${order.unitPrice/100}</Text>
+                                                    <Text color='whiteAlpha.600' textStyle='caption'>x{order.quantity}</Text>
+                                                </HStack>
+                                                <Text textStyle='secondary'>${order.quantity*(order.unitPrice/100)}</Text>
+                                            </HStack>
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
                                             <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
 
-                                        <HStack mb='1' spacing='1'>
+                                        {/* <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.500'>Ticket status:</Text>
-                                            <Text color='whiteAlpha.700'>{order.orderStatus === 'TICKET_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?'EXPIRED': order.status==='REDEEMED'?'REDEEMED':'VALID'}</Text>
-                                        </HStack>
+                                            <Text color='whiteAlpha.700'>{order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}</Text>
+                                        </HStack> */}
 
                                         {/* show button only for confirmedOrders */}
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 

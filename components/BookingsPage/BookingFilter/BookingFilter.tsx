@@ -58,7 +58,7 @@ function RadioCard(props:any) {
           const radio = getRadioProps({ value })
           return (
             <RadioCard key={value} {...radio}>
-              {value}
+              {value==='PAYMENT_PAID'?'View DATs':'Pending Orders'}
             </RadioCard>
           )
         })}
