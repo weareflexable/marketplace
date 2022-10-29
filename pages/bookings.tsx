@@ -30,56 +30,7 @@ export default function MyBookings(){
 
 
 
-    const dummyOrders=[
-        {
-            id: "708a922d-2407-4f98-9579-a5a510425348",
-            quantity: 1,
-            transactionHash: "0xddae0658e387b1a232af9c1ac1e083369f12590ba74575c9155242350f1dd05b",
-            orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
-            paymentIntentId: "pi_3Lxa7iLY9m0w00gp0IX17qwv",
-            paymentIntentStatus: "PAYMENT_PAID",
-            name: "Line Skip",
-            serviceName: "Benjamin’s On Franklin",
-            endDate: "2022-10-14T00:00:00Z",
-            unitPrice: 2500,
-            currency: "USD",
-            tokenId: 1,
-            orderStatus: "TICKETS_ISSUED",
-            ticketDate: "2022-10-27T00:00:00Z",
-            userId: "revoticengineering@gmail.com"
-        },
-        {
-            id: "8e05be0f-16e5-4480-aa0c-853a56c4e747",
-            quantity: 1,
-            orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
-            paymentIntentId: "pi_3Lxby2LY9m0w00gp0nEGwvXO",
-            paymentIntentStatus: "PAYMENT_INITIATED",
-            name: "Line Skip",
-            serviceName: "Benjamin’s On Franklin",
-            endDate: "2022-11-14T00:00:00Z",
-            unitPrice: 2500,
-            currency: "USD",
-            ticketDate: "2022-10-28T00:00:00Z",
-            userId: "revoticengineering@gmail.com"
-        },
-        {
-        id: "2a46c952-fe2b-434a-a40b-f643905bf3ce",
-        quantity: 1,
-        transactionHash: "0x5d87a4d7ecc5ad8719c2c94c882a720ee40a4d62d052a918718ae3c916d98e3b",
-        orgServiceItemId: "40829a91-6570-4b67-b197-8c7be4a13c23",
-        paymentIntentId: "pi_3Lxc0RLY9m0w00gp1aTz60OH",
-        paymentIntentStatus: "PAYMENT_PAID",
-        name: "Line Skip",
-        serviceName: "Benjamin’s On Franklin",
-        endDate: "2022-11-14T00:00:00Z",
-        unitPrice: 2500,
-        currency: "USD",
-        tokenId: 2,
-        orderStatus: "TICKETS_ISSUED",
-        ticketDate: "2022-10-28T00:00:00Z",
-        userId: "revoticengineering@gmail.com"
-        }
-    ]
+  
     const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
         const paseto = getPlatformPaseto()
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
@@ -136,20 +87,20 @@ export default function MyBookings(){
       }
       
 
-    //   const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
-      const filteredOrders =  dummyOrders.filter((order:any)=> orderFilter === order.paymentIntentStatus )
+      const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
+
       
       
 
-    // if(!isAuthenticated){
-    //     return(
-    //         <Layout>
-    //             <Box>
-    //                 <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
-    //             </Box>
-    //         </Layout>
-    //     )
-    // }
+    if(!isAuthenticated){
+        return(
+            <Layout>
+                <Box>
+                    <Text color='whiteAlpha.900'>Please login first before trying to access this page</Text>
+                </Box>
+            </Layout>
+        )
+    }
 
     return(
     <Layout>
@@ -160,18 +111,16 @@ export default function MyBookings(){
                         <Heading color='whiteAlpha.800'  mt='10' mb='6'>My DATs</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
-                            {/* {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null} */}
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
-                                {/* <Skeleton isLoaded={!isLoading}> */}
-                                {/* {filteredOrders?filteredOrders.map((order:any)=>( */}
+                                <Skeleton isLoaded={!isLoading}>
                                 {filteredOrders?filteredOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
                                             <Badge colorScheme={'gray'}  ml='1' >
                                                 {/* {order.paymentIntentStatus}  */}
-                                                {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
+                                                {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.ticketDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
                                             </Badge>
                                         </HStack> 
                                         <Flex mb='1' justifyContent='space-between'>
@@ -186,13 +135,9 @@ export default function MyBookings(){
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
-                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.ticketDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
 
-                                        {/* <HStack mb='1' spacing='1'>
-                                            <Text color='whiteAlpha.500'>Ticket status:</Text>
-                                            <Text color='whiteAlpha.700'>{order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.endDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}</Text>
-                                        </HStack> */}
 
                                         {/* show button only for confirmedOrders */}
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 
@@ -202,7 +147,7 @@ export default function MyBookings(){
                                     </Flex>
                                 ))
                                 :null}
-                               {/* </Skeleton> */}
+                               </Skeleton>
                     </Flex>
                 </Flex>
             </GridItem>
