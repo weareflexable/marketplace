@@ -75,7 +75,7 @@ interface PaymentModalProps{
 
                   <HStack mb='1' spacing='4'>
                     <Text color="whiteAlpha.400" textStyle={'caption'}>Valid on</Text>
-                    <Text color="whiteAlpha.700" textStyle={'caption'}>{item.tickets[0].daate}</Text>
+                    <Text color="whiteAlpha.700" textStyle={'caption'}>{item.tickets[0].date}</Text>
                   </HStack>
                 </Flex>
               ))}
