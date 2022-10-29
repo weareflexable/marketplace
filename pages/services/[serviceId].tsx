@@ -10,11 +10,11 @@ import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/Proces
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
-import dayjs from 'dayjs'
 import { setStorage } from '../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
+import moment from 'moment'
 
 
 export default function ServicesPage(){
@@ -22,13 +22,13 @@ export default function ServicesPage(){
     const {query,push} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const [cart, setCart] = useState<Service[]>([]);
-    const [serviceDate, setServiceDate] = useState(dayjs().format('MMM-D-YYYY'))
+    const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
 
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
     
-    const formatedDate = dayjs(serviceDate).format('YYYY-MMM-DD')
+    const formatedDate = moment(serviceDate).format('YYYY-MMM-DD')
 
     const {isLoading,data,isError} = useQuery(['store-service',query.serviceId,formatedDate],async()=>{
         const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=${formatedDate}`) 
