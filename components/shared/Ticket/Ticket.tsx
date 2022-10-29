@@ -84,8 +84,8 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                     </HStack>
                     <Button my='2' mr='2' onClick={()=>onTriggerAction(data.id)}>
                         <HStack spacing='2'>
-                            <Text color='cyan.200' textStyle='caption'>Add to Cart</Text> 
-                            <MdAddShoppingCart color='cyan.300'/>
+                            <Text color='cyan' textStyle='caption'>Add to Cart</Text> 
+                            <MdAddShoppingCart size='.8em' color='cyan'/>
                         </HStack>
                     </Button>
                         </>
