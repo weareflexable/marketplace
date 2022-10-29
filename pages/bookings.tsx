@@ -118,10 +118,7 @@ export default function MyBookings(){
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
-                                            <Badge colorScheme={'gray'}  ml='1' >
-                                                {/* {order.paymentIntentStatus}  */}
-                                                {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.ticketDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
-                                            </Badge>
+                                            {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.ticketDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
                                         </HStack> 
                                         <Flex mb='1' justifyContent='space-between'>
                                             <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
