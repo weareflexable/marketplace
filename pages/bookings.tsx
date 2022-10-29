@@ -108,7 +108,7 @@ export default function MyBookings(){
             <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
                 <Flex width={'100%'} direction='column'>
                     <Box  ml={[0,6]}>
-                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My DATs</Heading>
+                        <Heading color='whiteAlpha.800'  mt='10' mb='6'>My Digital Access Tokens</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
