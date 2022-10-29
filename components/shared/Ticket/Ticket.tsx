@@ -76,7 +76,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                                 Tickets left 
                             </Text>
                             <Text  textStyle={'caption'}>
-                            {ticketIsAvailable?data.ticketMaxPerDay:0}
+                            {ticketIsAvailable?data.tickets[0]!.ticketsAvailable:0}
                             </Text>
                         </HStack>
                     </HStack>

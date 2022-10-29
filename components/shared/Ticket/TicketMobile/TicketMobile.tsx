@@ -63,7 +63,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
                     <Flex alignItems='center' justifyContent='center'>
                          <HStack mr='2' spacing='1'>
-                             <Text textStyle={'caption'}>{data.ticketMaxPerDay}</Text>
+                             <Text textStyle={'caption'}>{data.tickets[0]!.ticketsAvailable}</Text>
                              <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
                          </HStack>
                          <HStack spacing='1'>
