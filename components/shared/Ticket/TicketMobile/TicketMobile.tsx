@@ -23,7 +23,11 @@ interface ServiceProps{
 
 function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
-    const ticketIsAvailable = data.tickets.length>0;
+   // checks to see if there are available tickets for selected date
+   const areTicketsAvailable = data.tickets.length>0;
+
+   // Determines whether or not tickets are sold out
+   const areTicketsSoldOut = areTicketsAvailable && data.tickets[0].ticketsAvailable < 1
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
@@ -47,7 +51,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                 {/* bottom panel */}
 
                 <Flex px='1em' alignItems='center' justifyContent='space-between' bg='gray.800'>
-                   { ticketIsAvailable? 
+                   { areTicketsAvailable? 
                    <>
                    <HStack spacing={3}  py='12px'>
                         <Flex direction='column' >
@@ -55,23 +59,27 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {ticketIsAvailable?dayjs(data.tickets[0].date).format('MMM D, YYYY'):0}
-                            </Text>
+                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
+                            </Text> 
                         </Flex>
                         <Divider orientation='vertical'/>
                     </HStack>
-
                     <Flex alignItems='center' justifyContent='center'>
+                        {areTicketsSoldOut
+                        ?<Text color={'gray.500'} textStyle={'body'}>Sold out</Text>
+                        :<>
                          <HStack mr='2' spacing='1'>
                              <Text textStyle={'caption'}>{data.tickets[0]!.ticketsAvailable}</Text>
                              <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
                          </HStack>
                          <HStack spacing='1'>
-                            <Button onClick={ticketIsAvailable?()=>onTriggerAction(data.id):()=>{}} color={'cyan.500'}>Add to cart</Button>
+                            <Button onClick={()=>onTriggerAction(data.id)} color={'cyan.500'}>Add to cart</Button>
                          </HStack>
+                         </>  
+                         }
                     </Flex>
                     </>
-                    :<Text>No ticket available on this date</Text>   }
+                    :<Text>Tickets are not available on selected date</Text>   }
                 </Flex>
             </Flex>
         </Box>

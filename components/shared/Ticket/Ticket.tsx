@@ -25,13 +25,15 @@ interface ServiceProps{
 
 function TicketList ({data, onTriggerAction}:ServiceProps){
 
-    console.log(data)
-    const ticketIsAvailable = data.tickets.length>0;
+    // checks to see if there are available tickets for selected date
+    const areTicketsAvailable = data.tickets.length>0;
+
+    // Determines whether or not tickets are sold out
+    const areTicketsSoldOut = areTicketsAvailable && data.tickets[0].ticketsAvailable<1
 
     return( 
         // <Skeleton isLoaded={!data} width='100%' height='50px'>
         <Box layerStyle={'secondLayer'} display={['none','none','block']}  cursor='pointer' >
-            {/* <Image src='/assets/placeholder.jpeg' style={{height:'150px', width:'100%' }} alt={data.thumbnailAlt} width='100' height='150' /> */}
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={7} direction='column'>
@@ -43,15 +45,8 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                         </Text>
                     </Flex>
 
-                    {/* <Flex justifyContent='center' alignItems='center'  height='100%'>
-                        <Divider height='50px' orientation='vertical' />
-                    </Flex> */}
-
                     {/* price */}
                     <Flex flex={3}  alignItems='center' justifyContent='center' direction='column'>
-                        {/* <Text as='span' textStyle={'caption'} color='gray.500'>
-                            per person
-                        </Text> */}
                         <Flex>
                             <Text textStyle={'ticketPrice'}>${data.price/100}</Text> 
                         </Flex>
@@ -59,35 +54,43 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                 </Flex>
                 
                 <Flex bg='gray.900'  alignItems='center' justifyContent='space-between'>
+                    {areTicketsAvailable?
+                    <>
                     <HStack  spacing={3} px='1em'  py='12px'>
                         <HStack spacing='2' >
                             <Text color='gray.500'  textStyle={'caption'} >
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {ticketIsAvailable?dayjs(data.tickets[0]!.date).format('MMM D, YYYY'):'Not available'} 
+                            {dayjs(data.tickets[0]!.date).format('MMM D, YYYY')} 
                             </Text>
                         </HStack>
                         <Divider orientation='vertical'/>
 
                         <Divider orientation='vertical'/>
                         <HStack spacing='2' >
-                            <Text color='gray.500'  textStyle={'caption'} >
-                                Tickets left 
-                            </Text>
-                            <Text  textStyle={'caption'}>
-                            {ticketIsAvailable?data.tickets[0]!.ticketsAvailable:0}
-                            </Text>
+                            {areTicketsSoldOut
+                            ?<Text color={'gray.500'} textStyle={'body'}>Sold out</Text>
+                            :<>
+                                <Text color='gray.500'  textStyle={'caption'} >
+                                    Tickets left 
+                                </Text>
+                                <Text  textStyle={'caption'}>
+                                {data.tickets[0]!.ticketsAvailable}
+                                </Text>
+                            </>
+                            }
                         </HStack>
                     </HStack>
-                    {/* <Flex as='button' justifyContent='center' alignItems='center' bg='blackAlpha.100' w='60px'  h='100%'> */}
-                       { ticketIsAvailable? <Button my='2' mr='2' onClick={()=>onTriggerAction(data.id)}>
-                            <HStack spacing='2'>
-                                <Text color='cyan.200' textStyle='caption'>Add to Cart</Text> 
-                                <MdAddShoppingCart color='cyan.300'/>
-                            </HStack>
-                        </Button>: <Text mr='2'>Ticket not available on selected date</Text>}
-                    {/* </Flex> */}
+                    <Button my='2' mr='2' onClick={()=>onTriggerAction(data.id)}>
+                        <HStack spacing='2'>
+                            <Text color='cyan.200' textStyle='caption'>Add to Cart</Text> 
+                            <MdAddShoppingCart color='cyan.300'/>
+                        </HStack>
+                    </Button>
+                        </>
+                        : <Text color='gray.500' mr='2'>Ticket not available on selected date</Text>
+                    }
                 </Flex>
             </Flex> 
         </Box> 
