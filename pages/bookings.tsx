@@ -42,6 +42,28 @@ export default function MyBookings(){
         return body
       })
 
+
+      async function getTokenId(txHash:string) {
+        // It should be all lower case
+      
+        const axios = require("axios");
+        const body = {
+          query: `{
+          tokens( 
+              where: { txHash:"${txHash}" } 
+          )
+          { id }
+        }`,
+        };
+        const res = await axios.default.post(
+          "https://api.thegraph.com/subgraphs/name/thisisommore/flexable",
+          body
+        );
+        return res.data.data.tokens[0].id;
+      }
+      
+      const txHash =
+        "0x5f79d17260fc57f17f7c418d26efef7ab30df2d70bb5e30167a64fac76d588b9";
       const generateQrCode = async(order:any)=>{
         let qrCodePayload;
         const payload = {
@@ -60,6 +82,8 @@ export default function MyBookings(){
                     'Authorization': getPlatformPaseto()
                 }
             })
+            
+            const tokenId= await getTokenId(order.transactionHash)
             setIsGeneratingCode(false)
             const body = await res.json()
             qrCodePayload={
@@ -67,7 +91,8 @@ export default function MyBookings(){
                 signature: body.payload.signature,
                 validity: body.payload.validity,
                 quantity:order.quantity,
-                userId: isAuthenticated?supabase.auth.user()?.email:''
+                userId: isAuthenticated?supabase.auth.user()?.email:'',
+                tokenId: tokenId
             }
             setQrSignature(qrCodePayload)
 
