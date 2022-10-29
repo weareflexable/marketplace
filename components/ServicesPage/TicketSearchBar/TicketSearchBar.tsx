@@ -29,7 +29,8 @@ const dateFormat = 'YYYY/MM/DD'
             <Text as='h2' height={'100%'} textStyle={'h4'} mb='4'>Pick a date</Text>
             <Box ml='2'  height={'40px'} display='inline-block' w='150px'  position={'relative'}>
                 {/* <Text color='cyan' cursor='pointer' position='absolute' left='0' top='0'>{date}</Text> */}
-                <DatePicker format='MMM-D-YYYY' defaultValue={moment(date,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(event:string)=>handleDateChange(event)}/>
+                {/* @ts-ignore */}
+                <DatePicker format='MMM-D-YYYY' defaultValue={moment(date,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
             </Box>   
         </Flex>
       </Box>
