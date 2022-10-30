@@ -16,6 +16,7 @@ import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart
 import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
 import moment from 'moment'
 import useLocalStorage from '../../hooks/useCart'
+import useDrawerState from '../../hooks/useDrawerState'
 
 
 export default function ServicesPage(){
@@ -24,11 +25,11 @@ export default function ServicesPage(){
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage([]);
 
-    console.log(asPath,basePath)
 
     const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
 
-    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
+    const {state:isCartDrawerOpen, setState:setIsCartDrawerOpen} = useDrawerState(false)
+
     const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
 
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
