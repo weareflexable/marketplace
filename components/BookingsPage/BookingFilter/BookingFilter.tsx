@@ -26,8 +26,8 @@ function RadioCard(props:any) {
             // boxShadow: 'outline',
 
           }}
-          px={4}
-          py={1}
+          px={2}
+          py={.5}
         >
           {props.children}
         </Box>
@@ -53,12 +53,12 @@ function RadioCard(props:any) {
     const group = getRootProps()
   
     return (
-      <HStack {...group}>
+      <HStack mb='4' {...group}>
         {options.map((value) => {
           const radio = getRadioProps({ value })
           return (
             <RadioCard key={value} {...radio}>
-              {value}
+              {value==='PAYMENT_PAID'?'View DATs':'Pending Orders'}
             </RadioCard>
           )
         })}

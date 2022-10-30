@@ -33,14 +33,17 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                   <Flex direction='column'>
                     <HStack spacing='2' mb='1'>
                       <Text>Location:</Text>
-                      <Text>314 S Franklin St Syracuse, NY 13206</Text>
+                      <Text color='cyan' textStyle={'caption'}> 
+                        <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">314 S Franklin St Syracuse, NY 13206</a> 
+                      </Text>
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text>Contact:</Text>
-                      <Text>+1 (315) 299-4756</Text>
+                      <Text>Call:</Text>
+                      <Text color='cyan' textStyle={'caption'}> 
+                      <a href="tel:+1-315-299-4756">+1 (315) 299-4756</a>
+                      </Text>
                     </HStack>
-
 
                     <HStack spacing='2' mb='1'>
                       <Text>Quantity:</Text>
@@ -48,10 +51,6 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                       <Text>{qrValue!.quantity}</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text>Contract:</Text>
-                      <Text>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
-                    </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text>Token ID:</Text>
@@ -62,13 +61,15 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                     <HStack spacing='2' mb='1'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a>
+                      <Text color='cyan'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a> </Text>  
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text>Network:</Text>
-                      {/* @ts-ignore */}
-                      <Text>Polygon Mainnet</Text>
+                      <Text>To redeem - cut the line and show this screen to the bouncer</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text fontStyle='italic' fontWeight='medium' >It’s not a party until you arrive</Text>
                     </HStack>
                   </Flex>
                 </Skeleton>

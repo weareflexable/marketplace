@@ -29,12 +29,14 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                   <Flex my='4' w='100%' direction='column'>
                     <HStack w='100%' spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>Location:</Text>
-                      <Text color='blackAlpha.700' textStyle={'caption'}>314 S Franklin St Syracuse, NY 13206</Text>
+                      <Text color='cyan' textStyle={'caption'}> 
+                        <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">314 S Franklin St Syracuse, NY 13206</a> 
+                      </Text>
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Contact:</Text>
-                      <Text color='blackAlpha.700' textStyle={'caption'}>+1 (315) 299-4756</Text>
+                      <Text color='blackAlpha.500' textStyle={'caption'}>Call:</Text>
+                      <Text color='cyan' textStyle={'caption'}> <a href="tel:+1-315-299-4756">+1 (315) 299-4756</a></Text>
                     </HStack>
 
 
@@ -44,10 +46,6 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                       <Text color='blackAlpha.700' textStyle={'caption'}>{qrValue!.quantity}</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Contract:</Text>
-                      <Text color='blackAlpha.700' textStyle={'caption'}>0x0632534712C3aBEf9922Ce3BC587A2f27E25901f</Text>
-                    </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>Token ID:</Text>
@@ -64,9 +62,11 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Network:</Text>
-                      {/* @ts-ignore */}
-                      <Text color='blackAlpha.700' textStyle={'caption'}>Polygon Mainnet</Text>
+                      <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
+                    </HStack>
+
+                    <HStack spacing='2' mb='1'>
+                      <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
                     </HStack>
                   </Flex>
                 </Skeleton>

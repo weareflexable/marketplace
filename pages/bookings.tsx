@@ -29,6 +29,8 @@ export default function MyBookings(){
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
 
+
+  
     const {isLoading,data,isError} = useQuery(['bookings'],async()=>{
         const paseto = getPlatformPaseto()
         const res = await fetch('https://platform.flexabledats.com/api/v1.0/orders',{
@@ -111,7 +113,7 @@ export default function MyBookings(){
       
 
       const filteredOrders = data && data.payload.filter((order:any)=> orderFilter === order.paymentIntentStatus )
-      
+
       
 
     if(!isAuthenticated){
@@ -129,29 +131,36 @@ export default function MyBookings(){
         <Grid mx='1em' minH='100vh' h='100%' templateColumns={['1fr','1fr','1fr','repeat(5, 1fr)']} gap={6} >
             <GridItem colStart={[1,1,1,2]} colEnd={[2,2,2,4]}>
                 <Flex width={'100%'} direction='column'>
-                    <Box ml={[6]}>
-                        <Heading  mt='10' mb='6'>My Bookings</Heading>
+                    <Box  ml={[0,6]}>
+                        <Heading color='whiteAlpha.800' as='h1' fontSize={['1.5em','2em']}  mt='10' mb='6'>My Digital Access Tokens</Heading>
                     </Box>
                     <Flex direction='column' w='100'>
                             {filteredOrders?<BookingsFilters onSelectFilter={selectFilterHandler}/>:null}
 
-                                {/* <Skeleton isLoaded={!isLoading}> */}
+                                <Skeleton isLoaded={!isLoading}>
                                 {filteredOrders?filteredOrders.map((order:any)=>(
                                     <Flex p='1em' bg='blackAlpha.700' mb='3' w='100%' direction='column' key={order.id}>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.700'>{order.serviceName}·</Text>
-                                            <Badge colorScheme={order.paymentIntentStatus==='PAYMENT_PAID'?'green':'purple'}  ml='1' >
-                                                {order.paymentIntentStatus} 
-                                            </Badge>
+                                            {order.orderStatus === 'TICKETS_ISSUED'&& dayjs().isAfter(dayjs(order.ticketDate))?<Badge colorScheme={'gray'} ml='1' >Expired</Badge>: order.status==='REDEEMED'?<Badge colorScheme={'yellow'} ml='1' >Redeemed</Badge>:<Badge colorScheme={'green'} ml='1' >Valid</Badge>}
                                         </HStack> 
                                         <Flex mb='1' justifyContent='space-between'>
                                             <Text color='whiteAlpha.900' as='h4' textStyle='h4'>{order.name}</Text>
-                                            <Text textStyle='secondary'>${order.unitPrice/100}</Text>
+                                            <HStack spacing='3'>
+                                                <HStack spacing='0.5'>
+                                                    <Text color='whiteAlpha.800' textStyle='caption'>${order.unitPrice/100}</Text>
+                                                    <Text color='whiteAlpha.600' textStyle='caption'>x{order.quantity}</Text>
+                                                </HStack>
+                                                <Text textStyle='secondary'>${order.quantity*(order.unitPrice/100)}</Text>
+                                            </HStack>
                                         </Flex>
                                         <HStack mb='1' spacing='1'>
                                             <Text color='whiteAlpha.500'>Valid on:</Text>
-                                            <Text color='whiteAlpha.700'>{dayjs(order.endDate).format('MMM D, YYYY')}</Text>
+                                            <Text color='whiteAlpha.700'>{dayjs(order.ticketDate).format('MMM D, YYYY')}</Text>
                                         </HStack>
+
+
+                                        {/* show button only for confirmedOrders */}
                                         {order.paymentIntentStatus !== 'PAYMENT_PAID'? null 
                                         :
                                         <Button colorScheme='cyan' onClick={()=>generateQrCode(order)}>Show Digital Access Token</Button>
@@ -159,7 +168,7 @@ export default function MyBookings(){
                                     </Flex>
                                 ))
                                 :null}
-                               {/* </Skeleton> */}
+                               </Skeleton>
                     </Flex>
                 </Flex>
             </GridItem>
