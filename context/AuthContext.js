@@ -1,13 +1,18 @@
-import { Session } from '@supabase/supabase-js';
-import { useRouter } from 'next/router';
-import React,{useState,useContext,createContext,useEffect, ReactNode} from 'react';
-import { checkUser, signOut } from '../utils/auth';
-import { getPaseto } from '../utils/platform/platform';
-import { getPlatformPaseto, setPlatformPaseto } from '../utils/storage';
-import supabase from '../utils/supabase';
-import axios from 'axios'
-import { get } from 'http';
-
+import { Session } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
+import React, {
+  useState,
+  useContext,
+  createContext,
+  useEffect,
+  ReactNode,
+} from "react";
+import { checkUser, signOut } from "../utils/auth";
+import { getPaseto } from "../utils/platform/platform";
+import { getPlatformPaseto, setPlatformPaseto } from "../utils/storage";
+import supabase from "../utils/supabase";
+import axios from "axios";
+import { get } from "http";
 
 const AuthContext = createContext(undefined);
 
@@ -21,84 +26,69 @@ const AuthContext = createContext(undefined);
 //     children: ReactNode
 // }
 
-const AuthContextProvider = ({children})=>{
+const AuthContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const { asPath, push } = useRouter();
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [currentUser, setCurrentUser] = useState({})
-    const {asPath,push} = useRouter()
+  // const router = useRouter();
 
-    // const router = useRouter();
-  
+  useEffect(() => {
+    if (isAuthenticated && !getPlatformPaseto()) {
+      getPaseto(supabase.auth.session().access_token).then(setPlatformPaseto);
+    }
+  }, [isAuthenticated]);
 
-    useEffect(() => {
-      if (isAuthenticated && !getPlatformPaseto()) {
- 
-        getPaseto(supabase.auth.session().access_token).then(setPlatformPaseto);
-      
-      }
-    }, [isAuthenticated]);
-    
-    
-     
-    useEffect(() => {
-      // checks if user already signed in when they land
-        
-      const user = checkUser();
-      if (user) {
-        setIsAuthenticated(true); 
-        setCurrentUser(user)
-      }
-      
-      const { data: authListener } = supabase.auth.onAuthStateChange(
-        (event, session) => {
-          // updateSupabaseCookie(event, session);
-          if (event === "SIGNED_IN") {
-            setIsAuthenticated(true);
+  useEffect(() => {
+    // checks if user already signed in when they land
 
-          }
-          if (event === "SIGNED_OUT") {
-            setIsAuthenticated(false); 
-          }
+    const user = checkUser();
+    if (user) {
+      setIsAuthenticated(true);
+      setCurrentUser(user);
+    }
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        // updateSupabaseCookie(event, session);
+        if (event === "SIGNED_IN") {
+          setIsAuthenticated(true);
         }
-        );
-        
-        return () => {
-             // @ts-ignore
-          authListener?.unsubscribe();
-        };
-      }, [push, setIsAuthenticated]); // try removing deps
-  
-  
+        if (event === "SIGNED_OUT") {
+          setIsAuthenticated(false);
+        }
+      }
+    );
 
-    const logout = ()=>{
-        setIsAuthenticated(false);
-        signOut()
-    }
+    return () => {
+      // @ts-ignore
+      authListener?.unsubscribe();
+    };
+  }, [push, setIsAuthenticated]); // try removing deps
 
-    const values = {
-        isAuthenticated,
-        setIsAuthenticated,
-        logout,
-        currentUser   
-    }
+  const logout = () => {
+    setIsAuthenticated(false);
+    signOut();
+  };
 
+  const values = {
+    isAuthenticated: true,
+    setIsAuthenticated,
+    logout,
+    currentUser,
+  };
 
-    return(
-        <AuthContext.Provider value={values}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
+};
 
+const useAuthContext = () => {
+  const context = useContext(AuthContext);
 
-const useAuthContext = ()=>{
-    const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("Context is not being used under its provider");
+  }
 
-    if(context === undefined){
-        throw new Error('Context is not being used under its provider')
-    }
+  return context;
+};
 
-    return context
-}
-
-export {useAuthContext, AuthContextProvider }
+export { useAuthContext, AuthContextProvider };
