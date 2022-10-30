@@ -112,7 +112,6 @@ export default function ServicesPage(){
 
     const loginBeforePayment = (totalCost:number)=>{
         // this is to tell browser that payment was initiated before login
-            // setStorage('paymentStatus','pending')
             setAmount(totalCost)
             setCartItems(cart)
             const currentPath = `${asPath}${basePath!==''? basePath:'/'}`
@@ -120,17 +119,6 @@ export default function ServicesPage(){
             push('/landing')
         
     }
-
-    useEffect(() => {
-        // if(cart.length<1){
-        //     setIsCartDrawerOpen(false)
-        // }
-      return () => {
-        if(cart.length>0){
-           setStorage('paymentStatus','pending')
-        }
-      };
-    }, [cart])
 
         
         return(
