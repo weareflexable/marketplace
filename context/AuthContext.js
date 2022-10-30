@@ -43,7 +43,7 @@ useEffect(() => {
     // clear shouldRedirect & lastVisitedPage in local storage
     deleteStorage('shouldRedirect')
     deleteStorage('lastVisitedPage')
-    push(lastVisitedPage)
+    lastVisitedPage? push(lastVisitedPage) : push('/')
   }
 }, [])
 
