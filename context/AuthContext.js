@@ -51,7 +51,6 @@ useEffect(() => {
     console.log('from effect',isAuthenticated)
     if (isAuthenticated && !getPlatformPaseto()) {
       getPaseto(supabase.auth.session().access_token).then(res=>{
-        console.log(res)
         setPlatformPaseto(res)
       });
     }

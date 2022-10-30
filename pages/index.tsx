@@ -32,14 +32,6 @@ export default function Home() {
     throw new Error('Error fetching stores')
   }
 
-  // get paseto from path if it exist
-  const pasetoFromUrl =asPath.split('?')[1]
-
-  useEffect(() => {
-    if(pasetoFromUrl) return
-    localStorage.setItem('paseto',pasetoFromUrl)
-    // setIsAuthenticated(true)
-  }, [])
 
  
   return (
