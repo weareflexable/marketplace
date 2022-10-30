@@ -1,7 +1,7 @@
 name: "Deploy to EKS"
 on:
   push:
-    branches: [main,thisisommore/get-tokenid-from-thegraph-10]
+    branches: [main]
 
 jobs:
   build:
