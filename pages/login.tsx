@@ -8,13 +8,14 @@ import { signIn, signInWithProvider } from "../utils/auth";
 import { getPlatformPaseto ,setPlatformPaseto } from "../utils/storage";
 import { getPaseto } from "../utils/platform/platform";
 import supabase from "../utils/supabase";
+import { getStorage, setStorage } from "../utils/localStorage";
 
 const New = () => {
   // todo: states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  const {push} = useRouter();
   const toast = useToast()
 
   // todo: functions
@@ -53,7 +54,8 @@ const New = () => {
         duration: 9000,
         isClosable: true,
       })
-      router.push(`/`);
+      const lastVisitedPage = getStorage('lastVisitedPage')
+      push(`${lastVisitedPage}`)
     }
   };
 
@@ -61,23 +63,11 @@ const New = () => {
     setIsSubmitting(true);
     // this redirects whenever it's succesful
     setIsSubmitting(true);
+    setStorage('shouldRedirect','true')
     const { error, session } = await signInWithProvider(provider);
-
-    // everything from here downwards is proving to be very useless, because logic
-    // _app.js is disrupting the entire flow
-
-    // if (error) {
-    //   setIsSubmitting(false); 
-    //   toast.error(error.message);
-    // }
-    // if (user) {
-    //   setIsSubmitting(false);
-    //   const paseto = getPlatformPaseto()
-    //   toast.success("Logged in successfully");
-    //   router.push(`/https://localhost:3002/bookings/${paseto}`);
     setIsSubmitting(false); 
     }
-  // };
+
 
   return (
     <section className="h-full min-h-screen bg-gradient-to-r from-black to-primary">

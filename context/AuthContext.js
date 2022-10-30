@@ -13,6 +13,7 @@ import { getPlatformPaseto, setPlatformPaseto } from "../utils/storage";
 import supabase from "../utils/supabase";
 import axios from "axios";
 import { get } from "http";
+import { deleteStorage, getStorage } from "../utils/localStorage";
 
 const AuthContext = createContext(undefined);
 
@@ -32,6 +33,19 @@ const AuthContextProvider = ({ children }) => {
   const {path, basePath, asPath, push } = useRouter();
 
 // console.log(path,basePath)
+
+// Effect to handle redirecting of a user to last visited page
+// before logging into application
+useEffect(() => {
+  const lastVisitedPage = getStorage('lastVisitedPage')
+  const shouldRedirect = getStorage('shouldRedirect')
+  if(shouldRedirect === 'true'){
+    // clear shouldRedirect & lastVisitedPage in local storage
+    deleteStorage('shouldRedirect')
+    deleteStorage('lastVisitedPage')
+    push(lastVisitedPage)
+  }
+}, [])
 
   useEffect(() => {
     console.log('from effect',isAuthenticated)

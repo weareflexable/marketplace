@@ -5,6 +5,7 @@ import { useToast } from "@chakra-ui/react";
 import { signUp } from "../utils/auth";
 import Link from 'next/link'
 import bar from '/public/bar.jpg'
+import { setStorage } from "../utils/localStorage";
 // import neonBar from '/neon-bar.jpg' 
 
 
@@ -60,6 +61,10 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setRetypedPassword("");
+
+      // set redirect to last visited page after user comes back
+      setStorage('shouldRedirect','true')
+      
       return toast({
         title: `Sign Up successful, please check your email`,
         status: 'success',
