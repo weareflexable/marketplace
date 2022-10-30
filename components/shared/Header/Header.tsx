@@ -3,14 +3,17 @@ import {Flex,HStack,Box, Button,Text,Image} from '@chakra-ui/react'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 import { useRouter } from 'next/router'
+import { setStorage } from '../../../utils/localStorage'
 
 export default function Header(){
 
     const {isAuthenticated,setIsAuthenticated,logout} = useAuthContext()
-    const router = useRouter()
+    const {push, asPath, basePath} = useRouter()
 
     const login =()=>{
-        router.push('/landing')
+        const currentPath = `${asPath}${basePath}`
+        setStorage('lastVisitedPage',currentPath)
+        push('/landing')
     }
 
     return(

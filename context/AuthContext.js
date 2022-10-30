@@ -29,8 +29,9 @@ const AuthContext = createContext(undefined);
 const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const { asPath, push } = useRouter();
+  const {path, basePath, asPath, push } = useRouter();
 
+// console.log(path,basePath)
 
   useEffect(() => {
     console.log('from effect',isAuthenticated)

@@ -20,9 +20,11 @@ import useLocalStorage from '../../hooks/useCart'
 
 export default function ServicesPage(){
 
-    const {query,push} = useRouter();
+    const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage([]);
+
+    console.log(asPath,basePath)
 
     const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
 
@@ -113,6 +115,8 @@ export default function ServicesPage(){
             // setStorage('paymentStatus','pending')
             setAmount(totalCost)
             setCartItems(cart)
+            const currentPath = `${asPath}${basePath!==''? basePath:'/'}`
+            setStorage('lastVisitedPage',currentPath)
             push('/landing')
         
     }
