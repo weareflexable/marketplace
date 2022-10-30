@@ -20,8 +20,8 @@ export const signOut = async () => {
 
 // todo: single function to dynamically login using any provider
 export const signInWithProvider = async (provider) => {
-
-    const { session, error } = await supabase.auth.signIn(
+  
+    const { session, error } = await supabase.auth.signIn( 
       {
         provider,
       },

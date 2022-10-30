@@ -31,13 +31,18 @@ const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const { asPath, push } = useRouter();
 
-  // const router = useRouter();
 
   useEffect(() => {
+    console.log('from effect',isAuthenticated)
     if (isAuthenticated && !getPlatformPaseto()) {
-      getPaseto(supabase.auth.session().access_token).then(setPlatformPaseto);
+      getPaseto(supabase.auth.session().access_token).then(res=>{
+        console.log(res)
+        setPlatformPaseto(res)
+      });
     }
   }, [isAuthenticated]);
+
+  console.log('context',isAuthenticated)
 
   useEffect(() => {
     // checks if user already signed in when they land
@@ -47,7 +52,7 @@ const AuthContextProvider = ({ children }) => {
       setIsAuthenticated(true);
       setCurrentUser(user);
     }
-
+    
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         // updateSupabaseCookie(event, session);
@@ -64,7 +69,7 @@ const AuthContextProvider = ({ children }) => {
       // @ts-ignore
       authListener?.unsubscribe();
     };
-  }, [push, setIsAuthenticated]); // try removing deps
+  }, [push, setIsAuthenticated]); 
 
   const logout = () => {
     setIsAuthenticated(false);
@@ -72,7 +77,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const values = {
-    isAuthenticated: true,
+    isAuthenticated,
     setIsAuthenticated,
     logout,
     currentUser,

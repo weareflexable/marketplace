@@ -89,16 +89,19 @@ export default function MyBookings() {
     return +res.data.data.tokens[0].id;
   }
 
-  const txHash =
-    "0x5f79d17260fc57f17f7c418d26efef7ab30df2d70bb5e30167a64fac76d588b9";
+
   const generateQrCode = async (order: any) => {
+
     let qrCodePayload;
+
+    // Fetch tokenId from the graph before generating qrCode signature
     const tokenId = await getTokenId(order.transactionHash);
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
       tokenId: tokenId,
     };
+
     isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
 
     try {
@@ -125,11 +128,10 @@ export default function MyBookings() {
         userId: isAuthenticated ? supabase.auth.user()?.email : "",
         tokenId: tokenId,
       };
-      console.log("hemlo");
 
-      console.log(qrCodePayload);
 
       setQrSignature(qrCodePayload);
+
     } catch (err) {
       setIsGeneratingCode(false);
       console.log(err);
