@@ -42,8 +42,6 @@ const AuthContextProvider = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  console.log('context',isAuthenticated)
-
   useEffect(() => {
     // checks if user already signed in when they land
 
