@@ -15,7 +15,6 @@ interface CartProps{
 
 export default function Cart({tickets,onRemoveCartItem,onIncrementCartItemQuantity,onDecrementCartItemQuantity,onCreateOrder,loginBeforePayment}:CartProps){
 
-
     function calculateCartTotal(tickets:Service[]){
         let total:number = 0;
         for(let service of tickets){

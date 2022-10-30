@@ -15,14 +15,17 @@ import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
 import moment from 'moment'
+import useLocalStorage from '../../hooks/useCart'
 
 
 export default function ServicesPage(){
 
     const {query,push} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
-    const [cart, setCart] = useState<Service[]>([]);
+    const {state:cart, setState:setCart} = useLocalStorage([]);
+
     const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
+
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
 
