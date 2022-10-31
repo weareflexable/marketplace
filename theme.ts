@@ -74,6 +74,15 @@ const config: ThemeConfig ={
       letterSpacing: '-0.1px'
     },
 
+    h3:{
+      fontWeight: '700',
+      fontFamily: 'body',
+      fontSize: '1.7em',
+      letterSpacing: '-0.1px',
+      lineHeight:1.1,
+      color: 'whiteAlpha.800'
+    },
+
     h4:{
       color: 'gray.200' ,
       fontFamily:'body',
