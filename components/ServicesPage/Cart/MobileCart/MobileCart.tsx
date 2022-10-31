@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, DrawerCloseButton, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, DrawerFooter} from '@chakra-ui/react'
 import { Service } from '../../../../data/services'
-import {MdOutlineDeleteOutline} from 'react-icons/md'
+import {MdAdd,MdRemove} from 'react-icons/md'
 import { useAuthContext } from '../../../../context/AuthContext'
 import { useRouter } from 'next/router'
 
@@ -52,13 +52,13 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
                                     />
                                     ))}
                             </Flex>
-                        </>: <Text>Add tickets to cart</Text>
+                        </>: <Text color={'whiteAlpha.600'}>Add tickets to cart</Text>
                         }
                     </Flex>
+                </DrawerBody>
                 <DrawerFooter>
                     {tickets.length>0?<CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>:null}
                 </DrawerFooter>    
-                </DrawerBody>
                 </DrawerContent>
             </Drawer>
             
@@ -76,27 +76,29 @@ interface CartListItemProps{
 const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementItemQuantity}:CartListItemProps)=>{
     
     const itemTotal = (ticket.price/100) *  ticket.quantity
+    const isMinQuantity = ticket.quantity === 1
     
     return(
-        <Flex  p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
+        <Flex  p='3' borderRadius='4px' mb='2' bg='blackAlpha.500' justifyContent='space-between' as='li'>
             <Flex direction='column' width='100%'>
-                <Flex w='100%' justifyContent='space-between'>
-                    <Text mb='2'  textStyle={'body'}>{ticket.name}</Text>
-                    <IconButton onClick={()=>onRemoveTicket( ticket.id)} size='xs' icon={<MdOutlineDeleteOutline/>} aria-label='remove-item'/>
+                <Flex w='100%' justifyContent='space-between' mb='1' alignItems='center'>
+                    <Box w='100%'>
+                        <Text mb={'2'} textStyle={'h4'} >{ticket.name}</Text>
+                    </Box>
+                    <Button variant='link' fontSize={'12px'} color='red.400' onClick={()=>onRemoveTicket(ticket.id)} textStyle={'caption'}>Delete</Button>
+
                 </Flex>
 
-                <Flex justifyContent='space-between'  width='100%' flex='1'>
+                <Flex justifyContent='space-between' alignItems={'center'}  width='100%' flex='1'>
                     <HStack spacing='2'>
-                        <NumberInput w='150px' color='white'  size='xs' maxW={20} defaultValue={1} max={10} min={1}>
-                            <NumberInputField />
-                            <NumberInputStepper>
-                            <NumberIncrementStepper onClick={()=>onIncrementItemQuantity( ticket.id)}/>
-                            <NumberDecrementStepper onClick={()=>onDecrementItemQuantity( ticket.id)}/>
-                            </NumberInputStepper>
-                        </NumberInput>
-                        <Text >${ticket.price/100}</Text>
+                        <HStack spacing='2'>
+                            <IconButton onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( ticket.id)} color='cyan.400' size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'}>{ticket.quantity}</Text>
+                            <IconButton onClick={()=>onIncrementItemQuantity( ticket.id)} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                        </HStack>
+                        <Text color='whiteAlpha.600' >${ticket.price/100}</Text>
                     </HStack>
-                    <Text textStyle='body'>${itemTotal}</Text>
+                    <Text textStyle='secondary' color='whiteAlpha.900'>${itemTotal}</Text>
                 </Flex>
             </Flex>
             
@@ -114,7 +116,7 @@ const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotal
     const {isAuthenticated} = useAuthContext()
 
     if(!isAuthenticated){
-        return <Button mt='3' onClick={()=>loginBeforePayment(totalPrice)} colorScheme='cyan' w='100%'>
+        return <Button  onClick={()=>loginBeforePayment(totalPrice)} colorScheme='cyan' w='100%'>
             <Text>Login to continue</Text>
         </Button>
     }
@@ -122,11 +124,11 @@ const CartTotalButton = ({loginBeforePayment,totalPrice,onCreateOrder}:CartTotal
     return(
         <Button w='100%' colorScheme='cyan' onClick={onCreateOrder} mt='3'>
             <Flex w='100%' justify='space-between' alignItems='center'>
-                <Text color='gray.900' fontWeight='medium'>Book Now</Text>
-                <HStack spacing={2}>
+                <HStack spacing={1}>
                     <Text color='GrayText' fontWeight='medium'>Total:</Text>
                     <Text  color='ButtonText' fontWeight='medium'>${totalPrice/100}</Text>
                 </HStack>
+                Proceed to checkout
             </Flex>
         </Button>
     )
