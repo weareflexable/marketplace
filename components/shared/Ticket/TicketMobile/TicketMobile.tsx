@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react'
 
 import dayjs from 'dayjs';
+import moment from 'moment-timezone';
+import { RangePickerProps } from 'antd/lib/date-picker';
 
 
 
@@ -24,10 +26,13 @@ interface ServiceProps{
 function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
    // checks to see if there are available tickets for selected date
-   const areTicketsAvailable = data.tickets.length>0;
+   const isTicketsAvailable = data.tickets.length>0;
 
    // Determines whether or not tickets are sold out
-   const areTicketsSoldOut = areTicketsAvailable && data.tickets[0].ticketsAvailable < 1
+   const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable < 1
+
+
+   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York')
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
@@ -51,7 +56,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                 {/* bottom panel */}
 
                 <Flex px='1em' alignItems='center' justifyContent='space-between' bg='gray.800'>
-                   { areTicketsAvailable? 
+                   { isTicketsAvailable? 
                    <>
                    <HStack spacing={3}  py='12px'>
                         <Flex direction='column' >
@@ -59,13 +64,13 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {dayjs(data.tickets[0].date).format('MMM D, YYYY')}
+                            {ticketDate.format('MMM D, YYYY')}
                             </Text> 
                         </Flex>
                         <Divider orientation='vertical'/>
                     </HStack>
                     <Flex alignItems='center' justifyContent='center'>
-                        {areTicketsSoldOut
+                        {isTicketsSoldOut
                         ?<Text color={'gray.500'} textStyle={'body'}>Sold out</Text>
                         :<>
                          <HStack mr='2' spacing='1'>

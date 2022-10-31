@@ -29,6 +29,7 @@
     "graphql-request": "^5.0.0",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.38",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-datepicker": "^4.8.0",
