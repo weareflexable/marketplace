@@ -6,14 +6,14 @@ import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
-import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderModal'
+import CartSummary from '../../components/ServicesPage/CartSummary/CarSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
 import { deleteStorage, getStorage, setStorage } from '../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
-import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
+import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
 import moment from 'moment'
 import useLocalStorage from '../../hooks/useCart'
 import useDrawerState from '../../hooks/useDrawerState'
@@ -225,14 +225,14 @@ export default function ServicesPage(){
                 </Box>
             :null}
 
-            <PaymentModal 
+            <CartSummary 
               onCloseModal={onClose} 
               isModalOpen={isOpen} 
               cart={cart}
               totalCost = {50}
               />
 
-              <ProcessOrderDrawer
+              <MobileCartSummary
                 onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
                 isDrawerOpen={isProcessDrawerOpen} 
                 cart={cart}

@@ -26,7 +26,7 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../../context/CheckoutContext';
 
 
-interface ProcessOrderDrawerProps{
+interface MobileCartSummaryProps{
   isDrawerOpen: boolean,
   onCloseDrawer: ()=>void,
   totalCost: number,
@@ -34,7 +34,7 @@ interface ProcessOrderDrawerProps{
 }
 
 
-  export default function ProcessOrderDrawer({cart, totalCost, isDrawerOpen, onCloseDrawer}:ProcessOrderDrawerProps){
+  export default function MobileCartSummary({cart, totalCost, isDrawerOpen, onCloseDrawer}:MobileCartSummaryProps){
 
 
     const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();

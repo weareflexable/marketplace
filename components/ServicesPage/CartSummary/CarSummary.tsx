@@ -27,7 +27,7 @@ import { useCheckoutContext } from '../../../context/CheckoutContext';
 import dayjs from 'dayjs';
 
 
-interface PaymentModalProps{
+interface CartSummaryProps{
   isModalOpen: boolean,
   onCloseModal: ()=>void,
   totalCost: number,
@@ -35,7 +35,7 @@ interface PaymentModalProps{
 }
 
 
-  export default function ProcessOrderModal({cart, totalCost, isModalOpen, onCloseModal}:PaymentModalProps){
+  export default function CartSummary({cart, totalCost, isModalOpen, onCloseModal}:CartSummaryProps){
 
 
     const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
