@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import { Modal, Text, Box, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from "@chakra-ui/react"
+import { Modal, Text, Box, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
 import Image from 'next/image'
 
@@ -60,22 +60,22 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                       <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue!.tokenId}`}>View DAT on opensea</a>
                       </Text>
                     </HStack>
-
-                    <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
-                    </HStack>
-
-                    <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
-                    </HStack>
                   </Flex>
                 </Skeleton>
 
-                <Skeleton isLoaded={!isGeneratingCode}>
-                  <Flex>
-                      <QRCode value={JSON.stringify(qrValue)}/>
-                  </Flex>
-                </Skeleton>
+                <Divider/>
+
+                <Flex direction='column' w='100%'>
+                  <Skeleton isLoaded={!isGeneratingCode}>
+                    <Flex justifyContent={'center'} alignItems='center' w='100%'>
+                        <QRCode value={JSON.stringify(qrValue)}/>
+                    </Flex>
+                  </Skeleton>
+                    <HStack w='100%' spacing='2' mt='2'>
+                          <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
+                          <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
+                    </HStack>
+                </Flex>
 
               </VStack>
           </DrawerBody>

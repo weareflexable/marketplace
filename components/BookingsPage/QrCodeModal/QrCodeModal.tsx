@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import { Modal, Text, Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Skeleton, Flex, HStack, VStack } from "@chakra-ui/react"
+import { Modal, Text, Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Skeleton, Flex, HStack, VStack, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
 import Image from 'next/image'
 
@@ -58,27 +58,29 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                       <Text>{qrValue.tokenId}</Text>
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
+                    <HStack spacing='2' mb='3'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
                       <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a> </Text>  
                     </HStack>
 
-                    <HStack spacing='2' mb='1'>
-                      <Text>To redeem - cut the line and show this screen to the bouncer</Text>
-                    </HStack>
-
-                    <HStack spacing='2' mb='1'>
-                      <Text fontStyle='italic' fontWeight='medium' >It’s not a party until you arrive</Text>
-                    </HStack>
+                    
                   </Flex>
                 </Skeleton>
 
-                <Skeleton isLoaded={!isGeneratingCode}>
-                  <Flex>
-                      <QRCode value={JSON.stringify(qrValue)}/>
-                  </Flex>
-                </Skeleton>
+                <Divider/>
+
+                <Flex direction='column' w='90%' justifyContent={'center'}>
+                  <Skeleton isLoaded={!isGeneratingCode}>
+                    <Flex justifyContent={'center'} alignItems='center' w='100%'>
+                        <QRCode value={JSON.stringify(qrValue)}/>
+                    </Flex>
+                  </Skeleton>
+                  <HStack w='100%' spacing='2' mt='2'>
+                          <Text color='blackAlpha.700' textStyle={'secondary'}>To redeem - cut the line and show this screen to the bouncer</Text>
+                          <Text color='blackAlpha.700' fontStyle='italic' textStyle={'secondary'}>It’s not a party until you arrive</Text>
+                  </HStack>
+                </Flex>
 
               </VStack>
             </ModalBody>
