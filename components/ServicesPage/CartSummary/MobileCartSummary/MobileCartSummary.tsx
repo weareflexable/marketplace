@@ -40,18 +40,21 @@ interface MobileCartSummaryProps{
 
   export default function MobileCartSummary({cart, totalCost, isDrawerOpen, onCloseDrawer}:MobileCartSummaryProps){
 
-    console.log(cart)
+
 
     const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
+    const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
 
     const router = useRouter()
     
     setCart(cart)
     const proceedToPayment =()=>{
       // check user session
-      // if signed in, then i can proceed
-      // if not, then I redirect to app.flexable.dats
-      router.push('/payments');
+      setIsProceedingToPayment(true)
+      setTimeout(()=>{
+        router.push('/payments');
+        setIsProceedingToPayment(false)
+      },3000)
 
     }
 
@@ -90,7 +93,7 @@ interface MobileCartSummaryProps{
             </DrawerBody>
             <DrawerFooter>
               <VStack w='100%'>
-                <Button w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
+                <Button isLoading={isProceedingToPayment} w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
                 {`Proceed to payment $${totalAmount/100}`}
                 </Button>
                 <Button w={'100%'} mt='2' variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>

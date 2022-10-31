@@ -65,11 +65,11 @@ const CheckoutForm = () => {
 
   return (
   <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
-      <Box w='400px'>
-          <Heading mb='8' letterSpacing='-0.7px'>Complete payment</Heading>
+      <Box w='100%' maxW='400px'>
+          <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Pay ${totalAmount/100}</Button>
+          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${totalAmount/100}</Button>
           </form>
       </Box>     
   </Flex>

@@ -73,7 +73,7 @@ const Payments = () => {
   
 
   return (
-    <Flex bg='gray.900' w='100' h='100vh'  justifyContent='center' alignItems='center'>
+    <Flex bg='gray.900' w='100' h='100vh' p='4'  justifyContent='center' alignItems='center'>
         { stripePromise && clientSecret && 
         <Elements stripe={stripePromise} options={{clientSecret,appearance:{theme:'night'}}}>
             <CheckoutForm />
