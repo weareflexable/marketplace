@@ -15,6 +15,7 @@ import {
 import {Service} from '../../../data/services'
 import dayjs from 'dayjs';
 import { MdAddShoppingCart } from 'react-icons/md'
+import moment from 'moment-timezone';
 
 
 
@@ -26,10 +27,12 @@ interface ServiceProps{
 function TicketList ({data, onTriggerAction}:ServiceProps){
 
     // checks to see if there are available tickets for selected date
-    const areTicketsAvailable = data.tickets.length>0;
+    const isTicketsAvailable = data.tickets.length>0;
 
     // Determines whether or not tickets are sold out
-    const areTicketsSoldOut = areTicketsAvailable && data.tickets[0].ticketsAvailable<1
+    const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable<1
+
+    const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').format('MMM D, YYYY')
 
     return( 
         // <Skeleton isLoaded={!data} width='100%' height='50px'>
@@ -54,7 +57,7 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                 </Flex>
                 
                 <Flex bg='gray.900'  alignItems='center' justifyContent='space-between'>
-                    {areTicketsAvailable?
+                    {isTicketsAvailable?
                     <>
                     <HStack  spacing={3} px='1em'  py='12px'>
                         <HStack spacing='2' >
@@ -62,14 +65,14 @@ function TicketList ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {dayjs(data.tickets[0]!.date).format('MMM D, YYYY')} 
+                            {ticketDate} 
                             </Text>
                         </HStack>
                         <Divider orientation='vertical'/>
 
                         <Divider orientation='vertical'/>
                         <HStack spacing='2' >
-                            {areTicketsSoldOut
+                            {isTicketsSoldOut
                             ?<Text color={'gray.500'} textStyle={'body'}>Sold out</Text>
                             :<>
                                 <Text color='gray.500'  textStyle={'caption'} >

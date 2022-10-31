@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {VStack,Flex,Heading,Button,Text,HStack,Box, IconButton,Input,useNumberInput, NumberIncrementStepper, NumberDecrementStepper, NumberInput, NumberInputField, NumberInputStepper} from '@chakra-ui/react'
 import { Service } from '../../../data/services'
-import {MdOutlineDeleteOutline} from 'react-icons/md'
+import {MdAdd, MdRemove} from 'react-icons/md'
 import { useAuthContext } from '../../../context/AuthContext'
 
 interface CartProps{
@@ -61,30 +61,32 @@ interface CartListItemProps{
 const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementItemQuantity}:CartListItemProps)=>{
     
     const itemTotal = (ticket.price/100) *  ticket.quantity
+    const isMinQuantity = ticket.quantity === 1
+   
     
     return(
         <Flex display={['none','none','flex']} p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
-            <Flex direction='column' width='100%'>
-                <Flex w='100%' justifyContent='space-between'>
-                    <Text mb='2' textStyle={'body'}>{ticket.name}</Text>
-                    <IconButton onClick={()=>onRemoveTicket( ticket.id)} size='xs' icon={<MdOutlineDeleteOutline/>} aria-label='remove-item'/>
+             <Flex direction='column' width='100%'>
+                <Flex w='100%' justifyContent='space-between' mb='1' alignItems='center'>
+                    <Box w='100%'>
+                        <Text mb={'2'} textStyle={'h4'} >{ticket.name}</Text>
+                    </Box>
+                    <Button variant='link' fontSize={'12px'} color='red.400' onClick={()=>onRemoveTicket(ticket.id)} textStyle={'caption'}>Delete</Button>
+
                 </Flex>
 
-                <Flex justifyContent='space-between'  width='100%' flex='1'>
-                    <HStack spacing='1'>
-                        <NumberInput w='150px'  size='xs' maxW={20} defaultValue={1} max={10} min={1}>
-                            <NumberInputField />
-                            <NumberInputStepper>
-                            <NumberIncrementStepper onClick={()=>onIncrementItemQuantity( ticket.id)}/>
-                            <NumberDecrementStepper onClick={()=>onDecrementItemQuantity( ticket.id)}/>
-                            </NumberInputStepper>
-                        </NumberInput>
-                        <Text>${ticket.price/100}</Text>
+                <Flex justifyContent='space-between' alignItems={'center'}  width='100%' flex='1'>
+                    <HStack spacing='2'>
+                        <HStack spacing='2'>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( ticket.id)} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'}>{ticket.quantity}</Text>
+                            <IconButton onClick={()=>onIncrementItemQuantity( ticket.id)} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                        </HStack>
+                        <Text color='whiteAlpha.600' >${ticket.price/100}</Text>
                     </HStack>
-                    <Text>${itemTotal}</Text>
-                </Flex>
+                    <Text textStyle='secondary' color='whiteAlpha.900'>${itemTotal}</Text>
             </Flex>
-            
+            </Flex>
         </Flex>
     )
 }
