@@ -30,7 +30,7 @@ const dateFormat = 'YYYY/MM/DD'
             <Box ml='2'  height={'40px'} display='inline-block' w='150px'  position={'relative'}>
                 {/* <Text color='cyan' cursor='pointer' position='absolute' left='0' top='0'>{date}</Text> */}
                 {/* @ts-ignore */}
-                <DatePicker format='MMM-D-YYYY' defaultValue={moment(date,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
+                <DatePicker inputReadOnly format='MMM-D-YYYY' defaultValue={moment(date,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
             </Box>   
         </Flex>
       </Box>
