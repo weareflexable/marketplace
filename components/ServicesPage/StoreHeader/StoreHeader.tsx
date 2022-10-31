@@ -1,7 +1,8 @@
 import React,{useEffect,useState} from 'react';
-import {Image, Flex, Box, Heading, Link, HStack} from '@chakra-ui/react'
+import {Image, Flex, Box, Heading, Link, HStack,Text} from '@chakra-ui/react'
 import useIpfsImage from '../../../hooks/useIpfsImage'
 import {MdLocationPin} from 'react-icons/md'
+import { useRouter } from 'next/router';
 
 interface StoreHeaderProps{
     coverImageHash:string,
@@ -14,6 +15,9 @@ interface StoreHeaderProps{
 export default function StoreHeader({coverImageHash, storeName, city, state, lat, lon}:StoreHeaderProps){
 
     // const {isError, isFetchingImage, imageSrc} = useIpfsImage(imageHash)
+    const router = useRouter()
+
+    
 
     return(
         <Flex mt='4' w='100%' position='relative' direction='column'>

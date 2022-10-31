@@ -147,7 +147,7 @@ export default function MyBookings() {
     data &&
     data.payload.filter(
       (order: any) => orderFilter === order.paymentIntentStatus
-    );
+    ).sort((a:any,b:any)=>Number(dayjs(b.ticketDate))-Number(dayjs(a.ticketDate)));
 
   if (!isAuthenticated) {
     return (
