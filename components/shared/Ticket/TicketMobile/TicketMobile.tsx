@@ -32,7 +32,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
    const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable < 1
 
 
-   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York')
+   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').format('MMM D, YYYY')
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
@@ -64,7 +64,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {ticketDate.format('MMM D, YYYY')}
+                            {ticketDate}
                             </Text> 
                         </Flex>
                         <Divider orientation='vertical'/>
