@@ -13,7 +13,7 @@ import { getPlatformPaseto, setPlatformPaseto } from "../utils/storage";
 import supabase from "../utils/supabase";
 import axios from "axios";
 import { get } from "http";
-import { deleteStorage, getStorage } from "../utils/localStorage";
+import { deleteStorage, getStorage, setStorage } from "../utils/localStorage";
 
 const AuthContext = createContext(undefined);
 
@@ -35,11 +35,14 @@ const AuthContextProvider = ({ children }) => {
 // console.log(path,basePath)
 
 // Effect to handle redirecting of a user to last visited page
-// before logging into application
+// after logging into application
 useEffect(() => {
   const lastVisitedPage = getStorage('lastVisitedPage')
   const shouldRedirect = getStorage('shouldRedirect')
   if(shouldRedirect === 'true'){
+    // if redirecting back to service page, then leave the cart open 
+    
+
     // clear shouldRedirect & lastVisitedPage in local storage
     deleteStorage('shouldRedirect')
     deleteStorage('lastVisitedPage')

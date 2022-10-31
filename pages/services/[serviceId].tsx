@@ -10,7 +10,7 @@ import PaymentModal from '../../components/ServicesPage/ProcessOrderModal/Proces
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
-import { setStorage } from '../../utils/localStorage'
+import { deleteStorage, getStorage, setStorage } from '../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 import ProcessOrderDrawer from '../../components/ServicesPage/ProcessOrderModal/ProcessOrderDrawer/ProcessOrderDrawer'
@@ -28,7 +28,9 @@ export default function ServicesPage(){
 
     const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
 
-    const {state:isCartDrawerOpen, setState:setIsCartDrawerOpen} = useDrawerState(false)
+    // TODO: mark state to show that it interacts with local storage
+    // const {state:isCartDrawerOpen, setState:setIsCartDrawerOpen} = useDrawerState(false)
+    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
 
     const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
 
@@ -45,6 +47,18 @@ export default function ServicesPage(){
 
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
+
+    // effect to check if mobile cart was open before user got redirect to login page
+    useEffect(()=>{
+        const isCartOpenBeforeLogin = getStorage('isCartOpenBeforeLogin');
+        if(isCartOpenBeforeLogin === 'true'){
+            // Open cart drawer back up
+            setIsCartDrawerOpen(true)
+            // Then immediately clear storage
+            deleteStorage('isCartOpenBeforeLogin')
+        } 
+
+    },[])
 
 
     const changeServiceDate =(date:string)=>{
@@ -115,8 +129,13 @@ export default function ServicesPage(){
         // this is to tell browser that payment was initiated before login
             setAmount(totalCost)
             setCartItems(cart)
+            // set current path
             const currentPath = `${asPath}${basePath!==''? basePath:'/'}`
             setStorage('lastVisitedPage',currentPath)
+
+            // store that login was clicked from here
+            setStorage('isCartOpenBeforeLogin', 'true')
+
             push('/landing')
         
     }
