@@ -92,7 +92,7 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
                 <Flex justifyContent='space-between' alignItems={'center'}  width='100%' flex='1'>
                     <HStack spacing='2'>
                         <HStack spacing='2'>
-                            <IconButton onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( ticket.id)} color='cyan.400' size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( ticket.id)} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
                             <Text textStyle={'caption'}>{ticket.quantity}</Text>
                             <IconButton onClick={()=>onIncrementItemQuantity( ticket.id)} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
                         </HStack>
