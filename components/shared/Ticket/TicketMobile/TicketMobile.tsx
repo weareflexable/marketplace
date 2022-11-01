@@ -31,7 +31,6 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
    // Determines whether or not tickets are sold out
    const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable < 1
 
-
    const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').add(5,'hours').format('MMM D, YYYY')
 
 
