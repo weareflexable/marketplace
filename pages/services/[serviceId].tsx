@@ -27,7 +27,7 @@ export default function ServicesPage(){
     const {state:cart, setState:setCart} = useLocalStorage([]);
 
 
-    const [serviceDate, setServiceDate] = useState(moment().format('MMM-D-YYYY'))
+    const [serviceDate, setServiceDate] = useState(()=>moment().format('MMM-D-YYYY'))
 
     // TODO: mark state to show that it interacts with local storage
     // const {state:isCartDrawerOpen, setState:setIsCartDrawerOpen} = useDrawerState(false)
@@ -38,8 +38,10 @@ export default function ServicesPage(){
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
     
     const formatedDate = moment(serviceDate).format('YYYY-MMM-DD')
+    const pageQueryParam = query.serviceId
 
-    const {isLoading,data,isError} = useQuery(['store-service',query.serviceId,formatedDate],async()=>{
+    const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,formatedDate}],async()=>{
+        console.log('query',formatedDate)
         const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=${formatedDate}`) 
         const body = await res.json()
         console.log(body)

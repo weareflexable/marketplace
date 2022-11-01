@@ -15,7 +15,7 @@ interface ServiceSearchBarProps{
 }
 export default function ServiceSearchBar({date,onChangeDate}:ServiceSearchBarProps){
 
-const ticketDate = moment(date).tz('America/New_York')
+const ticketDate = moment(date).add(5,'hours').tz('America/New_York')
 
 
 

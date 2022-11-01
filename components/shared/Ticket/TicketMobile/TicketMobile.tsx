@@ -32,7 +32,8 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
    const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable < 1
 
 
-   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').format('MMM D, YYYY')
+   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').add(5,'hours').format('MMM D, YYYY')
+
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
