@@ -17,6 +17,7 @@ import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileC
 import moment from 'moment'
 import useLocalStorage from '../../hooks/useCart'
 import useDrawerState from '../../hooks/useDrawerState'
+import Head from 'next/head'
 
 
 export default function ServicesPage(){
@@ -143,6 +144,9 @@ export default function ServicesPage(){
         
         return(
     <DarkMode>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+      </Head>
         <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>
             <SimpleGrid mt='2' columns={8} spacing='2'>

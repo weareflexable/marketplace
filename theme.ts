@@ -46,6 +46,10 @@ const config: ThemeConfig ={
         color: mode('whiteApha.800', 'whiteAlpha.900')(props),
         bg: mode('white', 'gray.800')(props),
         lineHeight: 'base',
+        paddingTop: "env(safe-area-inset-top, 1em)",
+        paddingRight: "env(safe-area-inset-right, 1em)",
+        paddingBottom: "env(safe-area-inset-bottom, 1em)",
+        paddingLeft: "env(safe-area-inset-left, 1em)"
       },
       '*::placeholder': {
         color: mode('gray.400', 'whiteAlpha.400')(props),
