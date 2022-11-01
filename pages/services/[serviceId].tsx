@@ -6,7 +6,7 @@ import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/TicketList/TicketList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
-import CartSummary from '../../components/ServicesPage/CartSummary/CarSummary'
+import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
 import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
@@ -145,7 +145,7 @@ export default function ServicesPage(){
         return(
     <DarkMode>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+        {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
         <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
             <Header/>

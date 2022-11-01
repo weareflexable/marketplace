@@ -35,8 +35,8 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
             <Drawer size='full' colorScheme='alphaBlack.800' placement={'right'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
                 <DrawerOverlay />
                 <DrawerContent>
-                <DrawerCloseButton />
                 <DrawerHeader color='white'>Cart Items</DrawerHeader>
+                <DrawerCloseButton />
                 <DrawerBody>
                     <Flex direction='column' p='1' flex='1' borderEndRadius='4' >
                         {tickets.length > 0 ? 
@@ -55,10 +55,8 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
                         </>: <Text color={'whiteAlpha.600'}>Add tickets to cart</Text>
                         }
                     </Flex>
-                </DrawerBody>
-                <DrawerFooter>
                     {tickets.length>0?<CartTotalButton loginBeforePayment={loginBeforePayment} onCreateOrder={()=>onCreateOrder(totalPrice)} totalPrice={totalPrice}/>:null}
-                </DrawerFooter>    
+                </DrawerBody>
                 </DrawerContent>
             </Drawer>
             

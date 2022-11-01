@@ -52,8 +52,8 @@ interface MobileCartSummaryProps{
       // check user session
       setIsProceedingToPayment(true)
       setTimeout(()=>{
-        router.push('/payments');
         setIsProceedingToPayment(false)
+        router.push('/payments');
       },3000)
 
     }
@@ -63,8 +63,8 @@ interface MobileCartSummaryProps{
        <Drawer placement={'bottom'} size='full' onClose={onCloseDrawer} isOpen={isDrawerOpen}> 
         <DrawerOverlay />
         <DrawerContent>
-         <DrawerCloseButton />
           <DrawerHeader color={'white'}>Order Summary</DrawerHeader>
+          <DrawerCloseButton />
           <DrawerBody>
               {cartItems.map(item=>(
                 <Flex p='1em' justifyContent={'space-between'} mb='2' bg='blackAlpha.400' borderRadius={'3px'} direction='column' alignItems='center' key={item.id}>
@@ -90,15 +90,15 @@ interface MobileCartSummaryProps{
               ))}
           
 
-            </DrawerBody>
-            <DrawerFooter>
-              <VStack w='100%'>
+              <VStack mt='6' w='100%'>
                 <Button isLoading={isProceedingToPayment} w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
                 {`Proceed to payment $${totalAmount/100}`}
                 </Button>
-                <Button w={'100%'} mt='2' variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>
+                <Button disabled={isProceedingToPayment} w={'100%'} mt='2' variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>
               </VStack>
-            </DrawerFooter>
+            </DrawerBody>
+            {/* <DrawerFooter>
+            </DrawerFooter> */}
             </DrawerContent>
             </Drawer>
        
