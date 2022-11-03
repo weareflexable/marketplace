@@ -28,6 +28,7 @@ import { Service } from '../../../../data/services';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../../context/CheckoutContext';
 import dayjs from 'dayjs';
+import moment from 'moment-timezone'
 
 
 interface MobileCartSummaryProps{
@@ -47,7 +48,9 @@ interface MobileCartSummaryProps{
 
     const router = useRouter()
     
+    // find a better way of setting cart items to checkout context
     setCart(cart)
+
     const proceedToPayment =()=>{
       // check user session
       setIsProceedingToPayment(true)
@@ -84,7 +87,7 @@ interface MobileCartSummaryProps{
 
                   <Flex w='100%'  justifyContent='space-between' mb='1' >
                     <Text color="whiteAlpha.500" textStyle={'secondary'}>Valid on</Text>
-                    <Text color="whiteAlpha.800" textStyle={'secondary'}>{dayjs(item.tickets[0].date).format('MMM DD, YYYY')}</Text>
+                    <Text color="whiteAlpha.800" textStyle={'secondary'}>{moment(item.tickets[0].date).tz('America/New_York').format('MMM DD, YYYY')}</Text>
                   </Flex>
                 </Flex>
               ))}
