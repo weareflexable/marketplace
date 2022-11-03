@@ -100,7 +100,7 @@ export default function MyBookings() {
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
-      tokenId: tokenId,
+      orderId: order.orderId
     };
 
     isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
@@ -127,7 +127,6 @@ export default function MyBookings() {
         validity: body.payload.validity,
         quantity: order.quantity,
         userId: isAuthenticated ? supabase.auth.user()?.email : "",
-        tokenId: tokenId,
       };
 
 
