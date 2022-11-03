@@ -43,7 +43,7 @@ export default function ServicesPage(){
 
     const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,formatedDate}],async()=>{
         console.log('query',formatedDate)
-        const res = await fetch(`https://platform.flexabledats.com/api/v1.0/services/public/${query.serviceId}?date=${formatedDate}`) 
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/public/${query.serviceId}?date=${formatedDate}`) 
         const body = await res.json()
         console.log(body)
         return body

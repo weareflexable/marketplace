@@ -16,7 +16,7 @@ export default function Home() {
 
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
-    const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?startOffSet=0')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/public?startOffSet=0`)
     // const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?country=US&startOffSet=0')
     const body = await res.json()
     return body

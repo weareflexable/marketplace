@@ -39,8 +39,7 @@ export const signUp = async ({ email, password }) => {
     {
       email,  
       password,
-    },
-    { redirectTo: `https://marketplace.flexabledats.com/` }
+    }
   );
   return { user, session, error };
 };

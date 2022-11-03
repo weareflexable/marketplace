@@ -52,6 +52,7 @@ const useTicket = (data:any)=>{
      }
 
      const buyTicketNow = ()=>{
+        console.log('from useTicket',isAuthenticated)
         if(isAuthenticated){
             setAmount(subTotal) // passes total amount to checkout context
             setCart([ticketData]) // passes cart items to checkout context

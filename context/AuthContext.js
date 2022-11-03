@@ -36,6 +36,7 @@ const AuthContextProvider = ({ children }) => {
 // Effect to handle redirecting of a user to last visited page
 // after logging into application
 useEffect(() => {
+  // TODO: move this into a function?
   const lastVisitedPage = getStorage('lastVisitedPage')
   const shouldRedirect = getStorage('shouldRedirect') // whether or not to redirect to last visited page
   if(shouldRedirect === 'true'){
@@ -46,6 +47,8 @@ useEffect(() => {
     deleteStorage('lastVisitedPage')
     lastVisitedPage? push(lastVisitedPage) : push('/')
   }
+  deleteStorage('lastVistedPage');
+  push(lastVisitedPage)
 }, [])
 
   useEffect(() => {

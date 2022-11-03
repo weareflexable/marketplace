@@ -59,7 +59,7 @@ export default function MyBookings() {
   const { isLoading, data, isError } = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetch(
-      "https://platform.flexabledats.com/api/v1.0/orders",
+      `${process.env.NEXT_PUBLIC_API_URL}/orders`,
       {
         method: "GET",
         //@ts-ignore

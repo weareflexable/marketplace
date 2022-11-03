@@ -17,25 +17,6 @@ type providerValuesType = {
 
 const CheckoutContextProvider = ({children}:CheckoutContextProviderProps)=>{
 
-    // const initCart = ()=>{
-    //     if(typeof window !== 'undefined'){
-    //     if(localStorage.getItem('cart')){
-    //         const cartItems = localStorage.getItem('cart') || ''
-    //         return JSON.parse(cartItems)
-    //     }
-    // }
-    //     return []
-    // }
-
-    // const initAmount=()=>{
-    //     if(typeof window !== 'undefined'){
-    //         if(localStorage.getItem('amount')){
-    //             const amount =JSON.parse(localStorage.getItem('amount')||'')
-    //             return amount
-    //         }
-    //     }
-    //     return 0
-    // }
 
     const [totalAmount,setTotalAmount]  = useState<number>(0);
     const [cartItems, setCartItems] =  useState<any|null>([]);
@@ -47,7 +28,6 @@ const CheckoutContextProvider = ({children}:CheckoutContextProviderProps)=>{
 
     function setCart(items:Service[]){
         setCartItems(items)
-        // localStorage.setItem('cart',JSON.stringify(items))
     }
 
     let values: providerValuesType = {
