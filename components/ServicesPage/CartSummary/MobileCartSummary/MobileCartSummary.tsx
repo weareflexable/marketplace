@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../../context/CheckoutContext';
 import dayjs from 'dayjs';
 import moment from 'moment-timezone'
+import { deleteStorage, setStorage } from '../../../../utils/localStorage';
 
 
 interface MobileCartSummaryProps{
@@ -56,6 +57,7 @@ interface MobileCartSummaryProps{
       setIsProceedingToPayment(true)
       setTimeout(()=>{
         setIsProceedingToPayment(false)
+        deleteStorage('shouldBuyInstantly') // clear on instances of this
         router.push('/payments');
       },3000)
 

@@ -57,11 +57,11 @@ const useTicket = (data:any)=>{
         if(isAuthenticated){
             // setAmount(subTotal) // passes total amount to checkout context
             setBuyItems([ticketData]) // passes cart items to checkout context
-            // goto payment page is authenticated
-            // proceedToPayment();
+            setStorage('shouldBuyInstantly','true')
+            proceedToPayment();
             return
         }
-        // loginBeforeAction();
+        loginBeforeAction();
      }
  
      const incrementQuantity =()=>{
