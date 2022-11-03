@@ -5,20 +5,21 @@ import { useCheckoutContext } from '../../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
 import { setStorage } from '../../../../utils/localStorage'
 import usePath from '../../../../hooks/usePath'
+import useLocalStorage from '../../../../hooks/useLocalStorage'
+import useLocalBuy from '../../../../hooks/useLocalBuy'
+import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 
 const useTicket = (data:any)=>{
 
     const {isAuthenticated} = useAuthContext()
-    const {setAmount,setCart} = useCheckoutContext()
+    const {setBuyItems} = useInstantBuyContext()
     const router = useRouter()
     const {currentPath} = usePath()
 
       // Each ticket will maintain it's own state from props
-      const [ticketData, setTicketData] = useState(()=>{
-        return{
+      const {state:ticketData, setState:setTicketData} = useLocalBuy({
          ...data&&data,
          quantity:0
-        } 
      })
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
@@ -38,7 +39,6 @@ const useTicket = (data:any)=>{
      console.log(subTotal)
  
      const proceedToPayment = ()=>{
-
         // Timeout in order to show loading state
         setIsProceedingToPayment(true)
         setTimeout(() => {
@@ -55,24 +55,23 @@ const useTicket = (data:any)=>{
 
      const buyTicketNow = ()=>{
         if(isAuthenticated){
-            setAmount(subTotal) // passes total amount to checkout context
-            setCart([ticketData]) // passes cart items to checkout context
-
+            // setAmount(subTotal) // passes total amount to checkout context
+            setBuyItems([ticketData]) // passes cart items to checkout context
             // goto payment page is authenticated
-            proceedToPayment();
+            // proceedToPayment();
             return
         }
-        loginBeforeAction();
+        // loginBeforeAction();
      }
  
      const incrementQuantity =()=>{
-         const updatedTicket = { ...ticketData }
+         const updatedTicket = {...ticketData }
          updatedTicket.quantity++
          setTicketData(updatedTicket)
- 
-     }
+        }
+
      const decrementQuantity =()=>{
-         const updatedTicket = { ...ticketData }
+         const updatedTicket = {...ticketData }
          updatedTicket.quantity--
          setTicketData(updatedTicket)
      }

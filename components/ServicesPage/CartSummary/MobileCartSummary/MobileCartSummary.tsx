@@ -43,7 +43,7 @@ interface MobileCartSummaryProps{
 
 
 
-    const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
+    const {totalAmount,cartItems, setCart} = useCheckoutContext();
     const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
 
     const router = useRouter()
