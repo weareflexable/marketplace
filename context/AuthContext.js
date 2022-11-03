@@ -48,7 +48,7 @@ useEffect(() => {
     lastVisitedPage? push(lastVisitedPage) : push('/')
   }
   deleteStorage('lastVistedPage');
-  push(lastVisitedPage)
+  // push(lastVisitedPage)
 }, [])
 
   useEffect(() => {
