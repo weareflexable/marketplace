@@ -27,6 +27,8 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
         isTicketsSoldOut,
         isMinQuantity,
         ticketDate,
+        subTotal,
+        isAuthenticated,
         incrementQuantity,
         decrementQuantity,
         buyTicketNow
@@ -48,6 +50,11 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                     </Flex>
                     <Flex flex='1' justifyContent={'center'} alignItems='center'>
                          <Text mb='3' textStyle={'ticketPrice'}>${data.price/100}</Text> 
+                         <HStack spacing='2'>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
+                            <IconButton onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                        </HStack>
                     </Flex> 
                 </Flex>
                 
@@ -58,24 +65,17 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                    { isTicketsAvailable? 
                    <>
                    <HStack spacing={3}  py='12px'>
-                        {/* <Flex direction='column' >
+                        <Flex direction='column' >
                             <Text color='gray.500' mb='1'  textStyle={'caption'} >
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
                             {ticketDate}
                             </Text> 
-                        </Flex> */}
-                        <HStack spacing='2'>
-                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                            <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
-                            <IconButton onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
-                        </HStack>
+                        </Flex>
+                    
                         <Button disabled={isMinQuantity} size={'sm'} mr='2' onClick={buyTicketNow}>
-                            <HStack spacing='2'>
-                                <Text color='cyan' textStyle='caption'>Buy Now</Text> 
-                                <MdAddShoppingCart size='.8em' color='cyan'/>
-                            </HStack>
+                                <Text color='cyan' textStyle='caption'>{isAuthenticated?`Buy Now ${subTotal}`:'Login to buy now' }</Text> 
                         </Button>
                     <Divider orientation='vertical'/>
                     </HStack>
