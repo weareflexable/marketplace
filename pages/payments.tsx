@@ -16,8 +16,8 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY|
 const Payments = () => {
   
     const [clientSecret, setClientSecret] = useState('')
-    const {totalAmount, cartItems} = useCheckoutContext();
-    const {isAuthenticated, setIsAuthenticated} = useAuthContext()
+    const {cartItems} = useCheckoutContext();
+    const {isAuthenticated} = useAuthContext()
 
 
 
@@ -54,7 +54,6 @@ const Payments = () => {
           body:JSON.stringify(payload),
           //@ts-ignore
           headers:{
-            // replace with paseto here
             'Authorization': paseto
           }
         });
