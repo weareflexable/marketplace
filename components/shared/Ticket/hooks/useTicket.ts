@@ -34,6 +34,8 @@ const useTicket = (data:any)=>{
      const isMinQuantity = ticketData.quantity <= 0
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
+
+     console.log(subTotal)
  
      const proceedToPayment = ()=>{
 
@@ -52,16 +54,15 @@ const useTicket = (data:any)=>{
      }
 
      const buyTicketNow = ()=>{
-        console.log('from useTicket',isAuthenticated)
         if(isAuthenticated){
             setAmount(subTotal) // passes total amount to checkout context
             setCart([ticketData]) // passes cart items to checkout context
 
             // goto payment page is authenticated
             proceedToPayment();
+            return
         }
         loginBeforeAction();
-
      }
  
      const incrementQuantity =()=>{

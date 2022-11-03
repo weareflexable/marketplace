@@ -85,7 +85,7 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
                     <Flex direction='column'>
                         <Flex alignItems={'center'} w='100%'>
                             <Text mb={'2'} color={'whiteAlpha.600'} textStyle={'caption'} >{ticket.venue}</Text>
-                            <Text mb={'2'} ml='1' color={'whiteAlpha.600'} textStyle={'caption'} > · {moment(ticket.tickets[0].date).tz('America/New_York').format("MMM DD, YYYY")}</Text>
+                            <Text mb={'2'} ml='1' color={'whiteAlpha.600'} textStyle={'caption'} > · {moment(ticket.tickets[0].date).add(5,'hours').tz('America/New_York').format("MMM DD, YYYY")}</Text>
                         </Flex>
                         <Text mb={'2'} textStyle={'h4'} >{ticket.name}</Text>
                     </Flex>
