@@ -5,7 +5,6 @@ import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
 
 import {loadStripe} from '@stripe/stripe-js';
-import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
 import { useAuthContext } from '../context/AuthContext';

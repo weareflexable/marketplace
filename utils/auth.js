@@ -26,7 +26,7 @@ export const signInWithProvider = async (provider) => {
         provider,
       },
       // only redirects to a page in thesame domain
-      { redirectTo: `https://marketplace.flexabledats.com/` } // no way to pass the paceto using this option
+      { redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}` } // no way to pass the paceto using this option
       );
       return { session, error };
 
