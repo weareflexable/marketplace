@@ -32,6 +32,7 @@ function Ticket ({data, onTriggerAction}:TicketProps){
         ticketDate,
         isAuthenticated,
         isProceedingToPayment,
+        subTotal,
         incrementQuantity,
         decrementQuantity,
         buyTicketNow
@@ -56,6 +57,11 @@ function Ticket ({data, onTriggerAction}:TicketProps){
                         <Flex>
                             <Text textStyle={'ticketPrice'}>${ticketData.price/100}</Text> 
                         </Flex>
+                        <HStack mt='2' spacing='2'>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
+                            <IconButton onClick={incrementQuantity} size='sm' color='cyan.400'  icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                        </HStack>
                     </Flex>
                 </Flex>
                 
@@ -96,14 +102,10 @@ function Ticket ({data, onTriggerAction}:TicketProps){
                             </HStack>
                         </Button>
                         <HStack mr='2' spacing={'3'}>
-                            <HStack spacing='2'>
-                                <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                                <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
-                                <IconButton onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
-                            </HStack>
+                            
                             <Button isLoading={isProceedingToPayment} disabled={isMinQuantity&&isAuthenticated} size={'sm'} mr='2' onClick={buyTicketNow}>
                                 <HStack spacing='2'>
-                                    <Text color='cyan' textStyle='caption'>{isAuthenticated?'Buy Now':'Login to buy now'}</Text> 
+                                    <Text color='cyan' textStyle='caption'>{isAuthenticated?`Buy Now $${subTotal}`:'Login to buy now'}</Text> 
                                 </HStack>
                             </Button>
                         </HStack>

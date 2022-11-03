@@ -41,6 +41,7 @@ const Payments = () => {
       let paseto:string|null = '';
       if(isAuthenticated){
         // paseto got set immediately after user was authenticated in in cart page
+        // check if paseto has expired or not
         paseto = getPlatformPaseto()
       }
 

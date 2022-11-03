@@ -15,7 +15,7 @@ import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
 import moment from 'moment'
-import useLocalStorage from '../../hooks/useCart'
+import useLocalStorage from '../../hooks/useLocalStorage'
 import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
 
@@ -42,12 +42,11 @@ export default function ServicesPage(){
     const pageQueryParam = query.serviceId
 
     const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,formatedDate}],async()=>{
-        console.log('query',formatedDate)
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/public/${query.serviceId}?date=${formatedDate}`) 
         const body = await res.json()
         console.log(body)
         return body
-    },)
+    })
 
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
@@ -60,7 +59,6 @@ export default function ServicesPage(){
             // Then immediately clear storage
             deleteStorage('isCartOpenBeforeLogin')
         } 
-
     },[])
 
 
@@ -123,7 +121,7 @@ export default function ServicesPage(){
 
 
     const createOrder = (totalCost:number)=>{
-        setAmount(totalCost);
+       setAmount(totalCost);
        isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
     }
 
