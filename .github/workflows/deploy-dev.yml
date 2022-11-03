@@ -1,15 +1,14 @@
-name: "Deploy to EKS"
+name: "[DEV] Deploy to EKS"
 on:
   push:
-    branches: [main]
+    branches: [main,thisisommore/introduce-dev-deployment-24]
 
 jobs:
   build:
     name: Build Image and deploy to EKS
     runs-on: ubuntu-latest
     env:
-     ENV_FILE: ${{ secrets.ENV_FILE }}
-     
+     DEV_ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -22,7 +21,7 @@ jobs:
           aws-region: us-east-2
 
       - name: Login to Amazon ECR
-        id: login-ecr-public
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Skaffold deploy
@@ -30,7 +29,8 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
           AWS_DEFAULT_REGION: us-east-2
         run: |
-          echo "$ENV_FILE" | base64 -d > .env
+          cp values.dev.yml values.yml
+          echo "$DEV_ENV_FILE" | base64 -d > .env
           curl -LO "https://dl.k8s.io/release/v1.24.3/bin/linux/amd64/kubectl"
           curl -LO "https://dl.k8s.io/v1.24.3/bin/linux/amd64/kubectl.sha256"
           echo "$(<kubectl.sha256)  kubectl" | sha256sum --check
@@ -40,4 +40,4 @@ jobs:
           echo "$KUBE_CONFIG_DATA" | base64 -d > ~/.kube/config
           curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
           sudo install skaffold /usr/local/bin/
-          skaffold run
+          skaffold run --namespace="flexable-dev"

@@ -1,0 +1,5 @@
+namespace: flexable
+host: marketplace.flexabledats.com
+name: marketplace
+alb_group_name: flexable-alb
+port: 8000

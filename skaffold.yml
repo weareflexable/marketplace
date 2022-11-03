@@ -8,9 +8,15 @@ build:
     docker:
       dockerfile: Dockerfile
 deploy:
-  kubectl:
-    defaultNamespace: flexable
-    manifests:
-    - k8s/marketplace-web-deploy.yml
-    - k8s/marketplace-web-ingress.yml
-    - k8s/marketplace-web-service.yml
+  helm:
+    releases:
+    - name: flexable-marketplace-webapp
+      repo: https://thelazarusnetwork.github.io/lazarus-k8s
+      remoteChart: deployment
+      version: 0.1.6
+      artifactOverrides:
+        image: 816119410753.dkr.ecr.us-east-2.amazonaws.com/flexable-marketplace-webapp
+      imageStrategy:
+        helm: {}
+      valuesFiles:
+        - "values.yml"
