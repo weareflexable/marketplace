@@ -86,7 +86,7 @@ interface CartSummaryProps{
           <ModalFooter>
             <Button variant='ghost' onClick={onCloseModal}>Cancel Order</Button>
             <Button colorScheme='blue' mr={3}  onClick={proceedToPayment} >
-              {`Proceed to payment  $${totalAmount/100}`}
+              {`Proceed to pay $${totalAmount/100}`}
             </Button>
           </ModalFooter>
       </ModalContent>

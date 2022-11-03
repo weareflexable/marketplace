@@ -4,6 +4,7 @@ import { Service } from '../../../../data/services'
 import {MdAdd,MdRemove} from 'react-icons/md'
 import { useAuthContext } from '../../../../context/AuthContext'
 import { useRouter } from 'next/router'
+import moment from 'moment-timezone'
 
 interface MobileCartProps{
     tickets: any[],
@@ -75,14 +76,19 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
     
     const itemTotal = (ticket.price/100) *  ticket.quantity
     const isMinQuantity = ticket.quantity === 1
+    console.log(ticket)
     
     return(
         <Flex  p='3' borderRadius='4px' mb='2' bg='blackAlpha.500' justifyContent='space-between' as='li'>
             <Flex direction='column' width='100%'>
                 <Flex w='100%' justifyContent='space-between' mb='1' alignItems='center'>
-                    <Box w='100%'>
+                    <Flex direction='column'>
+                        <Flex alignItems={'center'} w='100%'>
+                            <Text mb={'2'} color={'whiteAlpha.600'} textStyle={'caption'} >{ticket.venue}</Text>
+                            <Text mb={'2'} ml='1' color={'whiteAlpha.600'} textStyle={'caption'} > · {moment(ticket.tickets[0].date).tz('America/New_York').format("MMM DD, YYYY")}</Text>
+                        </Flex>
                         <Text mb={'2'} textStyle={'h4'} >{ticket.name}</Text>
-                    </Box>
+                    </Flex>
                     <Button variant='link' fontSize={'12px'} color='red.400' onClick={()=>onRemoveTicket(ticket.id)} textStyle={'caption'}>Delete</Button>
 
                 </Flex>

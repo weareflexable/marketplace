@@ -32,16 +32,14 @@ const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const {path, basePath, asPath, push } = useRouter();
 
-// console.log(path,basePath)
 
 // Effect to handle redirecting of a user to last visited page
 // after logging into application
 useEffect(() => {
   const lastVisitedPage = getStorage('lastVisitedPage')
-  const shouldRedirect = getStorage('shouldRedirect')
+  const shouldRedirect = getStorage('shouldRedirect') // whether or not to redirect to last visited page
   if(shouldRedirect === 'true'){
     // if redirecting back to service page, then leave the cart open 
-    
 
     // clear shouldRedirect & lastVisitedPage in local storage
     deleteStorage('shouldRedirect')
@@ -92,7 +90,7 @@ useEffect(() => {
   };
 
   const values = {
-    isAuthenticated,
+    isAuthenticated:true,
     setIsAuthenticated,
     logout,
     currentUser,

@@ -48,25 +48,7 @@ export default function ServicesPage(){
         console.log(body)
         return body
     },)
-    
-    // useEffect(()=>{
-    //     // create copy of service itemes
-    //     const [copyServices,setCopyServices] = useState(()=>{
-    //         // TODO; create types for services
-    //         const servicesWithQuantity = data && data.payload.serviceItems.map((service:any)=>({
-    //             ...service,
-    //             quantity:0
-    //         }
-    //         ))
-    //         return servicesWithQuantity 
-    //     })
 
-    // })
-        // add quantity to service items object when copying to service items
-        // re-calculate total on each render
-        // console.log('copied services',copyServices)
-
-    
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
     // effect to check if mobile cart was open before user got redirect to login page
@@ -107,6 +89,7 @@ export default function ServicesPage(){
         // add quantity field to service
         const serviceWithQuantity = {
             ...targetTicket,
+            venue: data.payload.name ,
             quantity:1
         }
 
@@ -192,8 +175,6 @@ export default function ServicesPage(){
                             <TicketList 
                                 onAddToCart={addToCartHandler} 
                                 services={data && data.payload.serviceItems}
-                                onDecrementItemQuantity={decrementCartItemQuantity}
-                                onIncrementItemQuantity={incrementCartItemQuantity}
                             />
                         </Skeleton>
 

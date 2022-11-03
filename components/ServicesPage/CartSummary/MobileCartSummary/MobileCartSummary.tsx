@@ -92,7 +92,7 @@ interface MobileCartSummaryProps{
 
               <VStack mt='6' w='100%'>
                 <Button isLoading={isProceedingToPayment} w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
-                {`Proceed to payment $${totalAmount/100}`}
+                {`Proceed to pay $${totalAmount/100}`}
                 </Button>
                 <Button disabled={isProceedingToPayment} w={'100%'} mt='2' variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>
               </VStack>

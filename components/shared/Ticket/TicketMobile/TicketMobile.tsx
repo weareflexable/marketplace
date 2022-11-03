@@ -2,42 +2,36 @@
 import * as React from 'react';
 import {
     Box,
-    VStack,
     HStack,
     Text,
     Flex,
-    Center,
     Divider,
-    Heading,
     Button,
     IconButton
 } from '@chakra-ui/react'
 
-import dayjs from 'dayjs';
-import moment from 'moment-timezone';
-import { RangePickerProps } from 'antd/lib/date-picker';
-import { MdAdd, MdRemove } from 'react-icons/md';
-
+import useTicket from '../hooks/useTicket';
+import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
 
 
 interface ServiceProps{
     data: any,
     onTriggerAction:(id:string)=>void,
-    onIncrementItemQuantity:(itemId:string)=>void,
-    onDecrementItemQuantity:(itemId:string)=>void
 }
 
-function TicketMobile ({onDecrementItemQuantity,onIncrementItemQuantity,data, onTriggerAction}:ServiceProps){
+function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
-   // checks to see if there are available tickets for selected date
-   const isTicketsAvailable = data.tickets.length>0;
+    const {
+        ticketData,
+        isTicketsAvailable,
+        isTicketsSoldOut,
+        isMinQuantity,
+        ticketDate,
+        incrementQuantity,
+        decrementQuantity,
+        buyTicketNow
+         }= useTicket(data)
 
-   // Determines whether or not tickets are sold out
-   const isTicketsSoldOut = isTicketsAvailable && data.tickets[0].ticketsAvailable < 1
-
-   const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').add(5,'hours').format('MMM D, YYYY')
-
-   const isMinQuantity = data.quantity === 1
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
@@ -73,10 +67,16 @@ function TicketMobile ({onDecrementItemQuantity,onIncrementItemQuantity,data, on
                             </Text> 
                         </Flex> */}
                         <HStack spacing='2'>
-                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( data.id)} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                            <Text textStyle={'caption'}>{data.quantity}</Text>
-                            <IconButton onClick={()=>onIncrementItemQuantity( data.id)} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
+                            <IconButton onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
                         </HStack>
+                        <Button disabled={isMinQuantity} size={'sm'} mr='2' onClick={buyTicketNow}>
+                            <HStack spacing='2'>
+                                <Text color='cyan' textStyle='caption'>Buy Now</Text> 
+                                <MdAddShoppingCart size='.8em' color='cyan'/>
+                            </HStack>
+                        </Button>
                     <Divider orientation='vertical'/>
                     </HStack>
                     <Flex alignItems='center' justifyContent='center'>
@@ -84,7 +84,7 @@ function TicketMobile ({onDecrementItemQuantity,onIncrementItemQuantity,data, on
                         ?<Text color={'gray.500'} textStyle={'body'}>Sold out</Text>
                         :<>
                          <HStack mr='2' spacing='1'>
-                             <Text textStyle={'caption'}>{data.tickets[0]!.ticketsAvailable}</Text>
+                             <Text textStyle={'caption'}>{ticketData.tickets[0]!.ticketsAvailable}</Text>
                              <Text textStyle={'caption'} color='gray.500'>Tickets left</Text>
                          </HStack>
                          <HStack spacing='1'>

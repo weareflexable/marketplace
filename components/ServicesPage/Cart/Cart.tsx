@@ -68,11 +68,11 @@ const CartListItem =({ticket,onRemoveTicket,onIncrementItemQuantity,onDecrementI
         <Flex display={['none','none','flex']} p='2' borderRadius='4px' mb='1' bg='blackAlpha.600' justifyContent='space-between' as='li'>
              <Flex direction='column' width='100%'>
                 <Flex w='100%' justifyContent='space-between' mb='1' alignItems='center'>
-                    <Box w='100%'>
-                        <Text mb={'2'} textStyle={'h4'} >{ticket.name}</Text>
-                    </Box>
+                    <HStack spacing={'1'} w='100%'>
+                        <Text mb={'2'} textStyle={'h4'} >{ticket.name} · </Text>
+                        <Text mb={'2'} color={''} textStyle={'caption'} >{ticket.venue}</Text>
+                    </HStack>
                     <Button variant='link' fontSize={'12px'} color='red.400' onClick={()=>onRemoveTicket(ticket.id)} textStyle={'caption'}>Delete</Button>
-
                 </Flex>
 
                 <Flex justifyContent='space-between' alignItems={'center'}  width='100%' flex='1'>

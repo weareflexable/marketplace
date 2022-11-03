@@ -2,11 +2,16 @@ import {useState} from 'react'
 import moment from 'moment-timezone'
 import { useAuthContext } from '../../../../context/AuthContext'
 import { useCheckoutContext } from '../../../../context/CheckoutContext'
+import { useRouter } from 'next/router'
+import { setStorage } from '../../../../utils/localStorage'
+import usePath from '../../../../hooks/usePath'
 
 const useTicket = (data:any)=>{
 
     const {isAuthenticated} = useAuthContext()
     const {setAmount,setCart} = useCheckoutContext()
+    const router = useRouter()
+    const {currentPath} = usePath()
 
       // Each ticket will maintain it's own state from props
       const [ticketData, setTicketData] = useState(()=>{
@@ -14,8 +19,8 @@ const useTicket = (data:any)=>{
          ...data&&data,
          quantity:0
         } 
-     }
-     )
+     })
+     const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
  
      // checks to see if there are available tickets for selected date
@@ -30,15 +35,32 @@ const useTicket = (data:any)=>{
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
  
+     const proceedToPayment = ()=>{
+
+        // Timeout in order to show loading state
+        setIsProceedingToPayment(true)
+        setTimeout(() => {
+            setIsProceedingToPayment(false)
+            router.push('/payments')
+        }, 3000);
+     }
+
+     const loginBeforeAction = ()=>{
+        // store users last page before starting logging process
+        setStorage('lastVisitedPage',currentPath);
+        router.push('/landing')
+     }
 
      const buyTicketNow = ()=>{
-        
         if(isAuthenticated){
+            setAmount(subTotal) // passes total amount to checkout context
+            setCart([ticketData]) // passes cart items to checkout context
 
+            // goto payment page is authenticated
+            proceedToPayment();
         }
-        // if user is authenticated; set amount and cart in checkoutContext -> then goto payment
-        // else; set amount and cart in checkoutContext -> then go to payment
-         console.log(ticketData)
+        loginBeforeAction();
+
      }
  
      const incrementQuantity =()=>{
@@ -60,6 +82,8 @@ const useTicket = (data:any)=>{
         isMinQuantity,
         ticketDate,
         subTotal,
+        isAuthenticated,
+        isProceedingToPayment,
         incrementQuantity,
         decrementQuantity,
         buyTicketNow

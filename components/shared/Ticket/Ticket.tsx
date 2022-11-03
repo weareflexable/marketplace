@@ -2,18 +2,14 @@
 import React,{useState,useEffect} from 'react';
 import {
     Box,
-    VStack,
     HStack,
     Skeleton,
     Text,
     Flex,
-    Center,
     Divider,
-    Heading,
     Button,
     IconButton
 } from '@chakra-ui/react'
-import {Service} from '../../../data/services'
 import dayjs from 'dayjs';
 import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
 import moment from 'moment-timezone';
@@ -34,6 +30,8 @@ function Ticket ({data, onTriggerAction}:TicketProps){
         isTicketsSoldOut,
         isMinQuantity,
         ticketDate,
+        isAuthenticated,
+        isProceedingToPayment,
         incrementQuantity,
         decrementQuantity,
         buyTicketNow
@@ -100,13 +98,12 @@ function Ticket ({data, onTriggerAction}:TicketProps){
                         <HStack mr='2' spacing={'3'}>
                             <HStack spacing='2'>
                                 <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                                <Text textStyle={'caption'}>{ticketData.quantity}</Text>
+                                <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{ticketData.quantity}</Text>
                                 <IconButton onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
                             </HStack>
-                            <Button disabled={isMinQuantity} size={'sm'} mr='2' onClick={buyTicketNow}>
+                            <Button isLoading={isProceedingToPayment} disabled={isMinQuantity&&isAuthenticated} size={'sm'} mr='2' onClick={buyTicketNow}>
                                 <HStack spacing='2'>
-                                    <Text color='cyan' textStyle='caption'>Buy Now</Text> 
-                                    <MdAddShoppingCart size='.8em' color='cyan'/>
+                                    <Text color='cyan' textStyle='caption'>{isAuthenticated?'Buy Now':'Login to buy now'}</Text> 
                                 </HStack>
                             </Button>
                         </HStack>

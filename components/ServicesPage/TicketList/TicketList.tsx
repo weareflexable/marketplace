@@ -19,27 +19,22 @@ import dayjs from 'dayjs'
 interface TicketListProps{
     services: any
     onAddToCart: (id:string)=>void,
-    onDecrementItemQuantity:(ticketId:string)=>void,
-    onIncrementItemQuantity:(ticketId:string)=>void,
 }
 
-export default function TicketList({services,onDecrementItemQuantity,onIncrementItemQuantity,onAddToCart}:TicketListProps){
+export default function TicketList({services,onAddToCart}:TicketListProps){
 
     return(
         <>
         <Box p='1em' w='100%'>
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: any)=>(
-                    <>
-                    {/* <TicketMobile onTriggerAction={onAddToCart}  key={service.id} data={service}/> */}
+                    <div key={service.serviceItemId}>
+                    <TicketMobile onTriggerAction={onAddToCart}   data={service}/>
                     <TicketListItem 
                         onTriggerAction={onAddToCart}  
-                        key={service.id} 
                         data={service}
-                        onDecrementItemQuantity={onDecrementItemQuantity}
-                        onIncrementItemQuantity={onIncrementItemQuantity}
                         />
-                    </>
+                    </div>
                 ))}
             </SimpleGrid>
         </Box>
