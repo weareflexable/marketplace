@@ -93,7 +93,7 @@ useEffect(() => {
   };
 
   const values = {
-    isAuthenticated,
+    isAuthenticated:true,
     setIsAuthenticated,
     logout,
     currentUser,

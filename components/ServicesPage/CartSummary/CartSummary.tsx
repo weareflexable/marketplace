@@ -72,11 +72,11 @@ interface CartSummaryProps{
                   <HStack mb='1' spacing='4'>
                     <Text color="whiteAlpha.400" textStyle={'caption'}>Quanity</Text>
                     <Text color="whiteAlpha.700" textStyle={'caption'}>x{item.quantity}</Text>
-                  </HStack>
+                  </HStack> 
 
                   <HStack mb='1' spacing='4'>
                     <Text color="whiteAlpha.400" textStyle={'caption'}>Valid on</Text>
-                    <Text color="whiteAlpha.700" textStyle={'caption'}>{moment(item.tickets[0].date).tz('America/New_York').format('MMM DD, YYYY')}</Text>
+                    <Text color="whiteAlpha.700" textStyle={'caption'}>{moment(item.tickets[0].date).add(5,'hours').tz('America/New_York').format('MMM DD, YYYY')}</Text>
                   </HStack>
                 </Flex>
               ))}

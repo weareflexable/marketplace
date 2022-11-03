@@ -41,7 +41,7 @@ const config: ThemeConfig ={
         lineHeight: 'tall',
         height:'100vh'
       },
-      body: {
+      'body': {
         fontFamily: 'body',
         color: mode('whiteApha.800', 'whiteAlpha.900')(props),
         bg: mode('white', 'gray.800')(props),

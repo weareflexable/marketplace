@@ -22,11 +22,13 @@ const CheckoutContextProvider = ({children}:CheckoutContextProviderProps)=>{
     const [cartItems, setCartItems] =  useState<any|null>([]);
 
     function setAmount(amount:number){
+        console.log('from context',amount)
         setTotalAmount(amount);
         localStorage.setItem('amount',JSON.stringify(amount))
     }
-
+    
     function setCart(items:Service[]){
+        console.log('from context',items)
         setCartItems(items)
     }
 
