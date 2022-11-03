@@ -30,14 +30,15 @@ export default function ServicesPage(){
     const [serviceDate, setServiceDate] = useState(()=>moment().format('MMM-D-YYYY'))
 
     // TODO: mark state to show that it interacts with local storage
-    // const {state:isCartDrawerOpen, setState:setIsCartDrawerOpen} = useDrawerState(false)
-    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
 
+    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     const [isProcessDrawerOpen, setIsProcessDrawerOpen] = useState(false)
 
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
-    
+
+    // Format date to format understood by API
     const formatedDate = moment(serviceDate).format('YYYY-MMM-DD')
+    // Extract service ID from query params to be used for data fetching
     const pageQueryParam = query.serviceId
 
     const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,formatedDate}],async()=>{
@@ -46,7 +47,24 @@ export default function ServicesPage(){
         const body = await res.json()
         console.log(body)
         return body
-      },)
+    },)
+    
+    // useEffect(()=>{
+    //     // create copy of service itemes
+    //     const [copyServices,setCopyServices] = useState(()=>{
+    //         // TODO; create types for services
+    //         const servicesWithQuantity = data && data.payload.serviceItems.map((service:any)=>({
+    //             ...service,
+    //             quantity:0
+    //         }
+    //         ))
+    //         return servicesWithQuantity 
+    //     })
+
+    // })
+        // add quantity to service items object when copying to service items
+        // re-calculate total on each render
+        // console.log('copied services',copyServices)
 
     
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
@@ -64,6 +82,7 @@ export default function ServicesPage(){
     },[])
 
 
+    // Update service date state in order to trigger a refresh with newly set date.
     const changeServiceDate =(date:string)=>{
         setServiceDate(date)
     }
@@ -110,14 +129,12 @@ export default function ServicesPage(){
         const clonedCart = cart.slice();
         const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
         targetItem!.quantity++
-        console.log(targetItem);
         setCart(clonedCart);
     }
     const decrementCartItemQuantity = (id: string)=>{
         const clonedCart = cart.slice();
         const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
         targetItem!.quantity--
-        console.log(targetItem);
         setCart(clonedCart);
     }
 
@@ -172,7 +189,12 @@ export default function ServicesPage(){
                     </Skeleton>
 
                         <Skeleton height='200px' isLoaded={!isLoading}>
-                            <TicketList onAddToCart={addToCartHandler} services={data && data.payload.serviceItems}/>
+                            <TicketList 
+                                onAddToCart={addToCartHandler} 
+                                services={data && data.payload.serviceItems}
+                                onDecrementItemQuantity={decrementCartItemQuantity}
+                                onIncrementItemQuantity={incrementCartItemQuantity}
+                            />
                         </Skeleton>
 
                 </Flex> 

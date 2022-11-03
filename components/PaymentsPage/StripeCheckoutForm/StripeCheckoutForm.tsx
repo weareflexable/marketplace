@@ -28,7 +28,7 @@ const CheckoutForm = () => {
       return;
     }
 
-    localStorage.setItem('paymentStatus','complete')
+    // localStorage.setItem('paymentStatus','complete')
     const result = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,

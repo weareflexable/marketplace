@@ -9,21 +9,25 @@ import {
     Center,
     Divider,
     Heading,
-    Button
+    Button,
+    IconButton
 } from '@chakra-ui/react'
 
 import dayjs from 'dayjs';
 import moment from 'moment-timezone';
 import { RangePickerProps } from 'antd/lib/date-picker';
+import { MdAdd, MdRemove } from 'react-icons/md';
 
 
 
 interface ServiceProps{
     data: any,
-    onTriggerAction:(id:string)=>void
+    onTriggerAction:(id:string)=>void,
+    onIncrementItemQuantity:(itemId:string)=>void,
+    onDecrementItemQuantity:(itemId:string)=>void
 }
 
-function TicketMobile ({data, onTriggerAction}:ServiceProps){
+function TicketMobile ({onDecrementItemQuantity,onIncrementItemQuantity,data, onTriggerAction}:ServiceProps){
 
    // checks to see if there are available tickets for selected date
    const isTicketsAvailable = data.tickets.length>0;
@@ -33,6 +37,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
 
    const ticketDate = isTicketsAvailable && moment(data.tickets[0].date).tz('America/New_York').add(5,'hours').format('MMM D, YYYY')
 
+   const isMinQuantity = data.quantity === 1
 
     return( 
         <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
@@ -59,15 +64,20 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                    { isTicketsAvailable? 
                    <>
                    <HStack spacing={3}  py='12px'>
-                        <Flex direction='column' >
+                        {/* <Flex direction='column' >
                             <Text color='gray.500' mb='1'  textStyle={'caption'} >
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
                             {ticketDate}
                             </Text> 
-                        </Flex>
-                        <Divider orientation='vertical'/>
+                        </Flex> */}
+                        <HStack spacing='2'>
+                            <IconButton disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:()=>onDecrementItemQuantity( data.id)} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                            <Text textStyle={'caption'}>{data.quantity}</Text>
+                            <IconButton onClick={()=>onIncrementItemQuantity( data.id)} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                        </HStack>
+                    <Divider orientation='vertical'/>
                     </HStack>
                     <Flex alignItems='center' justifyContent='center'>
                         {isTicketsSoldOut

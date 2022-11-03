@@ -26,8 +26,6 @@ const disabledDate: RangePickerProps['disabledDate'] = current => {
 
   const handleDateChange = (date: string)=>{
     const formated = moment(date).format('MMM-D-YYYY')
-    console.log(formated)
-    // console.log(moment(unFormatedDate))
       onChangeDate(formated)
   }
 

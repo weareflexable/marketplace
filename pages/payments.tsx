@@ -33,13 +33,12 @@ const Payments = () => {
         const payloadObject = { 
            orgServiceItems: cartDetails,
           price: totalPrice,
-          date: dayjs().format('YYYY-MMM-D')
+          date: dayjs().format('YYYY-MMM-DD')
         }
         return payloadObject
     }
   
     useEffect(()=>{
-
       let paseto:string|null = '';
       if(isAuthenticated){
         // paseto got set immediately after user was authenticated in in cart page
