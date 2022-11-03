@@ -95,7 +95,9 @@ export default function ServicesPage(){
         clonedCart.push(serviceWithQuantity);
         console.log(clonedCart)
         setCart(clonedCart);
-
+        // always clear instant purchase whenever user adds to cart
+        deleteStorage('instantBuy')
+        
     }
 
     const removeCartItemHandler = (id:string)=>{

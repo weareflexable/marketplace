@@ -9,6 +9,8 @@ import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
 import { useAuthContext } from '../context/AuthContext';
 import { getPlatformPaseto } from '../utils/storage';
+import { useInstantBuyContext } from '../context/InstantBuyContext';
+import { getStorage } from '../utils/localStorage';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
@@ -16,6 +18,7 @@ const Payments = () => {
   
     const [clientSecret, setClientSecret] = useState('')
     const {cartItems} = useCheckoutContext();
+    const {buyItems} = useInstantBuyContext();
     const {isAuthenticated} = useAuthContext()
 
 
@@ -44,9 +47,11 @@ const Payments = () => {
         // check if paseto has expired or not
         paseto = getPlatformPaseto()
       }
-
+      
       const fetchSecret = async ()=>{
-        const payload = createPayloadObject(cartItems)
+        let shouldBuyInstantly = getStorage('shouldBuyInstantly')
+        const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
+        const payload = createPayloadObject(itemsToPurchase)
         console.log('payload',payload)
         try{
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/user/service-intent`,{
