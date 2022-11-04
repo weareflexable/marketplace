@@ -215,7 +215,7 @@ export default function MyBookings() {
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>
-                          ) : order.status === "REDEEMED" ? (
+                          ) : order.orderStatus === "REDEEMED" ? (
                             <Badge colorScheme={"yellow"} ml="1">
                               Redeemed
                             </Badge>
