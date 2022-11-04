@@ -90,7 +90,7 @@ export default function MyBookings() {
       body
     );
 
-    return +res.data.data?.tokens?.[0].id;
+    return +res.data.data?.tokens?.[0]?.id;
   }
 
 
