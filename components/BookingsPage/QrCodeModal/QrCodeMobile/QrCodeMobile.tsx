@@ -9,7 +9,7 @@ interface QrCodeMobileProps{
     onCloseDrawer: ()=>void,
     isGeneratingCode: boolean,
     qrValue: any,
-    tokenId:string
+    tokenId:number
 }
 
 const QrCodeMobile = ({isGeneratingCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
