@@ -8,10 +8,11 @@ interface QrCodeModalProps{
     isModalOpen: boolean,
     onCloseModal: ()=>void,
     isGeneratingCode: boolean,
-    qrValue: object
+    qrValue: object,
+    tokenId: string
 }
 
-const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+const QrCodeModal = ({isGeneratingCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
     return(
       <Flex display={['none','none','none','flex']} w='100%'>
@@ -55,13 +56,13 @@ const QrCodeModal = ({isGeneratingCode, qrValue, isModalOpen, onCloseModal}:QrCo
                     <HStack spacing='2' mb='1'>
                       <Text>Token ID:</Text>
                       {/* @ts-ignore */}
-                      <Text>{qrValue.tokenId}</Text>
+                      <Text>{tokenId}</Text>
                     </HStack>
 
                     <HStack spacing='2' mb='3'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue.tokenId}`}>View DAT</a> </Text>  
+                      <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId}`}>View DAT</a> </Text>  
                     </HStack>
 
                     

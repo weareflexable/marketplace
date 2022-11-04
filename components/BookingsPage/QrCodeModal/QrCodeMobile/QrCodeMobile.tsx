@@ -8,10 +8,11 @@ interface QrCodeMobileProps{
     isDrawerOpen: boolean,
     onCloseDrawer: ()=>void,
     isGeneratingCode: boolean,
-    qrValue: any
+    qrValue: any,
+    tokenId:string
 }
 
-const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
+const QrCodeMobile = ({isGeneratingCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
 
     return(
 <Flex display={['flex','flex','flex','none']} w='100%'>
@@ -50,14 +51,14 @@ const QrCodeMobile = ({isGeneratingCode, qrValue, isDrawerOpen, onCloseDrawer}:Q
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>Token ID:</Text>
                       {/* @ts-ignore */}
-                      <Text color='blackAlpha.700' textStyle={'caption'}>{qrValue.tokenId}</Text>
+                      <Text color='blackAlpha.700' textStyle={'caption'}>{tokenId}</Text>
                     </HStack>
 
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
                       {/* @ts-ignore */}
                       <Text color='cyan.700' textStyle={'caption'}>
-                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${qrValue!.tokenId}`}>View DAT on opensea</a>
+                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId}`}>View DAT on opensea</a>
                       </Text>
                     </HStack>
                   </Flex>
