@@ -9,7 +9,8 @@ interface QrCodeModalProps{
     isGeneratingCode: boolean,
     qrValue: object,
     tokenId: number,
-    uniqueCode: string
+    uniqueCode: string,
+    ticketDate: string,
 }
 
 const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
@@ -52,17 +53,24 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                       <Text>{qrValue!.quantity}</Text>
                     </HStack>
 
+                    <HStack spacing='2' mb='1'>
+                      <Text>Valid On:</Text>
+                      {/* @ts-ignore */}
+                      <Text>{moment(ticketDate).format('MMM DD, YYYY')}</Text>
+                    </HStack>
 
+
+                    { tokenId?
                     <HStack spacing='2' mb='3'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      { tokenId?
+                      
                       <Text color='cyan.700' textStyle={'caption'}>
                         <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
                       </Text>
+                    </HStack>
                       :null
                       }
-                    </HStack>
 
                     
                   </Flex>

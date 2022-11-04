@@ -55,6 +55,7 @@ export default function MyBookings() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [tokenId, setTokenId] = useState(0)
   const [uniqueCode, setUniqueCode] = useState('')
+  const [ticketDate, setTicketDate] = useState('')
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
@@ -104,6 +105,7 @@ export default function MyBookings() {
 
     setTokenId(tokenId)
     setUniqueCode(order.uniqueCode)
+    setTicketDate(order.ticketDate)
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
@@ -135,7 +137,6 @@ export default function MyBookings() {
         quantity: order.quantity,
         userId: isAuthenticated ? supabase.auth.user()?.email : "",
       };
-
 
       setQrSignature(qrCodePayload);
 
@@ -271,6 +272,7 @@ export default function MyBookings() {
       {/* only show on web */}
       <QrCodeModal
         tokenId={tokenId}
+        ticketDate={ticketDate}
         uniqueCode={uniqueCode}
         isGeneratingCode={isGeneratingCode}
         qrValue={qrSignature}
@@ -281,6 +283,7 @@ export default function MyBookings() {
       {/* only show on mobile */}
       <QrCodeMobile
         tokenId={tokenId}
+        ticketDate={ticketDate}
         uniqueCode={uniqueCode}
         isGeneratingCode={isGeneratingCode}
         qrValue={qrSignature}
