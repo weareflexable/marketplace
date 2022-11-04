@@ -25,7 +25,7 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
           <DrawerBody>
           <VStack spacing='2'>
 
-                  <Image width={600} objectFit='fill' height={250} src='/haloween.jpeg' alt='An image of the nft token'/>
+                  <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`}  alt='An image of the nft token'/>
 
                 <Skeleton w='100%' isLoaded={!isGeneratingCode}>
                   <Flex my='4' w='100%' direction='column'>
@@ -50,17 +50,14 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
 
 
                     <HStack spacing='2' mb='1'>
-                      <Text color='blackAlpha.500' textStyle={'caption'}>Token ID:</Text>
-                      {/* @ts-ignore */}
-                      <Text color='blackAlpha.700' textStyle={'caption'}>{tokenId}</Text>
-                    </HStack>
-
-                    <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
                       {/* @ts-ignore */}
+                      { tokenId?
                       <Text color='cyan.700' textStyle={'caption'}>
-                      <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId}`}>View DAT on opensea</a>
+                        <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
                       </Text>
+                      :null
+                      }
                     </HStack>
                   </Flex>
                 </Skeleton>
@@ -70,13 +67,16 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
                 <Flex direction='column' w='100%'>
                   <Skeleton isLoaded={!isGeneratingCode}>
                     <Flex justifyContent={'center'} alignItems='center' w='100%'>
+                         <HStack>
+                            <Text color='blackAlpha.500' textStyle={'caption'}>Redeem Code:</Text>
+                            <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
+                          </HStack>
                         <QRCode value={JSON.stringify(qrValue)}/>
                     </Flex>
                   </Skeleton>
                     <Flex w='100%' direction='column' justifyContent='center' mt='2'>
                           <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
                           <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
-                          <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
                     </Flex>
                 </Flex>
 
