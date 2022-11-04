@@ -3,6 +3,7 @@ import {Box,Flex,Text,Image, Avatar} from '@chakra-ui/react'
 // import Image from 'next/future/image'
 import {Store} from '../../../Types/Stores.types'
 import {useRouter} from 'next/router'
+import moment from 'moment'
 
 
 
@@ -15,7 +16,8 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     const router = useRouter()
     
     const navigateToServicePage=(serviceId:string)=>{
-        router.push(`/services/${serviceId}`)
+        console.log(serviceId)
+        router.push(`/services/${serviceId}?date=${moment().format('YYYY-MMM-DD')}`)
     }
 
     return(

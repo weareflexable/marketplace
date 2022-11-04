@@ -97,6 +97,7 @@ export default function MyBookings() {
 
     let qrCodePayload;
 
+    // TODO: fix this error
     // Fetch tokenId from the graph before generating qrCode signature
     const tokenId = await getTokenId(order.transactionHash);
 
@@ -209,7 +210,7 @@ export default function MyBookings() {
                             {order.serviceName}·
                           </Text>
                           {order.orderStatus === "TICKETS_ISSUED" &&
-                          moment().isAfter(moment(order.ticketDate).add(5,'hours').tz('America/New_York')) ? (
+                          moment().isAfter(moment(order.ticketDate))? (
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>

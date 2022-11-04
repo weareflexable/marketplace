@@ -16,7 +16,7 @@ export default function Home() {
 
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/public?startOffSet=0`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public?startOffSet=0`)
     // const res = await fetch('https://platform.flexabledats.com/api/v1.0/services/public?country=US&startOffSet=0')
     const body = await res.json()
     return body
@@ -46,7 +46,7 @@ export default function Home() {
 
               <Flex px={'2em'} w='100vw'> 
                 <Wrap w='100%' alignItems='center' justifyContent='center'> 
-                    {data && data.payload ? data.payload.slice(0,1).map((store:Store)=>(
+                    {data && data.payload ? data.payload.map((store:Store)=>(
                         <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
                             {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
                               <StoreCard data={store}/>

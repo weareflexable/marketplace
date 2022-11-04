@@ -11,18 +11,27 @@ import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 
 const useTicket = (data:any)=>{
 
+
     const {isAuthenticated} = useAuthContext()
     const {setBuyItems} = useInstantBuyContext()
     const router = useRouter()
     const {currentPath} = usePath()
 
       // Each ticket will maintain it's own state from props
-      const {state:ticketData, setState:setTicketData} = useLocalBuy({
-         ...data&&data,
-         quantity:0
+   //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
+   //       ...data&&data,
+   //       quantity:0
+   //   })
+
+     const [ticketData, setTicketData] = useState({
+      ...data,
+       quantity:0
      })
+     setStorage('instantBuy',JSON.stringify(ticketData))
+
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
+     console.log('ticketing',ticketData)
  
      // checks to see if there are available tickets for selected date
      const isTicketsAvailable = ticketData.tickets.length>0;
@@ -30,7 +39,8 @@ const useTicket = (data:any)=>{
      // Determines whether or not tickets are sold out
      const isTicketsSoldOut = isTicketsAvailable && ticketData.tickets[0].ticketsAvailable<1
  
-     const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).tz('America/New_York').add(5,'hours').format('MMM D, YYYY');
+     const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
+     console.log(ticketData.tickets[0].date)
  
      const isMinQuantity = ticketData.quantity <= 0
 
