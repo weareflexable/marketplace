@@ -14,7 +14,7 @@ import { deleteStorage, getStorage, setStorage } from '../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
 import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
 import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
@@ -26,9 +26,11 @@ export default function ServicesPage(){
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage([]);
 
+    const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState<any>({})
+    const [serviceDate, setServiceDate] = useState(moment().format('YYYY-MMM-DD'))
 
-    const [serviceDate, setServiceDate] = useState(()=>moment().format('MMM-D-YYYY'))
-
+    console.log('my date',serviceDate)
     // TODO: mark state to show that it interacts with local storage
 
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
@@ -37,16 +39,38 @@ export default function ServicesPage(){
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
     // Format date to format understood by API
-    const formatedDate = moment(serviceDate).format('YYYY-MMM-DD')
+    // const formatedDate = moment(serviceDate))
     // Extract service ID from query params to be used for data fetching
-    const pageQueryParam = query.serviceId
+    // const pageQueryParam = query.serviceId
+    const pageQueryParam = asPath+basePath
+    // console.log(asPath,basePath)
+    const serviceId = query.serviceId;
+    const date = query.date;
 
-    const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,formatedDate}],async()=>{
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/public/${query.serviceId}?date=${formatedDate}`) 
+    
+    // const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,serviceDate}],async()=>{
+        
+    //     console.log(serviceId, date)
+    //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${date}`) 
+    //     const body = await res.json()
+    //     console.log(body)
+    //     return body
+    // })
+
+    useEffect(() => {
+      async function getService(){
+        setIsLoading(true)
+        // console.log(serviceId, date)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
         const body = await res.json()
-        console.log(body)
-        return body
-    })
+        if(body.status === 200){
+            setIsLoading(false)
+            setData(body)
+            console.log(body)
+        }
+      }
+      getService()
+    }, [date, serviceId,serviceDate])
 
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
@@ -81,7 +105,7 @@ export default function ServicesPage(){
         const isDuplicateCartItem = checkCartItemExist(id)
         if(isDuplicateCartItem) return
   
-        let clonedServices = data.payload.serviceItems.slice() 
+        let clonedServices = data && data.payload.serviceItems.slice() 
         let targetTicket = clonedServices.find((service:any)=>service.id===id);
 
         // add quantity field to service
@@ -97,7 +121,7 @@ export default function ServicesPage(){
         setCart(clonedCart);
         // always clear instant purchase whenever user adds to cart
         deleteStorage('instantBuy')
-        
+
     }
 
     const removeCartItemHandler = (id:string)=>{
@@ -154,13 +178,13 @@ export default function ServicesPage(){
             <SimpleGrid mt='2' columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton w='100%' isLoaded={!isLoading}>
-                        <StoreHeader
-                         coverImageHash={data && data.payload.coverImageHash}
-                         storeName={data && data.payload.name}
-                         lat = {data && data.payload.lat}
-                         lon = {data && data.payload.lon}
-                         city = { data &&data.payload.city}
-                         state = {data && data.payload.state}
+                        <StoreHeader 
+                         coverImageHash={data && data.payload && data.payload.coverImageHash || ''}
+                         storeName={data && data.payload && data.payload.name}
+                         lat = {data && data.payload && data.payload.lat}
+                         lon = {data && data.payload && data.payload.lon}
+                         city = { data && data.payload && data.payload.city}
+                         state = {data && data.payload && data.payload.state}
                          />
                     </Skeleton>
 
@@ -174,7 +198,7 @@ export default function ServicesPage(){
                         <Skeleton height='200px' isLoaded={!isLoading}>
                             <TicketList 
                                 onAddToCart={addToCartHandler} 
-                                services={data && data.payload.serviceItems}
+                                services={data && data.payload && data.payload.serviceItems}
                             />
                         </Skeleton>
 

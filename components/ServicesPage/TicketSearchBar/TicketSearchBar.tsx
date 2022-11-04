@@ -11,21 +11,22 @@ import { RangePickerProps } from 'antd/lib/date-picker'
 
 interface ServiceSearchBarProps{
   onChangeDate: (date:string)=>void
-  date: string
+  date: string | string[] | undefined
 }
 export default function ServiceSearchBar({date,onChangeDate}:ServiceSearchBarProps){
 
-const ticketDate = moment(date).add(5,'hours').tz('America/New_York')
+const ticketDate = moment(date)
 
 
 
 const disabledDate: RangePickerProps['disabledDate'] = current => {
+
   // Can not select days before today and today
-  return  current <= moment().endOf('day');
+  return  current < moment().endOf('day');
 };
 
   const handleDateChange = (date: string)=>{
-    const formated = moment(date).format('MMM-D-YYYY')
+    const formated = moment(date).format('YYYY-MMM-DD')
       onChangeDate(formated)
   }
 
@@ -36,7 +37,7 @@ const disabledDate: RangePickerProps['disabledDate'] = current => {
             <Box ml='2'  height={'40px'} display='inline-block' w='150px'  position={'relative'}>
                 {/* <Text color='cyan' cursor='pointer' position='absolute' left='0' top='0'>{date}</Text> */}
                 {/* @ts-ignore */}
-                <DatePicker disabledDate={disabledDate} inputReadOnly format='MMM-D-YYYY' defaultValue={moment(ticketDate,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
+                <DatePicker  inputReadOnly format='MMM-D-YYYY' defaultValue={moment(ticketDate,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
             </Box>   
         </Flex>
       </Box>
