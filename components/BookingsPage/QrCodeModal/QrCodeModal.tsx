@@ -57,13 +57,15 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                     <HStack spacing='2' mb='1'>
                       <Text>Token ID:</Text>
                       {/* @ts-ignore */}
-                      <Text>{tokenId}</Text>
+                      <Text>{tokenId &&tokenId}</Text>
                     </HStack>
 
                     <HStack spacing='2' mb='3'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId}`}>View DAT</a> </Text>  
+                      <Skeleton isLoaded={tokenId}>
+                        <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT</a> </Text>  
+                      </Skeleton>
                     </HStack>
 
                     
