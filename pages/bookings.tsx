@@ -210,7 +210,7 @@ export default function MyBookings() {
                             {order.serviceName}·
                           </Text>
                           {order.orderStatus === "TICKETS_ISSUED" &&
-                          moment().isAfter(moment(order.ticketDate))? (
+                          moment().isBefore(moment(order.ticketDate))? (
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>
