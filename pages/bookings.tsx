@@ -53,6 +53,7 @@ export default function MyBookings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderFilter, setOrderFilter] = useState("PAYMENT_PAID");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [tokenId, setTokenId] = useState('')
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
@@ -97,6 +98,8 @@ export default function MyBookings() {
 
     // Fetch tokenId from the graph before generating qrCode signature
     const tokenId = await getTokenId(order.transactionHash);
+
+    setTokenId(tokenId)
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
@@ -263,6 +266,7 @@ export default function MyBookings() {
 
       {/* only show on web */}
       <QrCodeModal
+        tokenId={tokenId}
         isGeneratingCode={isGeneratingCode}
         qrValue={qrSignature}
         isModalOpen={isModalOpen}
@@ -271,6 +275,7 @@ export default function MyBookings() {
 
       {/* only show on mobile */}
       <QrCodeMobile
+        tokenId={tokenId}
         isGeneratingCode={isGeneratingCode}
         qrValue={qrSignature}
         isDrawerOpen={isDrawerOpen}
