@@ -24,7 +24,7 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
           <DrawerBody>
           <VStack spacing='2'>
 
-                  <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`}  alt='An image of the nft token'/>
+                <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`}  alt='An image of the nft token'/>
 
                 <Skeleton w='100%' isLoaded={!isGeneratingCode}>
                   <Flex my='4' w='100%' direction='column'>
