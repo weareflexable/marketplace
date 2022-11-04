@@ -9,10 +9,11 @@ interface QrCodeMobileProps{
     onCloseDrawer: ()=>void,
     isGeneratingCode: boolean,
     qrValue: any,
-    tokenId:number
+    tokenId:number,
+    uniqueCode: string
 }
 
-const QrCodeMobile = ({isGeneratingCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
+const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
 
     return(
 <Flex display={['flex','flex','flex','none']} w='100%'>
@@ -72,10 +73,11 @@ const QrCodeMobile = ({isGeneratingCode, tokenId, qrValue, isDrawerOpen, onClose
                         <QRCode value={JSON.stringify(qrValue)}/>
                     </Flex>
                   </Skeleton>
-                    <HStack w='100%' spacing='2' mt='2'>
+                    <Flex w='100%' direction='column' justifyContent='center' mt='2'>
                           <Text color='blackAlpha.700' textStyle={'caption'}>To redeem - cut the line and show this screen to the bouncer</Text>
                           <Text color='blackAlpha.700' fontStyle='italic' textStyle={'caption'}>It’s not a party until you arrive</Text>
-                    </HStack>
+                          <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
+                    </Flex>
                 </Flex>
 
               </VStack>

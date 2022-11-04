@@ -9,10 +9,11 @@ interface QrCodeModalProps{
     onCloseModal: ()=>void,
     isGeneratingCode: boolean,
     qrValue: object,
-    tokenId: number
+    tokenId: number,
+    uniqueCode: string
 }
 
-const QrCodeModal = ({isGeneratingCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
     return(
       <Flex display={['none','none','none','flex']} w='100%'>
@@ -77,10 +78,11 @@ const QrCodeModal = ({isGeneratingCode, tokenId, qrValue, isModalOpen, onCloseMo
                         <QRCode value={JSON.stringify(qrValue)}/>
                     </Flex>
                   </Skeleton>
-                  <HStack w='100%' spacing='2' mt='2'>
+                  <Flex w='100%' direction={'column'} justifyContent='center' mt='2'>
                           <Text color='blackAlpha.700' textStyle={'secondary'}>To redeem - cut the line and show this screen to the bouncer</Text>
                           <Text color='blackAlpha.700' fontStyle='italic' textStyle={'secondary'}>It’s not a party until you arrive</Text>
-                  </HStack>
+                          <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
+                  </Flex>
                 </Flex>
 
               </VStack>
