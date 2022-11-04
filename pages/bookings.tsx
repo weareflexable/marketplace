@@ -115,7 +115,7 @@ export default function MyBookings() {
     try {
       setIsGeneratingCode(true);
       const res = await fetch(
-        "https://platform.flexabledats.com/api/v1.0/get-redeem-signature",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/get-redeem-signature`,
         {
           method: "POST",
           body: JSON.stringify(payload),
