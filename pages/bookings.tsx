@@ -89,7 +89,8 @@ export default function MyBookings() {
       "https://api.thegraph.com/subgraphs/name/thisisommore/flexable",
       body
     );
-    return +res.data.data.tokens[0].id;
+
+    return +res.data.data?.tokens?.[0].id;
   }
 
 
