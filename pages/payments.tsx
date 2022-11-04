@@ -54,7 +54,7 @@ const Payments = () => {
         const payload = createPayloadObject(itemsToPurchase)
         console.log('payload',payload)
         try{
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/user/service-intent`,{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/service-intent`,{
           method:'POST',
           body:JSON.stringify(payload),
           //@ts-ignore
