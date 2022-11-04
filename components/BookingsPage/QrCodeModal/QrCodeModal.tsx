@@ -54,18 +54,15 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                     </HStack>
 
 
-                    <HStack spacing='2' mb='1'>
-                      <Text>Token ID:</Text>
-                      {/* @ts-ignore */}
-                      <Text>{tokenId &&tokenId}</Text>
-                    </HStack>
-
                     <HStack spacing='2' mb='3'>
                       <Text>NFT:</Text>
                       {/* @ts-ignore */}
-                      <Skeleton isLoaded={tokenId}>
-                        <Text color='cyan.700'> <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT</a> </Text>  
-                      </Skeleton>
+                      { tokenId?
+                      <Text color='cyan.700' textStyle={'caption'}>
+                        <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
+                      </Text>
+                      :null
+                      }
                     </HStack>
 
                     
@@ -77,13 +74,16 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                 <Flex direction='column' w='90%' justifyContent={'center'}>
                   <Skeleton isLoaded={!isGeneratingCode}>
                     <Flex justifyContent={'center'} alignItems='center' w='100%'>
+                         <HStack>
+                            <Text>Redeem Code:</Text>
+                            <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
+                          </HStack>
                         <QRCode value={JSON.stringify(qrValue)}/>
                     </Flex>
                   </Skeleton>
                   <Flex w='100%' direction={'column'} justifyContent='center' mt='2'>
                           <Text color='blackAlpha.700' textStyle={'secondary'}>To redeem - cut the line and show this screen to the bouncer</Text>
                           <Text color='blackAlpha.700' fontStyle='italic' textStyle={'secondary'}>It’s not a party until you arrive</Text>
-                          <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
                   </Flex>
                 </Flex>
 
