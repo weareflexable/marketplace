@@ -66,8 +66,8 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
 
                 <Flex direction='column' w='100%'>
                   <Skeleton isLoaded={!isGeneratingCode}>
-                    <Flex justifyContent={'center'} alignItems='center' w='100%'>
-                         <HStack>
+                    <Flex justifyContent={'center'} direction='column' alignItems='center' w='100%'>
+                         <HStack mb='2'>
                             <Text color='blackAlpha.500' textStyle={'caption'}>Redeem Code:</Text>
                             <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
                           </HStack>

@@ -114,22 +114,44 @@ const QrCodeModal = ({
                     <QRCode value={JSON.stringify(qrValue)} />
                   </Flex>
                 </Skeleton>
-                <Flex
-                  w="100%"
-                  direction={"column"}
-                  justifyContent="center"
-                  mt="2"
-                >
-                  <Text color="blackAlpha.700" textStyle={"secondary"}>
-                    To redeem - cut the line and show this screen to the bouncer
-                  </Text>
-                  <Text
-                    color="blackAlpha.700"
-                    fontStyle="italic"
-                    textStyle={"secondary"}
+
+                <Divider />
+
+                <Flex direction="column" w="90%" justifyContent={"center"}>
+                  <Skeleton isLoaded={!isGeneratingCode}>
+                    <Flex
+                      justifyContent={"center"}
+                      direction="column"
+                      alignItems="center"
+                      w="100%"
+                    >
+                      <HStack mb="2">
+                        <Text>Redeem Code:</Text>
+                        <Text color="blackAlpha.700" mt="3" textStyle={"h4"}>
+                          {uniqueCode}
+                        </Text>
+                      </HStack>
+                      <QRCode value={JSON.stringify(qrValue)} />
+                    </Flex>
+                  </Skeleton>
+                  <Flex
+                    w="100%"
+                    direction={"column"}
+                    justifyContent="center"
+                    mt="2"
                   >
-                    It’s not a party until you arrive
-                  </Text>
+                    <Text color="blackAlpha.700" textStyle={"secondary"}>
+                      To redeem - cut the line and show this screen to the
+                      bouncer
+                    </Text>
+                    <Text
+                      color="blackAlpha.700"
+                      fontStyle="italic"
+                      textStyle={"secondary"}
+                    >
+                      It’s not a party until you arrive
+                    </Text>
+                  </Flex>
                 </Flex>
               </Flex>
             </VStack>
