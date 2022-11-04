@@ -28,7 +28,7 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
               <VStack p='1em' spacing='2'>
                 {/* <Skeleton isLoaded={isGeneratingCode}> */}
 
-                  <Image width={600} objectFit='fill' height={250} src='/haloween.jpeg' alt='An image of the nft token'/>
+                  <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`} alt='An image of the nft token'/>
                 {/* </Skeleton> */}
 
                 <Skeleton isLoaded={!isGeneratingCode}>
