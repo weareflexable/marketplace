@@ -61,7 +61,7 @@ export default function MyBookings() {
   const { isLoading, data, isError } = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/orders`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/orders`,
       {
         method: "GET",
         //@ts-ignore
