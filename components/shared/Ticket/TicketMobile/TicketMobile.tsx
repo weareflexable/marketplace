@@ -85,7 +85,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                          </HStack>
                          <HStack spacing='1'>
                            <IconButton onClick={()=>onTriggerAction(data.id)} color={'cyan.400'} size='sm' icon={<MdAddShoppingCart color='cyan'/>} aria-label='remove-item'/>
-                           <Button disabled={isMinQuantity} size={'sm'} mr='2' onClick={buyTicketNow}>
+                           <Button disabled={isMinQuantity&&isAuthenticated} size={'sm'} mr='2' onClick={buyTicketNow}>
                              <Text color='cyan' textStyle='caption'>{isAuthenticated?`Buy Now ${subTotal}`:'Login to buy now' }</Text> 
                            </Button>
                          </HStack>
