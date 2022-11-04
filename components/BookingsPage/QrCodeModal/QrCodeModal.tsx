@@ -1,7 +1,6 @@
 import {useEffect} from 'react'
-import { Modal, Text, Box, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Skeleton, Flex, HStack, VStack, Divider } from "@chakra-ui/react"
+import { Modal, Text, Box,Image, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Skeleton, Flex, HStack, VStack, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
-import Image from 'next/image'
 
 
 interface QrCodeModalProps{
@@ -76,7 +75,7 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                     <Flex justifyContent={'center'} direction='column' alignItems='center' w='100%'>
                          <HStack mb='2'>
                             <Text>Redeem Code:</Text>
-                            <Text color='blackAlpha.700' mt='3'  textStyle={'h4'}>{uniqueCode}</Text>
+                            <Text color='blackAlpha.700' mt='3' textStyle={'h4'}>{uniqueCode}</Text>
                           </HStack>
                         <QRCode value={JSON.stringify(qrValue)}/>
                     </Flex>
