@@ -9,7 +9,7 @@ interface QrCodeModalProps{
     onCloseModal: ()=>void,
     isGeneratingCode: boolean,
     qrValue: object,
-    tokenId: string
+    tokenId: number
 }
 
 const QrCodeModal = ({isGeneratingCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
