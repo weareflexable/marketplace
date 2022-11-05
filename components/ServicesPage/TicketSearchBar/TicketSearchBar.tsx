@@ -37,7 +37,7 @@ const disabledDate: RangePickerProps['disabledDate'] = current => {
             <Box ml='2'  height={'40px'} display='inline-block' w='150px'  position={'relative'}>
                 {/* <Text color='cyan' cursor='pointer' position='absolute' left='0' top='0'>{date}</Text> */}
                 {/* @ts-ignore */}
-                <DatePicker  inputReadOnly format='MMM-D-YYYY' defaultValue={moment(ticketDate,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
+                <DatePicker allowClear={false}  inputReadOnly format='MMM-D-YYYY' defaultValue={moment(ticketDate,'MMM-D-YYYY')} style={{color:'#131313'}} onChange={(date:string)=>handleDateChange(date)}/>
             </Box>   
         </Flex>
       </Box>
