@@ -2,12 +2,14 @@ import React,{useState,useReducer} from 'react';
 import {Flex,Box,Button,Heading,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
+import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 
 
 
 const CheckoutForm = () => {
 
   const {totalAmount,cartItems}=  useCheckoutContext()
+  const {buyNowTotal} = useInstantBuyContext()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -69,7 +71,7 @@ const CheckoutForm = () => {
           <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${totalAmount/100}</Button>
+          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0?buyNowTotal:(totalAmount/100)}</Button>
           </form>
       </Box>     
   </Flex>

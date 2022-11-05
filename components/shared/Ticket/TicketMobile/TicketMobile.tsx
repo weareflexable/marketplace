@@ -12,14 +12,16 @@ import {
 
 import useTicket from '../hooks/useTicket';
 import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
+import dayjs from 'dayjs';
 
 
 interface ServiceProps{
     data: any,
     onTriggerAction:(id:string)=>void,
+    selectedDate: string
 }
 
-function TicketMobile ({data, onTriggerAction}:ServiceProps){
+function TicketMobile ({data,selectedDate, onTriggerAction}:ServiceProps){
 
     const {
         ticketData,
@@ -70,7 +72,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {ticketDate}
+                            {dayjs(selectedDate).format('MMM DD, YYYY')} 
                             </Text> 
                         </HStack>
                     
@@ -86,7 +88,7 @@ function TicketMobile ({data, onTriggerAction}:ServiceProps){
                          <HStack spacing='1'>
                            <IconButton onClick={()=>onTriggerAction(data.id)} color={'cyan.400'} size='sm' icon={<MdAddShoppingCart color='cyan'/>} aria-label='remove-item'/>
                            <Button disabled={isMinQuantity&&isAuthenticated} size={'sm'} mr='2' onClick={buyTicketNow}>
-                             <Text color='cyan' textStyle='caption'>{isAuthenticated?`Buy Now ${subTotal}`:'Login to buy now' }</Text> 
+                             <Text color='cyan' textStyle='caption'>{`Buy Now $${subTotal}`}</Text> 
                            </Button>
                          </HStack>
                         

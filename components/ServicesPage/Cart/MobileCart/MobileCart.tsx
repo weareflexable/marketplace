@@ -33,11 +33,14 @@ export default function MobileCart({tickets,onRemoveCartItem,onIncrementCartItem
 
     return(
         <Flex mt='1em' flex='1' width='100%' direction='column'>
-            <Drawer size='full' colorScheme='alphaBlack.800' placement={'right'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
+            <Drawer colorScheme='alphaBlack.800' placement={'right'} onClose={onCloseDrawer} isOpen={isDrawerOpen}>
                 <DrawerOverlay />
                 <DrawerContent>
-                <DrawerHeader color='white'>Cart Items</DrawerHeader>
-                <DrawerCloseButton />
+                <Flex alignItems='center' w='100%'>
+                    <DrawerHeader  flex='8' color='white'>Cart Items</DrawerHeader>
+                    <DrawerCloseButton mt='2' bg={'gray.300'} />
+                </Flex>
+
                 <DrawerBody>
                     <Flex direction='column' p='1' flex='1' borderEndRadius='4' >
                         {tickets.length > 0 ? 
