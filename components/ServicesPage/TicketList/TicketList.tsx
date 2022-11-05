@@ -19,9 +19,10 @@ import dayjs from 'dayjs'
 interface TicketListProps{
     services: any
     onAddToCart: (id:string)=>void,
+    date: string
 }
 
-export default function TicketList({services,onAddToCart}:TicketListProps){
+export default function TicketList({services,date,onAddToCart}:TicketListProps){
 
     return(
         <>
@@ -29,8 +30,13 @@ export default function TicketList({services,onAddToCart}:TicketListProps){
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: any)=>(
                     <div key={service.serviceItemId}>
-                    <TicketMobile onTriggerAction={onAddToCart}   data={service}/>
+                    <TicketMobile 
+                        selectedDate={date} 
+                        onTriggerAction={onAddToCart}   
+                        data={service}
+                        />
                     <TicketListItem 
+                        selectedDate={date}
                         onTriggerAction={onAddToCart}  
                         data={service}
                         />

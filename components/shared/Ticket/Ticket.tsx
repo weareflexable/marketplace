@@ -12,17 +12,17 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs';
 import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
-import moment from 'moment-timezone';
 import useTicket from './hooks/useTicket';
 
 
 
 interface TicketProps{
     data: any,
+    selectedDate: string,
     onTriggerAction:(id:string)=>void,
 }
 
-function Ticket ({data, onTriggerAction}:TicketProps){
+function Ticket ({data, selectedDate, onTriggerAction}:TicketProps){
 
     console.log('inside ticket',data)
     const {
@@ -75,7 +75,7 @@ function Ticket ({data, onTriggerAction}:TicketProps){
                                 Valid on 
                             </Text>
                             <Text textStyle={'caption'}>
-                            {ticketDate} 
+                            {dayjs(selectedDate).format('MMM DD, YYYY')} 
                             </Text>
                         </HStack>
 

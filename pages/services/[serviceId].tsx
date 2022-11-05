@@ -200,6 +200,7 @@ export default function ServicesPage(){
 
                         <Skeleton height='200px' isLoaded={!isLoading}>
                             <TicketList 
+                                date={serviceDate}
                                 onAddToCart={addToCartHandler} 
                                 services={data && data.payload && data.payload.serviceItems}
                             />
