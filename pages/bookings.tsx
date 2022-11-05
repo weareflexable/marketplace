@@ -11,23 +11,10 @@ import {
   Grid,
   GridItem,
   Button,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Badge,
   useMediaQuery,
 } from "@chakra-ui/react";
 import Layout from "../components/shared/Layout/Layout";
-import Ticket from "../components/shared/Ticket/Ticket";
 import { useRouter } from "next/router";
 import supabase from "../utils/supabase";
 import { useAuthContext } from "../context/AuthContext";
@@ -38,7 +25,7 @@ import { getPlatformPaseto } from "../utils/storage";
 import BookingsFilters from "../components/BookingsPage/BookingFilter/BookingFilter";
 import QrCodeMobile from "../components/BookingsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
 import axios from "axios";
-import moment from "moment-timezone";
+// import moment from "moment-timezone";
 
 export default function MyBookings() {
   // TODO: fetch user specific data
@@ -154,9 +141,9 @@ export default function MyBookings() {
     data &&
     data.payload.filter(
       (order: any) => orderFilter === order.paymentIntentStatus
-    ).sort((a:any,b:any)=>Number(moment(b.ticketDate))-Number(moment(a.ticketDate)));
+    ).sort((a:any,b:any)=>Number(dayjs(b.ticketDate))-Number(dayjs(a.ticketDate)));
 
-  if (data.payload.length<1) {
+  if (data && data.payload && data.payload.length<1) {
     return (
       <Layout>
         <Box>
@@ -223,7 +210,7 @@ export default function MyBookings() {
                             {order.serviceName}·
                           </Text>
                           {order.orderStatus === "TICKETS_ISSUED" &&
-                          moment().isBefore(moment(order.ticketDate))? (
+                          dayjs().isBefore(dayjs(order.ticketDate))? (
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>
@@ -258,7 +245,7 @@ export default function MyBookings() {
                         <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.500">Valid on:</Text>
                           <Text color="whiteAlpha.700">
-                            {moment(order.ticketDate).add(5,'hours').tz('America/New_York').format("MMM D, YYYY")}
+                            {dayjs(order.ticketDate).format("MMM D, YYYY")}
                           </Text>
                         </HStack>
 
