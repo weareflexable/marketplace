@@ -33,7 +33,7 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
 
                 <Skeleton isLoaded={!isGeneratingCode}>
                   <Flex direction='column'>
-                    <HStack spacing='2' mb='1'>
+                    <HStack spacing='2' mb='1 '>
                       <Text>Location:</Text>
                       <Text color='cyan.700' textStyle={'caption'}> 
                         <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">314 S Franklin St Syracuse, NY 13206</a> 
