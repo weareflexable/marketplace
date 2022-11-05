@@ -65,11 +65,13 @@ interface MobileCartSummaryProps{
 
     return (
       <>
-       <Drawer placement={'bottom'} size='full' onClose={onCloseDrawer} isOpen={isDrawerOpen}> 
+       <Drawer placement={'bottom'}  onClose={onCloseDrawer} isOpen={isDrawerOpen}> 
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader color={'white'}>Order Summary</DrawerHeader>
-          <DrawerCloseButton />
+         <Flex alignItems='center' w='100%'>
+              <DrawerHeader  flex='8' color='white'>Order summary</DrawerHeader>
+              <DrawerCloseButton mt='2' bg={'gray.300'} />
+           </Flex>
           <DrawerBody>
               {cartItems.map(item=>(
                 <Flex p='1em' justifyContent={'space-between'} mb='2' bg='blackAlpha.400' borderRadius={'3px'} direction='column' alignItems='center' key={item.id}>
