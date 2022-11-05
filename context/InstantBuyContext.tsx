@@ -41,9 +41,9 @@ const InstantBuyContextProvider = ({children}:InstantBuyContextProps)=>{
 function useInstantBuyContext(){
     const context = useContext(InstantBuyContext)
 
-    if(context === undefined){
-        throw new Error('Please make sure component is wrapped around context provider')
-    }
+    // if(context === undefined){
+    //     throw new Error('Please make sure component is wrapped around context provider')
+    // }
 
     return context
 }
