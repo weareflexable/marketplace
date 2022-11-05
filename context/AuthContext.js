@@ -121,9 +121,10 @@ useEffect(() => {
 const useAuthContext = () => {
   const context = useContext(AuthContext);
 
-  // if (context === undefined) {
-  //   throw new Error("Context is not being used under its provider");
-  // }
+  if (context === undefined) {
+    console.log('Context not used under its provider')
+    // throw new Error("Context is not being used under its provider");
+  }
 
   return context;
 };

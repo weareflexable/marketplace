@@ -50,9 +50,10 @@ const CheckoutContextProvider = ({children}:CheckoutContextProviderProps)=>{
 function useCheckoutContext(){
     const context = useContext(CheckoutContext)
 
-    // if(context === undefined){
-    //     throw new Error('Please make sure component is wrapped around context provider')
-    // }
+    if(context === undefined){
+        console.log('Context not used under its provider')
+        // throw new Error('Please make sure component is wrapped around context provider')
+    }
 
     return context
 }
