@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import { Modal, Text, Box, Image, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
-
+import dayjs from 'dayjs';
 
 
 interface QrCodeMobileProps{
