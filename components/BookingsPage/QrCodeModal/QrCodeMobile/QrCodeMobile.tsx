@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
-import { Modal, Text, Box, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Divider } from "@chakra-ui/react"
+import { Modal, Text, Box, Image, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
-import Image from 'next/image'
+import moment from 'moment';
 
 
 interface QrCodeMobileProps{
@@ -10,7 +10,8 @@ interface QrCodeMobileProps{
     isGeneratingCode: boolean,
     qrValue: any,
     tokenId:number,
-    uniqueCode: string
+    uniqueCode: string,
+    ticketDate: string
 }
 
 const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
@@ -25,7 +26,7 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
           <DrawerBody>
           <VStack spacing='2'>
 
-                  <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`}  alt='An image of the nft token'/>
+                <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`}  alt='An image of the nft token'/>
 
                 <Skeleton w='100%' isLoaded={!isGeneratingCode}>
                   <Flex my='4' w='100%' direction='column'>
@@ -48,17 +49,24 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
                       <Text color='blackAlpha.700' textStyle={'caption'}>{qrValue!.quantity}</Text>
                     </HStack>
 
+                    <HStack spacing='2' mb='1'>
+                      <Text color='blackAlpha.500' textStyle={'caption'}>Valid On:</Text>
+                      {/* @ts-ignore */}
+                      <Text color='blackAlpha.700' textStyle={'caption'}>{moment(ticketDate).format('MMM DD, YYYY')}</Text>
+                    </HStack>
 
+
+                    { tokenId?
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
                       {/* @ts-ignore */}
-                      { tokenId?
+                      
                       <Text color='cyan.700' textStyle={'caption'}>
                         <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
                       </Text>
-                      :null
-                      }
                     </HStack>
+                    :null
+                  }
                   </Flex>
                 </Skeleton>
 
