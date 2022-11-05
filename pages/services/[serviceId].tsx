@@ -28,7 +28,7 @@ export default function ServicesPage(){
 
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState<any>({})
-    const [serviceDate, setServiceDate] = useState(moment().format('YYYY-MMM-DD'))
+    const [serviceDate, setServiceDate] = useState(()=>Date())
 
     console.log('my date',serviceDate)
     // TODO: mark state to show that it interacts with local storage
@@ -58,9 +58,11 @@ export default function ServicesPage(){
 
     useEffect(() => {
       async function getService(){
+        console.log('from effect',serviceDate)
         setIsLoading(true)
         // console.log(serviceId, date)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
+        // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${moment(serviceDate).format('YYYY-MMM-DD')}`) 
         const body = await res.json()
         if(body.status === 200){
             setIsLoading(false)
@@ -87,6 +89,8 @@ export default function ServicesPage(){
 
     // Update service date state in order to trigger a refresh with newly set date.
     const changeServiceDate =(date:string)=>{
+        console.log('from service',moment(date).format('YYYY-MMM-DD'))
+    
         setServiceDate(date)
     }
 
