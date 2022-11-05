@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import { Modal, Text, Box, Image, DrawerCloseButton, Skeleton, Flex, HStack, VStack, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
-import moment from 'moment';
+
 
 
 interface QrCodeMobileProps{
@@ -14,7 +14,7 @@ interface QrCodeMobileProps{
     ticketDate: string
 }
 
-const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
+const QrCodeMobile = ({isGeneratingCode,uniqueCode, ticketDate, tokenId, qrValue, isDrawerOpen, onCloseDrawer}:QrCodeMobileProps)=>{
 
     return(
 <Flex display={['flex','flex','flex','none']} w='100%'>
@@ -52,7 +52,7 @@ const QrCodeMobile = ({isGeneratingCode,uniqueCode, tokenId, qrValue, isDrawerOp
                     <HStack spacing='2' mb='1'>
                       <Text color='blackAlpha.500' textStyle={'caption'}>Valid On:</Text>
                       {/* @ts-ignore */}
-                      <Text color='blackAlpha.700' textStyle={'caption'}>{moment(ticketDate).format('MMM DD, YYYY')}</Text>
+                      <Text color='blackAlpha.700' textStyle={'caption'}>{ticketDate && dayjs(ticketDate).format('MMM DD, YYYY')}</Text>
                     </HStack>
 
 
