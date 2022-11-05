@@ -40,7 +40,7 @@ const useTicket = (data:any)=>{
      const isTicketsSoldOut = isTicketsAvailable && ticketData.tickets[0].ticketsAvailable<1
  
      const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
-     console.log(ticketData.tickets[0].date)
+
  
      const isMinQuantity = ticketData.quantity <= 0
 
