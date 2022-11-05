@@ -45,7 +45,6 @@ export default function ServicesPage(){
     const pageQueryParam = asPath+basePath
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
-    const date = query.date;
 
     
     // const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,serviceDate}],async()=>{
@@ -70,7 +69,7 @@ export default function ServicesPage(){
         }
       }
       getService()
-    }, [date, serviceId,serviceDate])
+    }, [serviceId,serviceDate])
 
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
 
