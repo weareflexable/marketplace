@@ -72,7 +72,7 @@ export default function MyBookings() {
       }
     );
     const body = await res.json();
-    return body;
+    return body
   });
 
   async function getTokenId(txHash: string): Promise<number> {
