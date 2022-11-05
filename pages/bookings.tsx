@@ -81,7 +81,7 @@ export default function MyBookings() {
     const body = {
       query: `{
           tokens( 
-              where: { txHash:"${txHash}" } 
+              where: { txHash:"${txHash}"} 
           )
           { id }
         }`,
