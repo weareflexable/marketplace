@@ -106,7 +106,7 @@ function Ticket ({data, onTriggerAction}:TicketProps){
                             
                             <Button isLoading={isProceedingToPayment} disabled={isMinQuantity&&isAuthenticated} size={'sm'} mr='2' onClick={buyTicketNow}>
                                 <HStack spacing='2'>
-                                    <Text color='cyan' textStyle='caption'>{isAuthenticated?`Buy Now $${subTotal}`:'Login to buy now'}</Text> 
+                                    <Text color='cyan' textStyle='caption'>{`Buy Now $${subTotal}`}</Text> 
                                 </HStack>
                             </Button>
                         </HStack>
