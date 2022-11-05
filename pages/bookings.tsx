@@ -209,8 +209,8 @@ export default function MyBookings() {
                           <Text color="whiteAlpha.700">
                             {order.serviceName}·
                           </Text>
-                          {order.orderStatus === "TICKETS_ISSUED" &&
-                          dayjs().isBefore(dayjs(order.ticketDate))? (
+                          {(order.orderStatus === "TICKETS_ISSUED" &&
+                          dayjs().isBefore(dayjs(order.ticketDate))) || order.orderStatus === undefined? (
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>
