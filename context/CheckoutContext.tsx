@@ -52,7 +52,7 @@ function useCheckoutContext(){
 
     if(context === undefined){
         console.log('Context not used under its provider')
-        // throw new Error('Please make sure component is wrapped around context provider')
+        throw new Error('Please make sure component is wrapped around context provider')
     }
 
     return context
