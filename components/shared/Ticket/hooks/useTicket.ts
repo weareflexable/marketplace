@@ -13,7 +13,7 @@ const useTicket = (data:any)=>{
 
 
     const {isAuthenticated} = useAuthContext()
-    const {setBuyItems} = useInstantBuyContext()
+    const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
     const router = useRouter()
     const {currentPath} = usePath()
 
@@ -67,7 +67,9 @@ const useTicket = (data:any)=>{
         if(isAuthenticated){
             // setAmount(subTotal) // passes total amount to checkout context
             setBuyItems([ticketData]) // passes cart items to checkout context
+            setBuyNowTotal(subTotal)
             setStorage('shouldBuyInstantly','true')
+
             proceedToPayment();
             return
         }

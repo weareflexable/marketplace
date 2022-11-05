@@ -11,11 +11,14 @@ interface InstantBuyContextProps{
 type providerValuesType = {
     buyItems: Array<any>,
     setBuyItems: ((items:any) =>void),
+    buyNowTotal: number,
+    setBuyNowTotal: (total:number)=>void
 }
 
 const InstantBuyContextProvider = ({children}:InstantBuyContextProps)=>{
 
     const [buyItem, setBuyItem] =  useState<any|null>([]);
+    const [buyNowTotal, setBuyNowTotal] =  useState<number>(0);
 
     
     function setBuyItems(items:any){
@@ -26,6 +29,8 @@ const InstantBuyContextProvider = ({children}:InstantBuyContextProps)=>{
     let values: providerValuesType = {
         buyItems: buyItem,
         setBuyItems: setBuyItems,
+        buyNowTotal,
+        setBuyNowTotal
     }
     return (
         
