@@ -1,6 +1,7 @@
 import {useEffect} from 'react'
 import { Modal, Text, Box,Image, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Skeleton, Flex, HStack, VStack, Divider } from "@chakra-ui/react"
 import QRCode from "react-qr-code";
+import dayjs from 'dayjs';
 
 
 interface QrCodeModalProps{
@@ -13,7 +14,7 @@ interface QrCodeModalProps{
     ticketDate: string,
 }
 
-const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
+const QrCodeModal = ({isGeneratingCode, ticketDate, uniqueCode, tokenId, qrValue, isModalOpen, onCloseModal}:QrCodeModalProps)=>{
 
     return(
       <Flex display={['none','none','none','flex']} w='100%'>
@@ -28,7 +29,7 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
               <VStack p='1em' spacing='2'>
                 {/* <Skeleton isLoaded={isGeneratingCode}> */}
 
-                  <Image width={600} objectFit='fill' height={250} src={`https://nftstorage.link/ipfs/bafkreihpbepi6dhmk3jhvb5xjxgdtsigdjiz4cigaiwzauvw3hzj3h6bie`} alt='An image of the nft token'/>
+                  <Image width={600} objectFit='fill' height={250} src={`/lineskip.png`} alt='An image of the nft token'/>
                 {/* </Skeleton> */}
 
                 <Skeleton isLoaded={!isGeneratingCode}>
@@ -74,7 +75,7 @@ const QrCodeModal = ({isGeneratingCode, uniqueCode, tokenId, qrValue, isModalOpe
                     <HStack spacing='2' mb='1'>
                       <Text>Valid On:</Text>
                       {/* @ts-ignore */}
-                      <Text>{moment(ticketDate).format('MMM DD, YYYY')}</Text>
+                      <Text>{ticketDate && dayjs(ticketDate).format('MMM DD, YYYY')}</Text>
                     </HStack>
 
 

@@ -52,7 +52,6 @@ useEffect(() => {
 }, [])
 
   useEffect(() => {
-    console.log('from effect',isAuthenticated)
     if (isAuthenticated && !getPlatformPaseto()) {
       getPaseto(supabase.auth.session().access_token).then(res=>{
         setPlatformPaseto(res)
@@ -61,7 +60,24 @@ useEffect(() => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    // checks if user already signed in when they land
+    async function refreshUser(){
+      const refreshToken = supabase.auth.session().refresh_token
+      const {data:{user,session}} = await supabase.auth.refreshSession(refreshToken)
+
+      // get access token from session and reset token
+      getPaseto(session.access_token).then(res=>{
+        setPlatformPaseto(res)
+      })
+    }
+      if(isAuthenticated){
+        // get current session
+        // refresh token
+        refreshUser()
+      };
+      
+  }, [isAuthenticated])
+
+  useEffect(() => {
 
     const user = checkUser();
     if (user) {
@@ -93,7 +109,7 @@ useEffect(() => {
   };
 
   const values = {
-    isAuthenticated,
+    isAuthenticated:true,
     setIsAuthenticated,
     logout,
     currentUser,
@@ -106,10 +122,11 @@ const useAuthContext = () => {
   const context = useContext(AuthContext);
 
   if (context === undefined) {
+    console.log('Context not used under its provider')
     throw new Error("Context is not being used under its provider");
   }
 
   return context;
 };
 
-export { useAuthContext, AuthContextProvider };
+export { useAuthContext, AuthContext, AuthContextProvider };
