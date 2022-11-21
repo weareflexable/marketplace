@@ -30,35 +30,67 @@ const AuthContext = createContext(undefined);
 const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const {path, basePath, asPath, push, query } = useRouter();
+  const {path, basePath, push, query } = useRouter();
 
-  console.log(query)
+  const [paseto, setPaseto] =useState(()=>{
+    const storedPaseto = getStorage('PLATFORM_PASETO')
+    if(storedPaseto){ 
+        return storedPaseto
+    }
+    return ''
+})
+
+  // console.log(query)
+
+  // useEffect(()=>{
+  //   console.log(query.paseto)
+  //   if(query.paseto !== undefined){
+  //     setStorage('PLATFORM_PASETO',query.paseto)
+  //     setIsAuthenticated(true)
+  //   }
+  // },[query])
+
+
+  const pasetoFromUrl = query.paseto 
+  // console.log('urlpaseto',pasetoFromUrl)
 
   useEffect(()=>{
-    console.log(query.paseto)
-    if(query.paseto !== undefined){
-      setStorage('PLATFORM_PASETO',query.paseto)
-      setIsAuthenticated(true)
+      if(paseto !== '' && paseto !== null){
+          console.log('should authenticte')
+          setIsAuthenticated(true)
+      }
+  },[paseto])
+
+  useEffect(() => {
+    // set state if url paseto exist
+    if(pasetoFromUrl){
+        // set ui and local storage
+        setPaseto(pasetoFromUrl) 
+
+        setStorage('PLATFORM_PASETO',JSON.stringify(pasetoFromUrl))
+        setIsAuthenticated(true)
     }
-  },[query])
+    // check
+//   console.log(pasetoFromUrl)
+}, [pasetoFromUrl])
 
 // Effect to handle redirecting of a user to last visited page
 // after logging into application
-useEffect(() => {
-  // TODO: move this into a function?
-  const lastVisitedPage = getStorage('lastVisitedPage')
-  const shouldRedirect = getStorage('shouldRedirect') // whether or not to redirect to last visited page
-  if(shouldRedirect === 'true'){
-    // if redirecting back to service page, then leave the cart open 
+// useEffect(() => {
+//   // TODO: move this into a function?
+//   const lastVisitedPage = getStorage('lastVisitedPage')
+//   const shouldRedirect = getStorage('shouldRedirect') // whether or not to redirect to last visited page
+//   if(shouldRedirect === 'true'){
+//     // if redirecting back to service page, then leave the cart open 
 
-    // clear shouldRedirect & lastVisitedPage in local storage
-    deleteStorage('shouldRedirect')
-    deleteStorage('lastVisitedPage')
-    lastVisitedPage? push(lastVisitedPage) : push('/')
-  }
-  deleteStorage('lastVistedPage');
-  // push(lastVisitedPage)
-}, [])
+//     // clear shouldRedirect & lastVisitedPage in local storage
+//     deleteStorage('shouldRedirect')
+//     deleteStorage('lastVisitedPage')
+//     lastVisitedPage? push(lastVisitedPage) : push('/')
+//   }
+//   deleteStorage('lastVistedPage');
+//   // push(lastVisitedPage)
+// }, [])
 
   // useEffect(() => {
   //   if (isAuthenticated && !getPlatformPaseto()) {
@@ -112,10 +144,14 @@ useEffect(() => {
   //   };
   // }, [push, setIsAuthenticated]); 
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    signOut();
-  };
+    const logout = () =>{
+        setIsAuthenticated(false)
+        // clear all caches
+        localStorage.clear()
+        // redirect user to login page
+    }
+
+
 
   const values = {
     isAuthenticated,
