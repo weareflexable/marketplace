@@ -30,8 +30,17 @@ const AuthContext = createContext(undefined);
 const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const {path, basePath, asPath, push } = useRouter();
+  const {path, basePath, asPath, push, query } = useRouter();
 
+  console.log(query)
+
+  useEffect(()=>{
+    console.log(query.paseto)
+    if(query.paseto !== undefined){
+      setStorage('PLATFORM_PASETO',query.paseto)
+      setIsAuthenticated(true)
+    }
+  },[query])
 
 // Effect to handle redirecting of a user to last visited page
 // after logging into application
@@ -51,57 +60,57 @@ useEffect(() => {
   // push(lastVisitedPage)
 }, [])
 
-  useEffect(() => {
-    if (isAuthenticated && !getPlatformPaseto()) {
-      getPaseto(supabase.auth.session().access_token).then(res=>{
-        setPlatformPaseto(res)
-      });
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated && !getPlatformPaseto()) {
+  //     getPaseto(supabase.auth.session().access_token).then(res=>{
+  //       setPlatformPaseto(res)
+  //     });
+  //   }
+  // }, [isAuthenticated]);
 
-  useEffect(() => {
-    async function refreshUser(){
-      const refreshToken = supabase.auth.session().refresh_token
-      const {data:{user,session}} = await supabase.auth.refreshSession(refreshToken)
+  // useEffect(() => {
+  //   async function refreshUser(){
+  //     const refreshToken = supabase.auth.session().refresh_token
+  //     const {data:{user,session}} = await supabase.auth.refreshSession(refreshToken)
 
-      // get access token from session and reset token
-      getPaseto(session.access_token).then(res=>{
-        setPlatformPaseto(res)
-      })
-    }
-      if(isAuthenticated){
-        // get current session
-        // refresh token
-        refreshUser()
-      };
+  //     // get access token from session and reset token
+  //     getPaseto(session.access_token).then(res=>{
+  //       setPlatformPaseto(res)
+  //     })
+  //   }
+  //     if(isAuthenticated){
+  //       // get current session
+  //       // refresh token
+  //       refreshUser()
+  //     };
       
-  }, [isAuthenticated])
+  // }, [isAuthenticated])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const user = checkUser();
-    if (user) {
-      setIsAuthenticated(true);
-      setCurrentUser(user);
-    }
+    // const user = checkUser();
+    // if (user) {
+    //   setIsAuthenticated(true);
+    //   setCurrentUser(user);
+    // }
     
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        // updateSupabaseCookie(event, session);
-        if (event === "SIGNED_IN") {
-          setIsAuthenticated(true);
-        }
-        if (event === "SIGNED_OUT") {
-          setIsAuthenticated(false);
-        }
-      }
-    );
+    // const { data: authListener } = supabase.auth.onAuthStateChange(
+    //   (event, session) => {
+    //     // updateSupabaseCookie(event, session);
+    //     if (event === "SIGNED_IN") {
+    //       setIsAuthenticated(true);
+    //     }
+    //     if (event === "SIGNED_OUT") {
+    //       setIsAuthenticated(false);
+    //     }
+    //   }
+    // );
 
-    return () => {
-      // @ts-ignore
-      authListener?.unsubscribe();
-    };
-  }, [push, setIsAuthenticated]); 
+  //   return () => {
+  //     // @ts-ignore
+  //     authListener?.unsubscribe();
+  //   };
+  // }, [push, setIsAuthenticated]); 
 
   const logout = () => {
     setIsAuthenticated(false);
