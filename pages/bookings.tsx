@@ -121,7 +121,7 @@ export default function MyBookings() {
         signature: body.payload.signature,
         validity: body.payload.validity,
         quantity: order.quantity,
-        userId: isAuthenticated ? supabase.auth.user()?.email : "",
+        userId: body.payload.userId,
       };
 
       setQrSignature(qrCodePayload);
