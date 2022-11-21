@@ -13,7 +13,8 @@ export default function Header(){
     const login =()=>{
         const currentPath = `${asPath}${basePath}`
         setStorage('lastVisitedPage',currentPath)
-        push('/landing')
+        location.href = `https://auth.dev.flexabledats.com/login?redirect_to=marketplace`
+        // push('/landing')
     }
 
     return(
