@@ -14,10 +14,7 @@ interface StoreHeaderProps{
 }
 export default function StoreHeader({coverImageHash, storeName, city, state, lat, lon}:StoreHeaderProps){
 
-    // const {isError, isFetchingImage, imageSrc} = useIpfsImage(imageHash)
-    const router = useRouter()
-
-    const cover = coverImageHash && coverImageHash
+    const cover = coverImageHash && coverImageHash 
     
 
     return(
