@@ -59,7 +59,9 @@ const useTicket = (data:any)=>{
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
         setStorage('lastVisitedPage',currentPath);
-        router.push('/landing')
+      //   location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
+      location.href = 'https://auth.dev.flexabledats.com/login?redirect_to=marketplace'
+      //   router.push('/landing')
      }
 
      const buyTicketNow = ()=>{

@@ -95,7 +95,7 @@ export default function MyBookings() {
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
-      orderId: order.id
+      ticketId: order.userTicketId
     };
 
     isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
@@ -121,7 +121,7 @@ export default function MyBookings() {
         signature: body.payload.signature,
         validity: body.payload.validity,
         quantity: order.quantity,
-        userId: isAuthenticated ? supabase.auth.user()?.email : "",
+        userId: body.payload.userId,
       };
 
       setQrSignature(qrCodePayload);
@@ -186,7 +186,7 @@ export default function MyBookings() {
                 mt="10"
                 mb="6"
               >
-                My Digital Access Tokens
+                My Digital Access Tokens 
               </Heading>
             </Box>
             <Flex direction="column" w="100">
@@ -205,7 +205,7 @@ export default function MyBookings() {
                         direction="column"
                         key={order.id}
                       >
-                        <HStack mb="1" spacing="1">
+                        {/* <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.700">
                             {order.serviceName}·
                           </Text>
@@ -223,7 +223,7 @@ export default function MyBookings() {
                               Valid
                             </Badge>
                           )}
-                        </HStack>
+                        </HStack> */}
                         <Flex mb="1" justifyContent="space-between">
                           <Text color="whiteAlpha.900" as="h4" textStyle="h4">
                             {order.name}
