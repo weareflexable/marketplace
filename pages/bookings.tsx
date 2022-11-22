@@ -206,7 +206,7 @@ export default function MyBookings() {
                         direction="column"
                         key={order.id}
                       >
-                        <HStack mb="1" spacing="1">
+                        {/* <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.700">
                             {order.serviceName}·
                           </Text>
@@ -224,7 +224,7 @@ export default function MyBookings() {
                               Valid
                             </Badge>
                           )}
-                        </HStack>
+                        </HStack> */}
                         <Flex mb="1" justifyContent="space-between">
                           <Text color="whiteAlpha.900" as="h4" textStyle="h4">
                             {order.name}
