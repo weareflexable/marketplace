@@ -95,7 +95,7 @@ export default function MyBookings() {
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
-      orderId: order.id
+      ticketId: order.userTicketId
     };
 
     isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
@@ -122,7 +122,6 @@ export default function MyBookings() {
         validity: body.payload.validity,
         quantity: order.quantity,
         userId: body.payload.userId,
-        ticketId: order.userTicketId
       };
 
       setQrSignature(qrCodePayload);
