@@ -14,7 +14,7 @@ export default function Header(){
         const currentPath = `${asPath}${basePath}`
         setStorage('lastVisitedPage',currentPath)
         // location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
-        location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
+        location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
     }
 
     return(
