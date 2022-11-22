@@ -187,7 +187,7 @@ export default function MyBookings() {
                 mt="10"
                 mb="6"
               >
-                My Digital Access Tokens
+                My Digital Access Tokens 
               </Heading>
             </Box>
             <Flex direction="column" w="100">
