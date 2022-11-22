@@ -122,6 +122,7 @@ export default function MyBookings() {
         validity: body.payload.validity,
         quantity: order.quantity,
         userId: body.payload.userId,
+        ticketId: order.userTicketId
       };
 
       setQrSignature(qrCodePayload);
