@@ -62,6 +62,7 @@ export default function MyBookings() {
     return body
   });
 
+
   async function getTokenId(txHash: string): Promise<number> {
     // It should be all lower case
     const body = {
@@ -142,6 +143,7 @@ export default function MyBookings() {
     data.payload.filter(
       (order: any) => orderFilter === order.paymentIntentStatus
     ).sort((a:any,b:any)=>Number(dayjs(b.ticketDate))-Number(dayjs(a.ticketDate)));
+
 
   if (data && data.payload && data.payload.length<1) {
     return (
