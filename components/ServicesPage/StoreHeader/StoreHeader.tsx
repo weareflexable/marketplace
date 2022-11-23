@@ -21,7 +21,7 @@ export default function StoreHeader({coverImageHash, storeName, city, state, lat
         <Flex mt='4' w='100%' position='relative' direction='column'>
             <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
             <Box height='250px' w='100%'>
-                <Image width='100%' h='100%' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${cover}`} alt='Store header' />
+                <Image width='100%' h='100%' objectFit={'contain'} src={`https://nftstorage.link/ipfs/bafybeicbhxma2bxu3terhbwpzgjiygybjd4ypsj5ajswl7ryctuumvjj44`} alt='Store header' />
             </Box>
             <Box p='2' zIndex='3' position='absolute' left='10' bottom='5'>
                 <Heading color={'white'} textStyle={'h1'} as='h1' size='lg'>{storeName}</Heading>
