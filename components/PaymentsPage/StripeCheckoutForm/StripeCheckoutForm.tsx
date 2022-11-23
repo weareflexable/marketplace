@@ -3,6 +3,7 @@ import {Flex,Box,Button,Heading,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 import { useInstantBuyContext } from '../../../context/InstantBuyContext';
+import { deleteStorage } from '../../../utils/localStorage';
 
 
 
@@ -23,6 +24,10 @@ const CheckoutForm = () => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
+
+    // clear all instant buy now in cache
+    deleteStorage('shouldBuyInstantly')
+    
     setTransactionStatus('processing')
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
