@@ -90,6 +90,7 @@ export default function ServicesPage(){
         console.log('from service',moment(date).format('YYYY-MMM-DD'))
         const formatedDate = moment(date).format('YYYY-MMM-DD')
         setStorage('selectedDate', formatedDate)
+        setServiceDate(date)
     }
 
     // TODO: rename to cartItemExist
