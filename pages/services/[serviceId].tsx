@@ -120,6 +120,7 @@ export default function ServicesPage(){
         clonedCart.push(serviceWithQuantity);
         console.log(clonedCart)
         setCart(clonedCart);
+        setCartItems(clonedCart)
         // always clear instant purchase whenever user adds to cart
         deleteStorage('instantBuy')
 
@@ -148,7 +149,7 @@ export default function ServicesPage(){
 
 
     const createOrder = (totalCost:number)=>{
-       setAmount(totalCost);
+       setAmount(totalCost); // remove this
        isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
     }
 
