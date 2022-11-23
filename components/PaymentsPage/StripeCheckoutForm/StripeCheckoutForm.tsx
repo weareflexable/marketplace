@@ -27,7 +27,8 @@ const CheckoutForm = () => {
 
     // clear all instant buy now in cache
     deleteStorage('shouldBuyInstantly')
-    
+    deleteStorage('selectedDate')
+
     setTransactionStatus('processing')
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
