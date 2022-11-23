@@ -25,6 +25,7 @@ import { getPlatformPaseto } from "../utils/storage";
 import BookingsFilters from "../components/BookingsPage/BookingFilter/BookingFilter";
 import QrCodeMobile from "../components/BookingsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
 import axios from "axios";
+import moment from "moment-timezone";
 // import moment from "moment-timezone";
 
 export default function MyBookings() {
@@ -247,7 +248,7 @@ export default function MyBookings() {
                         <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.500">Valid on:</Text>
                           <Text color="whiteAlpha.700">
-                            {dayjs(order.ticketDate).format("MMM D, YYYY")}
+                            {moment(order.ticketDate).tz('America/New_York').format("MMM D, YYYY")}
                           </Text>
                         </HStack>
 
