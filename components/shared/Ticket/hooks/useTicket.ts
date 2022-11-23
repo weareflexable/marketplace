@@ -66,7 +66,7 @@ const useTicket = (data:any)=>{
      const buyTicketNow = ()=>{
 
         const buyNowCartItem = {
-           id: ticketData.serviceItemId,
+           id: ticketData.id,
            quantity: ticketData.quantity,
            price: ticketData.price,
            date: ticketData.tickets[0].date

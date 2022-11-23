@@ -27,7 +27,6 @@ const CheckoutContextProvider = ({children}:CheckoutContextProviderProps)=>{
     }
     
     function setCart(items:any){
-        console.log(items)
         setCartItems(items)
     }
 

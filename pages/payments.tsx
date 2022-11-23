@@ -33,9 +33,9 @@ const Payments = () => {
           totalPrice =+ (cart.quantity*cart.price)
         })
         const payloadObject = { 
-           orgServiceItems: cartDetails,
+          orgServiceItems: cartDetails,
           price: totalPrice,
-          date: dayjs().format('YYYY-MMM-DD') // return date of ticket not current date
+          date: dayjs().format('YYYY-MMM-DD') // return selected date not current date
         }
         return payloadObject
     }
