@@ -30,7 +30,6 @@ export default function ServicesPage(){
     const [data, setData] = useState<any>({})
     const [serviceDate, setServiceDate] = useState(()=>Date())
 
-    console.log('my date',serviceDate)
     // TODO: mark state to show that it interacts with local storage
 
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
@@ -58,7 +57,6 @@ export default function ServicesPage(){
 
     useEffect(() => {
       async function getService(){
-        console.log('from effect',serviceDate)
         setIsLoading(true)
         // console.log(serviceId, date)
         // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
@@ -90,8 +88,8 @@ export default function ServicesPage(){
     // Update service date state in order to trigger a refresh with newly set date.
     const changeServiceDate =(date:string)=>{
         console.log('from service',moment(date).format('YYYY-MMM-DD'))
-    
-        setServiceDate(date)
+        const formatedDate = moment(date).format('YYYY-MMM-DD')
+        setStorage('selectedDate', formatedDate)
     }
 
     // TODO: rename to cartItemExist

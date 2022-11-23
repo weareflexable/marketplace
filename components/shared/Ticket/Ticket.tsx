@@ -24,7 +24,6 @@ interface TicketProps{
 
 function Ticket ({data, selectedDate, onTriggerAction}:TicketProps){
 
-    console.log('inside ticket',data)
     const {
         ticketData,
         isTicketsAvailable,

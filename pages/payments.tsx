@@ -35,7 +35,7 @@ const Payments = () => {
         const payloadObject = { 
           orgServiceItems: cartDetails,
           price: totalPrice,
-          date: dayjs().format('YYYY-MMM-DD') // return selected date not current date
+          date: getStorage('selectedDate') 
         }
         return payloadObject
     }
