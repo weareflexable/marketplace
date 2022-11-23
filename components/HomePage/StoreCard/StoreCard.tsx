@@ -22,9 +22,9 @@ export const StoreCard = ({data}:StoreCardProps) =>{
 
     return(
         <Box bg={'gray.700'} w={['100%', '100%', '300px']} cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
-            <Image src='/benjamins.jpeg' m='0' objectFit={'fill'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
+            <Image src={`https://nftstorage.link/ipfs/${data?.coverImageHash}`} m='0' objectFit={'fill'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
             <Flex p='4'>
-                <Avatar size='sm' name='Kent Dodds' src='/benjamins.jpeg'/>
+                <Avatar size='sm' name='Kent Dodds' src='/benjaminsLogo.png'/>
                 <Flex ml='1' direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name}
