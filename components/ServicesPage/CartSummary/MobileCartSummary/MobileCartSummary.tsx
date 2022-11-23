@@ -58,6 +58,7 @@ interface MobileCartSummaryProps{
       setTimeout(()=>{
         setIsProceedingToPayment(false)
         deleteStorage('shouldBuyInstantly') // clear on instances of this
+        deleteStorage('cart')
         router.push('/payments');
       },3000)
 
@@ -98,7 +99,7 @@ interface MobileCartSummaryProps{
           
 
               <VStack mt='6' w='100%'>
-                <Button isLoading={isProceedingToPayment} w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
+                <Button isLoading={isProceedingToPayment} loadingText={'Proceeding to payment'} w={'100%'} px='1em' colorScheme='cyan'   onClick={proceedToPayment} >
                 {`Proceed to pay $${totalAmount/100}`}
                 </Button>
                 <Button disabled={isProceedingToPayment} w={'100%'} mt='2' variant='ghost' onClick={onCloseDrawer}>Cancel Order</Button>

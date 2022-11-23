@@ -18,6 +18,7 @@ import { Service } from '../../../data/services';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 import moment from 'moment';
+import { deleteStorage } from '../../../utils/localStorage';
 
 
 interface CartSummaryProps{
@@ -32,15 +33,19 @@ interface CartSummaryProps{
 
 
     const {setAmount, totalAmount,cartItems, setCart} = useCheckoutContext();
-
+    const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
     const router = useRouter()
     
     setCart(cart)
     const proceedToPayment =()=>{
-      // check user session
-      // if signed in, then i can proceed
-      // if not, then I redirect to app.flexable.dats
-      router.push('/payments');
+      // check user sessionsetIsProceedingToPayment(true)
+      setIsProceedingToPayment(true)
+      setTimeout(()=>{
+        setIsProceedingToPayment(false)
+        deleteStorage('shouldBuyInstantly') // clear on instances of this
+        deleteStorage('cart')
+        router.push('/payments');
+      },3000)
 
     }
 
@@ -77,8 +82,8 @@ interface CartSummaryProps{
            </ModalBody>
         
           <ModalFooter>
-            <Button variant='ghost' onClick={onCloseModal}>Cancel Order</Button>
-            <Button colorScheme='blue' mr={3}  onClick={proceedToPayment} >
+            <Button variant='ghost' disabled={isProceedingToPayment} onClick={onCloseModal}>Cancel Order</Button>
+            <Button isLoading={isProceedingToPayment} loadingText={'Processing payment'} colorScheme='blue' mr={3}  onClick={proceedToPayment} >
               {`Proceed to pay $${totalAmount/100}`}
             </Button>
           </ModalFooter>

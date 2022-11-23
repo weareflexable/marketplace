@@ -27,7 +27,7 @@ const useTicket = (data:any)=>{
       ...data,
        quantity:0
      })
-     setStorage('instantBuy',JSON.stringify(ticketData))
+   //   setStorage('instantBuy',JSON.stringify(ticketData))
 
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
@@ -45,7 +45,6 @@ const useTicket = (data:any)=>{
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
 
-     console.log(subTotal)
  
      const proceedToPayment = ()=>{
         // Timeout in order to show loading state
@@ -65,9 +64,16 @@ const useTicket = (data:any)=>{
      }
 
      const buyTicketNow = ()=>{
+
+        const buyNowCartItem = {
+           id: ticketData.id,
+           quantity: ticketData.quantity,
+           price: ticketData.price,
+           date: ticketData.tickets[0].date
+         }
+
         if(isAuthenticated){
-            // setAmount(subTotal) // passes total amount to checkout context
-            setBuyItems([ticketData]) // passes cart items to checkout context
+            setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
             setStorage('shouldBuyInstantly','true')
 
