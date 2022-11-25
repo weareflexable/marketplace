@@ -1,245 +1,61 @@
+import { Store } from "../Types/Stores.types";
 
-
-export type Event = {
-    location: string,
-    thumbnail: string,
-    thumbnailAlt: string,
-    serviceId: string,
-    totalServices: number,
-    juiceBar: string,
-    type: string
-}
-
-export const events: Event[] = [{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'1',
-    totalServices:2,
-    juiceBar: 'Mujeex Bar',
-    type: 'Restaurant'
-},
-{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'2',
-    totalServices:2,
-    juiceBar: 'Marks hotel',
-    type: 'Hotel'
-},
-{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'3',
-    totalServices:2,
-    juiceBar: 'Levante Restaurant',
-    type: 'Restaurant'
-},
-{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'3',
-    totalServices:2,
-    juiceBar: 'Golds Gym',
-    type: 'Gym',
-},
-{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'4',
-    totalServices:2,
-    juiceBar: 'Avery Juice Bar',
-    type: 'Bar'
-},
-{
-    location:'No 16 West south paw',
-    thumbnail:'/assets/placeholder.jpeg',
-    thumbnailAlt: 'Description about the image',
-    serviceId:'5',
-    totalServices:2,
-    juiceBar: 'Bill Cage Restaurant',
-    type: 'Restaurant'
-}]
-
-
-type Service={
-    productName: string,
-    price: string,
-    thumbnail: string,
-    thumbnailAlt: string
-}
-export type EventServices = {
-    id?: string,
-    bottleService: Array<Service>,
-    lineSkip: Array<Service>
-}
-
-export const services: EventServices[] =[{
-    id:'1',
-    bottleService:[{
-        productName: 'Coca Cola',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+export const mockData: Store[]=[
+    {
+        name: 'Benjamins',
+        orgId: 'dfade',
+        id: 'adifdfd',
+        latitude: 43,
+        longitude: 454,
+        country: 'US',
+        state: 'synarce',
+        city: 'steas scity',
+        startDate: 'elow',
+        endDate:'hello bor',
+        servicesAvailable:45,
+        coverImageHash: 'string'
     },
     {
-        productName: 'Sprite',
-        price: '23',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'   
-    }],
-    lineSkip:[{
-        productName: 'Ted talk show',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        name: 'Benjamins',
+        orgId: 'dfade',
+        id: 'adifdfd',
+        latitude: 43,
+        longitude: 454,
+        country: 'US',
+        state: 'synarce',
+        city: 'steas scity',
+        startDate: 'elow',
+        endDate:'hello bor',
+        servicesAvailable:45,
+        coverImageHash: 'string'
     },
     {
-        productName: 'Tyler Perry',
-        price: '53',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        name: 'Benjamins',
+        orgId: 'dfade',
+        id: 'adifdfd',
+        latitude: 43,
+        longitude: 454,
+        country: 'US',
+        state: 'synarce',
+        city: 'steas scity',
+        startDate: 'elow',
+        endDate:'hello bor',
+        servicesAvailable:45,
+        coverImageHash: 'string'
     },
     {
-        productName: 'Health benefits of eating fruits',
-        price: '14',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    }]
-},
-{
-    id:'2',
-    bottleService:[{
-        productName: 'Coca Cola',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
+        name: 'Benjamins',
+        orgId: 'dfade',
+        id: 'adifdfd',
+        latitude: 43,
+        longitude: 454,
+        country: 'US',
+        state: 'synarce',
+        city: 'steas scity',
+        startDate: 'elow',
+        endDate:'hello bor',
+        servicesAvailable:45,
+        coverImageHash: 'string'
     },
-    {
-        productName: 'Sprite',
-        price: '23',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'   
-    }],
-    lineSkip:[{
-        productName: 'Ted talk show',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Tyler Perry',
-        price: '53',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Health benefits of eating fruits',
-        price: '14',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    }]
-},
-{
-    id:'3',
-    bottleService:[{
-        productName: 'Coca Cola',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Sprite',
-        price: '23',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'   
-    }],
-    lineSkip:[{
-        productName: 'Ted talk show',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Tyler Perry',
-        price: '53',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Health benefits of eating fruits',
-        price: '14',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    }]
-},
-{
-    id:'4',
-    bottleService:[{
-        productName: 'Coca Cola',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Sprite',
-        price: '23',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'   
-    }],
-    lineSkip:[{
-        productName: 'Ted talk show',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Tyler Perry',
-        price: '53',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Health benefits of eating fruits',
-        price: '14',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    }]
-},
-{
-    id:'5',
-    bottleService:[{
-        productName: 'Coca Cola',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Sprite',
-        price: '23',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'   
-    }],
-    lineSkip:[{
-        productName: 'Ted talk show',
-        price: '54',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Tyler Perry',
-        price: '53',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    },
-    {
-        productName: 'Health benefits of eating fruits',
-        price: '14',
-        thumbnail: 'image string',
-        thumbnailAlt:'Image description'
-    }]
-}]
+]
+    
