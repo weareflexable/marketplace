@@ -176,9 +176,9 @@ export default function ServicesPage(){
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
-        <Box position={'relative'} minH='100vh' h='100%' layerStyle={'base'}>
-            <Header/>
-            <SimpleGrid mt='2' columns={8} spacing='2'>
+        <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
+            <Header/>  
+            <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton w='100%' isLoaded={!isLoading}>
                         <StoreHeader 
@@ -198,7 +198,7 @@ export default function ServicesPage(){
                             />
                     </Skeleton>
 
-                        <Skeleton height='200px' isLoaded={!isLoading}>
+                        <Skeleton   isLoaded={!isLoading}>
                             <TicketList 
                                 date={serviceDate}
                                 onAddToCart={addToCartHandler} 

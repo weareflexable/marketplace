@@ -20,9 +20,11 @@ export const StoreCard = ({data}:StoreCardProps) =>{
         router.push(`/services/${serviceId}?date=${moment().format('YYYY-MMM-DD')}`)
     }
 
+    const coverImage = data?.coverImageHash
+
     return(
-        <Box bg={'gray.700'} w={['100%', '100%', '300px']} cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
-            <Image src={`/benjaminsLogo.png`} m='0' objectFit={'contain'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
+        <Flex direction={'column'} bg={'gray.700'} w={'340px'} maxW='340px'   cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
+            <Image src={`https://nftstorage.link/ipfs/${coverImage}`} m='0' objectFit={'contain'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
             <Flex p='4'>
                 <Avatar size='sm' name='Kent Dodds' src='/benjaminsLogo.png'/>
                 <Flex ml='1' direction='column'>
@@ -40,7 +42,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
                     </Text>
                 </Flex>
             </Flex>
-        </Box>
+        </Flex>
     )
 }
 
