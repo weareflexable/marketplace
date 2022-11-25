@@ -49,7 +49,7 @@ export default function Home() {
 
                            <Wrap w='100%' alignItems='center' justifyContent='center'> 
                                 {data && data.payload ? data.payload.map((store:Store)=>(
-                                   <WrapItem  key={store.id} flex='1 22%'  overflow='hidden'>
+                                   <WrapItem  key={store.id} overflow='hidden'>
                                        {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
                                          <StoreCard data={store}/>
                                        {/* </Skeleton> */}
