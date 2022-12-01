@@ -8,6 +8,15 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   output: "standalone",
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'nftstorage.link',
+        pathname: '/ipfs/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
