@@ -9,6 +9,7 @@ export type Store = {
     city: string,
     startDate: string,
     endDate:string,
+    imageHash:string,
     servicesAvailable:number
     coverImageHash: string
   }

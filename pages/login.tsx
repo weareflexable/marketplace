@@ -20,7 +20,6 @@ const New = () => {
 
   // todo: functions
   const handleSignIn = async (e: { preventDefault: () => void; }) => {
-    console.log('you clicked me nigga')
     e.preventDefault();
     if (!email || !password) {
         toast({
