@@ -47,7 +47,7 @@ export default function Home() {
               <Flex px={'2em'}  w='100vw'> 
                 <Wrap  w='100vw' alignItems='center' justifyContent='center'> 
 
-                           <Wrap w='100%' alignItems='center' justifyContent='center'> 
+                           <Wrap w='100%'  margin='0' alignItems='center' justifyContent='center'> 
                                 {data && data.payload ? data.payload.map((store:Store)=>(
                                    <WrapItem  key={store.id} overflow='hidden'>
                                        {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}

@@ -1,6 +1,6 @@
 import React from 'react'
-import {Box,Flex,Text,Image, Avatar} from '@chakra-ui/react'
-// import Image from 'next/future/image'
+import {Box, Flex,Text, Avatar,Image} from '@chakra-ui/react'
+// import Image from 'next/image'
 import {Store} from '../../../Types/Stores.types'
 import {useRouter} from 'next/router'
 import moment from 'moment'
@@ -21,12 +21,18 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     }
 
     const coverImage = data?.coverImageHash
+    const imageHash = data?.imageHash
 
     return(
-        <Flex direction={'column'} bg={'gray.700'} w={'340px'} maxW='340px'   cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
+        <Flex direction={'column'} bg={'gray.700'} w={['100%','340px']} maxW='340px'   cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
             <Image src={`https://nftstorage.link/ipfs/${coverImage}`} m='0' objectFit={'contain'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
+            {/* <Box w={'100%'} position='relative' h={'200px'}> */}
+            {/* <div style={{width:'100%', position:'relative', height:'200px'}}> */}
+                {/* <Image layout='fill' objectFit='cover'  src={'/testx1.png'} alt='Store header' /> */}
+            {/* </div> */}
+            {/* </Box> */}
             <Flex p='4'>
-                <Avatar size='sm' name='Kent Dodds' src='/benjaminsLogo.png'/>
+                <Avatar size='sm' name='Kent Dodds' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
                 <Flex ml='1' direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name}
