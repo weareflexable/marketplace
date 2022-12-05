@@ -39,10 +39,9 @@ export default function MyBookings() {
     quantity: "loading",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [orderFilter, setOrderFilter] = useState("PAYMENT_PAID");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [tokenId, setTokenId] = useState(0)
-  const [uniqueCode, setUniqueCode] = useState('')
+  const [uniqueCode, setTicketSecret] = useState('')
   const [ticketDate, setTicketDate] = useState('')
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
@@ -50,7 +49,7 @@ export default function MyBookings() {
   const { isLoading, data, isError } = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/orders`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
       {
         method: "GET",
         //@ts-ignore
@@ -64,36 +63,32 @@ export default function MyBookings() {
   });
 
 
-  async function getTokenId(txHash: string): Promise<number> {
-    // It should be all lower case
-    const body = {
-      query: `{
-          tokens( 
-              where: { txHash:"${txHash}"} 
-          )
-          { id }
-        }`,
-    };
-    const res = await axios.post(
-      "https://api.thegraph.com/subgraphs/name/thisisommore/flexable",
-      body
-    );
+  // async function getTokenId(txHash: string): Promise<number> {
+  //   // It should be all lower case
+  //   const body = {
+  //     query: `{
+  //         tokens( 
+  //             where: { txHash:"${txHash}"} 
+  //         )
+  //         { id }
+  //       }`,
+  //   };
+  //   const res = await axios.post(
+  //     "https://api.thegraph.com/subgraphs/name/thisisommore/flexable",
+  //     body
+  //   );
 
-    return +res.data.data?.tokens?.[0]?.id;
-  }
+  //   return +res.data.data?.tokens?.[0]?.id;
+  // }
 
 
   const generateQrCode = async (order: any) => {
 
     let qrCodePayload;
 
-    // TODO: fix this error
-    // Fetch tokenId from the graph before generating qrCode signature
-    const tokenId = await getTokenId(order.transactionHash);
-
-    setTokenId(tokenId)
-    setUniqueCode(order.uniqueCode)
-    setTicketDate(order.ticketDate)
+    setTokenId(order.tokenId)
+    setTicketSecret(order.uniqueCode)
+    setTicketDate(order.endTime)
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
@@ -134,16 +129,14 @@ export default function MyBookings() {
     }
   };
 
-  const selectFilterHandler = (value: string) => {
-    console.log(value);
-    setOrderFilter(value);
-  };
+  // const selectFilterHandler = (value: string) => {
+  //   console.log(value);
+  //   setOrderFilter(value);
+  // };
 
-  const filteredOrders =
+  const sortedOrders =
     data &&
-    data.payload.filter(
-      (order: any) => orderFilter === order.paymentIntentStatus
-    ).sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
+    data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
   if (data && data.payload && data.payload.length<1) {
@@ -193,13 +186,13 @@ export default function MyBookings() {
               </Heading>
             </Box>
             <Flex direction="column" w="100">
-              {filteredOrders ? (
+              {/* {sortedOrders ? (
                 <BookingsFilters onSelectFilter={selectFilterHandler} />
-              ) : null}
+              ) : null} */}
 
               <Skeleton isLoaded={!isLoading}>
-                {filteredOrders
-                  ? filteredOrders.map((order: any) => (
+                {sortedOrders
+                  ? sortedOrders.map((order: any) => (
                       <Flex
                         p="1em"
                         bg="blackAlpha.700"
@@ -208,9 +201,9 @@ export default function MyBookings() {
                         direction="column"
                         key={order.id}
                       >
-                        {/* <HStack mb="1" spacing="1">
+                        <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.700">
-                            {order.serviceName}·
+                            {order.orgServiceItemName}
                           </Text>
                           {(order.status === "ISSUED" &&
                           dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
@@ -226,10 +219,10 @@ export default function MyBookings() {
                               Valid
                             </Badge>
                           )}
-                        </HStack> */}
+                        </HStack>
                         <Flex mb="1" justifyContent="space-between">
                           <Text color="whiteAlpha.900" as="h4" textStyle="h4">
-                            {order.name}
+                            {order.orgServiceName}
                           </Text>
                           <HStack spacing="3">
                             <HStack spacing="0.5">
@@ -248,19 +241,19 @@ export default function MyBookings() {
                         <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.500">Valid on:</Text>
                           <Text color="whiteAlpha.700">
-                            {moment(order.ticketDate).tz('America/New_York').format("MMM D, YYYY")}
+                            {moment(order.endTime).tz('America/New_York').format("MMM D, YYYY")}
                           </Text>
                         </HStack>
 
                         {/* show button only for confirmedOrders */}
-                        {order.paymentIntentStatus !== "PAYMENT_PAID" ? null : (
+                
                           <Button
                             colorScheme="cyan"
                             onClick={() => generateQrCode(order)}
                           >
                             Show Digital Access Token
                           </Button>
-                        )}
+                
                       </Flex>
                     ))
                   : null}
