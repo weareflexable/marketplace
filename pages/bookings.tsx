@@ -97,7 +97,7 @@ export default function MyBookings() {
 
     const payload = {
       orgServiceItemId: order.orgServiceItemId,
-      ticketId: order.userTicketId
+      ticketId: order.id
     };
 
     isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
@@ -143,7 +143,7 @@ export default function MyBookings() {
     data &&
     data.payload.filter(
       (order: any) => orderFilter === order.paymentIntentStatus
-    ).sort((a:any,b:any)=>Number(dayjs(b.ticketDate))-Number(dayjs(a.ticketDate)));
+    ).sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
   if (data && data.payload && data.payload.length<1) {
@@ -212,12 +212,12 @@ export default function MyBookings() {
                           <Text color="whiteAlpha.700">
                             {order.serviceName}·
                           </Text>
-                          {(order.orderStatus === "TICKETS_ISSUED" &&
-                          dayjs().isAfter(dayjs(order.ticketDate))) || order.orderStatus === undefined ? (
+                          {(order.status === "ISSUED" &&
+                          dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
                             <Badge colorScheme={"gray"} ml="1">
                               Expired
                             </Badge>
-                          ) : order.orderStatus === "REDEEMED" ? (
+                          ) : order.status === "REDEEMED" ? (
                             <Badge colorScheme={"yellow"} ml="1">
                               Redeemed
                             </Badge>
