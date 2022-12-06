@@ -32,7 +32,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
             {/* </div> */}
             {/* </Box> */}
             <Flex p='4'>
-                <Avatar size='sm' name='Kent Dodds' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
+                <Avatar size='sm' name='logo-image' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
                 <Flex ml='1' direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name}
