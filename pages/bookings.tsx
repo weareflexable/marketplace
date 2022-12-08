@@ -203,7 +203,7 @@ export default function MyBookings() {
                       >
                         <HStack mb="1" spacing="1">
                           <Text color="whiteAlpha.700">
-                            {order.orgServiceItemName}
+                            {order.orgServiceName}
                           </Text>
                           {(order.status === "ISSUED" &&
                           dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
@@ -222,7 +222,7 @@ export default function MyBookings() {
                         </HStack>
                         <Flex mb="1" justifyContent="space-between">
                           <Text color="whiteAlpha.900" as="h4" textStyle="h4">
-                            {order.orgServiceName}
+                            {order.orgServiceItemName}
                           </Text>
                           <HStack spacing="3">
                             <HStack spacing="0.5">
