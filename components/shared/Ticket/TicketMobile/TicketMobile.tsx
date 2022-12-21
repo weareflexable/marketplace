@@ -15,13 +15,13 @@ import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
 
 
-interface ServiceProps{
+interface TicketProps{
     data: any,
     onTriggerAction:(id:string)=>void,
     selectedDate: string
 }
 
-function TicketMobile ({data,selectedDate, onTriggerAction}:ServiceProps){
+function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
 
     const {
         ticketData,
@@ -103,4 +103,40 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:ServiceProps){
     )
 }
 
+
+interface FlexableStepperProps{
+    isMinQuantity: boolean
+    decrementQuantity: ()=>void
+    incrementQuantity: ()=>void,
+    quantity: number
+    label: string
+}
+// Signature stepper button which features
+// increment btn, quantity incremented, decrement btn in that order
+function FlexableStepper({isMinQuantity, decrementQuantity, incrementQuantity, quantity, label}:FlexableStepperProps){
+    return(
+            <HStack width={'100%'} maxW='100px' borderRadius={'50px'} p={2} spacing='2'>
+                <IconButton isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{quantity} {label}</Text>
+                <IconButton isRound onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+            </HStack>
+    )
+}
+
+
+interface FlexableComboButtonProps{
+    stepperProps: FlexableStepperProps
+}
+function FlexableComboButton({stepperProps}:FlexableComboButtonProps){
+    return(
+        <Flex width={'100%'} maxW='400px' borderRadius={'50px'} p={3} mt='2'>
+            <FlexableStepper {...stepperProps}/>
+            <Box id='divider' width={'2px'} height='100px'></Box>
+            <Button>Buy Now!</Button>
+        </Flex>
+    )
+}
+
 export default TicketMobile
+
+
