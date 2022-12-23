@@ -17,7 +17,12 @@ export default function Home() {
 
 
   const {isLoading,data,isError} = useQuery(['stores'],async()=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public?startOffSet=0`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public?startOffSet=0`,
+    {
+      headers:{
+        "Authorization":'v4.local.v17L4FzidZy1uzcGkjUeIusFSvxl2a5zUpWofhMnrmRVXrv9efnmwOe5SNtxB693aZVn1Hm5sbJLwm3UkKnAZFZhAqRGKeHcBy_cq-Bimua2jO6H2Z7i8ZZMtxn88PybteJx4xMzM2lL0e0eUv-gqKAX9o_7iDFfhgqG793vcJ1Q8p-DGMiO-GRNSzzCb-FSDtpAXUkbKBgGGrcHB_IKVnTL'
+      }
+    })
     const body = await res.json()
     return body
   })

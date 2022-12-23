@@ -87,6 +87,7 @@ const useTicket = (data:any)=>{
          const updatedTicket = {...ticketData }
          updatedTicket.quantity++
          setTicketData(updatedTicket)
+
         }
 
      const decrementQuantity =()=>{
