@@ -10,9 +10,9 @@ import {
     IconButton
 } from '@chakra-ui/react'
 
-import useTicket from '../hooks/useTicket';
-import { MdAdd, MdAddShoppingCart, MdRemove } from 'react-icons/md'
+import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
+import useService from '../hooks/useService';
 
 
 interface TicketProps{
@@ -23,9 +23,23 @@ interface TicketProps{
 
 function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
 
+    const {
+        ticketData,
+        isTicketsAvailable,
+        isTicketsSoldOut,
+        isMinQuantity,
+        ticketDate,
+        subTotal,
+        isAuthenticated,
+        incrementQuantity,
+        decrementQuantity,
+        buyTicketNow
+         }= useService(data)
+
+
     
     return( 
-        <Box display={['block','block','none']} bg='blackAlpha.700' cursor='pointer' >
+        <Box display={['block']} bg='blackAlpha.700' cursor='pointer' >
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
@@ -36,14 +50,35 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
                         <Text textStyle={'secondary'}>
                             {data.description}
                         </Text>
-                        <Text>${data.price}</Text>
+                        <Flex justifyContent={'space-between'} alignItems='center'>
+                            <HStack spacing={5}>
+                                <HStack spacing={1}>
+                                    <Text>${data.price}</Text>
+                                    <Text>/ Ticket</Text>
+                                </HStack>
+                                <HStack spacing={2}>
+                                    <Text color={'white'}>{data.tickets[0]!.ticketsAvailable}</Text>
+                                    <Text>Tickets left</Text>
+                                </HStack>
+                            </HStack>
+                            <Text color={'white'}>${subTotal}</Text>
+                        </Flex>
                     </Flex>
                 </Flex>
                 
 
                 {/* bottom panel */}
-                <Flex px='1em' py='.5em' alignItems='center' justifyContent='space-between' bg='gray.800'>
-                    <FlexableComboButton ticketData={data}/>
+                <Flex px='1em' py='.5em' width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
+                    <FlexableComboButton
+                        isMinQuantity= {isMinQuantity}
+                        subTotal ={subTotal}
+                        isAuthenticated = {isAuthenticated}
+                        incrementQuantity = {incrementQuantity}
+                        decrementQuantity = {decrementQuantity}
+                        buyTicketNow ={buyTicketNow}
+                        label='Tickets'
+                        quantity={ticketData.quantity}
+                    />
                 </Flex>
             </Flex>
         </Box>
@@ -72,41 +107,24 @@ function FlexableStepper({isMinQuantity, decrementQuantity, incrementQuantity, q
 
 
 interface FlexableComboButtonProps{
-    ticketData: any
+    isMinQuantity: boolean,
+    quantity: number,
+    decrementQuantity: ()=>void,
+    incrementQuantity: ()=>void,
+    label: string,
+    isAuthenticated:boolean,
+    buyTicketNow: ()=>void,
+    subTotal:number
+    
 }
-function FlexableComboButton({ticketData:data}:FlexableComboButtonProps){
-
-    const {
-        ticketData,
-        isTicketsAvailable,
-        isTicketsSoldOut,
-        isMinQuantity,
-        ticketDate,
-        subTotal,
-        isAuthenticated,
-        incrementQuantity,
-        decrementQuantity,
-        buyTicketNow
-         }= useTicket(data)
-
+function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
-        <Flex width={'100%'} direction={'column'}>
-            <Flex justifyContent={'space-between'} alignItems='center' width={'100%'}>
-                <HStack>
-                    <Text>Tickets left</Text>
-                    <Text color={'white'}>{ticketData.tickets[0]!.ticketsAvailable}</Text>
-                </HStack>
-                <HStack>
-                    <Text >Subtotal</Text>
-                    <Text color={'white'}>{subTotal}</Text>
-                </HStack>
-
-            </Flex>
-            <Flex width={'100%'} border={'1px solid'} maxW='400px' justifyContent={'space-between'} alignItems='center' borderRadius={'60px'} p={1} mt='2'>
+        <Flex maxW='400px' width={'100%'} direction={'column'}>
+            <Flex width={'100%'} border={'1px solid'} maxW='400px' justifyContent={'space-between'} alignItems='center' borderRadius={'60px'} p={1}>
                 <FlexableStepper 
                     isMinQuantity={isMinQuantity}
-                    quantity={ticketData.quantity}
+                    quantity={quantity}
                     decrementQuantity ={decrementQuantity}
                     incrementQuantity = {incrementQuantity}
                     label = {'Tickets'}

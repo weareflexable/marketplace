@@ -9,7 +9,7 @@ import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 
-const useTicket = (data:any)=>{
+const useService = (data:any)=>{
 
 
     const {isAuthenticated} = useAuthContext()
@@ -112,4 +112,4 @@ const useTicket = (data:any)=>{
  
 }
 
-export default useTicket
+export default useService
