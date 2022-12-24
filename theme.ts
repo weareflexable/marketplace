@@ -1,10 +1,8 @@
 
-import "@fontsource/lato";
-import "@fontsource/lato/700.css";
-import "@fontsource/lato/900.css";
-import "@fontsource/merriweather/400.css";
-import "@fontsource/merriweather/700.css";
-import "@fontsource/merriweather/900.css";
+import "@fontsource/figtree";
+import "@fontsource/figtree/700.css";
+import "@fontsource/figtree/900.css";
+
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools'
 
@@ -12,6 +10,7 @@ const config: ThemeConfig ={
     initialColorMode: 'dark',
     useSystemColorMode: false
 }
+
  const theme = extendTheme({
     ...config,
   layerStyles:{
@@ -61,8 +60,8 @@ const config: ThemeConfig ={
   })
   },
   fonts: {
-    heading: `'Merriweather', serif`,
-    body: `'Lato', sans-serif`,
+    heading: `'Figtree', san-serif`,
+    body: `'Figtree', sans-serif`,
   },
   textStyles:{
     h1: {
@@ -92,10 +91,10 @@ const config: ThemeConfig ={
       fontFamily:'body',
       lineHeight:1,
       fontSize:'1.2em',
-      fontWeight: '900'
+      fontWeight: '700'
     },
     links:{
-      fontWeight: '500',
+      fontWeight: '700',
       lineHeight: '110%', 
       cursor:'pointer'
     },
@@ -123,14 +122,12 @@ const config: ThemeConfig ={
       color: 'whiteAlpha.800' ,
       fontFamily: 'body',
       lineHeight: 1.3,
-      fontWeight: 400,
       letterSpacing: '-.2px'
     },
     secondary:{
       color: 'gray.100' ,
       fontFamily: 'body',
       lineHeight: '1.3em',
-      fontWeight: 400,
       letterSpacing: '-.2px'
     }
     
