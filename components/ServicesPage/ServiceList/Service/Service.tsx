@@ -39,26 +39,26 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
 
     
     return( 
-        <Box display={['block']} bg='blackAlpha.700' cursor='pointer' >
+        <Box display={['block']} bg='#242424' cursor='pointer' >
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
-                        <Text>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
-                        <Text as='h4' mb='1' textStyle={'h5'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
+                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
+                        <Text as='h4' mb='0' textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                             {data.name}
                         </Text>    
                         <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
                             {data.description}
                         </Text>
-                        <Flex justifyContent={'space-between'} alignItems='center'>
+                        <Flex mt='2' justifyContent={'space-between'} alignItems='center'>
                             <HStack spacing={5}>
                                 <HStack spacing={1}>
-                                    <Text>${data.price}</Text>
-                                    <Text>/ Ticket</Text>
+                                    <Text textStyle={'secondary'} color='accent.300'>${data.price}</Text>
+                                    <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
                                 </HStack>
                                 <HStack spacing={2}>
-                                    <Text color={'white'}>{data.tickets[0]!.ticketsAvailable}</Text>
-                                    <Text>Tickets left</Text>
+                                    <Text textStyle={'secondary'} color={'text.300'}>{data.tickets[0]!.ticketsAvailable}</Text>
+                                    <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
                                 </HStack>
                             </HStack>
                             <Text color={'white'}>${subTotal}</Text>
@@ -98,9 +98,12 @@ interface FlexableStepperProps{
 function FlexableStepper({isMinQuantity, decrementQuantity, incrementQuantity, quantity, label}:FlexableStepperProps){
     return(
             <Flex width={'50%'}  borderRadius={'50px'} p={1} justifyContent={'space-between'} alignItems='center'>
-                <IconButton isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} color={isMinQuantity?'cyan.50':'cyan.400'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                <Text textStyle={'caption'} color={isMinQuantity?'whiteAlpha.500':'whiteAlpha.800'}>{quantity} {label}</Text>
-                <IconButton isRound onClick={incrementQuantity} size='sm' color='cyan.400' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                <IconButton textStyle={'buttonLabel'} isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} bg={isMinQuantity?'brand.disabled':'brand.400'} color={isMinQuantity?'text.100':'text.300'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
+                <HStack spacing="2">
+                    <Text textStyle={'secondary'}  color={isMinQuantity?'text.100':'text.300'}>{quantity}</Text>
+                    <Text textStyle={'secondary'} color={'text.200'}>{label}</Text>
+                </HStack>
+                <IconButton textStyle={'buttonLabel'} bg='brand.400' isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
             </Flex>
     )
 }
@@ -120,8 +123,8 @@ interface FlexableComboButtonProps{
 function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
-        <Flex maxW='400px' width={'100%'} direction={'column'}>
-            <Flex width={'100%'} border={'1px solid'} maxW='400px' justifyContent={'space-between'} alignItems='center' borderRadius={'60px'} p={1}>
+        <Flex maxW='400px' outline={'2px solid'} outlineColor='rgba(171, 77, 247, 0.4)' outlineOffset={2} bg='brand.300' width={'100%'} borderRadius={'60px'} direction={'column'}>
+            <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>
                 <FlexableStepper 
                     isMinQuantity={isMinQuantity}
                     quantity={quantity}
@@ -129,9 +132,9 @@ function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuanti
                     incrementQuantity = {incrementQuantity}
                     label = {'Tickets'}
                     />
-                <Box id='divider' width={'2px'} height='40px'></Box>
-                <Box mr='4'>
-                    <Button size='sm' disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='unstyled'>Buy Now!</Button>
+                <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
+                <Box py='1' mr='6'>
+                    <Button size='sm' textStyle={'buttonLabel'} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='unstyled'>Buy Now!</Button>
                 </Box>
             </Flex>
         </Flex>

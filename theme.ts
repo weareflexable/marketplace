@@ -17,7 +17,8 @@ const config: ThemeConfig ={
         200:'#C380F9',
         300:'#AB4DF7',
         400:'#8C0BF4',
-        500:'#56099A'
+        500:'#56099A',
+        disabled: '#653989'
       },
       accent:{
         100:'#FFE1B8',
@@ -25,6 +26,11 @@ const config: ThemeConfig ={
         300:'#FFAF4D',
         400:'#FF8F05',
         500:'#B25900'
+      },
+      text:{
+        100:'rgba(255, 255, 255, 0.3)',
+        200:'rgba(255, 255, 255, 0.6)',
+        300:'rgba(255, 255, 255, 0.96)'
       }
     },
   layerStyles:{
@@ -40,9 +46,13 @@ const config: ThemeConfig ={
       
     },
     selected: {
-      bg: 'teal.500',
+      bg: 'teal.700',
       color: 'teal.700',
       borderColor: 'orange.500',
+    },
+    primaryBtn:{
+      color: 'text.300',
+      bg: 'brand.300',
     },
     highPop:{
       color: 'rgba(255, 255, 255, 0.96)',
@@ -89,7 +99,7 @@ const config: ThemeConfig ={
       fontSize:['32px','42px'],
       fontWeight: '700',
       lineHeight: '110%',
-      letterSpacing: '-0.5px', 
+      letterSpacing: '0.1px', 
       color:'#f8f8f8'
     },
 
@@ -151,16 +161,22 @@ const config: ThemeConfig ={
     body:{
       fontFamily: 'body',
       fontWeight:'450',
-      fontSize:'1rem',
+      fontSize:'1.2rem',
       lineHeight: 1.3,
       letterSpacing: '-.2px'
     },
     secondary:{
       fontFamily: 'body',
       fontWeight:'430',
-      fontSize: '0.9rem',
+      fontSize: '1rem',
       lineHeight: '1.3em',
       letterSpacing: '-.02px'
+    },
+    buttonLabel:{
+      fontWeight:'700',
+      fontSize:['.9rem','1rem'],
+      letterSpacing:'-.2',
+      lineHeight:'1'
     }
     
   }
