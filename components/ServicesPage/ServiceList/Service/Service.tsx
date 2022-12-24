@@ -44,10 +44,10 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
                         <Text>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
-                        <Text as='h4' mb='1' textStyle={'h4'} lineHeight='tight' noOfLines={1}>
+                        <Text as='h4' mb='1' textStyle={'h5'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                             {data.name}
                         </Text>    
-                        <Text textStyle={'secondary'}>
+                        <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
                             {data.description}
                         </Text>
                         <Flex justifyContent={'space-between'} alignItems='center'>

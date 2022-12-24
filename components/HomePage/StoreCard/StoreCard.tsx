@@ -26,13 +26,13 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
             <Image border={'1px solid white'} borderRadius='6px'  src={'/benjamins.jpeg'} m='0' objectFit={'cover'} width='100%' height='250' alt={'Thumbnail image for cover'}/>
-            <Flex px='2' mt={[3,3,4]} width={'100%'} alignItems={'center'}>
-                <Avatar size={['sm','sm','md']} name='logo-image' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
+            <Flex px='2' mt={[4]} width={'100%'} alignItems={'center'}>
+                <Avatar size={['md']} name='logo-image' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
                 <Flex ml={[3,3,4]} direction='column'>
-                    <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
-                        {data.name}
+                    <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
+                        {data.name} 
                     </Text>
-                    <Text color='gray.300' textStyle={'secondary'}>
+                    <Text color='gray.300' textStyle={'secondary'} layerStyle={'mediumPop'}> 
                         {data.city?.charAt(0).toUpperCase()+data.city?.slice(1)}, {data.state?.toUpperCase()}
                     </Text>
                 </Flex>

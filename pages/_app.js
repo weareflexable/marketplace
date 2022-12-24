@@ -14,18 +14,18 @@ const queryClient = new QueryClient()
 function MyApp({ Component, pageProps }) {
 
   return (
-    <ChakraProvider theme={theme}> 
-      <AuthContextProvider>
+    <AuthContextProvider>
         <InstantBuyContextProvider>
           <QueryClientProvider client={queryClient}>
                 <CheckoutContextProvider>
-                  <Component {...pageProps} />
+                  <ChakraProvider theme={theme}> 
+                      <Component {...pageProps} />
+                  </ChakraProvider>
                 </CheckoutContextProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
+              <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </InstantBuyContextProvider>
       </AuthContextProvider>
-    </ChakraProvider>
   )
 }
 

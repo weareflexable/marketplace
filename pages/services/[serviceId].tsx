@@ -177,7 +177,8 @@ export default function ServicesPage(){
 
         
         return(
-    <DarkMode>
+    // <DarkMode>
+    <>
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
@@ -191,7 +192,7 @@ export default function ServicesPage(){
                          storeName={data && data.payload && data.payload.name}
                          lat = {data && data.payload && data.payload.lat}
                          lon = {data && data.payload && data.payload.lon}
-                         city = { data && data.payload && data.payload.city}
+                         city = {data && data.payload && data.payload.city}
                          state = {data && data.payload && data.payload.state}
                          />
                     </Skeleton>
@@ -280,7 +281,8 @@ export default function ServicesPage(){
                 cart={cart}
                 totalCost = {50}
               />:null}
-        </Box>
-    </DarkMode>
+        </Box> 
+        </>
+    // </DarkMode>
     )
 }
