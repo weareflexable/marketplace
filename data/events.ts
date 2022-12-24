@@ -11,9 +11,6 @@ export const mockData: Store[]=[
         country: 'US',
         state: 'synarce',
         city: 'steas scity',
-        startDate: 'elow',
-        endDate:'hello bor',
-        servicesAvailable:45,
         coverImageHash: 'string'
     },
     {
@@ -26,9 +23,6 @@ export const mockData: Store[]=[
         country: 'US',
         state: 'synarce',
         city: 'steas scity',
-        startDate: 'elow',
-        endDate:'hello bor',
-        servicesAvailable:45,
         coverImageHash: 'string'
     },
     {
@@ -41,9 +35,6 @@ export const mockData: Store[]=[
         country: 'US',
         state: 'synarce',
         city: 'steas scity',
-        startDate: 'elow',
-        endDate:'hello bor',
-        servicesAvailable:45,
         coverImageHash: 'string'
     },
     {
@@ -55,9 +46,6 @@ export const mockData: Store[]=[
         country: 'US',
         state: 'synarce',
         city: 'steas scity',
-        startDate: 'elow',
-        endDate:'hello bor',
-        servicesAvailable:45,
         imageHash:'erefe',
         coverImageHash: 'string'
     },

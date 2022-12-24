@@ -49,21 +49,16 @@ export default function Home() {
                   <Text  as='h1' w='100' textStyle={'h3'}>Showing you bars in Syracuse NY</Text>
                 </Flex>
 
-              <Flex px={'2em'}  w='100vw'> 
-                <Wrap  w='100vw' alignItems='center' justifyContent='center'> 
-
-                           <Wrap w='100%'  margin='0' alignItems='center' justifyContent='center'> 
-                                {data && data.payload ? data.payload.map((store:Store)=>(
-                                   <WrapItem  key={store.id} overflow='hidden'>
-                                       {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
-                                         <StoreCard data={store}/>
-                                       {/* </Skeleton> */}
-                                   </WrapItem> 
-                               )):null}
-                           </Wrap>
-
+                <Wrap w='100%' padding={[3,5]} spacing={5} alignItems='center' justifyContent='center'> 
+                    {/* {data && data.payload ? data.payload.map((store:Store)=>( */}
+                      {mockData? mockData.map((store:Store)=>(
+                        <WrapItem flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']} key={store.id}>
+                            {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
+                              <StoreCard data={store}/>
+                            {/* </Skeleton> */}
+                        </WrapItem> 
+                    )):null}
                 </Wrap>
-              </Flex>
 
          </Layout>
          </>

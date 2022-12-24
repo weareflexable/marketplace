@@ -24,27 +24,16 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     const imageHash = data?.imageHash
 
     return(
-        <Flex direction={'column'} bg={'gray.700'} w={['100%','340px']} maxW='340px'   cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
-            <Image src={`https://nftstorage.link/ipfs/${coverImage}`} m='0' objectFit={'contain'} width='100%' height='200' alt={'Thumbnail image for cover'}/>
-            {/* <Box w={'100%'} position='relative' h={'200px'}> */}
-            {/* <div style={{width:'100%', position:'relative', height:'200px'}}> */}
-                {/* <Image layout='fill' objectFit='cover'  src={'/testx1.png'} alt='Store header' /> */}
-            {/* </div> */}
-            {/* </Box> */}
-            <Flex p='4'>
-                <Avatar size='sm' name='logo-image' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
-                <Flex ml='1' direction='column'>
+        <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
+            <Image border={'1px solid white'} borderRadius='6px'  src={'/benjamins.jpeg'} m='0' objectFit={'cover'} width='100%' height='250' alt={'Thumbnail image for cover'}/>
+            <Flex px='2' mt={[3,3,4]} width={'100%'} alignItems={'center'}>
+                <Avatar size={['sm','sm','md']} name='logo-image' src={`https://nftstorage.link/ipfs/${imageHash}`}/>
+                <Flex ml={[3,3,4]} direction='column'>
                     <Text textStyle={'h4'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name}
                     </Text>
                     <Text color='gray.300' textStyle={'secondary'}>
                         {data.city?.charAt(0).toUpperCase()+data.city?.slice(1)}, {data.state?.toUpperCase()}
-                    </Text>
-                    <Text color='gray.300' textStyle={'secondary'} >
-                        Bar
-                    </Text>
-                    <Text mt='3' color='cyan.300' textStyle={'secondary'} >
-                        View services
                     </Text>
                 </Flex>
             </Flex>

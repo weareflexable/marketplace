@@ -7,10 +7,7 @@ export type Store = {
     country: string,
     state: string,
     city: string,
-    startDate: string,
-    endDate:string,
     imageHash:string,
-    servicesAvailable:number
     coverImageHash: string
   }
   
