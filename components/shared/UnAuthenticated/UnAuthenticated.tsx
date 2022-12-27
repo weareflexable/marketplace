@@ -11,15 +11,15 @@ export default function UnAuthenticated(){
 
     return(
         <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='100vh' width={"100%"}>
-            <Flex direction='column' alignItems='center'>
-                <Text as='h3' mb='3' textStyle={'h3'}>
+            <Flex direction='column' maxW={'350px'} alignItems='center'>
+                <Text as='h3' mb='5' textStyle={'h3'}>
                     Login Required!!
                 </Text>
-                <Text mb='2' textStyle={'primary'} color='text.200'>
+                <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
                     Please login before you try to access contents of this page
                 </Text>
                 <Button variant='ghost' onClick={login}>
-                    Login
+                    Login to continue
                 </Button>
             </Flex>
         </Flex>
