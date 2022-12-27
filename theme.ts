@@ -11,6 +11,28 @@ const config: ThemeConfig ={
 
  const theme = extendTheme({
     ...config,
+    components:{
+      Button:{
+        variants:{
+          'flexable-combo':{
+            color:'white',
+            fontWeight: 700,
+            backgroundColor:'transparent'
+          },
+          ghost:{
+            color:'text.300',
+            fontWeight:700,
+            backgroundColor:'#464646',
+            borderRadius: '50px'
+          },
+          solid:{
+            bg:'brand.300',
+            borderRadius: '50px',
+            color:'white'
+          }
+        }
+      }
+    },
     colors:{
       brand:{
         100:'#DAB1FB',

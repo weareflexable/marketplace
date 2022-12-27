@@ -31,7 +31,7 @@ export default function Header(){
                     </Link>
                     <Button variant='link' onClick={logout}>Logout</Button>
                     </HStack>
-                    : <Button colorScheme={'cyan'} onClick={login}>Login</Button>
+                    : <Button variant={'solid'} onClick={login}>Login</Button>
                 }
                 
             </Flex>

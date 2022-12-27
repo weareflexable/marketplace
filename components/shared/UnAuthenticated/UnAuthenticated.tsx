@@ -1,0 +1,27 @@
+import { Flex, Text, Button } from "@chakra-ui/react";
+
+export default function UnAuthenticated(){
+
+    const login =()=>{
+        // const currentPath = `${asPath}${basePath}`
+        // setStorage('lastVisitedPage',currentPath)
+        location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
+        // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
+    }
+
+    return(
+        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='100vh' width={"100%"}>
+            <Flex direction='column' alignItems='center'>
+                <Text as='h3' mb='3' textStyle={'h3'}>
+                    Login Required!!
+                </Text>
+                <Text mb='2' textStyle={'primary'} color='text.200'>
+                    Please login before you try to access contents of this page
+                </Text>
+                <Button variant='ghost' onClick={login}>
+                    Login
+                </Button>
+            </Flex>
+        </Flex>
+    )
+}
