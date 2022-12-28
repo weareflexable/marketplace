@@ -3,6 +3,7 @@ import {
   Flex,
   Box,
   Heading,
+  Text,
   Grid,
   GridItem,
   useMediaQuery,
@@ -22,6 +23,7 @@ import NoData from "../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
 import { ErrorBoundary } from "react-error-boundary";
 import PopupError from "../components/shared/PopupError/PopupError";
+import OrderListSkeleton from '../components/BookingsPage/OrderList/SkeletonList'
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -55,7 +57,7 @@ export default function MyBookings() {
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
-  const { isLoading, data, isError, refetch } = useQuery(["bookings"], async () => {
+  const datsQuery = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
@@ -122,11 +124,11 @@ export default function MyBookings() {
 
 // This sorts orders in descending order after it's received from DB
   const sortedOrders =
-    data &&
-    data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
+    datsQuery.data &&
+    datsQuery.data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
-  if (data && data.payload && data.payload.length<1) {
+  if (datsQuery.data && datsQuery.data.payload && datsQuery.data.payload.length<1) {
     return (
       <Layout>
         <NoData/>
@@ -134,7 +136,7 @@ export default function MyBookings() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !datsQuery.isLoading) {
     return (
       <Layout>
         <UnAuthenticated/>
@@ -146,7 +148,7 @@ export default function MyBookings() {
     <Layout>
       <Grid
         mx="1em"
-        minH="100vh"
+        minH="inherit"
         h="100%"
         templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
         gap={6}
@@ -154,29 +156,36 @@ export default function MyBookings() {
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
               <Box ml={[0, 6]}>
-                <Heading
-                  color="whiteAlpha.800"
+                <Text
                   as="h1"
-                  fontSize={["1.5em", "2em"]}
+                  textStyle='h3'
+                  color='text.300'
                   mt="10"
                   mb="6"
                 >
                   My Digital Access Tokens
-                </Heading>
+                </Text>
               </Box>
-              <OrderList
-                orders={sortedOrders}
-                navigateToDatPage={()=>console.log('navigateToPage')}
-              />
+                {
+                  datsQuery.isLoading
+                  ?<OrderListSkeleton/>
+                  :<OrderList
+                    orders={sortedOrders}
+                    navigateToDatPage={()=>console.log('navigateToPage')}
+                   />
+              
+            }
           </Flex>
         </GridItem>
       </Grid>
 
-      {isError?
+      {datsQuery.isError?
       <PopupError
         onClose={()=>setIsErrorPopup(false)}
-        onRetryQuery={refetch}
-        isError={isError}
+        onRetryQuery={datsQuery.refetch}
+        // @ts-ignore
+        message = {datsQuery.error.message}
+        isError={datsQuery.isError}
       />
       :null
       }

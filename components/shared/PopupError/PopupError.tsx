@@ -3,9 +3,12 @@ import {Drawer, Button, Text, DrawerBody, DrawerContent, DrawerHeader, DrawerOve
 interface Props{
     onClose: ()=>void,
     isError: boolean,
-    onRetryQuery: ()=>void
+    onRetryQuery: ()=>void,
+    message: string
 }
-export default function PopupError({onClose, onRetryQuery, isError}: Props){
+
+// replace with alert
+export default function PopupError({onClose, onRetryQuery, message, isError}: Props){
     return(
         <Drawer placement={'bottom'} onClose={onClose} isOpen={isError}>
         <DrawerOverlay />
@@ -14,7 +17,7 @@ export default function PopupError({onClose, onRetryQuery, isError}: Props){
             <Text as='h4' textStyle={'h4'} color='text.300'>Error in request</Text>
           </DrawerHeader>
           <DrawerBody>
-            <Text textStyle={'body'} color='text.200'>You appear to be having some errors with your current request</Text>
+            <Text textStyle={'body'} color='text.200'>{message}</Text>
           </DrawerBody>
           <DrawerFooter >
             <Button variant='ghost' mr={3} onClick={onRetryQuery}>

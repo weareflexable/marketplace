@@ -22,7 +22,7 @@ export function OrderList({ orders, navigateToDatPage }: OrderListProps) {
         ? orders.map((order: any) => (
           <Flex
             p="1em"
-            bg="blackAlpha.700"
+            bg="#242424"
             mb="3"
             w="100%"
             direction="column"
