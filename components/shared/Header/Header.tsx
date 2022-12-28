@@ -26,8 +26,8 @@ export default function Header(){
                 {
                     isAuthenticated?
                     <HStack spacing={3}>
-                     <Link href='/bookings'>
-                        <a><Text fontWeight='medium'>My Purchases</Text></a>
+                     <Link href='/dats'>
+                        <a><Text fontWeight='medium'>My Dats</Text></a>
                     </Link>
                     <Button variant='link' onClick={logout}>Logout</Button>
                     </HStack>

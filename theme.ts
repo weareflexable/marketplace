@@ -16,12 +16,12 @@ const config: ThemeConfig ={
         variants:{
           'flexable-combo':{
             color:'white',
-            fontWeight: 700,
+            fontWeight: 650,
             backgroundColor:'transparent'
           },
           ghost:{
-            color:'text.300',
-            fontWeight:700,
+            fontWeight:650,
+            color:'brand.200',
             backgroundColor:'#464646',
             borderRadius: '50px'
           },
