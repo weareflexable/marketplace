@@ -189,7 +189,7 @@ const config: ThemeConfig ={
     },
     secondary:{
       fontFamily: 'body',
-      fontWeight:'430',
+      fontWeight:'450',
       fontSize: '1rem',
       lineHeight: '1.3em',
       letterSpacing: '-.02px'

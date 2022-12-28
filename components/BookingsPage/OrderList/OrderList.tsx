@@ -5,6 +5,9 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import moment from "moment-timezone";
+import timezone from 'dayjs/plugin/timezone'
+
+// dayjs.extend(timezone)
 
 interface OrderListProps {
   orders: any;
@@ -45,22 +48,26 @@ export function OrderList({ orders, navigateToDatPage }: OrderListProps) {
               )}
             </HStack>
             <Flex mb="1" justifyContent="space-between">
+              
+              {/* order name */}
               <Text color="whiteAlpha.900" as="h4" textStyle="h4">
                 {order.orgServiceItemName}
               </Text>
-              <HStack spacing="3">
+
+              {/* pricing */}
+              <Flex direction={'column'}>
+                <Text mb='1' textStyle="secondary" color={'text.300'}>
+                  ${order.quantity * (order.unitPrice/100)}
+                </Text>
                 <HStack spacing="0.5">
-                  <Text color="whiteAlpha.800" textStyle="caption">
+                  <Text color="text.100" textStyle="caption">
                     ${order.unitPrice / 100}
                   </Text>
-                  <Text color="whiteAlpha.600" textStyle="caption">
+                  <Text color="text.200" textStyle="caption">
                     x{order.quantity}
                   </Text>
                 </HStack>
-                <Text textStyle="secondary">
-                  ${order.quantity * (order.unitPrice / 100)}
-                </Text>
-              </HStack>
+              </Flex>
             </Flex>
             <HStack mb="1" spacing="1">
               <Text color="whiteAlpha.500">Valid on:</Text>
