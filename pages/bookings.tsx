@@ -23,6 +23,7 @@ import QrCodeMobile from "../components/BookingsPage/QrCodeModal/QrCodeMobile/Qr
 import axios from "axios";
 import UnAuthenticated from "../components/shared/UnAuthenticated/UnAuthenticated";
 import { OrderList } from "../components/BookingsPage/OrderList/OrderList";
+import NoData from "../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
 
 export default function MyBookings() {
@@ -109,7 +110,7 @@ export default function MyBookings() {
     }
   };
 
-
+// This sorts orders in descending order after it's received from DB
   const sortedOrders =
     data &&
     data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
@@ -118,11 +119,7 @@ export default function MyBookings() {
   if (data && data.payload && data.payload.length<1) {
     return (
       <Layout>
-        <Box>
-          <Text color="whiteAlpha.900">
-            Sorry you have no orders
-          </Text>
-        </Box>
+        <NoData/>
       </Layout>
     );
   }
