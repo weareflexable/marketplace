@@ -11,11 +11,12 @@ import timezone from 'dayjs/plugin/timezone'
 
 interface OrderListProps {
   orders: any;
-  navigateToDatPage: () => void;
+  gotoTicketPage: (dat:any) => void;
 }
-export function OrderList({ orders, navigateToDatPage }: OrderListProps) {
-  return (
+export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
 
+
+  return (
 
     <Flex direction="column" w="100">
       {orders
@@ -80,6 +81,7 @@ export function OrderList({ orders, navigateToDatPage }: OrderListProps) {
 
             <Button
               colorScheme="cyan"
+              onClick={()=>gotoTicketPage(order)}
             >
               Show Digital Access Token
             </Button>

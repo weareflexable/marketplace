@@ -6,8 +6,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
 import {InstantBuyContextProvider} from '../context/InstantBuyContext'
+import {DatContextProvider} from '../context/DatContext'
 import "antd/dist/antd.css";
-import {toast} from '@chakra-ui/react'
+
 
 const queryClient = new QueryClient({
   // queryCache: new QueryCache({
@@ -31,18 +32,20 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
         <InstantBuyContextProvider>
-          <QueryClientProvider client={queryClient}>
                 <CheckoutContextProvider>
+           <DatContextProvider>
                   <ChakraProvider theme={theme}> 
                       <Component {...pageProps} />
                   </ChakraProvider>
+            </DatContextProvider>
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
         </InstantBuyContextProvider>
-      </AuthContextProvider>
-  )
+    </QueryClientProvider>
+      </AuthContextProvider> 
+  ) 
 }
 
 export default MyApp

@@ -8,22 +8,23 @@ import {
   GridItem,
   useMediaQuery,
 } from "@chakra-ui/react";
-import Layout from "../components/shared/Layout/Layout";
+import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import QrCodeModal from "../components/BookingsPage/QrCodeModal/QrCodeModal";
-import { getPlatformPaseto } from "../utils/storage";
-import QrCodeMobile from "../components/BookingsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
+import QrCodeModal from "../../components/DatsPage/QrCodeModal/QrCodeModal";
+import { getPlatformPaseto } from "../../utils/storage";
+import QrCodeMobile from "../../components/DatsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
 import axios from "axios";
-import UnAuthenticated from "../components/shared/UnAuthenticated/UnAuthenticated";
-import { OrderList } from "../components/BookingsPage/OrderList/OrderList";
-import NoData from "../components/shared/NoData/NoData";
+import UnAuthenticated from "../../components/shared/UnAuthenticated/UnAuthenticated";
+import { OrderList } from "../../components/DatsPage/OrderList/OrderList";
+import NoData from "../../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
 import { ErrorBoundary } from "react-error-boundary";
-import PopupError from "../components/shared/PopupError/PopupError";
-import OrderListSkeleton from '../components/BookingsPage/OrderList/SkeletonList'
+import PopupError from "../../components/shared/PopupError/PopupError";
+import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
+import { useDatContext } from "../../context/DatContext";
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -42,6 +43,7 @@ export default function MyBookings() {
   // TODO: fetch user specific data
   // TODO: fallback ui for when user tries to access page without authorization
   const { asPath, push } = useRouter();
+  const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated } = useAuthContext();
   const [isGeneratingCode, setIsGeneratingCode] = useState(false);
   const [qrSignature, setQrSignature] = useState<any>({
@@ -73,7 +75,11 @@ export default function MyBookings() {
   });
 
 
-
+const gotoTicketPage = (dat:any)=>{
+  // set selected dat in context
+  ctx_setDat(dat)
+  push('/dats/ticket')
+}
 
   const generateQrCode = async (order: any) => {
 
@@ -171,7 +177,7 @@ export default function MyBookings() {
                   ?<OrderListSkeleton/>
                   :<OrderList
                     orders={sortedOrders}
-                    navigateToDatPage={()=>console.log('navigateToPage')}
+                    gotoTicketPage={gotoTicketPage}
                    />
               
             }

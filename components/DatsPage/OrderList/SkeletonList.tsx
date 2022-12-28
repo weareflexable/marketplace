@@ -24,7 +24,7 @@ export default function SkeletonList() {
             direction="column"
             key={i}
           >
-            <SkeletonText mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
+            <SkeletonText startColor='#2b2b2b' endColor="#464646" mt='4' noOfLines={4} spacing='4' skeletonHeight='2' />
           </Flex>
         )}
     </Flex>
