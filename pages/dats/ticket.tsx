@@ -5,7 +5,7 @@ import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
-// import {ChevronLeftIcon} from '@chakra-ui/icons'
+import { ChevronLeftIcon } from '@chakra-ui/icons'
 
 export default function Ticket(){
     const router = useRouter()
@@ -66,9 +66,9 @@ export default function Ticket(){
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
             {/* header */}
-            <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'7vh'} borderBottom={'1px solid #242424'}>
-                <HStack ml='5' spacing={'2'}>
-                    {/* <IconButton colorScheme={'#242424'} isRound icon={<ChevronLeftIcon/>} aria-label='navigateBackToDats'/> */} 
+            <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
+                <HStack ml='5' spacing={'5'}>
+                    {/* <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/>  */}
                     <Text as='h1' textStyle={'h4'} color='text.300' >Line skip + Cover</Text>
                 </HStack>
             </Flex>
@@ -87,7 +87,7 @@ export default function Ticket(){
                     <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                         <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
                     </Flex>
-                </Flex> 
+                </Flex>  
 
                 <Divider borderColor={'#2b2b2b'}/>
 
