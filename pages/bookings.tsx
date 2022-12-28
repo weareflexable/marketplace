@@ -26,6 +26,19 @@ import { OrderList } from "../components/BookingsPage/OrderList/OrderList";
 import NoData from "../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
 
+
+const fetchWithError = async(url:string, options:any)=>{
+  const response = await fetch(url,options)
+
+  if (response.status !== 200) throw new Error('Error in request')
+
+  const result = await response.json()
+
+  if (result.status !== 200) throw new Error(result.message)
+
+  return result;
+}
+
 export default function MyBookings() {
   // TODO: fetch user specific data
   // TODO: fallback ui for when user tries to access page without authorization
@@ -46,7 +59,7 @@ export default function MyBookings() {
 
   const { isLoading, data, isError } = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
-    const res = await fetch(
+    const res = await fetchWithError(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
       {
         method: "GET",
@@ -56,8 +69,7 @@ export default function MyBookings() {
         },
       }
     );
-    const body = await res.json();
-    return body
+    return res
   });
 
 
