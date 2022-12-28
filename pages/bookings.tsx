@@ -3,10 +3,6 @@ import {
   Flex,
   Box,
   Heading,
-  Skeleton,
-  SimpleGrid,
-  Text,
-  VStack,
   Grid,
   GridItem,
   useMediaQuery,
@@ -18,13 +14,14 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import QrCodeModal from "../components/BookingsPage/QrCodeModal/QrCodeModal";
 import { getPlatformPaseto } from "../utils/storage";
-import BookingsFilters from "../components/BookingsPage/BookingFilter/BookingFilter";
 import QrCodeMobile from "../components/BookingsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
 import axios from "axios";
 import UnAuthenticated from "../components/shared/UnAuthenticated/UnAuthenticated";
 import { OrderList } from "../components/BookingsPage/OrderList/OrderList";
 import NoData from "../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
+import { ErrorBoundary } from "react-error-boundary";
+import PopupError from "../components/shared/PopupError/PopupError";
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -49,6 +46,7 @@ export default function MyBookings() {
     tokenId: "loading",
     quantity: "loading",
   });
+  const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [tokenId, setTokenId] = useState(0)
@@ -57,7 +55,7 @@ export default function MyBookings() {
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
-  const { isLoading, data, isError } = useQuery(["bookings"], async () => {
+  const { isLoading, data, isError, refetch } = useQuery(["bookings"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
@@ -173,6 +171,15 @@ export default function MyBookings() {
           </Flex>
         </GridItem>
       </Grid>
+
+      {isError?
+      <PopupError
+        onClose={()=>setIsErrorPopup(false)}
+        onRetryQuery={refetch}
+        isError={isError}
+      />
+      :null
+      }
 
       {/* only show on web */}
       <QrCodeModal
