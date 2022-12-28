@@ -146,8 +146,8 @@ const config: ThemeConfig ={
       fontFamily:'body',
       marginBottom:'0',
       lineHeight:1,
-      fontSize:'1.2rem',
-      fontWeight: '700'
+      fontSize:'1.4rem',
+      fontWeight: '650'
     },
     h5:{
       fontSize:'1rem',

@@ -59,7 +59,7 @@ export default function MyBookings() {
 
   const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
-  const datsQuery = useQuery(["bookings"], async () => {
+  const datsQuery = useQuery(["dats"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
