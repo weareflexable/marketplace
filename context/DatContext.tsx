@@ -1,5 +1,6 @@
 import React,{createContext, useContext, useState} from 'react'
 import { Service } from '../data/services';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 
 const DatContext = createContext<providerValuesType|undefined>(undefined);
@@ -16,15 +17,15 @@ type providerValuesType = {
 const DatContextProvider = ({children}:DatContextProviderProps)=>{
 
 
-    const [currentDat, setCurrentDat] = useState({})
+    const {state, setState} = useLocalStorage('currentDat','')
 
     
     function setDat(item:any){
-        setCurrentDat(item)
+        setState(item)
     }
 
     let values: providerValuesType = {
-        currentDat: currentDat,
+        currentDat: state,
         setDat: setDat,
     }
     return (
