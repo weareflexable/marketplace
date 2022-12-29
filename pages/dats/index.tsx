@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
-  Heading,
   Text,
   Grid,
   GridItem,
-  useMediaQuery,
 } from "@chakra-ui/react";
 import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import QrCodeModal from "../../components/DatsPage/QrCodeModal/QrCodeModal";
 import { getPlatformPaseto } from "../../utils/storage";
-import QrCodeMobile from "../../components/DatsPage/QrCodeModal/QrCodeMobile/QrCodeMobile";
 import axios from "axios";
 import UnAuthenticated from "../../components/shared/UnAuthenticated/UnAuthenticated";
 import { OrderList } from "../../components/DatsPage/OrderList/OrderList";
@@ -42,22 +38,10 @@ const fetchWithError = async(url:string, options:any)=>{
 export default function MyBookings() {
   // TODO: fetch user specific data
   // TODO: fallback ui for when user tries to access page without authorization
-  const { asPath, push } = useRouter();
+  const { push } = useRouter();
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated } = useAuthContext();
-  const [isGeneratingCode, setIsGeneratingCode] = useState(false);
-  const [qrSignature, setQrSignature] = useState<any>({
-    tokenId: "loading",
-    quantity: "loading",
-  });
   const [isErrorPopup, setIsErrorPopup] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [tokenId, setTokenId] = useState(0)
-  const [uniqueCode, setTicketSecret] = useState('')
-  const [ticketDate, setTicketDate] = useState('')
-
-  const [isLargerThan62] = useMediaQuery("(min-width: 62em)");
 
   const datsQuery = useQuery(["dats"], async () => {
     const paseto = getPlatformPaseto();
@@ -80,53 +64,6 @@ const gotoTicketPage = (dat:any)=>{
   ctx_setDat(dat)
   push('/dats/ticket')
 }
-
-  const generateQrCode = async (order: any) => {
-
-    let qrCodePayload;
-
-    setTokenId(order.tokenId)
-    setTicketSecret(order.uniqueCode)
-    setTicketDate(order.endTime)
-
-    const payload = {
-      orgServiceItemId: order.orgServiceItemId,
-      ticketId: order.id
-    };
-
-    isLargerThan62 ? setIsModalOpen(true) : setIsDrawerOpen(true);
-
-    try {
-      setIsGeneratingCode(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/get-redeem-signature`,
-        {
-          method: "POST",
-          body: JSON.stringify(payload),
-          // @ts-ignore
-          headers: {
-            Authorization: getPlatformPaseto(),
-          },
-        }
-      );
-
-      setIsGeneratingCode(false);
-      const body = await res.json();
-      qrCodePayload = {
-        ...payload,
-        signature: body.payload.signature,
-        validity: body.payload.validity,
-        quantity: order.quantity,
-        userId: body.payload.userId,
-      };
-
-      setQrSignature(qrCodePayload);
-
-    } catch (err) {
-      setIsGeneratingCode(false);
-      console.log(err);
-    }
-  };
 
 // This sorts orders in descending order after it's received from DB
   const sortedOrders =
@@ -196,27 +133,6 @@ const gotoTicketPage = (dat:any)=>{
       :null
       }
 
-      {/* only show on web */}
-      <QrCodeModal
-        tokenId={tokenId}
-        ticketDate={ticketDate}
-        uniqueCode={uniqueCode}
-        isGeneratingCode={isGeneratingCode}
-        qrValue={qrSignature}
-        isModalOpen={isModalOpen}
-        onCloseModal={() => setIsModalOpen(false)}
-      />
-
-      {/* only show on mobile */}
-      <QrCodeMobile
-        tokenId={tokenId}
-        ticketDate={ticketDate}
-        uniqueCode={uniqueCode}
-        isGeneratingCode={isGeneratingCode}
-        qrValue={qrSignature}
-        isDrawerOpen={isDrawerOpen}
-        onCloseDrawer={() => setIsDrawerOpen(false)}
-      />
     </Layout>
   );
 }

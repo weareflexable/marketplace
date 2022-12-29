@@ -60,7 +60,7 @@ export default function Ticket(){
             }
           };
         generateQrCode()
-      }, []) 
+      }, [id, orgServiceItemId, quantity]) 
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
