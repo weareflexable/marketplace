@@ -1,6 +1,19 @@
-import {Grid, GridItem, Select, Avatar, Flex, Box, Text, FormControl, FormLabel, Input, FormHelperText} from '@chakra-ui/react'
+import {Grid, GridItem, Select, Button, Avatar, Flex, Box, Text, FormControl, FormLabel, Input, FormHelperText} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
+import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
+import { useAuthContext } from '../context/AuthContext'
+
+
 export default function Profile(){
+    const {isAuthenticated} = useAuthContext()
+
+    if(!isAuthenticated){
+        return(
+            <Layout>
+                <UnAuthenticated/>
+            </Layout>
+        )
+    }
     return(
     <Layout>
             <Grid
@@ -23,7 +36,7 @@ export default function Profile(){
                          My Profile
                         </Text>
                     </Box>
-                <form action="#">
+                <form style={{marginTop:'2rem'}} action="#">
                     <FormControl mb={'5'}>
                         <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
                         <Avatar size='2xl' src='/avatar.png'/>
@@ -40,12 +53,18 @@ export default function Profile(){
                         <FormHelperText textStyle={'secondary'} color='text.200'>We&apos;ll never share your email.</FormHelperText>
                     </FormControl> 
 
-                    <FormControl>
+                    <FormControl mb={'9'}>
                         <FormLabel textStyle={'secondary'} color='text.300'>Country</FormLabel>
                         <Select color='text.300' borderColor={'#464646'} borderWidth='2px' placeholder='Select country'>
                             <option>United Arab Emirates</option>
                             <option>Nigeria</option>
                         </Select>
+                    </FormControl>
+
+                    <FormControl>
+                        <Button disabled>
+                            Apply changes
+                        </Button>
                     </FormControl>
                 </form>
 
