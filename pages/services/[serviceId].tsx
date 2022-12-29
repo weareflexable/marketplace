@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -175,6 +175,11 @@ export default function ServicesPage(){
         
     }
 
+    if(isLoading){
+        return(
+            <ServicePageSkeleton/>
+        )
+    }
         
         return(
     // <DarkMode>
@@ -204,7 +209,7 @@ export default function ServicesPage(){
                             />
                     </Skeleton>
 
-                        <Skeleton   isLoaded={!isLoading}>
+                        <Skeleton isLoaded={!isLoading}>
                             <TicketList 
                                 date={serviceDate}
                                 onAddToCart={addToCartHandler} 
@@ -284,5 +289,24 @@ export default function ServicesPage(){
         </Box> 
         </>
     // </DarkMode>
+    )
+}
+
+const ServicePageSkeleton = ()=>{
+    return(
+        <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
+            <Skeleton height={'1.2rem'}/>
+            <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
+                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
+                    <Skeleton w='100%' height={'350px'}/>
+
+                    <Skeleton my='1' height={'1rem'}/>
+
+                    <SkeletonText mt='3' noOfLines={4} spacing='4' skeletonHeight='2' />
+                    <SkeletonText mt='3' noOfLines={4} spacing='4' skeletonHeight='2' />
+
+                </Flex> 
+            </SimpleGrid>       
+        </Box> 
     )
 }
