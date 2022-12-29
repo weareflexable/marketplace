@@ -1,11 +1,11 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, SkeletonText,  HStack, Flex, Skeleton, VStack, Image} from '@chakra-ui/react'
+import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Image} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
-// import { ChevronLeft } from '@chakra-ui/icons' 
+import { ChevronLeftIcon } from '@chakra-ui/icons' 
 
 export default function Ticket(){
     const router = useRouter()
@@ -65,18 +65,20 @@ export default function Ticket(){
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
             {/* header */}
+            {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
             <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                 <HStack ml='5' spacing={'5'}>
-                    {/* <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={} aria-label='navigateBackToDats'/>  */}
-                    {/* <ChevronLeft boxSize={'5'}/> */}
+                    <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                     <Text as='h1' textStyle={'h4'} color='text.300' >Line skip + Cover</Text>
                 </HStack>
             </Flex> 
+            }
 
-           {isGeneratingCode?<TicketSkeleton/>
+           {isGeneratingCode?<TicketSkeleton/> 
            :
            <Flex direction='column'>
                 <Flex direction='column' px='9' mb='5' w='100%'>
+                     <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
                     <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
                         <HStack w='100%' justifyContent={'center'} mb='2'>
                             <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
@@ -93,7 +95,6 @@ export default function Ticket(){
 
                 <VStack px={'1rem'} mt='5' spacing='2'>
                     <VStack w='100%' spacing={2}>
-                       
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                             <Text color='text.200' textStyle={'secondary'}>Status</Text>
                             <Text color='text.300' textStyle={'secondary'}>{status}</Text>
@@ -124,6 +125,7 @@ export default function Ticket(){
                         </HStack>
 
 
+                    </VStack>
                     {/* 
                         { tokenId?
                         <HStack spacing='2' mb='1'>
@@ -136,14 +138,12 @@ export default function Ticket(){
                         </HStack>
                         :null
                     } */} 
-                    </VStack>
-
-                            {/* <Image width={600} objectFit='fill' height={250} src={`/lineskip.png`}  alt='An image of the nft token'/> */}
-
-                {/* <Divider/> */}
-
-
                 </VStack> 
+                <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
+                    <VStack px='1rem' alignItems={'flex-start'} width={'100%'}>
+                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                        <Image width={600} objectFit='fill' height={250} src={`/lineskip.png`}  alt='An image of the nft token'/>
+                    </VStack>
             </Flex>}
         </Flex>
     )
