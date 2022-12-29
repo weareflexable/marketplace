@@ -1,5 +1,5 @@
 import React from 'react'
-import {Flex,HStack,Box, Button,Text,Image} from '@chakra-ui/react'
+import {Flex,HStack,Box, MenuDivider,Avatar,Menu, MenuButton, MenuList, MenuItem, Button,Text,Image} from '@chakra-ui/react'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 import { useRouter } from 'next/router'
@@ -18,19 +18,30 @@ export default function Header(){
     }
 
     return(
-        <Flex bg='gray.800' w='100%'  boxShadow='0px 2px 3px 0px rgba(0,0,0,0.15)' alignItems='center' justifyContent='space-between' p='2em' h='5vh'>
+        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='2rem' px='1rem' h='5vh'>
             <Link href='/'>
                <a> <Image src='/logoSmall.png' w={['150px','200px']} height={'15px'} alt='Logo of flexable app'/></a>
             </Link>
             <Flex as='nav'>
                 {
                     isAuthenticated?
-                    <HStack spacing={3}>
-                     <Link href='/dats'>
-                        <a><Text fontWeight='medium'>My Dats</Text></a>
-                    </Link>
-                    <Button variant='link' onClick={logout}>Logout</Button>
-                    </HStack>
+                        <Menu>                            
+                            <MenuButton>
+                                <Avatar src='/avatar.png'/>
+                            </MenuButton>
+                             <MenuList borderColor="#2b2b2b" bg='#121212'>
+                                <MenuItem bg='#121212'>
+                                    <Text textStyle={'secondary'} color='text.300'>My Profile</Text>
+                                </MenuItem>
+                                <MenuItem bg='#121212'>
+                                    <Text aria-label='button' textStyle={'secondary'} onClick={()=>push('/dats')} color='text.300'>My Dats</Text>
+                                </MenuItem>
+                                <MenuDivider/>
+                                <MenuItem bg='#121212'>
+                                    <Text textStyle={'secondary'} color='state.danger' onClick={logout}>Logout</Text>
+                                </MenuItem>
+                             </MenuList>
+                        </Menu>
                     : <Button variant={'solid'} onClick={login}>Login</Button>
                 }
                 
@@ -38,3 +49,11 @@ export default function Header(){
         </Flex>
     )
 }
+
+
+{/* <HStack spacing={3}>
+                     <Link href='/dats'>
+                        <a><Text fontWeight='medium'>My Dats</Text></a>
+                    </Link>
+                    <Button variant='link' onClick={logout}>Logout</Button>
+                    </HStack> */}

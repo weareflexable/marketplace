@@ -49,6 +49,12 @@ const config: ThemeConfig ={
         400:'#FF8F05',
         500:'#B25900'
       },
+      state:{
+        success: '#17FFA6',
+        danger: '#F16161',
+        warning: '',
+        valid: ''
+      },
       text:{
         100:'rgba(255, 255, 255, 0.3)',
         200:'rgba(255, 255, 255, 0.6)',

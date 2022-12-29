@@ -28,6 +28,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
             mb="3"
             w="100%"
             direction="column"
+            borderRadius={'6px'}
             key={order.id}
           >
             <HStack justifyContent={'space-between'} mb="3" spacing="1">
@@ -38,7 +39,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                 
                 {(order.status === "ISSUED" &&
                   dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
-                  <Text textStyle={'secondary'} colorScheme={"gray"} ml="1">
+                  <Text textStyle={'secondary'} color='#F16161' ml="1">
                     Expired
                   </Text>
                 ) : order.status === "REDEEMED" ? (
