@@ -116,7 +116,6 @@ const gotoTicketPage = (dat:any)=>{
                     orders={sortedOrders}
                     gotoTicketPage={gotoTicketPage}
                    />
-              
             }
           </Flex>
         </GridItem>

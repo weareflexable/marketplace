@@ -6,6 +6,7 @@ import {
 import dayjs from "dayjs";
 import moment from "moment-timezone";
 import timezone from 'dayjs/plugin/timezone'
+import {ChevronRightIcon} from '@chakra-ui/icons'
 
 // dayjs.extend(timezone)
 
@@ -29,24 +30,28 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
             direction="column"
             key={order.id}
           >
-            <HStack mb="1" spacing="1">
-              <Text color="whiteAlpha.700">
-                {order.orgServiceName}
-              </Text>
-              {(order.status === "ISSUED" &&
-                dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
-                <Badge colorScheme={"gray"} ml="1">
-                  Expired
-                </Badge>
-              ) : order.status === "REDEEMED" ? (
-                <Badge colorScheme={"yellow"} ml="1">
-                  Redeemed
-                </Badge>
-              ) : (
-                <Badge colorScheme={"green"} ml="1">
-                  Valid
-                </Badge>
-              )}
+            <HStack justifyContent={'space-between'} mb="3" spacing="1">
+              <HStack>
+                <Text color="text.200">
+                  {moment(order.endTime).tz('America/New_York').format("MMM D, YYYY")}
+                </Text>
+                
+                {(order.status === "ISSUED" &&
+                  dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
+                  <Text textStyle={'secondary'} colorScheme={"gray"} ml="1">
+                    Expired
+                  </Text>
+                ) : order.status === "REDEEMED" ? (
+                  <Text textStyle={'secondary'} colorScheme={"yellow"} ml="1">
+                    Redeemed
+                  </Text>
+                ) : (
+                  <Text textStyle={'secondary'} colorScheme={"green"} ml="1">
+                    Valid
+                  </Text>
+                )}
+              </HStack>
+              <ChevronRightIcon boxSize={'5'} onClick={()=>gotoTicketPage(order)}/>
             </HStack>
             <Flex mb="1" justifyContent="space-between">
               
@@ -57,7 +62,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
 
               {/* pricing */}
               <Flex direction={'column'}>
-                <Text mb='1' textStyle="secondary" color={'text.300'}>
+                <Text mb='1' textStyle="secondary" color={'text.200'}>
                   ${order.quantity * (order.unitPrice/100)}
                 </Text>
                 <HStack spacing="0.5">
@@ -70,21 +75,15 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                 </HStack>
               </Flex>
             </Flex>
+
             <HStack mb="1" spacing="1">
-              <Text color="whiteAlpha.500">Valid on:</Text>
-              <Text color="whiteAlpha.700">
-                {moment(order.endTime).tz('America/New_York').format("MMM D, YYYY")}
+              <Text textStyle={'secondary'} color="text.100">
+                By
+              </Text>
+              <Text textStyle={'secondary'} color="text.300">
+                {order.orgServiceName}
               </Text>
             </HStack>
-
-            {/* show button only for confirmedOrders */}
-
-            <Button
-              colorScheme="cyan"
-              onClick={()=>gotoTicketPage(order)}
-            >
-              Show Digital Access Token
-            </Button>
 
           </Flex>
         ))
