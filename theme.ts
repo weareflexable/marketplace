@@ -11,7 +11,21 @@ const config: ThemeConfig ={
 
  const theme = extendTheme({
     ...config,
+    shadows:{
+      outline:'brand.200',
+
+    },
     components:{
+      Input:{
+        defaultProps:{
+          focusBorderColor:'brand.200'
+        }
+      },
+      Select:{
+         defaultProps:{
+          focusBorderColor:'brand.200'
+        }
+      },
       Button:{
         variants:{
           'flexable-combo':{

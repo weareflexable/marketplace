@@ -79,7 +79,7 @@ const gotoTicketPage = (dat:any)=>{
     );
   }
 
-  if (!isAuthenticated && !datsQuery.isLoading) {
+  if (!isAuthenticated) {
     return (
       <Layout>
         <UnAuthenticated/>

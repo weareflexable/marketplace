@@ -10,7 +10,7 @@ export default function UnAuthenticated(){
     }
 
     return(
-        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='100vh' width={"100%"}>
+        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='90vh' width={"100%"}>
             <Flex direction='column' maxW={'350px'} alignItems='center'>
                 <Text as='h3' mb='5' textStyle={'h3'}>
                     Unauthenticated!
