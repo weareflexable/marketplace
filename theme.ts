@@ -27,6 +27,9 @@ const config: ThemeConfig ={
         }
       },
       Button:{
+        baseStyle:{
+          
+        },
         variants:{
           'flexable-combo':{
             color:'white',
@@ -42,7 +45,11 @@ const config: ThemeConfig ={
           solid:{
             bg:'brand.300',
             borderRadius: '50px',
-            color:'white'
+            color:'white',
+            _active:{
+              bg:'brand.100',
+              color:'black'
+            },
           }
         }
       }

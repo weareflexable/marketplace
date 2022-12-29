@@ -31,7 +31,7 @@ export default function Header(){
                             </MenuButton>
                              <MenuList borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem bg='#121212'>
-                                    <Text textStyle={'secondary'} color='text.300'>My Profile</Text>
+                                    <Text textStyle={'secondary'} onClick={()=>push('/profile')} color='text.300'>My Profile</Text>
                                 </MenuItem>
                                 <MenuItem bg='#121212'>
                                     <Text aria-label='button' textStyle={'secondary'} onClick={()=>push('/dats')} color='text.300'>My Dats</Text>
@@ -42,7 +42,7 @@ export default function Header(){
                                 </MenuItem>
                              </MenuList>
                         </Menu>
-                    : <Button variant={'solid'} onClick={login}>Login</Button>
+                    : <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
                 }
                 
             </Flex>
