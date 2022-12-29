@@ -56,7 +56,7 @@ export default function MyBookings() {
       }
     );
     return res
-  });
+  },{enabled:isAuthenticated});
 
 
 const gotoTicketPage = (dat:any)=>{
