@@ -24,7 +24,7 @@ export default function ServicesPage(){
 
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
-    const {state:cart, setState:setCart} = useLocalStorage([]);
+    const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
 
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState<any>({})
@@ -101,7 +101,7 @@ export default function ServicesPage(){
     // TODO: rename to cartItemExist
     const checkCartItemExist = (id:string)=>{
         const clonedCart = cart.slice()
-        return clonedCart.filter(cartItem=>cartItem.id === id).length>0 ? true: false;
+        return clonedCart.filter((cartItem:any)=>cartItem.id === id).length>0 ? true: false;
     } 
 
 
@@ -134,21 +134,21 @@ export default function ServicesPage(){
 
     const removeCartItemHandler = (id:string)=>{
         const clonedCart = cart.slice();
-        const targetIndex = clonedCart.findIndex(cartItem=>cartItem.id === id)
+        const targetIndex = clonedCart.findIndex((cartItem:any)=>cartItem.id === id)
         clonedCart[targetIndex].quantity = 0;
-        const updatedBookings = clonedCart.filter(cartItem=>cartItem.id !== id);
+        const updatedBookings = clonedCart.filter((cartItem:any)=>cartItem.id !== id);
         setCart(updatedBookings);
     }
 
     const incrementCartItemQuantity = (id: string)=>{
         const clonedCart = cart.slice();
-        const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
+        const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
         targetItem!.quantity++
         setCart(clonedCart);
     }
     const decrementCartItemQuantity = (id: string)=>{
         const clonedCart = cart.slice();
-        const targetItem = clonedCart.find(cartItem=>cartItem.id === id);
+        const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
         targetItem!.quantity--
         setCart(clonedCart);
     }

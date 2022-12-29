@@ -1,11 +1,11 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, SkeletonText, IconButton, HStack, Flex, Skeleton, VStack, Image} from '@chakra-ui/react'
+import {Box, Text, Divider, SkeletonText,  HStack, Flex, Skeleton, VStack, Image} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
-import { ChevronLeftIcon } from '@chakra-ui/icons'
+// import { ChevronLeft } from '@chakra-ui/icons' 
 
 export default function Ticket(){
     const router = useRouter()
@@ -13,7 +13,6 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret, startTime, quantity, tokenId, status, endTime, orgServiceItemId, id} = ctx_currentDat
-
 
 
       useEffect(() => {
@@ -61,17 +60,18 @@ export default function Ticket(){
             }
           };
         generateQrCode()
-      }, [])
+      }, []) 
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
             {/* header */}
             <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                 <HStack ml='5' spacing={'5'}>
-                    {/* <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/>  */}
+                    {/* <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={} aria-label='navigateBackToDats'/>  */}
+                    {/* <ChevronLeft boxSize={'5'}/> */}
                     <Text as='h1' textStyle={'h4'} color='text.300' >Line skip + Cover</Text>
                 </HStack>
-            </Flex>
+            </Flex> 
 
            {isGeneratingCode?<TicketSkeleton/>
            :
@@ -116,7 +116,7 @@ export default function Ticket(){
                             <Text color='brand.200' textStyle={'secondary'}> 
                                 <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">314 S Franklin St Syracuse, NY 13206</a> 
                             </Text>
-                        </HStack>
+                        </HStack> 
 
                         <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
                             <Text color='text.200' textStyle={'secondary'}>Call</Text>
