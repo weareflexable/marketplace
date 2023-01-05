@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import Layout from "../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
-import supabase from "../utils/supabase";
 import { useAuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";

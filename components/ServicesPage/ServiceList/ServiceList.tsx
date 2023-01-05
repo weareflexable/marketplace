@@ -10,9 +10,8 @@ import {
     Text
 } from '@chakra-ui/react'
 
-import TicketListItem from '../../shared/Ticket/Ticket'
-import {Service} from '../../../data/services'
-import TicketMobile from '../../shared/Ticket/TicketMobile/TicketMobile'
+// import {Service} from '../../../data/services'
+import Service from './Service/Service'
 import dayjs from 'dayjs'
 
 
@@ -29,18 +28,12 @@ export default function TicketList({services,date,onAddToCart}:TicketListProps){
         <Box p='1em' w='100%'>
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: any)=>(
-                    <div key={service.serviceItemId}>
-                    <TicketMobile 
+                    <Service 
+                        key={service.serviceItemId}
                         selectedDate={date} 
                         onTriggerAction={onAddToCart}   
                         data={service}
-                        />
-                    <TicketListItem 
-                        selectedDate={date}
-                        onTriggerAction={onAddToCart}  
-                        data={service}
-                        />
-                    </div>
+                    />
                 ))}
             </SimpleGrid>
         </Box>

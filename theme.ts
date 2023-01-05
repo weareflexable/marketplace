@@ -1,38 +1,68 @@
 
-import "@fontsource/lato";
-import "@fontsource/lato/700.css";
-import "@fontsource/lato/900.css";
-import "@fontsource/merriweather/400.css";
-import "@fontsource/merriweather/700.css";
-import "@fontsource/merriweather/900.css";
+import "@fontsource/figtree/variable.css";
+
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools'
 
 const config: ThemeConfig ={
     initialColorMode: 'dark',
-    useSystemColorMode: false
+    useSystemColorMode: true
 }
+
  const theme = extendTheme({
     ...config,
+    colors:{
+      brand:{
+        100:'#DAB1FB',
+        200:'#C380F9',
+        300:'#AB4DF7',
+        400:'#8C0BF4',
+        500:'#56099A',
+        disabled: '#653989'
+      },
+      accent:{
+        100:'#FFE1B8',
+        200:'#FFC680',
+        300:'#FFAF4D',
+        400:'#FF8F05',
+        500:'#B25900'
+      },
+      text:{
+        100:'rgba(255, 255, 255, 0.3)',
+        200:'rgba(255, 255, 255, 0.6)',
+        300:'rgba(255, 255, 255, 0.96)'
+      }
+    },
   layerStyles:{
     base: {
-      bg: 'gray.900',
+      bg: '#121212',
       // borderColor: 'gray.500',
     },
     secondLayer: {
-      bg: 'blackAlpha.800',
-      border: '1px solid',
-      borderColor: 'blackAlpha.500',
+      bg: '#2b2b2b',
     },
     thirdLayer:{
       bg: 'blackAlpha.500',
       
     },
     selected: {
-      bg: 'teal.500',
+      bg: 'teal.700',
       color: 'teal.700',
       borderColor: 'orange.500',
     },
+    primaryBtn:{
+      color: 'text.300',
+      bg: 'brand.300',
+    },
+    highPop:{
+      color: 'rgba(255, 255, 255, 0.96)',
+    },
+    mediumPop:{
+      color: 'rgba(255, 255, 255, 0.6)'
+    },
+    lowPop:{
+      color: 'rgba(255, 255, 255, 0.3)'
+    }
     },
   styles:{
     global:(props: Record<string, any>)=>({
@@ -61,14 +91,16 @@ const config: ThemeConfig ={
   })
   },
   fonts: {
-    heading: `'Merriweather', serif`,
-    body: `'Lato', sans-serif`,
+    heading: `'Figtree', san-serif`,
+    body: `'Figtree', sans-serif`,
   },
   textStyles:{
     h1: {
-      fontWeight: '900',
+      fontSize:['32px','42px'],
+      fontWeight: '700',
       lineHeight: '110%',
-      letterSpacing: '-0.5px', 
+      letterSpacing: '0.1px', 
+      color:'#f8f8f8'
     },
 
     h2:{
@@ -88,14 +120,21 @@ const config: ThemeConfig ={
     },
 
     h4:{
-      color: 'gray.200' ,
+      color: '#ffffff' ,
       fontFamily:'body',
+      marginBottom:'0',
       lineHeight:1,
-      fontSize:'1.2em',
-      fontWeight: '900'
+      fontSize:'1.2rem',
+      fontWeight: '700'
+    },
+    h5:{
+      fontSize:'1rem',
+      fontWeight: '650',
+      lineHeight: 1.1,
+      fontFamily:'body'
     },
     links:{
-      fontWeight: '500',
+      fontWeight: '700',
       lineHeight: '110%', 
       cursor:'pointer'
     },
@@ -120,18 +159,24 @@ const config: ThemeConfig ={
       fontSize: '2em'
     },
     body:{
-      color: 'whiteAlpha.800' ,
       fontFamily: 'body',
+      fontWeight:'450',
+      fontSize:'1.2rem',
       lineHeight: 1.3,
-      fontWeight: 400,
       letterSpacing: '-.2px'
     },
     secondary:{
-      color: 'gray.100' ,
       fontFamily: 'body',
+      fontWeight:'430',
+      fontSize: '1rem',
       lineHeight: '1.3em',
-      fontWeight: 400,
-      letterSpacing: '-.2px'
+      letterSpacing: '-.02px'
+    },
+    buttonLabel:{
+      fontWeight:'700',
+      fontSize:['.9rem','1rem'],
+      letterSpacing:'-.2',
+      lineHeight:'1'
     }
     
   }

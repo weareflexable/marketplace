@@ -4,7 +4,7 @@ import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
-import TicketList from '../../components/ServicesPage/TicketList/TicketList'
+import TicketList from '../../components/ServicesPage/ServiceList/ServiceList'
 import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
@@ -60,7 +60,12 @@ export default function ServicesPage(){
         setIsLoading(true)
         // console.log(serviceId, date)
         // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${moment(serviceDate).format('YYYY-MMM-DD')}`) 
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${moment(serviceDate).format('YYYY-MMM-DD')}`,
+        {
+            headers:{
+              "Authorization":'v4.local.v17L4FzidZy1uzcGkjUeIusFSvxl2a5zUpWofhMnrmRVXrv9efnmwOe5SNtxB693aZVn1Hm5sbJLwm3UkKnAZFZhAqRGKeHcBy_cq-Bimua2jO6H2Z7i8ZZMtxn88PybteJx4xMzM2lL0e0eUv-gqKAX9o_7iDFfhgqG793vcJ1Q8p-DGMiO-GRNSzzCb-FSDtpAXUkbKBgGGrcHB_IKVnTL'
+            }
+          }) 
         const body = await res.json()
         if(body.status === 200){
             setIsLoading(false)
@@ -172,7 +177,8 @@ export default function ServicesPage(){
 
         
         return(
-    <DarkMode>
+    // <DarkMode>
+    <>
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
@@ -186,7 +192,7 @@ export default function ServicesPage(){
                          storeName={data && data.payload && data.payload.name}
                          lat = {data && data.payload && data.payload.lat}
                          lon = {data && data.payload && data.payload.lon}
-                         city = { data && data.payload && data.payload.city}
+                         city = {data && data.payload && data.payload.city}
                          state = {data && data.payload && data.payload.state}
                          />
                     </Skeleton>
@@ -223,7 +229,7 @@ export default function ServicesPage(){
                 </Flex>
 
                 {/* Dont render mobile cart on large screen */}
-                <Flex display={['flex','flex','flex','none']} width={'100%'}>
+                {isCartDrawerOpen?<Flex display={['flex','flex','flex','none']} width={'100%'}>
                     <MobileCart
                         onCreateOrder={createOrder} 
                         onIncrementCartItemQuantity={incrementCartItemQuantity} 
@@ -234,7 +240,7 @@ export default function ServicesPage(){
                         isDrawerOpen={isCartDrawerOpen}
                         onCloseDrawer={()=>setIsCartDrawerOpen(false)}
                     />
-                </Flex>
+                </Flex>:null}
 
             </SimpleGrid>
             {/* cart button to only display on mobile */}
@@ -262,20 +268,21 @@ export default function ServicesPage(){
                 </Box>
             :null}
 
-            <CartSummary 
+           { isOpen? <CartSummary 
               onCloseModal={onClose} 
               isModalOpen={isOpen} 
               cart={cart}
               totalCost = {50}
-              />
+              />:null}
 
-              <MobileCartSummary
+              {isProcessDrawerOpen?<MobileCartSummary
                 onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
                 isDrawerOpen={isProcessDrawerOpen} 
                 cart={cart}
                 totalCost = {50}
-              />
-        </Box>
-    </DarkMode>
+              />:null}
+        </Box> 
+        </>
+    // </DarkMode>
     )
 }

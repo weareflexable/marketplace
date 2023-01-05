@@ -1,18 +1,12 @@
-import { Session } from "@supabase/supabase-js";
+// import { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import React, {
   useState,
   useContext,
   createContext,
   useEffect,
-  ReactNode,
 } from "react";
-import { checkUser, signOut } from "../utils/auth";
-import { getPaseto } from "../utils/platform/platform";
-import { getPlatformPaseto, setPlatformPaseto } from "../utils/storage";
-import supabase from "../utils/supabase";
-import axios from "axios";
-import { get } from "http";
+
 import { deleteStorage, getStorage, setStorage } from "../utils/localStorage";
 
 const AuthContext = createContext(undefined);
@@ -40,16 +34,6 @@ const AuthContextProvider = ({ children }) => {
     return ''
 })
 
-  // console.log(query)
-
-  // useEffect(()=>{
-  //   console.log(query.paseto)
-  //   if(query.paseto !== undefined){
-  //     setStorage('PLATFORM_PASETO',query.paseto)
-  //     setIsAuthenticated(true)
-  //   }
-  // },[query])
-
 
   const pasetoFromUrl = query.paseto 
   // console.log('urlpaseto',pasetoFromUrl)
@@ -74,75 +58,6 @@ const AuthContextProvider = ({ children }) => {
 //   console.log(pasetoFromUrl)
 }, [pasetoFromUrl])
 
-// Effect to handle redirecting of a user to last visited page
-// after logging into application
-// useEffect(() => {
-//   // TODO: move this into a function?
-//   const lastVisitedPage = getStorage('lastVisitedPage')
-//   const shouldRedirect = getStorage('shouldRedirect') // whether or not to redirect to last visited page
-//   if(shouldRedirect === 'true'){
-//     // if redirecting back to service page, then leave the cart open 
-
-//     // clear shouldRedirect & lastVisitedPage in local storage
-//     deleteStorage('shouldRedirect')
-//     deleteStorage('lastVisitedPage')
-//     lastVisitedPage? push(lastVisitedPage) : push('/')
-//   }
-//   deleteStorage('lastVistedPage');
-//   // push(lastVisitedPage)
-// }, [])
-
-  // useEffect(() => {
-  //   if (isAuthenticated && !getPlatformPaseto()) {
-  //     getPaseto(supabase.auth.session().access_token).then(res=>{
-  //       setPlatformPaseto(res)
-  //     });
-  //   }
-  // }, [isAuthenticated]);
-
-  // useEffect(() => {
-  //   async function refreshUser(){
-  //     const refreshToken = supabase.auth.session().refresh_token
-  //     const {data:{user,session}} = await supabase.auth.refreshSession(refreshToken)
-
-  //     // get access token from session and reset token
-  //     getPaseto(session.access_token).then(res=>{
-  //       setPlatformPaseto(res)
-  //     })
-  //   }
-  //     if(isAuthenticated){
-  //       // get current session
-  //       // refresh token
-  //       refreshUser()
-  //     };
-      
-  // }, [isAuthenticated])
-
-  // useEffect(() => {
-
-    // const user = checkUser();
-    // if (user) {
-    //   setIsAuthenticated(true);
-    //   setCurrentUser(user);
-    // }
-    
-    // const { data: authListener } = supabase.auth.onAuthStateChange(
-    //   (event, session) => {
-    //     // updateSupabaseCookie(event, session);
-    //     if (event === "SIGNED_IN") {
-    //       setIsAuthenticated(true);
-    //     }
-    //     if (event === "SIGNED_OUT") {
-    //       setIsAuthenticated(false);
-    //     }
-    //   }
-    // );
-
-  //   return () => {
-  //     // @ts-ignore
-  //     authListener?.unsubscribe();
-  //   };
-  // }, [push, setIsAuthenticated]); 
 
     const logout = () =>{
         setIsAuthenticated(false)

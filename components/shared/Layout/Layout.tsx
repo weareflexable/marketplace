@@ -13,9 +13,9 @@ export default function Layout({children}:LayoutProps){
     console.log(router.pathname)
 
     return(
-        <Flex bg='gray.900' direction='column'  w='100vw' minH='100vh' h='100%'>
+        <Flex bg='gray.900' direction='column' w='100%' minH='100vh' h='100%'>
             <Header/>
-            <Box as='main' h='100%' minH='100vh' w='100vw'>
+            <Box as='main' h='100%' minH='100vh' w='100%'>
                 {children}
             </Box>
         </Flex>
