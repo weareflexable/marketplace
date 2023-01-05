@@ -5,6 +5,9 @@ import { useAuthContext } from '../context/AuthContext'
 import {Formik, Field, Form, useFormik} from 'formik'
 import * as Yup from 'yup';
 
+const countryList = require('country-list')
+import codes from 'country-calling-code';
+
 export default function Profile(){
     const {isAuthenticated} = useAuthContext()
 
@@ -13,7 +16,7 @@ export default function Profile(){
         initialValues: {
           email: '',
           fullname: '',
-          country: '',
+          country: '', 
         },
         onSubmit: (values,actions) => {
             // e.preventDefault()
@@ -32,15 +35,6 @@ export default function Profile(){
 
       console.log(formik.touched)
 
-    // const formik = useFormik({
-    //     initialValues: {
-    //       email: '',
-    //     },
-    //     onSubmit: (values) => {
-    //       alert(JSON.stringify(values, null, 2))
-    //       console.log(values)
-    //     },
-    //   })
 
 
 
@@ -87,7 +81,6 @@ export default function Profile(){
                                     <Input  
                                         // id='fullname'
                                         colorScheme={'brand'}
-                                        placeholder='John Doe Marcus' 
                                         borderColor={'#464646'} 
                                         color='text.300' 
                                         borderWidth='2px' 
@@ -117,11 +110,12 @@ export default function Profile(){
                                         color='text.300' 
                                         borderColor={'#464646'} 
                                         borderWidth='2px' 
-                                        {...formik.getFieldProps('country')}
                                         placeholder='Select country'
+                                        {...formik.getFieldProps('country')}
                                     >
-                                        <option>United Arab Emirates</option>
-                                        <option>Nigeria</option>
+                                        {countryList.getData().map((country:any)=>(
+                                            <option key={country.code} value={country.code}>{country.name}</option>
+                                        ))}
                                     </Select>
                                 </FormControl>
 
