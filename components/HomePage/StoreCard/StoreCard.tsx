@@ -13,7 +13,6 @@ interface StoreCardProps {
 
 export const StoreCard = ({data}:StoreCardProps) =>{
 
-    console.log(data)
 
     const router = useRouter()
     
