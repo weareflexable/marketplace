@@ -16,11 +16,11 @@ import SkeletonList from '../components/HomePage/SkeletonList/SkeletonList'
 export default function Home() {
 
 
-  const {isLoading,data,isError} = useQuery(['stores'],async()=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public?startOffSet=0`,
+  const {isLoading,data,isError} = useQuery(['services'],async()=>{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=10`,
     {
       headers:{
-        "Authorization":'v4.local.v17L4FzidZy1uzcGkjUeIusFSvxl2a5zUpWofhMnrmRVXrv9efnmwOe5SNtxB693aZVn1Hm5sbJLwm3UkKnAZFZhAqRGKeHcBy_cq-Bimua2jO6H2Z7i8ZZMtxn88PybteJx4xMzM2lL0e0eUv-gqKAX9o_7iDFfhgqG793vcJ1Q8p-DGMiO-GRNSzzCb-FSDtpAXUkbKBgGGrcHB_IKVnTL'
+        "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
       }
     })
     const body = await res.json()
@@ -47,6 +47,8 @@ export default function Home() {
 </Wrap>
   )
 
+  console.log(data.data)
+
 
  
   return (
@@ -62,9 +64,9 @@ export default function Home() {
                   <Text  as='h1' w='100' textStyle={'h1'}>Showing you bars in Syracuse NY</Text>
                 </Flex>
                 { isLoading?<SkeletonList/>:
-                  <Wrap w='100%' padding={[3,5]} spacing={5} alignItems='center' justifyContent='center'> 
+                  <Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                       {/* {mockData? mockData.map((store:Store)=>( */}
-                    {data && data.payload ? data.payload.map((store:Store)=>(
+                    {data && data.data ? data.data.map((store:Store)=>(
                         <WrapItem flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']} key={store.id}>
                             {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
                               <StoreCard data={store}/>

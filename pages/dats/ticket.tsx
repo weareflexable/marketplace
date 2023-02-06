@@ -24,7 +24,7 @@ export default function Ticket(){
             // request payload for getting signature to generate QR code
             const payload = {
               orgServiceItemId: orgServiceItemId,
-              ticketId: id
+              ticketId: id // ticketId
             };
         
         
