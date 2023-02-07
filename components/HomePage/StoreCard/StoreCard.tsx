@@ -18,7 +18,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     
     const navigateToServicePage=(serviceId:string)=>{
         console.log(serviceId)
-        router.push(`/services/${serviceId}?date=${moment().format('YYYY-MMM-DD')}`)
+        router.push(`/services/${serviceId}`)
     }
 
     const coverImage = data?.coverImageHash

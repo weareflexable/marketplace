@@ -89,7 +89,7 @@ export default function Home() {
                 </Flex>
                 <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypes && serviceTypes.data.map((serviceType:any)=>(
-                    <Button onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
+                    <Button variant={'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
                 </Flex>
                 { isLoading 

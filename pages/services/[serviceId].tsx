@@ -18,6 +18,7 @@ import moment from 'moment-timezone'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
+import axios from 'axios'
 
 
 export default function ServicesPage(){
@@ -26,8 +27,8 @@ export default function ServicesPage(){
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [data, setData] = useState<any>({})
+    // const [isLoading, setIsLoading] = useState(false)
+    // const [data, setData] = useState<any>({})
     const [serviceDate, setServiceDate] = useState(()=>Date())
 
     // TODO: mark state to show that it interacts with local storage
@@ -45,38 +46,70 @@ export default function ServicesPage(){
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
 
+    console.log(serviceId)
+
     
-    // const {isLoading,data,isError} = useQuery(['store-service',{pageQueryParam,serviceDate}],async()=>{
-        
-    //     console.log(serviceId, date)
-    //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${date}`) 
-    //     const body = await res.json()
-    //     console.log(body)
-    //     return body
-    // })
+    const {isLoading,data,isError} = useQuery({
+        queryKey:['single-service',serviceId], 
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`,{
+                headers:{
+                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
+                }
+            }) 
 
-    useEffect(() => {
-      async function getService(){
-        setIsLoading(true)
-        // console.log(serviceId, date)
-        // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${serviceDate}`) 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/public/${serviceId}?date=${moment(serviceDate).format('YYYY-MMM-DD')}`,
-        {
-            headers:{
-              "Authorization":'v4.local.v17L4FzidZy1uzcGkjUeIusFSvxl2a5zUpWofhMnrmRVXrv9efnmwOe5SNtxB693aZVn1Hm5sbJLwm3UkKnAZFZhAqRGKeHcBy_cq-Bimua2jO6H2Z7i8ZZMtxn88PybteJx4xMzM2lL0e0eUv-gqKAX9o_7iDFfhgqG793vcJ1Q8p-DGMiO-GRNSzzCb-FSDtpAXUkbKBgGGrcHB_IKVnTL'
-            }
-          }) 
-        const body = await res.json()
-        if(body.status === 200){
-            setIsLoading(false)
-            setData(body)
-            console.log(body)
-        }
-      }
-      getService()
-    }, [serviceId,serviceDate])
+            return res.data
+        },
+        enabled: serviceId !== undefined,
+        staleTime: 30000
+    })
+    
+    // Confirming object is not undefined before accessing fields
+    const service = data && data.data[0]
+    
+    const availabilityQuery = useQuery({
+        queryKey:['availability',serviceId], 
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service/availability?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=availability`,{
+                headers:{
+                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
+                }
+            }) 
 
-    const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure()
+            return res.data.data
+        },
+        enabled: serviceId !== undefined,
+        staleTime: 30000 
+    })
+
+    const availability = availabilityQuery.data && availabilityQuery.data[0]
+    console.log(availability)  
+
+
+    // The service-item query is dependent on the success of both the service and the availability queries
+    // before it can finally be executed.
+    const shouldFetchServiceItems = serviceId !== undefined && availabilityQuery.isSuccess;
+
+    const serviceItemsQuery = useQuery({
+        queryKey:['serviceItems',serviceId], 
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=2022-01-22T07:12:12Z`,{
+                headers:{
+                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
+                }
+            }) 
+
+            return res.data.data
+        },
+        enabled: shouldFetchServiceItems,
+        staleTime: 30000 
+    })
+
+    console.log(serviceItemsQuery.data) 
+
+
+
+    const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure() 
 
     // effect to check if mobile cart was open before user got redirect to login page
     useEffect(()=>{
@@ -181,9 +214,10 @@ export default function ServicesPage(){
         )
     }
         
+
         return(
-    // <DarkMode>
-    <>
+
+    <> 
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
@@ -193,12 +227,12 @@ export default function ServicesPage(){
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
                     <Skeleton w='100%' isLoaded={!isLoading}>
                         <StoreHeader 
-                         coverImageHash={data && data.payload && data.payload.coverImageHash || ''}
-                         storeName={data && data.payload && data.payload.name}
-                         lat = {data && data.payload && data.payload.lat}
-                         lon = {data && data.payload && data.payload.lon}
-                         city = {data && data.payload && data.payload.city}
-                         state = {data && data.payload && data.payload.state}
+                         coverImageHash={service.coverImageHash || ''}
+                         storeName={service.name}
+                         lat = {service.latitude}
+                         lon = {service.longitude}
+                         city = {service.city}
+                         state = {service.state}
                          />
                     </Skeleton>
 
