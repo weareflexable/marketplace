@@ -25,10 +25,10 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
 
     const {
         ticketData,
-        isTicketsAvailable,
-        isTicketsSoldOut,
+        // isTicketsAvailable,
+        // isTicketsSoldOut,
         isMinQuantity,
-        ticketDate,
+        // ticketDate,
         subTotal,
         isAuthenticated,
         incrementQuantity,
@@ -57,8 +57,8 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
                                     <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
                                 </HStack>
                                 <HStack spacing={2}>
-                                    <Text textStyle={'secondary'} color={'text.300'}>{data.tickets[0]!.ticketsAvailable}</Text>
-                                    <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
+                                    {/* <Text textStyle={'secondary'} color={'text.300'}>{data.tickets[0]!.ticketsAvailable}</Text> */}
+                                    {/* <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text> */}
                                 </HStack>
                             </HStack>
                             <Text color={'white'}>${subTotal}</Text>

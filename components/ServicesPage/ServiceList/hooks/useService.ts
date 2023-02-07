@@ -9,20 +9,27 @@ import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 
+// This should accept a Service-item type in data
 const useService = (data:any)=>{
 
 
     const {isAuthenticated} = useAuthContext()
+
+    // Instant buy is the contentx that holds logic for when a user
+    // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
+
     const router = useRouter()
     const {currentPath} = usePath()
 
-      // Each ticket will maintain it's own state from props
-   //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
-   //       ...data&&data,
-   //       quantity:0
-   //   })
-
+    //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
+       //       ...data&&data,
+       //       quantity:0
+       //   })
+       
+       
+   // Each ticket will maintain it's own state from props because
+   // properties in ticket object undergo changes with the ticket component
      const [ticketData, setTicketData] = useState({
       ...data,
        quantity:0
@@ -33,12 +40,12 @@ const useService = (data:any)=>{
  
  
      // checks to see if there are available tickets for selected date
-     const isTicketsAvailable = ticketData.tickets.length>0;
+   //   const isTicketsAvailable = ticketData.tickets.length>0;
  
      // Determines whether or not tickets are sold out
-     const isTicketsSoldOut = isTicketsAvailable && ticketData.tickets[0].ticketsAvailable<1
+   //   const isTicketsSoldOut = isTicketsAvailable && ticketData.tickets[0].ticketsAvailable<1
  
-     const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
+   //   const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
 
  
      const isMinQuantity = ticketData.quantity <= 0
@@ -65,18 +72,20 @@ const useService = (data:any)=>{
 
      const buyTicketNow = ()=>{
 
+      console.log(ticketData)
         const buyNowCartItem = {
            id: ticketData.id,
            quantity: ticketData.quantity,
            price: ticketData.price,
-           date: ticketData.tickets[0].date
+           date: "Jan 12, 2022" // TODO: Get current selected date
+         //   date: ticketData.tickets[0].date
          }
 
         if(isAuthenticated){
+         
             setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
             setStorage('shouldBuyInstantly','true')
-
             proceedToPayment();
             return
         }
@@ -98,10 +107,10 @@ const useService = (data:any)=>{
 
      return {
         ticketData,
-        isTicketsAvailable,
-        isTicketsSoldOut,
+      //   isTicketsAvailable,
+      //   isTicketsSoldOut, 
         isMinQuantity,
-        ticketDate,
+      //   ticketDate,
         subTotal,
         isAuthenticated,
         isProceedingToPayment,

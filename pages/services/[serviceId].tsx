@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
@@ -19,6 +19,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 
 export default function ServicesPage(){
@@ -26,6 +27,7 @@ export default function ServicesPage(){
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
+    const [selectedDate, setSelectedDate] = useState(dayjs().format())
 
     // const [isLoading, setIsLoading] = useState(false)
     // const [data, setData] = useState<any>({})
@@ -82,8 +84,8 @@ export default function ServicesPage(){
         staleTime: 30000 
     })
 
-    const availability = availabilityQuery.data && availabilityQuery.data[0]
-    console.log(availability)  
+    const availabilities = availabilityQuery.data && availabilityQuery.data
+    console.log(availabilities)  
 
 
     // The service-item query is dependent on the success of both the service and the availability queries
@@ -91,9 +93,9 @@ export default function ServicesPage(){
     const shouldFetchServiceItems = serviceId !== undefined && availabilityQuery.isSuccess;
 
     const serviceItemsQuery = useQuery({
-        queryKey:['serviceItems',serviceId], 
+        queryKey:['serviceItems',serviceId,selectedDate], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=2022-01-22T07:12:12Z`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=${selectedDate}`,{
                 headers:{
                     "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
                 }
@@ -208,6 +210,13 @@ export default function ServicesPage(){
         
     }
 
+    function changeDate(availability:any){
+        const date = availability.date
+        console.log(date)
+        setSelectedDate(date);
+        //change state
+    }
+
     if(isLoading){
         return(
             <ServicePageSkeleton/>
@@ -236,20 +245,35 @@ export default function ServicesPage(){
                          />
                     </Skeleton>
 
-                    <Skeleton my='1' isLoaded={!isLoading}>
+                    {availabilityQuery.isLoading
+                    ?<Skeleton/>
+                    :<Box w='100%' p={4} whiteSpace={'nowrap'} overflowY={'hidden'} overflowX={'scroll'}>
+                        {availabilities.map((availability:any)=>(
+                            <Flex onClick={()=>changeDate(availability)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={availability.date}>
+                                <Text textAlign={'center'}>{dayjs(availability.date).format('MMM')}</Text>
+                                <Text textAlign={'center'}>{dayjs(availability.date).format('D')}</Text>
+                                <Text textAlign={'center'}>{dayjs(availability.date).format('ddd')}</Text>
+                            </Flex>
+                        ))}
+                    </Box>}
+
+                    {/* <Skeleton my='1' isLoaded={!isLoading}>
                         <TicketSearchBar
+                            dates={availability}
                             date={serviceDate}
                             onChangeDate = {changeServiceDate}
                             />
-                    </Skeleton>
+                    </Skeleton> */}
 
-                        <Skeleton isLoaded={!isLoading}>
-                            <TicketList 
+                        
+                            {serviceItemsQuery.isLoading
+                            ?<Skeleton/>
+                            :<TicketList 
                                 date={serviceDate}
                                 onAddToCart={addToCartHandler} 
-                                services={data && data.payload && data.payload.serviceItems}
-                            />
-                        </Skeleton>
+                                services={serviceItemsQuery.data}
+                            />}
+                        
 
                 </Flex> 
 
