@@ -4,40 +4,69 @@ import StoreCard from '../components/HomePage/StoreCard/StoreCard'
 import {Button, Flex,Skeleton,Text,Wrap,WrapItem} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import {Store} from '../Types/Stores.types'
-import {useQuery} from '@tanstack/react-query'
+import {useInfiniteQuery, useQuery} from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { mockData } from '../data/events'
 import SkeletonList from '../components/HomePage/SkeletonList/SkeletonList'
 import axios from 'axios'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
 
 
-
+//@ts-ignore
+const fetchServices = async({pageParams,serviceFilter})=>{
+  console.log('func prams',pageParams,serviceFilter)
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParams}&pageSize=10&key2=service_type_id&value2=${serviceFilter}`,
+  {
+    headers:{
+      "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
+    }
+  })
+  return res.data.data
+}
 
 
 export default function Home() {
 
 
   const [serviceFilter, setServiceFilter] = useState('7')
+  const [page, setPage] = useState(1)
 
   function changeServiceFilter(filter:string){
     setServiceFilter(filter)
   }
 
-  const {isLoading,data,isError} = useQuery(['services',serviceFilter],async()=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=service_type_id&value2=${serviceFilter}`,
+  const infiniteServices = useInfiniteQuery(
+    ['services',serviceFilter], 
+    //@ts-ignore
+    async(pageParams)=>{
+      console.log('func prams',pageParams,serviceFilter)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParams}&pageSize=10&key2=service_type_id&value2=${serviceFilter}`,
+      {
+        headers:{
+          "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
+        }
+      })
+      return res.data.data
+    },
     {
-      headers:{
-        "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-      }
-    })
-    const body = await res.json()
-    return body
-  })
+      getNextPageParam:(lastPage, pages)=>{
+        console.log('lastPage', lastPage) 
+        console.log('pages', pages)
 
-  const services = data && data.data
-  const isServicesEmpty = data && data.data.length === 0;
+        if(lastPage.length === 0) return undefined
+        return pages.length+1
+      }
+    }
+)
+
+const servicesPages = infiniteServices.data && infiniteServices.data.pages
+
+  // console.log(infiniteServices.data)
+  // console.log(infiniteServices.hasNextPage)
+
+  // const services = data && data.data
+  // const isServicesEmpty = data && data.data.length === 0;
 
   const {data:serviceTypes, isLoading:isLoadingServiceTypes} = useQuery({
     queryKey:['seviceTypes']
@@ -54,7 +83,7 @@ export default function Home() {
 
   
 
-  if(isError){
+  if(infiniteServices.isError){
     // TODO: create error boundary to catch this error.
     throw new Error('Error fetching stores')
   }
@@ -87,25 +116,37 @@ export default function Home() {
                   {/* <EventSearchBar/> */}
                   <Text  as='h1' w='100' textStyle={'h1'}>Showing you bars in Syracuse NY</Text>
                 </Flex>
+
                 <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypes && serviceTypes.data.map((serviceType:any)=>(
                     <Button variant={'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
+
                 </Flex>
-                { isLoading 
-                ?<SkeletonList/>
+                { infiniteServices.isLoading 
+                 ?<SkeletonList/>
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
-                      {/* {mockData? mockData.map((store:Store)=>( */}
-                    {!isServicesEmpty?services.map((store:Store)=>(
-                        <WrapItem flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']} key={store.id}>
-                            {/* <Skeleton w={'100%'} isLoaded={!isLoading}> */}
-                              <StoreCard data={store}/>
-                            {/* </Skeleton> */}
+                  {
+                    infiniteServices.data.pages.map((page:any,index:any)=>(
+                      <React.Fragment key={index}>
+                      {page.length==0
+                        ?<EmptyServices/>
+                        :page.map((data:Store)=>(
+                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
+                             <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
+                             <StoreCard data={data}/>
+                            </Skeleton>
                         </WrapItem> 
-                    )):<EmptyServices/>}
-                </Wrap>
-                }
+                        ))
+                      }
+                      </React.Fragment>
+                    ))
+                  }
+                 </Wrap> 
+
+               }
+               {/* <Button onClick={()=>infiniteServices.fetchNextPage()}>Load more</Button> */}
 
          </Layout>
          </>

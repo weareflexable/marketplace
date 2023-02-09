@@ -74,15 +74,17 @@ const useService = (data:any)=>{
 
       console.log(ticketData)
         const buyNowCartItem = {
-           id: ticketData.id,
-           quantity: ticketData.quantity,
-           price: ticketData.price,
-           date: "Jan 12, 2022" // TODO: Get current selected date
+           serviceItemId: ticketData.id,
+           quantity: String(ticketData.quantity),
+           unitPrice: String(ticketData.price),
+           email: 'mujahid.bappai@yahoo.com',
+           description:'flexable line-skip',
+           targetDate: "Jan 12, 2022" // TODO: Get current selected date
          //   date: ticketData.tickets[0].date
          }
 
         if(isAuthenticated){
-         
+
             setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
             setStorage('shouldBuyInstantly','true')

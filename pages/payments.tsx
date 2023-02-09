@@ -12,6 +12,7 @@ import { getPlatformPaseto } from '../utils/storage';
 import { useInstantBuyContext } from '../context/InstantBuyContext';
 import { getStorage } from '../utils/localStorage';
 import moment from 'moment';
+import axios from 'axios';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
@@ -52,21 +53,20 @@ const Payments = () => {
       
       const fetchSecret = async ()=>{
         let shouldBuyInstantly = getStorage('shouldBuyInstantly')
-        const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
-        const payload = createPayloadObject(itemsToPurchase)
-        console.log('payload',payload)
+        // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
+        // co
+        // const payload = createPayloadObject(itemsToPurchase)
+        console.log('payload',buyItems)
+        const payload = buyItems[0]
         try{
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/service-intent`,{
-          method:'POST',
-          body:JSON.stringify(payload),
-          //@ts-ignore
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
           headers:{
             'Authorization': paseto
           }
         });
-        const body = await res.json()
-        console.log(body)
-        setClientSecret(body.payload.clientSecret)
+    
+        console.log(res)
+        setClientSecret(res.data.clientSecret)
   
       }catch(err){
         console.log(err)

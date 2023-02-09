@@ -53,7 +53,7 @@ function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
                         <Flex mt='2' justifyContent={'space-between'} alignItems='center'>
                             <HStack spacing={5}>
                                 <HStack spacing={1}>
-                                    <Text textStyle={'secondary'} color='accent.300'>${data.price}</Text>
+                                    <Text textStyle={'secondary'} color='accent.300'>${data.price/100}</Text>
                                     <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
                                 </HStack>
                                 <HStack spacing={2}>

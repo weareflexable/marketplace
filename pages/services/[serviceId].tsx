@@ -108,6 +108,8 @@ export default function ServicesPage(){
     })
 
     console.log(serviceItemsQuery.data) 
+    console.log('service-items loading',serviceItemsQuery.isLoading) 
+    console.log('service-items refetching',serviceItemsQuery.isRefetching) 
 
 
 
@@ -266,8 +268,8 @@ export default function ServicesPage(){
                     </Skeleton> */}
 
                         
-                            {serviceItemsQuery.isLoading
-                            ?<Skeleton/>
+                            {serviceItemsQuery.isLoading || serviceItemsQuery.isRefetching
+                            ?<Text>Loading...</Text>
                             :<TicketList 
                                 date={serviceDate}
                                 onAddToCart={addToCartHandler} 
