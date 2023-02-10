@@ -22,9 +22,10 @@ const fetchServices = async({pageParams,serviceFilter})=>{
       "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
     }
   })
-  return res.data.data
+  return res.data
 }
 
+const PAGE_SIZE = 10;
 
 export default function Home() {
 
@@ -39,28 +40,32 @@ export default function Home() {
   const infiniteServices = useInfiniteQuery(
     ['services',serviceFilter], 
     //@ts-ignore
-    async(pageParams)=>{
-      console.log('func prams',pageParams,serviceFilter)
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParams}&pageSize=10&key2=service_type_id&value2=${serviceFilter}`,
+    async({pageParam=0})=>{
+      console.log('func prams',pageParam,serviceFilter)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}`,
       {
         headers:{
           "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
         }
       })
-      return res.data.data
+      return res.data
     },
     {
       getNextPageParam:(lastPage, pages)=>{
-        console.log('lastPage', lastPage) 
-        console.log('pages', pages)
 
-        if(lastPage.length === 0) return undefined
-        return pages.length+1
+        // fetchedDataLength: pageSize and multiply by pages.length+1
+        // if dataLength > fetchedDataLength, hasNextPage is true, else false
+        const fetchedDataLength = PAGE_SIZE * pages.length
+        const totalDataLength = lastPage.dataLength;
+      
+        if(totalDataLength < fetchedDataLength) return undefined
+        return pages.length 
       }
     }
 )
 
 const servicesPages = infiniteServices.data && infiniteServices.data.pages
+console.log(servicesPages)
 
   // console.log(infiniteServices.data)
   // console.log(infiniteServices.hasNextPage)
@@ -130,9 +135,9 @@ const servicesPages = infiniteServices.data && infiniteServices.data.pages
                   {
                     infiniteServices.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
-                      {page.length==0
+                      {page.data.length==0
                         ?<EmptyServices/>
-                        :page.map((data:Store)=>(
+                        :page.data.map((data:Store)=>(
                           <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
                              <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
                              <StoreCard data={data}/>
@@ -146,7 +151,7 @@ const servicesPages = infiniteServices.data && infiniteServices.data.pages
                  </Wrap> 
 
                }
-               {/* <Button onClick={()=>infiniteServices.fetchNextPage()}>Load more</Button> */}
+               {infiniteServices.hasNextPage?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>: <Text textStyle={'body'} >No more data</Text> }
 
          </Layout>
          </>
