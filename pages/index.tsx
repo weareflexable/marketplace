@@ -41,7 +41,6 @@ export default function Home() {
     ['services',serviceFilter], 
     //@ts-ignore
     async({pageParam=0})=>{
-      console.log('func prams',pageParam,serviceFilter)
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}`,
       {
         headers:{
