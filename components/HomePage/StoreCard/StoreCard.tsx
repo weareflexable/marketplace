@@ -22,7 +22,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     }
 
     const coverImage = data?.coverImageHash
-    const imageHash = data?.imageHash
+    const imageHash = data?.logoImageHash
 
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>

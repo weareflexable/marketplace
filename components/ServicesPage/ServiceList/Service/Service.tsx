@@ -21,7 +21,7 @@ interface TicketProps{
     selectedDate: string
 }
 
-function TicketMobile ({data,selectedDate, onTriggerAction}:TicketProps){
+function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
     const {
         ticketData,
@@ -141,6 +141,6 @@ function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuanti
     )
 }
 
-export default TicketMobile
+export default Ticket
 
 

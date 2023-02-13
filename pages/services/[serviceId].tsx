@@ -31,7 +31,6 @@ export default function ServicesPage(){
 
     // const [isLoading, setIsLoading] = useState(false)
     // const [data, setData] = useState<any>({})
-    const [serviceDate, setServiceDate] = useState(()=>Date())
 
     // TODO: mark state to show that it interacts with local storage
 
@@ -107,10 +106,6 @@ export default function ServicesPage(){
         staleTime: 30000 
     })
 
-    console.log(serviceItemsQuery.data) 
-    console.log('service-items loading',serviceItemsQuery.isLoading) 
-    console.log('service-items refetching',serviceItemsQuery.isRefetching) 
-
 
 
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure() 
@@ -127,13 +122,7 @@ export default function ServicesPage(){
     },[])
 
 
-    // Update service date state in order to trigger a refresh with newly set date.
-    const changeServiceDate =(date:string)=>{
-        console.log('from service',moment(date).format('YYYY-MMM-DD'))
-        const formatedDate = moment(date).format('YYYY-MMM-DD')
-        setStorage('selectedDate', formatedDate)
-        setServiceDate(date)
-    }
+ 
 
     // TODO: rename to cartItemExist
     const checkCartItemExist = (id:string)=>{
@@ -214,9 +203,16 @@ export default function ServicesPage(){
 
     function changeDate(availability:any){
         const date = availability.date
-        console.log(date)
+        // console.log(date)
+        setStorage('selectedDate', dayjs(date).format('MMM DD, YYYY'))
         setSelectedDate(date);
         //change state
+    }
+
+       // Update service date state in order to trigger a refresh with newly set date.
+       const changeServiceDate =(date:string)=>{
+        const formatedDate = moment(date).format('YYYY-MMM-DD')
+        setStorage('selectedDate', formatedDate)
     }
 
     if(isLoading){
@@ -271,7 +267,7 @@ export default function ServicesPage(){
                             {serviceItemsQuery.isLoading || serviceItemsQuery.isRefetching
                             ?<Text>Loading...</Text>
                             :<TicketList 
-                                date={serviceDate}
+                                date={selectedDate}
                                 onAddToCart={addToCartHandler} 
                                 services={serviceItemsQuery.data}
                             />}

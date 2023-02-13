@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 import { useAuthContext } from '../../../../context/AuthContext'
 import { useCheckoutContext } from '../../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
-import { setStorage } from '../../../../utils/localStorage'
+import { getStorage, setStorage } from '../../../../utils/localStorage'
 import usePath from '../../../../hooks/usePath'
 import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
@@ -79,7 +79,7 @@ const useService = (data:any)=>{
            unitPrice: String(ticketData.price),
            email: 'mujahid.bappai@yahoo.com',
            description:'flexable line-skip',
-           targetDate: "Jan 12, 2022" // TODO: Get current selected date
+           targetDate: getStorage('selectedDate') // TODO: Get current selected date
          //   date: ticketData.tickets[0].date
          }
 

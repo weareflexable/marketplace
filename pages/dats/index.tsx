@@ -46,7 +46,7 @@ export default function MyBookings() {
   const datsQuery = useQuery(["dats"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/services/user/get-tickets`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=0&pageSize=10`,
       {
         method: "GET",
         //@ts-ignore
@@ -57,6 +57,8 @@ export default function MyBookings() {
     );
     return res
   },{enabled:isAuthenticated});
+
+  console.log(datsQuery.data)
 
 
 const gotoTicketPage = (dat:any)=>{
