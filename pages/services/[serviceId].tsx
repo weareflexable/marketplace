@@ -1,11 +1,9 @@
 import React,{useEffect,useState} from 'react'
 import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
-import {allServices,Service} from '../../data/services'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
 import TicketList from '../../components/ServicesPage/ServiceList/ServiceList'
-import TicketSearchBar from '../../components/ServicesPage/TicketSearchBar/TicketSearchBar'
 import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
@@ -16,32 +14,47 @@ import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart
 import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
 import moment from 'moment-timezone'
 import useLocalStorage from '../../hooks/useLocalStorage'
-import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { getCalendar } from '@skolacode/calendar-js'
+var utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
+
 //@ts-ignore
 import CalendarDates from "calendar-dates";
 const calendarDates = new CalendarDates()
 
 
- function getDates(){
-     calendarDates.getDates(new Date()).then((res:any)=>{
-        return res
-     })
-} 
-
 export default function ServicesPage(){
     
-    const dates = getDates()
 
-    console.log(dates)
+
+    useEffect(() => {
+        async function getCalendarDates(){
+            setIsLoadingDates(true)
+            try{
+                const dates = await calendarDates.getDates(new Date())
+                setIsLoadingDates(false)
+                setDates(dates)
+            }catch{
+                setIsLoadingDates(false)
+            }
+        }
+        getCalendarDates()
+    }, [])
+
+    
+
+    // TODO: consider moving these to a reducer, maybe?
+    const [dates, setDates] = useState([])
+    const [isLoadingDates, setIsLoadingDates] = useState(false)
 
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
     const [selectedDate, setSelectedDate] = useState(dayjs().format())
+
+    console.log(dates)
 
     // const [isLoading, setIsLoading] = useState(false)
     // const [data, setData] = useState<any>({})
@@ -107,7 +120,7 @@ export default function ServicesPage(){
     const serviceItemsQuery = useQuery({
         queryKey:['serviceItems',serviceId,selectedDate], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=${selectedDate}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items-using-date?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=${selectedDate}`,{
                 headers:{
                     "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
                 }
@@ -214,12 +227,15 @@ export default function ServicesPage(){
         
     }
 
-    function changeDate(availability:any){
-        const date = availability.date
-        // console.log(date)
-        setStorage('selectedDate', dayjs(date).format('MMM DD, YYYY'))
-        setSelectedDate(date);
-        //change state
+    function changeDate(date:any){ 
+        //@ts-ignore
+        const utcFormat = dayjs.utc(date.iso, 'MMM DD, YYYY').format()
+        const readableFormat = dayjs(date.iso).format('MMM DD, YYYY')
+
+        console.log(utcFormat)
+
+        setStorage('selectedDate', readableFormat)
+        setSelectedDate(utcFormat);
     }
 
        // Update service date state in order to trigger a refresh with newly set date.
@@ -258,14 +274,14 @@ export default function ServicesPage(){
                          />
                     </Skeleton>
 
-                    {availabilityQuery.isLoading
+                    {isLoadingDates
                     ?<Skeleton/>
                     :<Box w='100%' p={4} whiteSpace={'nowrap'} overflowY={'hidden'} overflowX={'scroll'}>
-                        {availabilities.map((availability:any)=>(
-                            <Flex onClick={()=>changeDate(availability)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={availability.date}>
-                                <Text textAlign={'center'}>{dayjs(availability.date).format('MMM')}</Text>
-                                <Text textAlign={'center'}>{dayjs(availability.date).format('D')}</Text>
-                                <Text textAlign={'center'}>{dayjs(availability.date).format('ddd')}</Text>
+                        {dates.map((date:any)=>(
+                            <Flex onClick={()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
+                                <Text textAlign={'center'}>{dayjs(date.iso).format('MMM')}</Text>
+                                <Text textAlign={'center'}>{date.date}</Text>
+                                <Text textAlign={'center'}>{dayjs(date.iso).format('ddd')}</Text>
                             </Flex>
                         ))}
                     </Box>}
