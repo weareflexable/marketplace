@@ -37,6 +37,24 @@ export default function Home() {
     setServiceFilter(filter)
   }
 
+
+  const serviceTypesQuery = useQuery({
+    queryKey:['seviceTypes']
+  , queryFn:async()=>{
+    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=0`,{
+      headers:{
+        "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}` 
+      }
+    })
+    return res.data.data
+  },
+  onSuccess:(data)=>{
+    const barId = data[1].id;
+    setServiceFilter(barId)
+  }
+  
+ })
+
   const infiniteServices = useInfiniteQuery(
     ['services',serviceFilter], 
     //@ts-ignore
@@ -59,29 +77,12 @@ export default function Home() {
       
         if(totalDataLength < fetchedDataLength) return undefined
         return pages.length 
-      }
+      },
+      enabled: !! serviceTypesQuery.data
     }
 )
 
-const servicesPages = infiniteServices.data && infiniteServices.data.pages
-console.log(servicesPages)
 
-  // console.log(infiniteServices.data)
-  // console.log(infiniteServices.hasNextPage)
-
-  // const services = data && data.data
-  // const isServicesEmpty = data && data.data.length === 0;
-
-  const {data:serviceTypes, isLoading:isLoadingServiceTypes} = useQuery({
-    queryKey:['seviceTypes']
-  , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=0`,{
-      headers:{
-        "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}` 
-      }
-    })
-    return res.data 
-  }})
 
   
 
@@ -122,7 +123,7 @@ console.log(servicesPages)
                 </Flex>
 
                 <Flex mx={'1rem'} mb='1rem'>
-                  {serviceTypes && serviceTypes.data.map((serviceType:any)=>(
+                  {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
                     <Button variant={'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
 

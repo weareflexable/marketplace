@@ -20,9 +20,23 @@ import useDrawerState from '../../hooks/useDrawerState'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import { getCalendar } from '@skolacode/calendar-js'
+//@ts-ignore
+import CalendarDates from "calendar-dates";
+const calendarDates = new CalendarDates()
 
+
+ function getDates(){
+     calendarDates.getDates(new Date()).then((res:any)=>{
+        return res
+     })
+} 
 
 export default function ServicesPage(){
+    
+    const dates = getDates()
+
+    console.log(dates)
 
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
@@ -47,7 +61,6 @@ export default function ServicesPage(){
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
 
-    console.log(serviceId)
 
     
     const {isLoading,data,isError} = useQuery({
@@ -220,6 +233,8 @@ export default function ServicesPage(){
             <ServicePageSkeleton/>
         )
     }
+
+    
         
 
         return(

@@ -68,12 +68,12 @@ const gotoTicketPage = (dat:any)=>{
 }
 
 // This sorts orders in descending order after it's received from DB
-  const sortedOrders =
-    datsQuery.data &&
-    datsQuery.data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
+  // const sortedOrders =
+  //   datsQuery.data &&
+  //   datsQuery.data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
-  if (datsQuery.data && datsQuery.data.payload && datsQuery.data.payload.length<1) {
+  if (datsQuery.data && datsQuery.data.data && datsQuery.data.data.length<1) {
     return (
       <Layout>
         <NoData/>
@@ -115,7 +115,7 @@ const gotoTicketPage = (dat:any)=>{
                   datsQuery.isLoading
                   ?<OrderListSkeleton/>
                   :<OrderList
-                    orders={sortedOrders}
+                    orders={datsQuery.data.data}
                     gotoTicketPage={gotoTicketPage}
                    />
             }

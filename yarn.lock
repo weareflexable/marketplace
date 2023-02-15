@@ -1206,6 +1206,11 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
+"@skolacode/calendar-js@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@skolacode/calendar-js/-/calendar-js-1.0.2.tgz#1946097bb9db134f881dc7204a8fadab4d246746"
+  integrity sha512-Or1wg1I0bvX6RcT0rfvWGiyrm4LJtHEo4veC2z3NsYnGB+X2viq4ghB3A8FlSnfjL3A/IqwiQEry+VHlTsYWvw==
+
 "@stripe/react-stripe-js@^1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.12.0.tgz#61d772f6271dacd19b1c9a3fb190bb7fcb568947"
@@ -1676,6 +1681,11 @@ browserslist@^4.21.4:
     electron-to-chromium "^1.4.251"
     node-releases "^2.0.6"
     update-browserslist-db "^1.0.9"
+
+calendar-dates@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/calendar-dates/-/calendar-dates-2.7.2.tgz#6fafb722f8c23cbe4cc12f52e745be2df3846124"
+  integrity sha512-2QQbmyFITATNR155ufQVgjrCfjoY3iNaZs/qIH1PcAXwyFEjiZLZwF9gtTzy17dQ1BRMecaW3yJ3r8kDjjZDrg==
 
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
