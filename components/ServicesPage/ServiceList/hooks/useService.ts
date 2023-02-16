@@ -76,7 +76,7 @@ const useService = (data:any)=>{
         const buyNowCartItem = {
            serviceItemId: ticketData.id,
            quantity: String(ticketData.quantity),
-           unitPrice: String(ticketData.price),
+           unitPrice: ticketData.price,
            email: 'mujahid.bappai@yahoo.com',
            description:'flexable line-skip',
            targetDate: getStorage('selectedDate') // TODO: Get current selected date

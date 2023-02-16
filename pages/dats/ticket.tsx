@@ -12,55 +12,33 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret, startTime, quantity, tokenId, status, endTime, orgServiceItemId, id} = ctx_currentDat
+    const {ticketSecret, startTime, quantity, isRedeem, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+
+    // const serviceItemName = serviceItemDetails[0].name
+    // const address = serviceDetails[0].street
 
 
       useEffect(() => {
-
-        const generateQrCode = async () => {
 
             let qrCodePayload;
         
             // request payload for getting signature to generate QR code
             const payload = {
-              orgServiceItemId: orgServiceItemId,
+              orgServiceItemId: serviceItemsDetails[0].id,
               ticketId: id // ticketId
             };
-        
-        
-            try {
-              const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/get-redeem-signature`,
-                {
-                  method: "POST",
-                  body: JSON.stringify(payload),
-                  // @ts-ignore
-                  headers: {
-                    Authorization: getPlatformPaseto(),
-                  },
-                }
-              );
-        
-              const body = await res.json();
     
               qrCodePayload = {
                 ...payload,
-                signature: body.payload.signature,
-                validity: body.payload.validity,
+                // validity: body.payload.validity,
                 quantity: quantity,
-                userId: body.payload.userId,
+                // userId: body.payload.userId,
               };
         
               setQrCodePayload(qrCodePayload);
               setIsGeneratingCode(false)
-        
-            } catch (err) {
-              console.log(err);
-              setIsGeneratingCode(false)
-            }
-          };
-        generateQrCode()
-      }, [id, orgServiceItemId, quantity]) 
+
+      }, [id, quantity, serviceItemsDetails]) 
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
@@ -69,7 +47,7 @@ export default function Ticket(){
             <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                 <HStack ml='5' spacing={'5'}>
                     <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                    <Text as='h1' textStyle={'h4'} color='text.300' >Line skip + Cover</Text>
+                    <Text as='h1' textStyle={'h4'} color='text.300' >{ctx_currentDat.serviceItemsDetails[0].name}</Text>
                 </HStack>
             </Flex> 
             }
@@ -79,16 +57,27 @@ export default function Ticket(){
            <Flex direction='column'>
                 <Flex direction='column' px='9' mb='5' w='100%'>
                      <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
-                    <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                        <HStack w='100%' justifyContent={'center'} mb='2'>
-                            <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
-                            <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
-                        </HStack>
-                        <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                    { isRedeem
+                    ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
+                        <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                     </Flex>
-                    <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                        <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
+                    :dayjs().isBefore(dayjs(validityEnd))
+                    ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
+                        <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
                     </Flex>
+                    :<>
+                        <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
+                            <HStack w='100%' justifyContent={'center'} mb='2'>
+                                <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
+                                <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
+                            </HStack>
+                            <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                        </Flex>
+                        <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
+                            <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
+                        </Flex>
+                    </>
+                    }
                 </Flex>  
 
                 <Divider borderColor={'#2b2b2b'}/>
@@ -115,7 +104,7 @@ export default function Ticket(){
                         <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                             <Text color='text.200' textStyle={'secondary'}>Location</Text>
                             <Text color='brand.200' textStyle={'secondary'}> 
-                                <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">314 S Franklin St Syracuse, NY 13206</a> 
+                                <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">{ctx_currentDat.serviceDetails[0].street}</a> 
                             </Text>
                         </HStack> 
 

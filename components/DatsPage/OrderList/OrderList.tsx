@@ -34,19 +34,21 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
             <HStack justifyContent={'space-between'} mb="3" spacing="1">
               <HStack>
                 <Text color="text.200">
-                  {moment(order.endTime).tz('America/New_York').format("MMM D, YYYY")}
+                  {dayjs(order.validityEnd).format("MMM D, YYYY")}
                 </Text>
                 
-                {(order.status === "ISSUED" &&
-                  dayjs().isAfter(dayjs(order.endTime))) || order.status === '' ? (
-                  <Text textStyle={'secondary'} color='#F16161' ml="1">
-                    Expired
-                  </Text>
-                ) : order.status === "REDEEMED" ? (
+                { order.isRedeem 
+                ?
                   <Text textStyle={'secondary'} colorScheme={"yellow"} ml="1">
                     Redeemed
                   </Text>
-                ) : (
+                  :
+                  dayjs().isBefore(dayjs(order.validityEnd))
+                  ?
+                  <Text textStyle={'secondary'} color='#F16161' ml="1">
+                    Expired
+                  </Text>
+                 : (
                   <Text textStyle={'secondary'} colorScheme={"green"} ml="1">
                     Valid
                   </Text>
@@ -57,8 +59,8 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
             <Flex mb="1" justifyContent="space-between">
               
               {/* order name */}
-              <Text color="whiteAlpha.900" as="h4" textStyle="h4">
-                {order.orgServiceItemName}
+              <Text color="whiteAlpha.900" as="h4" textStyle="body">
+                {order.serviceItemsDetails[0].name} 
               </Text>
 
               {/* pricing */}
@@ -82,7 +84,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                 By
               </Text>
               <Text textStyle={'secondary'} color="text.300">
-                {order.orgServiceName}
+                {order.serviceDetails[0].name}
               </Text>
             </HStack>
 

@@ -55,7 +55,7 @@ export default function MyBookings() {
         },
       }
     );
-    return res
+    return res.data
   },{enabled:isAuthenticated});
 
   console.log(datsQuery.data)
@@ -73,7 +73,7 @@ const gotoTicketPage = (dat:any)=>{
   //   datsQuery.data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
-  if (datsQuery.data && datsQuery.data.data && datsQuery.data.data.length<1) {
+  if (datsQuery.data && datsQuery.data && datsQuery.data.length<1) {
     return (
       <Layout>
         <NoData/>
@@ -115,7 +115,7 @@ const gotoTicketPage = (dat:any)=>{
                   datsQuery.isLoading
                   ?<OrderListSkeleton/>
                   :<OrderList
-                    orders={datsQuery.data.data}
+                    orders={datsQuery.data}
                     gotoTicketPage={gotoTicketPage}
                    />
             }
