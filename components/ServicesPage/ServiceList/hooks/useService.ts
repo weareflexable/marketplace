@@ -8,6 +8,7 @@ import usePath from '../../../../hooks/usePath'
 import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
+import dayjs from 'dayjs'
 
 // This should accept a Service-item type in data
 const useService = (data:any)=>{
@@ -77,9 +78,9 @@ const useService = (data:any)=>{
            serviceItemId: ticketData.id,
            quantity: String(ticketData.quantity),
            unitPrice: ticketData.price,
-           email: 'mujahid.bappai@yahoo.com',
-           description:'flexable line-skip',
-           targetDate: getStorage('selectedDate') // TODO: Get current selected date
+           email: 'flexable@yahoo.com',
+           description:ticketData.name,
+           targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          //   date: ticketData.tickets[0].date
          }
 
