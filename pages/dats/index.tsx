@@ -46,7 +46,7 @@ export default function MyBookings() {
   const datsQuery = useQuery(["dats"], async () => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=0&pageSize=10`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=0&pageSize=40`,
       {
         method: "GET",
         //@ts-ignore

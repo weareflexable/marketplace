@@ -43,7 +43,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                     Redeemed
                   </Text>
                   :
-                  dayjs().isBefore(dayjs(order.validityEnd))
+                  dayjs().isAfter(dayjs(order.validityEnd))
                   ?
                   <Text textStyle={'secondary'} color='#F16161' ml="1">
                     Expired
