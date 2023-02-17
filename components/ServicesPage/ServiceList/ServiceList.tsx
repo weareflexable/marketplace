@@ -22,6 +22,7 @@ interface TicketListProps{
 }
 
 export default function TicketList({services,date,onAddToCart}:TicketListProps){
+    console.log(services)
 
     return(
         <>
@@ -29,7 +30,7 @@ export default function TicketList({services,date,onAddToCart}:TicketListProps){
             <SimpleGrid columns={1} spacing='3'>
                 {services && services.map((service: any)=>(
                     <Service 
-                        key={service.serviceItemId}
+                        key={service.id}
                         selectedDate={date} 
                         onTriggerAction={onAddToCart}   
                         data={service}

@@ -278,11 +278,14 @@ export default function ServicesPage(){
                     ?<Skeleton/>
                     :<Box w='100%' p={4} whiteSpace={'nowrap'} overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
-                            <Flex as={'button'} disabled={date.type==='previous'?true:false} onClick={date.type === 'previous'?()=>{}:()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
+                            <>
+                            {dayjs().isBefore(dayjs(date.iso)) || dayjs().isSame(dayjs(date.iso),'date')
+                            ?<Flex as={'button'} position={dayjs().isSame(dayjs(date.iso),'date')?'sticky':'relative'} disabled={date.type==='previous'?true:false} onClick={date.type === 'previous'?()=>{}:()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
                                 <Text textAlign={'center'}>{dayjs(date.iso).format('MMM')}</Text>
                                 <Text textAlign={'center'}>{date.date}</Text>
                                 <Text textAlign={'center'}>{dayjs(date.iso).format('ddd')}</Text>
-                            </Flex>
+                            </Flex>:null}
+                            </> 
                         ))}
                     </Box>}
 
