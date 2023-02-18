@@ -4,11 +4,15 @@ import {
   Badge
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import moment from "moment-timezone";
-import timezone from 'dayjs/plugin/timezone'
 import {ChevronRightIcon} from '@chakra-ui/icons'
 
-// dayjs.extend(timezone)
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
 
 interface OrderListProps {
   orders: any;
@@ -34,7 +38,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
             <HStack justifyContent={'space-between'} mb="3" spacing="1">
               <HStack>
                 <Text color="text.200">
-                  {dayjs(order.validityEnd).format("MMM D, YYYY")}
+                  {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")}
                 </Text>
                 
                 { order.isRedeem 

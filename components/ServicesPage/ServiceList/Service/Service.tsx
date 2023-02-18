@@ -14,6 +14,13 @@ import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
 import useService from '../hooks/useService';
 
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
 
 interface TicketProps{
     data: any,
@@ -43,7 +50,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
-                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
+                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(data.selectedDate).tz('America/New_York').format('MMM DD, YYYY z')}</Text>
                         <Text as='h4' mb='0' textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                             {data.name}
                         </Text>    

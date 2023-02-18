@@ -17,8 +17,14 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
-var utc = require('dayjs/plugin/utc')
+
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
 dayjs.extend(utc)
+dayjs.extend(advanced)
 
 //@ts-ignore
 import CalendarDates from "calendar-dates";

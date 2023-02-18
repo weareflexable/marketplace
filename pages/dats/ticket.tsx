@@ -44,7 +44,7 @@ export default function Ticket(){
               setQrCodePayload(qrCodePayload);
               setIsGeneratingCode(false)
 
-      }, [id, quantity, serviceItemsDetails]) 
+      }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
