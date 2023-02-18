@@ -66,11 +66,11 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
               {/* pricing */}
               <Flex direction={'column'}>
                 <Text mb='1' textStyle="secondary" color={'text.200'}>
-                  ${order.quantity * (order.unitPrice/100)}
+                  ${order.quantity * (order.serviceItemsDetails[0].price/100)}
                 </Text>
                 <HStack spacing="0.5">
                   <Text color="text.100" textStyle="caption">
-                    ${order.unitPrice / 100}
+                    ${order.serviceItemsDetails[0].price/100} 
                   </Text>
                   <Text color="text.200" textStyle="caption">
                     x{order.quantity}

@@ -61,7 +61,7 @@ export default function Ticket(){
                     ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                         <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                     </Flex>
-                    :dayjs().isBefore(dayjs(validityEnd))
+                    :dayjs().isAfter(dayjs(validityEnd))
                     ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
                         <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
                     </Flex>
