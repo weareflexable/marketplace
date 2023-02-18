@@ -7,12 +7,21 @@ import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
 import { ChevronLeftIcon } from '@chakra-ui/icons' 
 
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
+
+
 export default function Ticket(){
     const router = useRouter()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret, startTime, quantity, isRedeem, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret, startTime, quantity, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
@@ -22,17 +31,14 @@ export default function Ticket(){
 
             let qrCodePayload;
         
-            // request payload for getting signature to generate QR code
-            const payload = {
-              orgServiceItemId: serviceItemsDetails[0].id,
-              ticketId: id // ticketId
-            };
     
               qrCodePayload = {
-                ...payload,
-                // validity: body.payload.validity,
+                serviceItemId: serviceItemsDetails[0].id,
+                ticketId: id, // ticketId
+                ticketSecret: ticketSecret,
+                validDate: validityEnd,
                 quantity: quantity,
-                // userId: body.payload.userId,
+                userId: targetUserID,
               };
         
               setQrCodePayload(qrCodePayload);
@@ -85,32 +91,34 @@ export default function Ticket(){
                 <VStack px={'1rem'} mt='5' spacing='2'>
                     <VStack w='100%' spacing={2}>
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Text color='text.200' textStyle={'secondary'}>Status</Text>
-                            <Text color='text.300' textStyle={'secondary'}>{status}</Text>
+                        <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                        <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Text color='text.200' textStyle={'secondary'}>Quantity</Text>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Quantity</Text></Flex>
                             {/* @ts-ignore */}
-                            <Text color='text.300' textStyle={'secondary'}>{quantity}</Text>
+                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Text color='text.200' textStyle={'secondary'}>Valid On</Text>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                             {/* @ts-ignore */}
-                            <Text color='text.300' textStyle={'secondary'}>{startTime && dayjs(startTime).format('MMM DD, YYYY')}</Text>
+                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
                         </HStack>
 
                         <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Text color='text.200' textStyle={'secondary'}>Location</Text>
-                            <Text color='brand.200' textStyle={'secondary'}> 
-                                <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">{ctx_currentDat.serviceDetails[0].street}</a> 
-                            </Text>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
+                            <Flex flex={7}>
+                                <Text color='brand.200' textStyle={'secondary'}> 
+                                    <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">{ctx_currentDat.serviceDetails[0].street}</a> 
+                                </Text>
+                            </Flex>
                         </HStack> 
 
                         <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
-                            <Text color='text.200' textStyle={'secondary'}>Call</Text>
-                            <Text color='brand.200' textStyle={'secondary'}> <a href="tel:+1-315-299-4756">+1 (315) 299-4756</a></Text>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
+                            <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href="tel:+1-315-299-4756">+1 (315) 299-4756</a></Text></Flex>
                         </HStack>
 
 
