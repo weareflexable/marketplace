@@ -32,8 +32,8 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
     const {
         ticketData,
-        // isTicketsAvailable,
-        // isTicketsSoldOut,
+        isTicketsAvailable,
+        isTicketsSoldOut,
         isMinQuantity,
         // ticketDate,
         subTotal,
@@ -63,7 +63,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                                     <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
                                 </HStack>
                                 <HStack spacing={2}>
-                                    {/* <Text textStyle={'secondary'} color={'text.300'}>{data.tickets[0]!.ticketsAvailable}</Text> */}
+                                    <Text textStyle={'secondary'} color={'text.300'}>{ticketData.ticketsAvailable}</Text>
                                     <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
                                 </HStack>
                             </HStack>
@@ -74,9 +74,10 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                 
 
                 {/* bottom panel */}
-                <Flex px='1em' py='.5em' width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
+                <Flex px='1em' py='.5em' mb={3} width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
                     <FlexableComboButton
                         isMinQuantity= {isMinQuantity}
+                        isTicketSoldOut = {isTicketsSoldOut}
                         subTotal ={subTotal}
                         isAuthenticated = {isAuthenticated}
                         incrementQuantity = {incrementQuantity}
@@ -121,16 +122,20 @@ interface FlexableComboButtonProps{
     decrementQuantity: ()=>void,
     incrementQuantity: ()=>void,
     label: string,
+    isTicketAvailable: boolean,
     isAuthenticated:boolean,
     buyTicketNow: ()=>void,
     subTotal:number
     
 }
-function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
+function FlexableComboButton({isMinQuantity, quantity, isTicketAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
+        <>
+    { !isTicketAvailable
+        ?
         <Flex maxW='400px' outline={'2px solid'} outlineColor='rgba(171, 77, 247, 0.4)' outlineOffset={2} bg='brand.300' width={'100%'} borderRadius={'60px'} direction={'column'}>
-            <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>
+             <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>
                 <FlexableStepper 
                     isMinQuantity={isMinQuantity}
                     quantity={quantity}
@@ -142,8 +147,13 @@ function FlexableComboButton({isMinQuantity, quantity, subTotal, decrementQuanti
                 <Box py='1' mr='6'>
                     <Button size='sm' textStyle={'buttonLabel'} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
                 </Box>
-            </Flex>
+             </Flex>
         </Flex>
+        : <Flex width={'100%'} justifyContent={'center'} alignItems='center'>
+            <Text>Sorry! Tickets are sold out</Text>
+          </Flex>
+    }
+    </>
     )
 }
 

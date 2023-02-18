@@ -40,11 +40,12 @@ const useService = (data:any)=>{
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
  
+     console.log(data)
      // checks to see if there are available tickets for selected date
-   //   const isTicketsAvailable = ticketData.tickets.length>0;
+     const isTicketsAvailable = ticketData.ticketsAvailable;
  
      // Determines whether or not tickets are sold out
-   //   const isTicketsSoldOut = isTicketsAvailable && ticketData.tickets[0].ticketsAvailable<1
+    const isTicketsSoldOut = !isTicketsAvailable
  
    //   const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
 
@@ -110,8 +111,8 @@ const useService = (data:any)=>{
 
      return {
         ticketData,
-      //   isTicketsAvailable,
-      //   isTicketsSoldOut, 
+        isTicketsAvailable,
+        isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
         subTotal,

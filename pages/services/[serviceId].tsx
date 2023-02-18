@@ -286,7 +286,7 @@ export default function ServicesPage(){
 
                     {isLoadingDates
                     ?<Skeleton/>
-                    :<Box w='100%' p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
+                    :<Box w='93%' margin={'0 auto'}  p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
                             <>
                             {dayjs().isBefore(dayjs(date.iso)) || dayjs().isSame(dayjs(date.iso),'date')

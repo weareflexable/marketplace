@@ -18,14 +18,14 @@ interface StoreHeaderProps{
 export default function StoreHeader({coverImageHash,logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
 
     console.log(lat, lon)
-    const cover = coverImageHash && coverImageHash 
+    const coverImage = logoImageHash && logoImageHash 
     
 
     return(
         <Flex mt='4' w='100%' position='relative' direction='column'>
             <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
             <Box height='400px' maxW='100%'>
-                <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${logoImageHash}`} alt='Store header' />
+                <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' />
                 {/* <Image w='999vw' h='9999vh' maxW='100%' maxH='100%' overflow={'hidden'} objectFit={'cover'}   src={'/test1.png'} alt='Store header' /> */}
                 {/* <Image layout='fill' width={100} height={100} objectFit='cover'  src={'/testx1.png'} alt='Store header' /> */}
             </Box>
