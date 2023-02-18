@@ -43,14 +43,13 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
         buyTicketNow
          }= useService(data)
 
-
     
     return( 
         <Box display={['block']} bg='#242424' cursor='pointer' >
             <Flex direction='column'>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
-                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(data.selectedDate).tz('America/New_York').format('MMM DD, YYYY z')}</Text>
+                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
                         <Text as='h4' mb='0' textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                             {data.name}
                         </Text>    
@@ -65,7 +64,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                                 </HStack>
                                 <HStack spacing={2}>
                                     {/* <Text textStyle={'secondary'} color={'text.300'}>{data.tickets[0]!.ticketsAvailable}</Text> */}
-                                    {/* <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text> */}
+                                    <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
                                 </HStack>
                             </HStack>
                             <Text color={'white'}>${subTotal}</Text>

@@ -256,6 +256,8 @@ export default function ServicesPage(){
         )
     }
 
+
+    console.log(service)
     
         
 
@@ -277,19 +279,21 @@ export default function ServicesPage(){
                          lon = {service.longitude}
                          city = {service.city}
                          state = {service.state}
+                         street = {service.street}
+                         logoImageHash = {service.logoImageHash}
                          />
                     </Skeleton>
 
                     {isLoadingDates
                     ?<Skeleton/>
-                    :<Box w='100%' p={4} whiteSpace={'nowrap'} overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
+                    :<Box w='100%' p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
                             <>
                             {dayjs().isBefore(dayjs(date.iso)) || dayjs().isSame(dayjs(date.iso),'date')
-                            ?<Flex as={'button'} position={dayjs().isSame(dayjs(date.iso),'date')?'sticky':'relative'} disabled={date.type==='previous'?true:false} onClick={date.type === 'previous'?()=>{}:()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center' background={'#f3f3f3'} p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
-                                <Text textAlign={'center'}>{dayjs(date.iso).format('MMM')}</Text>
-                                <Text textAlign={'center'}>{date.date}</Text>
-                                <Text textAlign={'center'}>{dayjs(date.iso).format('ddd')}</Text>
+                            ?<Flex background='#242424' position={dayjs().isSame(dayjs(date.iso),'date')?'sticky':'relative'}  onClick={date.type === 'previous'?()=>{}:()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center'  p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
+                                <Text textAlign={'center'} color={'text.300'}>{dayjs(date.iso).format('MMM')}</Text>
+                                <Text textAlign={'center'} color={dayjs(selectedDate).format('MMM DD, YYYY') ===  dayjs(date.iso).format('MMM DD, YYYY')?'accent.300':'text.200'} textStyle={'h3'}>{date.date}</Text>
+                                <Text textAlign={'center'} color={'text.300'}>{dayjs(date.iso).format('ddd')}</Text>
                             </Flex>:null}
                             </> 
                         ))}
