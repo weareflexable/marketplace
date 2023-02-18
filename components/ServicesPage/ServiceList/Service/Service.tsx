@@ -54,7 +54,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
                         <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
-                        <Text as='h4' mb='0' textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
+                        <Text as='h4' mb='0' textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                             {data.name}
                         </Text>    
                         <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
