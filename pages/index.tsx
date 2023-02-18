@@ -151,7 +151,11 @@ export default function Home() {
                  </Wrap> 
 
                }
-               {infiniteServices.hasNextPage?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>: <Text textStyle={'body'} >No more data</Text> }
+               {
+               infiniteServices.hasNextPage
+               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
+               : null
+                }
 
          </Layout>
          </>

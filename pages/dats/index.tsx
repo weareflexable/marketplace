@@ -5,11 +5,12 @@ import {
   Text,
   Grid,
   GridItem,
+  Button,
 } from "@chakra-ui/react";
 import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../../context/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { getPlatformPaseto } from "../../utils/storage";
 import axios from "axios";
@@ -35,6 +36,7 @@ const fetchWithError = async(url:string, options:any)=>{
   return result;
 }
 
+const PAGE_SIZE = 10;
 export default function MyBookings() {
   // TODO: fetch user specific data
   // TODO: fallback ui for when user tries to access page without authorization
@@ -43,10 +45,10 @@ export default function MyBookings() {
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
 
-  const datsQuery = useQuery(["dats"], async () => {
+  const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=0}) => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=0&pageSize=40`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`,
       {
         method: "GET",
         //@ts-ignore
@@ -55,10 +57,27 @@ export default function MyBookings() {
         },
       }
     );
-    return res.data
-  },{enabled:isAuthenticated});
+    return res
+  },
+  {
+    getNextPageParam:(lastPage, pages)=>{
+      // console.log(lastPage)
 
-  console.log(datsQuery.data)
+      // fetchedDataLength: pageSize and multiply by pages.length+1
+      // if dataLength > fetchedDataLength, hasNextPage is true, else false
+      const fetchedDataLength = PAGE_SIZE * pages.length
+      const totalDataLength = lastPage.dataLength;
+      // console.log(totalDataLength)
+    
+      if(totalDataLength < fetchedDataLength) return undefined
+      return pages.length 
+    },
+    enabled:isAuthenticated
+  }
+  );
+
+  // console.log(datsQuery.data)
+  // console.log(datsQuery.hasNextPage)
 
 
 const gotoTicketPage = (dat:any)=>{
@@ -73,13 +92,13 @@ const gotoTicketPage = (dat:any)=>{
   //   datsQuery.data.payload.sort((a:any,b:any)=>Number(dayjs(b.endTime))-Number(dayjs(a.endTime)));
 
 
-  if (datsQuery.data && datsQuery.data && datsQuery.data.length<1) {
-    return (
-      <Layout>
-        <NoData/>
-      </Layout>
-    );
-  }
+  // if (datsQuery.data && datsQuery.data && datsQuery.data.length<1) {
+  //   return (
+  //     <Layout>
+  //       <NoData/>
+  //     </Layout>
+  //   );
+  // }
 
   if (!isAuthenticated) {
     return (
@@ -115,10 +134,16 @@ const gotoTicketPage = (dat:any)=>{
                   datsQuery.isLoading
                   ?<OrderListSkeleton/>
                   :<OrderList
-                    orders={datsQuery.data}
+                    orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
                    />
             }
+
+{
+               datsQuery.hasNextPage
+               ?<Button my='4' colorScheme={'brand'} variant='ghost' isLoading={datsQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>datsQuery.fetchNextPage()}>Load more DATs</Button>
+               : null
+                }
           </Flex>
         </GridItem>
       </Grid>
