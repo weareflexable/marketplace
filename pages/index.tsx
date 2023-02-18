@@ -30,7 +30,7 @@ const PAGE_SIZE = 10;
 export default function Home() {
 
 
-  const [serviceFilter, setServiceFilter] = useState('7')
+  const [serviceFilter, setServiceFilter] = useState('')
   const [page, setPage] = useState(1)
 
   function changeServiceFilter(filter:string){
@@ -119,12 +119,12 @@ export default function Home() {
 
                 <Flex w={['100%']} h={['20vh','40vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
                   {/* <EventSearchBar/> */}
-                  <Text  as='h1' w='100' textStyle={'h1'}>Showing you bars in Syracuse NY</Text>
+                  <Text  as='h1' w='100' textStyle={'h1'}>Showing you venues in Syracuse NY</Text>
                 </Flex>
 
                 <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
-                    <Button variant={'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
+                    <Button variant={serviceType.id === serviceFilter?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
 
                 </Flex>

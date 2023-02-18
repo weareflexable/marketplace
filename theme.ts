@@ -38,7 +38,7 @@ const config: ThemeConfig ={
           },
           ghost:{
             fontWeight:650,
-            color:'brand.200',
+            color:'text.200',
             backgroundColor:'#464646',
             borderRadius: '50px'
           },
@@ -48,6 +48,15 @@ const config: ThemeConfig ={
             color:'white',
             _active:{
               bg:'brand.100',
+              color:'black'
+            },
+          },
+          accentSolid:{
+            bg:'accent.300',
+            borderRadius: '50px',
+            color:'white',
+            _active:{
+              bg:'accent.100',
               color:'black'
             },
           }
