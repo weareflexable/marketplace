@@ -7,7 +7,8 @@ import {
     Flex,
     Divider,
     Button,
-    IconButton
+    IconButton,
+    Image
 } from '@chakra-ui/react'
 
 import { MdAdd, MdRemove } from 'react-icons/md'
@@ -30,10 +31,12 @@ interface TicketProps{
 
 function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
+
+
     const {
         ticketData,
         isTicketsAvailable,
-        isTicketsSoldOut,
+        // isTicketsSoldOut,
         isMinQuantity,
         // ticketDate,
         subTotal,
@@ -47,6 +50,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
     return( 
         <Box display={['block']} bg='#242424' cursor='pointer' >
             <Flex direction='column'>
+                <Image alt='Artwork for ticket' objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
                         <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
@@ -77,7 +81,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                 <Flex px='1em' py='.5em' mb={3} width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
                     <FlexableComboButton
                         isMinQuantity= {isMinQuantity}
-                        isTicketSoldOut = {isTicketsSoldOut}
+                        isTicketsAvailable = {isTicketsAvailable}
                         subTotal ={subTotal}
                         isAuthenticated = {isAuthenticated}
                         incrementQuantity = {incrementQuantity}
@@ -122,17 +126,17 @@ interface FlexableComboButtonProps{
     decrementQuantity: ()=>void,
     incrementQuantity: ()=>void,
     label: string,
-    isTicketAvailable: boolean,
+    isTicketsAvailable: boolean,
     isAuthenticated:boolean,
     buyTicketNow: ()=>void,
     subTotal:number
     
 }
-function FlexableComboButton({isMinQuantity, quantity, isTicketAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
+function FlexableComboButton({isMinQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
         <>
-    { !isTicketAvailable
+    { isTicketsAvailable
         ?
         <Flex maxW='400px' outline={'2px solid'} outlineColor='rgba(171, 77, 247, 0.4)' outlineOffset={2} bg='brand.300' width={'100%'} borderRadius={'60px'} direction={'column'}>
              <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>

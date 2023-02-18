@@ -42,10 +42,10 @@ const useService = (data:any)=>{
  
      console.log(data)
      // checks to see if there are available tickets for selected date
-     const isTicketsAvailable = ticketData.ticketsAvailable;
+     const isTicketsAvailable = ticketData.ticketsAvailable > 0;
  
      // Determines whether or not tickets are sold out
-    const isTicketsSoldOut = !isTicketsAvailable
+    // const isTicketsSoldOut = 
  
    //   const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
 
@@ -112,7 +112,7 @@ const useService = (data:any)=>{
      return {
         ticketData,
         isTicketsAvailable,
-        isTicketsSoldOut, 
+        // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
         subTotal,
