@@ -42,6 +42,10 @@ const config: ThemeConfig ={
             backgroundColor:'#464646',
             borderRadius: '50px'
           },
+          link:{
+            fontWeight:650,
+            color: 'brand.200'
+          },
           solid:{
             bg:'brand.300',
             borderRadius: '50px',
@@ -192,7 +196,7 @@ const config: ThemeConfig ={
       fontFamily:'body'
     },
     links:{
-      fontWeight: '700',
+      fontWeight: '650',
       lineHeight: '110%', 
       cursor:'pointer'
     },
