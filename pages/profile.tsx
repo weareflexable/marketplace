@@ -444,7 +444,7 @@ function EditableImage({selectedRecord}:EditableProp){
 
     const [isEditMode, setIsEditMode] = useState(false) 
     const [isHashingImage, setIsHashingImage] = useState(false)
-    const [updatedCoverImageHash, setUpdatedProfilePicHash] = useState(selectedRecord.profilePic)
+    const [updatedCoverImageHash, setUpdatedProfilePicHash] = useState(selectedRecord && selectedRecord.profilePic)
   
   
     const {paseto} = useAuthContext()
@@ -514,7 +514,7 @@ function EditableImage({selectedRecord}:EditableProp){
   
   const readOnly = (
       <div style={{width:'100%', marginTop:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord.profilePic}`}/>
+        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord && selectedRecord.profilePic}`}/>
         <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
       </div>
   )

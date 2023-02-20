@@ -111,14 +111,14 @@ export default function Ticket(){
                             <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
                             <Flex flex={7}>
                                 <Text color='brand.200' textStyle={'secondary'}> 
-                                    <a href="https://www.google.com/maps/place/Benjamin's+On+Franklin/@43.0482687,-76.1579364,17z/data=!3m2!4b1!5s0x89d9f3c753d7908f:0x7ab6f929c8299aa7!4m5!3m4!1s0x89d9f3c75179c8a7:0x9266e055f7aa2091!8m2!3d43.0482648!4d-76.1557477">{ctx_currentDat.serviceDetails[0].street}</a> 
+                                    <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails[0].lat},${serviceDetails[0].lon}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
                                 </Text>
                             </Flex>
                         </HStack> 
 
                         <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
                             <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
-                            <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href="tel:+1-315-299-4756">+1 (315) 299-4756</a></Text></Flex>
+                            <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails[0].contactNumber}`}>{`+1 (${serviceDetails[0].contactNumber.substring(2,5)}) ${serviceDetails[0].contactNumber.substring(5,8)}-${serviceDetails[0].contactNumber.substring(8)}`}</a></Text></Flex>
                         </HStack>
 
 
