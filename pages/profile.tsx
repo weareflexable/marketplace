@@ -11,6 +11,7 @@ import axios from 'axios'
 import { useMutation, useQueryClient,useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { getPlatformPaseto } from '../utils/storage'
+import { asyncStore } from '../utils/nftStorage'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
@@ -460,28 +461,32 @@ function EditableImage({selectedRecord}:EditableProp){
           profilePic: selectedRecord && selectedRecord.profilePic
         },
         onSubmit: async (values,actions) => {
-            // e.preventDefault() 
-            const res = await values.profilePic
-            console.log(res)
+            const res = values.profilePic
+            let profilePicHash;
   
             setIsHashingImage(true)
-          //   const profilePicHash = await asyncStore(res[0].originFileObj)
-            setIsHashingImage(false)
-        
-        
-            // const payload = {
-            //   key:'profile_pic',
-            //   value: profilePicHash,
-            // }
-            // setUpdatedProfilePicHash(profilePicHash)
+            try{
+              profilePicHash = await asyncStore(res)
+              setIsHashingImage(false)
+            }catch(err){
+              console.log(err)
+            }
 
-            //   mutation.mutate(payload) 
+        
+        
+            const payload = {
+              key:'profile_pic',
+              value: profilePicHash,
+            }
+            setUpdatedProfilePicHash(profilePicHash)
+
+            mutation.mutate(payload) 
         },
       });
 
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_NEW_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -504,12 +509,13 @@ function EditableImage({selectedRecord}:EditableProp){
     const {isLoading:isEditing} = mutation
   
     const extractImage = async(e: any) => {
-      console.log('Upload event:', e);
+      formik.setFieldValue('profilePic',e.target.files[0])
+      // return e.target.files[0];
       if (Array.isArray(e)) {
       return e;
       }
   
-     return e?.fileList;
+    //  return e?.fileList;
   };
   
   const readOnly = (
@@ -525,19 +531,21 @@ function EditableImage({selectedRecord}:EditableProp){
         style={{ marginTop:'.5rem' }}
         onSubmit={formik.handleSubmit}
         >
-         <FormControl is={formik.errors.profilePic}  mb={'5'}>
+         <FormControl  mb={'5'}>
              {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
-             <Input  
-                 // id='fullname'
+             <Input                   
                  colorScheme={'brand'}
                  borderColor={'#464646'} 
                  color='text.300' 
                  borderWidth='2px' 
                  type='file'
+                 id='profilePic'
+                 name='profilePic'
                  onChange={extractImage}
+                //  {...formik.getFieldProps('profilePic')}
                  bg={'#121212'}
              />
-             {formik.touched.profilePic&&formik.errors.profilePic?<FormErrorMessage>{formik.errors.profilePic}</FormErrorMessage>:null}
+             {/* {formik.touched.profilePic&&formik.errors.profilePic?<FormErrorMessage>{formik.errors.profilePic}</FormErrorMessage>:null} */}
          </FormControl>
          <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
              Cancel
@@ -549,7 +557,7 @@ function EditableImage({selectedRecord}:EditableProp){
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
-        <Text textStyle="secondary" style={{ marginRight: '2rem',}}>Profile picture</Text>
+        <Text textStyle="secondary" color='text.300' style={{ marginRight: '2rem',}}>Profile Picture</Text>
         {isEditMode?editable:readOnly}
       </div>
     )
@@ -561,5 +569,5 @@ function EditableImage({selectedRecord}:EditableProp){
     email: string,
     gender: string,
     country: string,
-    profilePic: string
+    profilePic: string | any[] | any
   }
