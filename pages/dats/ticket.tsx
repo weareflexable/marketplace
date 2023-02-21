@@ -123,18 +123,20 @@ export default function Ticket(){
 
 
                     </VStack>
-                    {/* 
-                        { tokenId?
-                        <HStack spacing='2' mb='1'>
-                        <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
-                        {/* @ts-ignore */}
-                        
-                        {/* <Text color='cyan.700' textStyle={'caption'}>
-                            <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
-                        </Text>
-                        </HStack>
-                        :null
-                    } */} 
+                     
+                        { tokenId
+                            ?
+                            <HStack spacing='2' mb='1'>
+                            <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
+                            {/* @ts-ignore */}
+                            
+                            <Text color='cyan.700' textStyle={'caption'}>
+                                <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
+                            </Text>
+                            </HStack>
+                            :null
+                        }
+                     
                 </VStack> 
                 <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                     <VStack px='1rem' alignItems={'flex-start'} width={'100%'}>

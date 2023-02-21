@@ -28,6 +28,7 @@ dayjs.extend(advanced)
 
 //@ts-ignore
 import CalendarDates from "calendar-dates";
+import { Service } from '../../data/services'
 const calendarDates = new CalendarDates()
 
 
@@ -244,11 +245,7 @@ export default function ServicesPage(){
         setSelectedDate(utcFormat);
     }
 
-       // Update service date state in order to trigger a refresh with newly set date.
-       const changeServiceDate =(date:string)=>{
-        const formatedDate = moment(date).format('YYYY-MMM-DD')
-        setStorage('selectedDate', formatedDate)
-    }
+     
 
     if(isLoading){
         return(
@@ -259,9 +256,11 @@ export default function ServicesPage(){
 
     console.log(service)
     
+    const activeServiceItems = serviceItemsQuery.data && serviceItemsQuery.data.filter((serviceItem: any)=>serviceItem.status == 1)
+   
         
 
-        return(
+        return( 
 
     <> 
       <Head>
@@ -313,7 +312,7 @@ export default function ServicesPage(){
                             :<TicketList 
                                 date={selectedDate}
                                 onAddToCart={addToCartHandler} 
-                                services={serviceItemsQuery.data}
+                                services={activeServiceItems}
                             />}
                         
 
