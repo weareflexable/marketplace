@@ -7,7 +7,7 @@ import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
 import {InstantBuyContextProvider} from '../context/InstantBuyContext'
 import {DatContextProvider} from '../context/DatContext'
-import "antd/dist/antd.css";
+
 
 
 const queryClient = new QueryClient({

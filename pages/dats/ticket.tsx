@@ -6,6 +6,8 @@ import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
 import { ChevronLeftIcon } from '@chakra-ui/icons' 
+import request, { gql } from 'graphql-request'
+import { useQuery } from '@tanstack/react-query'
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -21,30 +23,52 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret, startTime, quantity, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret, startTime, quantity, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
 
+    useEffect(() => {
 
-      useEffect(() => {
-
-            let qrCodePayload;
-        
+        let qrCodePayload;
     
-              qrCodePayload = {
-                serviceItemId: serviceItemsDetails[0].id,
-                ticketId: id, // ticketId
-                ticketSecret: ticketSecret,
-                validDate: validityEnd,
-                quantity: quantity,
-                userId: targetUserID,
-              };
-        
-              setQrCodePayload(qrCodePayload);
-              setIsGeneratingCode(false)
 
-      }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
+          qrCodePayload = {
+            serviceItemId: serviceItemsDetails[0].id,
+            ticketId: id, // ticketId
+            ticketSecret: ticketSecret,
+            validDate: validityEnd,
+            quantity: quantity,
+            userId: targetUserID,
+          };
+    
+          setQrCodePayload(qrCodePayload);
+          setIsGeneratingCode(false)
+
+  }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
+
+
+    // const userNftQuery = gql`
+    //     query userNftData($txHash:String!){
+    //         ticketsCreateds(where: {transactionHash: $txHash}){
+    //             tokenID
+    //             metaDataURI
+    //         }
+    //     }
+    // `
+    
+      
+    //   const nftQuery = useQuery({
+    //     queryKey:['nft'],
+    //     queryFn: async()=> request(
+    //         'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
+    //         userNftQuery,
+    //         {txHash: transactionHash}
+    //     )
+    // })
+
+    // console.log(nftQuery.data)
+    
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >

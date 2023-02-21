@@ -3,7 +3,6 @@ import {Box, Flex,Text, Avatar,Image} from '@chakra-ui/react'
 // import Image from 'next/image'
 import {Store} from '../../../Types/Stores.types'
 import {useRouter} from 'next/router'
-import moment from 'moment'
 
 
 

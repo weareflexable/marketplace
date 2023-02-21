@@ -100,7 +100,9 @@ const gotoTicketPage = (dat:any)=>{
   //   );
   // }
 
-  if (!isAuthenticated) {
+  // This gives chance to start fetching, only after it fails
+  // will it show user that they're not authenticated
+  if(datsQuery.isFetched && !isAuthenticated){
     return (
       <Layout>
         <UnAuthenticated/>
