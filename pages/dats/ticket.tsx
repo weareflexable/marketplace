@@ -91,8 +91,8 @@ export default function Ticket(){
                 <VStack px={'1rem'} mt='5' spacing='2'>
                     <VStack w='100%' spacing={2}>
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                        <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
-                        <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                            <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -124,24 +124,30 @@ export default function Ticket(){
 
                     </VStack>
                      
-                        { tokenId
-                            ?
-                            <HStack spacing='2' mb='1'>
-                            <Text color='blackAlpha.500' textStyle={'caption'}>NFT:</Text>
-                            {/* @ts-ignore */}
-                            
-                            <Text color='cyan.700' textStyle={'caption'}>
-                                <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a>
-                            </Text>
-                            </HStack>
-                            :null
-                        }
+                       
                      
                 </VStack> 
                 <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                     <VStack px='1rem' alignItems={'flex-start'} width={'100%'}>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
-                        <Image width={600} objectFit='fill' height={250} src={`/lineskip.png`}  alt='An image of the nft token'/>
+                        <Image width={600} objectFit='fill' height={250} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                    </VStack>
+                    <VStack px={'1rem'} mt='5' mb={'6'} spacing='2'>
+                        <VStack w='100%' spacing={2}>
+                            <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
+                                <Flex flex={7}>
+                                    <Text color='brand.200' textStyle={'secondary'}> 
+                                    <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a> 
+                                    </Text>
+                                </Flex>
+                            </HStack>
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
+                                {/* @ts-ignore */}
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{tokenId}</Text></Flex>
+                            </HStack>
+                        </VStack>
                     </VStack>
             </Flex>}
         </Flex>
