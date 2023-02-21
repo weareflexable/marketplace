@@ -59,12 +59,12 @@ console.log(orders)
                           Expired
                         </Text>
                       : (
-                        <Text textStyle={'secondary'} colorScheme={"green"} ml="1">
+                        <Text textStyle={'secondary'} color='state.success' ml="1">
                           Valid
                         </Text>
                       )}
                     </HStack>
-                    <ChevronRightIcon boxSize={'5'} onClick={()=>gotoTicketPage(order)}/>
+                    <ChevronRightIcon boxSize={'6'} onClick={()=>gotoTicketPage(order)}/>
                   </HStack>
                   <Flex mb="1" justifyContent="space-between">
                     
