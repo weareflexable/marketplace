@@ -77,7 +77,7 @@ const CheckoutForm = () => {
           <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0?buyNowTotal:(totalAmount/100)}</Button>
+          <Button colorScheme={'brand'} mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0?buyNowTotal:(totalAmount/100)}</Button>
           </form>
       </Box>     
   </Flex>

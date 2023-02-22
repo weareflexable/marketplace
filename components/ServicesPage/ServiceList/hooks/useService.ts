@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import moment from 'moment-timezone'
 import { useAuthContext } from '../../../../context/AuthContext'
 import { useCheckoutContext } from '../../../../context/CheckoutContext'
 import { useRouter } from 'next/router'

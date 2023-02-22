@@ -1,11 +1,8 @@
 import React,{useState} from 'react'
 import {Box,Input,Flex,Text} from '@chakra-ui/react'
 // import type { DatePickerProps } from 'antd';
-import {DatePicker} from 'antd'
 import  dayjs from 'dayjs'
 // import moment from 'moment';
-import moment from 'moment-timezone'
-import { RangePickerProps } from 'antd/lib/date-picker'
 // @ts-ignore
 
 
@@ -16,15 +13,9 @@ interface ServiceSearchBarProps{
 }
 export default function ServiceSearchBar({date,dates,onChangeDate}:ServiceSearchBarProps){
 
-const ticketDate = moment(date)
 
 
 
-const disabledDate: RangePickerProps['disabledDate'] = current => {
-
-  // Can not select days before today and today
-  return  current < moment().endOf('day');
-};
 
   const handleDateChange = (date: string)=>{
     // const formated = moment(date

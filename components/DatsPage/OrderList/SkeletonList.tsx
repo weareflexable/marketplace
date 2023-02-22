@@ -5,7 +5,6 @@ import {
   Badge
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import moment from "moment-timezone";
 import timezone from 'dayjs/plugin/timezone'
 
 // dayjs.extend(timezone)

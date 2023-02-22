@@ -11,7 +11,6 @@ import { useAuthContext } from '../context/AuthContext';
 import { getPlatformPaseto } from '../utils/storage';
 import { useInstantBuyContext } from '../context/InstantBuyContext';
 import { getStorage } from '../utils/localStorage';
-import moment from 'moment';
 import axios from 'axios';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
