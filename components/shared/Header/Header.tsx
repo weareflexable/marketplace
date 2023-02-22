@@ -4,11 +4,33 @@ import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 import { useRouter } from 'next/router'
 import { setStorage } from '../../../utils/localStorage'
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Header(){
 
-    const {isAuthenticated,setIsAuthenticated,logout} = useAuthContext()
+    const {isAuthenticated,setIsAuthenticated, paseto,logout} = useAuthContext()
     const {push, asPath, basePath} = useRouter()
+
+    async function fetchUserDetails(){
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users`,{
+          headers:{
+            "Authorization": paseto
+          }
+        })
+        return res.data.data
+      }
+
+     const userQuery = useQuery({
+        queryKey:['user'],  
+        queryFn: fetchUserDetails,
+        enabled:paseto!=='' ,
+        staleTime: Infinity
+    })
+
+
+    const profilePicHash = userQuery.data && userQuery.data[0].profilePic
+
 
     const login =()=>{
         const currentPath = `${asPath}${basePath}`
@@ -27,7 +49,7 @@ export default function Header(){
                     isAuthenticated?
                         <Menu>                            
                             <MenuButton>
-                                <Avatar src='/avatar.png'/>
+                                <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
                              <MenuList borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem bg='#121212'>

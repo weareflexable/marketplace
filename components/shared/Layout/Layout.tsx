@@ -10,7 +10,6 @@ interface LayoutProps{
 export default function Layout({children}:LayoutProps){
 
     const router = useRouter()
-    console.log(router.pathname)
 
     return(
         <Flex bg='#121212' direction='column' w='100%'>

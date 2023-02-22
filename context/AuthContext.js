@@ -40,7 +40,6 @@ const AuthContextProvider = ({ children }) => {
 
   useEffect(()=>{
       if(paseto !== '' && paseto !== null){
-          console.log('should authenticte')
           setIsAuthenticated(true)
       }
   },[paseto])
