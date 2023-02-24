@@ -3,7 +3,7 @@ import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skel
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
-import TicketList from '../../components/ServicesPage/ServiceList/ServiceList'
+import TicketList from '../../components/ServicesPage/ServiceList'
 import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
@@ -16,6 +16,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import ServiceSkeleton from '../../components/ServicesPage/ServiceList/Skeleton/Skeleton'
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -82,7 +83,7 @@ export default function ServicesPage(){
 
 
     
-    const {isLoading,data,isError} = useQuery({
+    const serviceQuery = useQuery({
         queryKey:['single-service',serviceId], 
         queryFn:async()=>{
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`,{
@@ -96,9 +97,10 @@ export default function ServicesPage(){
         enabled: serviceId !== undefined,
         staleTime: 30000
     })
+    console.log(serviceQuery)
     
     // Confirming object is not undefined before accessing fields
-    const service = data && data.data[0]
+    const service = serviceQuery.data && serviceQuery.data.data[0]
     
     const availabilityQuery = useQuery({
         queryKey:['availability',serviceId], 
@@ -170,13 +172,13 @@ export default function ServicesPage(){
         const isDuplicateCartItem = checkCartItemExist(id)
         if(isDuplicateCartItem) return
   
-        let clonedServices = data && data.payload.serviceItems.slice() 
+        let clonedServices = serviceQuery && serviceQuery.data.serviceItems.slice() 
         let targetTicket = clonedServices.find((service:any)=>service.id===id);
 
         // add quantity field to service
         const serviceWithQuantity = {
             ...targetTicket,
-            venue: data.payload.name ,
+            venue: serviceQuery.data.name ,
             quantity:1
         }
 
@@ -246,12 +248,6 @@ export default function ServicesPage(){
 
      
 
-    if(isLoading){
-        return(
-            <ServicePageSkeleton/>
-        )
-    }
-
 
     console.log(service)
     
@@ -266,24 +262,29 @@ export default function ServicesPage(){
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
         <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
-            <Header/>  
+            {serviceQuery.isLoading
+                ?<Skeleton mx='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
+                :<Header/>
+            }  
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
-                    <Skeleton w='100%' isLoaded={!isLoading}>
-                        <StoreHeader 
-                         coverImageHash={service.coverImageHash || ''}
+                    
+                       { serviceQuery.isLoading
+                       ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
+                       :<StoreHeader 
+                         coverImageHash={service.logoImageHash || ''}
                          storeName={service.name}
-                         lat = {service.latitude}
+                         lat = {service.latitude} 
                          lon = {service.longitude}
                          city = {service.city}
                          state = {service.state}
                          street = {service.street}
                          logoImageHash = {service.logoImageHash}
                          />
-                    </Skeleton>
+                        }
 
                     {isLoadingDates
-                    ?<Skeleton/>
+                    ? <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
                     :<Box w='93%' margin={'0 auto'}  p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
                             <>
@@ -297,22 +298,17 @@ export default function ServicesPage(){
                         ))}
                     </Box>}
 
-                    {/* <Skeleton my='1' isLoaded={!isLoading}>
-                        <TicketSearchBar
-                            dates={availability}
-                            date={serviceDate}
-                            onChangeDate = {changeServiceDate}
-                            />
-                    </Skeleton> */}
 
                         
-                            {serviceItemsQuery.isLoading || serviceItemsQuery.isRefetching
-                            ?<Text>Loading...</Text>
-                            :<TicketList 
-                                date={selectedDate}
-                                onAddToCart={addToCartHandler} 
-                                services={activeServiceItems}
-                            />}
+                    {
+                    serviceItemsQuery.isLoading || serviceItemsQuery.isRefetching
+                    ?<ServiceSkeleton/>
+                    :<TicketList 
+                        date={selectedDate}
+                        onAddToCart={addToCartHandler} 
+                        services={activeServiceItems}
+                    />
+                    }
                         
 
                 </Flex> 
