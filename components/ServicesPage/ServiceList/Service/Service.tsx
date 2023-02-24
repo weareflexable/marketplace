@@ -7,7 +7,8 @@ import {
     Flex,
     Divider,
     Button,
-    IconButton
+    IconButton,
+    useMediaQuery
 } from '@chakra-ui/react'
 
 import Image from 'next/image'
@@ -32,6 +33,10 @@ interface TicketProps{
 function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
 
+    const [isLargerThan800] = useMediaQuery('(min-width: 800px)', {
+        ssr: true,
+        fallback: false, // return false on the server, and re-evaluate on the client side
+      })
 
     const {
         ticketData,
@@ -49,47 +54,49 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
     
     return( 
         <Box display={['block']} bg='#242424' borderRadius={8} cursor='pointer' >
-            <Flex direction='column'>
-                <Image alt='Artwork for ticket' loading='lazy' style={{borderRadius:'4px 4px 0 0'}} width={'100%'} height={'350px'} objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
-                <Flex py='1em'>
-                    <Flex px='1em' flex={4} direction='column'>
-                        <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
-                        <Text as='h4' mb='0' textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
-                            {data.name}
-                        </Text>    
-                        <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
-                            {data.description}
-                        </Text>
-                        <Flex mt='2' justifyContent={'space-between'} alignItems='center'>
-                            <HStack spacing={5}>
-                                <HStack spacing={1}>
-                                    <Text textStyle={'secondary'} color='accent.300'>${data.price/100}</Text>
-                                    <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
+            <Flex direction={['column','column','row']}>
+                <Image alt='Artwork for ticket' loading='lazy' style={{borderRadius:'4px 4px 0 0'}} width={`${isLargerThan800?'550px':'100%'}`} height={'350px'} objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
+                <Flex direction={['column']}>
+                    <Flex py='1em'>
+                        <Flex px='1em' flex={4} direction='column'>
+                            <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
+                            <Text as='h4' mb='0' textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
+                                {data.name}
+                            </Text>    
+                            <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
+                                {data.description}
+                            </Text>
+                            <Flex mt='2' justifyContent={'space-between'} alignItems='center'>
+                                <HStack spacing={5}>
+                                    <HStack spacing={1}>
+                                        <Text textStyle={'secondary'} color='accent.300'>${data.price/100}</Text>
+                                        <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
+                                    </HStack>
+                                    <HStack spacing={2}>
+                                        <Text textStyle={'secondary'} color={'text.300'}>{ticketData.ticketsAvailable}</Text>
+                                        <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
+                                    </HStack>
                                 </HStack>
-                                <HStack spacing={2}>
-                                    <Text textStyle={'secondary'} color={'text.300'}>{ticketData.ticketsAvailable}</Text>
-                                    <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
-                                </HStack>
-                            </HStack>
-                            <Text color={'white'}>${subTotal}</Text>
+                                <Text color={'white'}>${subTotal}</Text>
+                            </Flex>
                         </Flex>
                     </Flex>
-                </Flex>
-                
+                    
 
-                {/* bottom panel */}
-                <Flex px='1em' py='.5em' mb={3} width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
-                    <FlexableComboButton
-                        isMinQuantity= {isMinQuantity}
-                        isTicketsAvailable = {isTicketsAvailable}
-                        subTotal ={subTotal}
-                        isAuthenticated = {isAuthenticated}
-                        incrementQuantity = {incrementQuantity}
-                        decrementQuantity = {decrementQuantity}
-                        buyTicketNow ={buyTicketNow}
-                        label='Tickets'
-                        quantity={ticketData.quantity}
-                    />
+                    {/* bottom panel */}
+                    <Flex px='1em' py='.5em' mb={3} width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
+                        <FlexableComboButton
+                            isMinQuantity= {isMinQuantity}
+                            isTicketsAvailable = {isTicketsAvailable}
+                            subTotal ={subTotal}
+                            isAuthenticated = {isAuthenticated}
+                            incrementQuantity = {incrementQuantity}
+                            decrementQuantity = {decrementQuantity}
+                            buyTicketNow ={buyTicketNow}
+                            label='Tickets'
+                            quantity={ticketData.quantity}
+                        />
+                    </Flex>
                 </Flex>
             </Flex>
         </Box>
