@@ -24,11 +24,21 @@ dayjs.extend(timezone)
 dayjs.extend(utc)
 dayjs.extend(advanced)
 
+
+
+
 interface TicketProps{
     data: any,
     onTriggerAction:(id:string)=>void,
     selectedDate: string
 }
+
+const { FormatMoney } = require('format-money-js');
+
+const numberFormatter = new FormatMoney({
+    decimals: 0
+  });
+  
 
 function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
@@ -69,15 +79,15 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                             <Flex mt='2' justifyContent={'space-between'} alignItems='center'>
                                 <HStack spacing={5}>
                                     <HStack spacing={1}>
-                                        <Text textStyle={'secondary'} color='accent.300'>${data.price/100}</Text>
+                                        <Text textStyle={'secondary'} color='accent.300'>${numberFormatter.from(data.price/100)}</Text>
                                         <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
                                     </HStack>
                                     <HStack spacing={2}>
-                                        <Text textStyle={'secondary'} color={'text.300'}>{ticketData.ticketsAvailable}</Text>
+                                        <Text textStyle={'secondary'} color={'text.300'}>{numberFormatter.from(ticketData.ticketsAvailable)}</Text>
                                         <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
                                     </HStack>
                                 </HStack>
-                                <Text color={'white'}>${subTotal}</Text>
+                                <Text color={'white'}>${numberFormatter.from(subTotal)}</Text>
                             </Flex>
                         </Flex>
                     </Flex>

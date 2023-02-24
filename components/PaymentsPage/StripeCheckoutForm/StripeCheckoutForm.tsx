@@ -4,8 +4,14 @@ import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 import { deleteStorage } from '../../../utils/localStorage';
+import { number } from 'yup';
 
+const { FormatMoney } = require('format-money-js');
 
+const numberFormatter = new FormatMoney({
+    decimals: 0
+  });
+  
 
 const CheckoutForm = () => {
 
@@ -77,7 +83,7 @@ const CheckoutForm = () => {
           <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button colorScheme={'brand'} mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0?buyNowTotal:(totalAmount/100)}</Button>
+          <Button colorScheme={'brand'} mt='5' type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}</Button>
           </form>
       </Box>     
   </Flex>

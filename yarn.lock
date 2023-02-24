@@ -2658,6 +2658,11 @@ form-data@^4.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+format-money-js@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/format-money-js/-/format-money-js-1.6.2.tgz#5b30b882281324e290056757e2a9fbb496975fdf"
+  integrity sha512-4HAwdx/yKB6tMG4xxRl8RtAW4cLzN5/CvqExy+FswDqGmMsFdnsDqhkTnM0dit+lZeveyRHf5BU7T/GqCRkmLQ==
+
 formik@^2.2.9:
   version "2.2.9"
   resolved "https://registry.npmjs.org/formik/-/formik-2.2.9.tgz"

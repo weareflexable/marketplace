@@ -39,7 +39,6 @@ const useService = (data:any)=>{
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
  
-     console.log(data)
      // checks to see if there are available tickets for selected date
      const isTicketsAvailable = ticketData.ticketsAvailable > 0;
  

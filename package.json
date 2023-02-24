@@ -25,6 +25,7 @@
     "country-calling-code": "^0.0.3",
     "country-list": "^2.3.0",
     "dayjs": "^1.11.5",
+    "format-money-js": "^1.6.2",
     "formik": "^2.2.9",
     "framer-motion": "^7.5.3",
     "graphql": "^16.6.0",
