@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Image} from '@chakra-ui/react'
+import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
@@ -8,7 +8,7 @@ import { getPlatformPaseto } from '../../utils/storage'
 import { ChevronLeftIcon } from '@chakra-ui/icons' 
 import request, { gql } from 'graphql-request'
 import { useQuery } from '@tanstack/react-query'
-
+import Image from 'next/image'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -48,27 +48,28 @@ export default function Ticket(){
   }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
 
-    // const userNftQuery = gql`
-    //     query userNftData($txHash:String!){
-    //         ticketsCreateds(where: {transactionHash: $txHash}){
-    //             tokenID
-    //             metaDataURI
-    //         }
-    //     }
-    // `
+    const userNftQuery = gql`
+        query userNftData($txHash:String!){
+            ticketCreateds(where: {transactionHash: $txHash}){
+                tokenID
+                metaDataURI
+            }
+        }
+    `
     
       
-    //   const nftQuery = useQuery({
-    //     queryKey:['nft'],
-    //     queryFn: async()=> request(
-    //         'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
-    //         userNftQuery,
-    //         {txHash: transactionHash}
-    //     )
-    // })
+      const nftQuery = useQuery({
+        queryKey:['nft'],
+        queryFn: async()=> request(
+            'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
+            userNftQuery,
+            {txHash: '0xe7bed3d56d89961687993c2d83e510164f46de2c23a0a207443cf05c5be83f68'}
+        )
+    })
 
-    // console.log(nftQuery.data)
-    
+    console.log( nftQuery.data && nftQuery.data.ticketCreateds[0]) 
+    const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
+     
 
     return(
         <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
@@ -152,27 +153,30 @@ export default function Ticket(){
                      
                 </VStack> 
                 <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
-                    <VStack px='1rem' alignItems={'flex-start'} width={'100%'}>
-                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
-                        <Image width={600} objectFit='fill' height={250} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
-                    </VStack>
-                    <VStack px={'1rem'} mt='5' mb={'6'} spacing='2'>
+                    
+                    <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
+                        <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                        {nftQuery.isLoading?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>:<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>}
+                    </Flex>
+                    {nftQuery.isLoading
+                    ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
+                    :<VStack px={'1rem'} mt='5' width={'100%'}  mb={'6'} spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                    <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${tokenId && tokenId}`}>View DAT on opensea</a> 
+                                    <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${nftData.tokenID}`}>View DAT on opensea</a> 
                                     </Text>
                                 </Flex>
                             </HStack>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{tokenId}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{nftData.tokenID}</Text></Flex>
                             </HStack>
                         </VStack>
-                    </VStack>
+                    </VStack>}
             </Flex>}
         </Flex>
     )
