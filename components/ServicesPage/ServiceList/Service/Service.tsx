@@ -7,10 +7,10 @@ import {
     Flex,
     Divider,
     Button,
-    IconButton,
-    Image
+    IconButton
 } from '@chakra-ui/react'
 
+import Image from 'next/image'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
 import useService from '../hooks/useService';
@@ -48,9 +48,9 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
     
     return( 
-        <Box display={['block']} bg='#242424' cursor='pointer' >
+        <Box display={['block']} bg='#242424' borderRadius={8} cursor='pointer' >
             <Flex direction='column'>
-                <Image alt='Artwork for ticket' objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
+                <Image alt='Artwork for ticket' loading='lazy' style={{borderRadius:'4px 4px 0 0'}} width={'100%'} height={'350px'} objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
                 <Flex py='1em'>
                     <Flex px='1em' flex={4} direction='column'>
                         <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>

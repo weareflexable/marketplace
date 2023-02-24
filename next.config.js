@@ -13,9 +13,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'nftstorage.link',
+        port: '',
         pathname: '/ipfs/**',
       },
-    ],
+    ], 
   },
 };
 
