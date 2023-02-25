@@ -23,7 +23,6 @@ const Payments = () => {
     const {isAuthenticated} = useAuthContext()
 
 
-
     const createPayloadObject = (cartItems: Array<any>)=>{
         const cartDetails: Array<any> = [];
         let totalPrice = 0;

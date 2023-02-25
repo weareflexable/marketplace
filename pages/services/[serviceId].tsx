@@ -128,12 +128,7 @@ export default function ServicesPage(){
     const serviceItemsQuery = useQuery({
         queryKey:['serviceItems',serviceId,selectedDate], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items-using-date?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=${selectedDate}`,{
-                headers:{
-                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-                }
-            }) 
-
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items-using-date?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=date&value2=${selectedDate}`) 
             return res.data.data
         },
         enabled: shouldFetchServiceItems,

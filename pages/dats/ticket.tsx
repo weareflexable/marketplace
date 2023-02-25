@@ -23,8 +23,9 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret, startTime, quantity, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret, startTime, quantity, price, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
+    console.log(ctx_currentDat) 
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
 
@@ -118,6 +119,12 @@ export default function Ticket(){
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                             <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
                             <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                        </HStack>
+
+                        <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Price</Text></Flex>
+                            {/* @ts-ignore */}
+                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>

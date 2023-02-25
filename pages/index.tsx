@@ -16,12 +16,7 @@ import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
 //@ts-ignore
 const fetchServices = async({pageParams,serviceFilter})=>{
   console.log('func prams',pageParams,serviceFilter)
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParams}&pageSize=10&key2=service_type_id&value2=${serviceFilter}`,
-  {
-    headers:{
-      "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-    }
-  })
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParams}&pageSize=10&key2=service_type_id&value2=${serviceFilter}`)
   return res.data
 }
 
@@ -41,11 +36,7 @@ export default function Home() {
   const serviceTypesQuery = useQuery({
     queryKey:['seviceTypes']
   , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=0`,{
-      headers:{
-        "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}` 
-      }
-    })
+    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=0`)
     return res.data.data
   },
   onSuccess:(data)=>{
@@ -59,12 +50,7 @@ export default function Home() {
     ['services',serviceFilter], 
     //@ts-ignore
     async({pageParam=0})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&filter=yes`,
-      {
-        headers:{
-          "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-        }
-      })
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&filter=yes`)
       return res.data
     },
     {

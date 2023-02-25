@@ -15,13 +15,14 @@ dayjs.extend(timezone)
 dayjs.extend(utc)
 dayjs.extend(advanced)
 
+import { numberFormatter } from "../../../utils/formatter";
 interface OrderListProps {
   orders: any;
   gotoTicketPage: (dat:any) => void;
 }
 export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
 
-console.log(orders)
+
   return (
 
     <Flex direction="column" w="100">
@@ -74,19 +75,21 @@ console.log(orders)
                     </Text>
 
                     {/* pricing */}
-                    <Flex direction={'column'}>
+                    <Flex direction={'column'} alignItems='flex-end'>
                       <Text mb='1' textStyle="secondary" color={'text.200'}>
-                        ${order.quantity * (order.serviceItemsDetails[0].price/100)}
+                        {/* @ts-ignore */}
+                       {` $${order.quantity * numberFormatter.from(order.serviceItemsDetails[0].price/100)}`}
                       </Text>
-                      <HStack spacing="0.5">
+                      <HStack spacing="0.9">
                         <Text color="text.100" textStyle="caption">
-                          ${order.serviceItemsDetails[0].price/100} 
+                          {`$${numberFormatter.from(order.serviceItemsDetails[0].price/100)}`}
                         </Text>
                         <Text color="text.200" textStyle="caption">
-                          x{order.quantity}
+                           x{order.quantity}
                         </Text>
                       </HStack>
                     </Flex>
+
                   </Flex>
 
                   <HStack mb="1" spacing="1">
