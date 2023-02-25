@@ -86,11 +86,7 @@ export default function ServicesPage(){
     const serviceQuery = useQuery({
         queryKey:['single-service',serviceId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`,{
-                headers:{
-                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-                }
-            }) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`) 
 
             return res.data
         },
@@ -105,11 +101,7 @@ export default function ServicesPage(){
     const availabilityQuery = useQuery({
         queryKey:['availability',serviceId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service/availability?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=availability`,{
-                headers:{
-                    "Authorization": `${process.env.NEXT_PUBLIC_AUTHORIZATION_KEY}`
-                }
-            }) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service/availability?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=availability`) 
 
             return res.data.data
         },
