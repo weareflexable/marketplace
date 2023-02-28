@@ -92,4 +92,4 @@ jobs:
             podman pull ghcr.io/weareflexable/marketplace:main
             podman stop marketplace
             podman rm marketplace
-            podman run --name="portal" -p 9082:3000 -d ghcr.io/weareflexable/marketplace:main
+            podman run --name="marketplace" -p 9082:3000 -d ghcr.io/weareflexable/marketplace:main
