@@ -40,7 +40,7 @@ export default function Home() {
     return res.data.data
   },
   onSuccess:(data)=>{
-    const barId = data[1].id;
+    const barId = data[0].id;
     setServiceFilter(barId)
   }
   
