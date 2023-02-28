@@ -97,7 +97,7 @@ export default function Home() {
  
   return (
     <>
-          <Head>
+        <Head>
           <title>Flexable</title>
           <link rel="icon" href="/favicon.png" />
         </Head>

@@ -43,7 +43,7 @@ const numberFormatter = new FormatMoney({
 function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
 
-    const [isLargerThan800] = useMediaQuery('(min-width: 800px)', {
+    const [isLargerThan800] = useMediaQuery('(min-width: 700px)', {
         ssr: true,
         fallback: false, // return false on the server, and re-evaluate on the client side
       })
