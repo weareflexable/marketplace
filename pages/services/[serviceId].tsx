@@ -228,7 +228,6 @@ export default function ServicesPage(){
         const readableFormat = dayjs(date.iso).format('MMM DD, YYYY')
 
 
-
         setStorage('selectedDate', readableFormat)
         setSelectedDate(readableFormat);
     }

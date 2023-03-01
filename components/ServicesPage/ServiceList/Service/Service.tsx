@@ -25,6 +25,9 @@ dayjs.extend(utc)
 dayjs.extend(advanced)
 
 
+// REFACTOR THIS PAGE!
+// CONSIDER CREATING A CONTEXT FOR THIS COMPONENT OR HAVE BETTER COMPOSITION
+
 
 
 interface TicketProps{
@@ -52,6 +55,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
         ticketData,
         isTicketsAvailable,
         // isTicketsSoldOut,
+        isMaxQuantity,
         isMinQuantity,
         // ticketDate,
         subTotal,
@@ -99,6 +103,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                             isMinQuantity= {isMinQuantity}
                             isTicketsAvailable = {isTicketsAvailable}
                             subTotal ={subTotal}
+                            isMaxQuantity = {isMaxQuantity}
                             isAuthenticated = {isAuthenticated}
                             incrementQuantity = {incrementQuantity}
                             decrementQuantity = {decrementQuantity}
@@ -115,7 +120,8 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
 
 
 interface FlexableStepperProps{
-    isMinQuantity: boolean
+    isMinQuantity: boolean,
+    isMaxQuantity: boolean,
     decrementQuantity: ()=>void
     incrementQuantity: ()=>void,
     quantity: number
@@ -123,7 +129,7 @@ interface FlexableStepperProps{
 }
 // Signature stepper button which features
 // increment btn, quantity incremented, decrement btn in that order
-function FlexableStepper({isMinQuantity, decrementQuantity, incrementQuantity, quantity, label}:FlexableStepperProps){
+function FlexableStepper({isMinQuantity, decrementQuantity, isMaxQuantity, incrementQuantity, quantity, label}:FlexableStepperProps){
     return(
             <Flex width={'50%'}  borderRadius={'50px'} p={1} justifyContent={'space-between'} alignItems='center'>
                 <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} bg={isMinQuantity?'brand.disabled':'brand.400'} color={isMinQuantity?'text.100':'text.300'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
@@ -131,7 +137,7 @@ function FlexableStepper({isMinQuantity, decrementQuantity, incrementQuantity, q
                     <Text textStyle={'secondary'}  color={isMinQuantity?'text.100':'text.300'}>{quantity}</Text>
                     <Text textStyle={'secondary'} color={'text.200'}>{label}</Text>
                 </HStack>
-                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} bg='brand.400' isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} bg='brand.400' disabled={isMaxQuantity} isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
             </Flex>
     )
 }
@@ -142,6 +148,7 @@ interface FlexableComboButtonProps{
     quantity: number,
     decrementQuantity: ()=>void,
     incrementQuantity: ()=>void,
+    isMaxQuantity:boolean
     label: string,
     isTicketsAvailable: boolean,
     isAuthenticated:boolean,
@@ -149,7 +156,7 @@ interface FlexableComboButtonProps{
     subTotal:number
     
 }
-function FlexableComboButton({isMinQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
+function FlexableComboButton({isMinQuantity, isMaxQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
         <>
@@ -159,6 +166,7 @@ function FlexableComboButton({isMinQuantity, quantity, isTicketsAvailable, subTo
              <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>
                 <FlexableStepper 
                     isMinQuantity={isMinQuantity}
+                    isMaxQuantity={isMaxQuantity}
                     quantity={quantity}
                     decrementQuantity ={decrementQuantity}
                     incrementQuantity = {incrementQuantity}

@@ -49,6 +49,7 @@ const useService = (data:any)=>{
 
  
      const isMinQuantity = ticketData.quantity <= 0
+     const isMaxQuantity = ticketData.quantity === 6
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
 
@@ -113,6 +114,7 @@ const useService = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
+        isMaxQuantity,
         subTotal,
         isAuthenticated,
         isProceedingToPayment,
