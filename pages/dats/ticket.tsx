@@ -64,7 +64,7 @@ export default function Ticket(){
         queryFn: async()=> request(
             'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
             userNftQuery,
-            {txHash: '0xe7bed3d56d89961687993c2d83e510164f46de2c23a0a207443cf05c5be83f68'}
+            {txHash: transactionHash}
         )
     })
 
@@ -173,14 +173,14 @@ export default function Ticket(){
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                    <a href={`https://opensea.io/assets/matic/0x0632534712c3abef9922ce3bc587a2f27e25901f/${nftData.tokenID}`}>View DAT on opensea</a> 
+                                    <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData.tokenID}`}>View DAT on opensea</a> 
                                     </Text>
                                 </Flex>
                             </HStack>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{nftData.tokenID}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>#{nftData.tokenID}</Text></Flex>
                             </HStack>
                         </VStack>
                     </VStack>}
