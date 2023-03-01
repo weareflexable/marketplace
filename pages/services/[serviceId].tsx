@@ -61,7 +61,6 @@ export default function ServicesPage(){
     const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
     const [selectedDate, setSelectedDate] = useState(dayjs().format())
 
-    console.log(dates)
 
     // const [isLoading, setIsLoading] = useState(false)
     // const [data, setData] = useState<any>({})
@@ -93,7 +92,6 @@ export default function ServicesPage(){
         enabled: serviceId !== undefined,
         staleTime: 30000
     })
-    console.log(serviceQuery)
     
     // Confirming object is not undefined before accessing fields
     const service = serviceQuery.data && serviceQuery.data.data[0]
@@ -110,7 +108,6 @@ export default function ServicesPage(){
     })
 
     const availabilities = availabilityQuery.data && availabilityQuery.data
-    console.log(availabilities)  
 
 
     // The service-item query is dependent on the success of both the service and the availability queries

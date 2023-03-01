@@ -46,8 +46,9 @@ export default function Header(){
             </Link>
             <Flex as='nav'>
                 {
-                    isAuthenticated?
-                        <Menu>                            
+                    userQuery.isFetched && !isAuthenticated
+                    ? <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
+                    :    <Menu>                            
                             <MenuButton>
                                 <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
@@ -64,7 +65,7 @@ export default function Header(){
                                 </MenuItem>
                              </MenuList>
                         </Menu>
-                    : <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
+                    
                 }
                 
             </Flex>
