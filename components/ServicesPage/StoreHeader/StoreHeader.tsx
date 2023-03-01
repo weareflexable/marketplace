@@ -17,7 +17,6 @@ interface StoreHeaderProps{
 }
 export default function StoreHeader({coverImageHash,logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
 
-    console.log(lat, lon)
     const coverImage = logoImageHash && logoImageHash 
     
 

@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 export default function Header(){
 
     const {isAuthenticated,setIsAuthenticated, paseto,logout} = useAuthContext()
-    const {push, asPath, basePath} = useRouter()
+    const {push, asPath, replace, basePath} = useRouter()
 
     async function fetchUserDetails(){
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users`,{
@@ -39,6 +39,10 @@ export default function Header(){
         // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
     }
 
+    function navigate(route:string){
+        console.log(route)
+    }
+
     return(
         <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>
             <Link href='/'>
@@ -53,11 +57,11 @@ export default function Header(){
                                 <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
                              <MenuList borderColor="#2b2b2b" bg='#121212'>
-                                <MenuItem bg='#121212'>
-                                    <Text textStyle={'secondary'} onClick={()=>push('/profile')} color='text.300'>My Profile</Text>
+                                <MenuItem onClick={()=>push('/profile')} bg='#121212'>
+                                    <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
                                 </MenuItem>
-                                <MenuItem bg='#121212'>
-                                    <Text aria-label='button' textStyle={'secondary'} onClick={()=>push('/dats')} color='text.300'>My Dats</Text>
+                                <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
+                                    <Text textStyle={'secondary'}  color='text.300'>My Dats</Text>
                                 </MenuItem>
                                 <MenuDivider/>
                                 <MenuItem bg='#121212'>

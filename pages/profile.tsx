@@ -2,7 +2,7 @@ import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, B
 import Layout from '../components/shared/Layout/Layout'
 import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
 import { useAuthContext } from '../context/AuthContext'
-import {Formik, Field, Form, useFormik} from 'formik'
+import {Formik, Field, Form, useFormik, FormikProps} from 'formik'
 import * as Yup from 'yup';
 
 const countryList = require('country-list')
@@ -34,12 +34,7 @@ export default function Profile(){
         enabled:paseto!=='' ,
         staleTime: Infinity
     })
-
-    console.log(userQuery.data) 
-
-  
       
-
 
 
 
@@ -244,6 +239,10 @@ function EditableEmail({selectedRecord}:EditableProp){
       </div>
     )
   }
+
+  type Values = {
+    gender: string
+  }
 function EditableGender({selectedRecord}:EditableProp){
 
 
@@ -274,6 +273,22 @@ function EditableGender({selectedRecord}:EditableProp){
             //   mutation.mutate(payload)
         },
       });
+
+      function handleSubmit(values:any,actions:any){
+        //  preventDefault() 
+        console.log(values,actions)
+        const payload = {
+            key:'gender',
+            value:value,
+          }
+          console.log(payload)
+          mutation.mutate(payload)
+     }
+
+     function handleChange(value:any){
+      console.log(value)
+      setValue(value)
+     }
 
    
   
@@ -308,32 +323,42 @@ function EditableGender({selectedRecord}:EditableProp){
   )
   
     const editable = (
-      <form
+      <Formik
        style={{ marginTop:'.5rem' }}
-       onSubmit={formik.handleSubmit}
+       initialValues= {{gender: selectedRecord && selectedRecord.gender}}
+       onSubmit={handleSubmit}
        >
-        <FormControl is={formik.errors.gender}  mb={'5'}>
+        {
+          (props:FormikProps<Values>)=>(
+            <Form onSubmit={props.handleSubmit}>
+              <RadioGroup
+                colorScheme={'brand.300'}
+                color={'text.300'}
+                name='gender'
+                onChange={handleChange}
+                // {...formik.getFieldProps('gender')}
+                defaultValue={value}
+              >
+                  {/* <Stack direction='row' spacing={6}> */}
+                      <Radio value='Male'>Male</Radio>
+                      <Radio value='Female'>Female</Radio>
+                  {/* </Stack> */}
+              </RadioGroup>
+              <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
+                  Cancel
+              </Text>
+              <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
+                  Apply changes
+              </Button>
+            </Form>
+          )
+        }
+        {/* <FormControl  mb={'5'}> */}
             {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
-             <RadioGroup
-              colorScheme={'brand.300'}
-              color={'text.300'}
-              {...formik.getFieldProps('gender')}
-            //   defaultValue={value}
-             >
-                <Stack direction='row' spacing={6}>
-                    <Radio value='Male'>Male</Radio>
-                    <Radio value='Female'>Female</Radio>
-                </Stack>
-            </RadioGroup>
-            {formik.touched.gender&&formik.errors.gender?<FormErrorMessage>{formik.errors.gender}</FormErrorMessage>:null}
-        </FormControl>
-        <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
-            Cancel
-        </Text>
-        <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
-            Apply changes
-        </Button>
-      </form>
+            
+        {/* </FormControl> */}
+        
+      </Formik>
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
@@ -344,7 +369,6 @@ function EditableGender({selectedRecord}:EditableProp){
   }
 function EditableName({selectedRecord}:EditableProp){
 
-    console.log(selectedRecord)
 
     // const [state, setState] = useState(selectedRecord)
   
@@ -364,7 +388,6 @@ function EditableName({selectedRecord}:EditableProp){
         },
         onSubmit: (values,actions) => {
             // e.preventDefault() 
-            console.log(values, actions)
             const payload = {
                 key:'name',
                 value:values.name,
