@@ -227,16 +227,14 @@ export default function ServicesPage(){
         const utcFormat = dayjs.utc(date.iso, 'MMM DD, YYYY').format()
         const readableFormat = dayjs(date.iso).format('MMM DD, YYYY')
 
-        console.log(utcFormat)
+
 
         setStorage('selectedDate', readableFormat)
-        setSelectedDate(utcFormat);
+        setSelectedDate(readableFormat);
     }
 
      
 
-
-    console.log(service)
     
     const activeServiceItems = serviceItemsQuery.data && serviceItemsQuery.data.filter((serviceItem: any)=>serviceItem.status == 1)
    
