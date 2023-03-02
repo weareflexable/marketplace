@@ -1,5 +1,5 @@
 import React from 'react'
-import {Flex,HStack,Box, MenuDivider,Avatar,Menu, MenuButton, MenuList, MenuItem, Button,Text,Image} from '@chakra-ui/react'
+import {Flex,HStack,Box, Skeleton, MenuDivider,Avatar,Menu, MenuButton, MenuList, MenuItem, Button,Text,Image} from '@chakra-ui/react'
 import Link from 'next/link'
 import { useAuthContext } from '../../../context/AuthContext'
 import { useRouter } from 'next/router'
@@ -43,6 +43,8 @@ export default function Header(){
         console.log(route)
     }
 
+    console.log(isAuthenticated, userQuery.isFetched) 
+
     return(
         <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>
             <Link href='/'>
@@ -50,9 +52,11 @@ export default function Header(){
             </Link>
             <Flex as='nav'>
                 {
-                    userQuery.isFetched && !isAuthenticated
+                    !isAuthenticated
                     ? <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
-                    :    <Menu>                            
+                    :  userQuery.isFetched && !isAuthenticated
+                    ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
+                    :   <Menu>                            
                             <MenuButton>
                                 <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
@@ -78,9 +82,12 @@ export default function Header(){
 }
 
 
-{/* <HStack spacing={3}>
-                     <Link href='/dats'>
-                        <a><Text fontWeight='medium'>My Dats</Text></a>
-                    </Link>
-                    <Button variant='link' onClick={logout}>Logout</Button>
-                    </HStack> */}
+
+function LoadingHeader(){
+    return(
+        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>
+            <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" width={'3re'} height={'1rem'}/>
+            <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
+        </Flex>
+    )
+}
