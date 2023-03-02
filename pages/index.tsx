@@ -40,8 +40,10 @@ export default function Home() {
     return res.data.data
   },
   onSuccess:(data)=>{
-    const barId = data[0].id;
-    setServiceFilter(barId)
+    if(data.length !==0){
+      const barId = data[0].id;
+      setServiceFilter(barId) 
+    }
   }
   
  })
