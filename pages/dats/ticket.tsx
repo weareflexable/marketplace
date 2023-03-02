@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack} from '@chakra-ui/react'
+import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
@@ -25,7 +25,7 @@ export default function Ticket(){
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret, startTime, quantity, price, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
-    console.log(ctx_currentDat) 
+    const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
 
@@ -65,10 +65,10 @@ export default function Ticket(){
             'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
             userNftQuery,
             {txHash: transactionHash}
-        )
+        ),
+        enabled: isTxHash //  only call the graphql endpoint when transaction hash is available
     })
 
-    console.log( nftQuery.data && nftQuery.data.ticketCreateds[0]) 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
      
 
@@ -84,7 +84,8 @@ export default function Ticket(){
             </Flex> 
             }
 
-           {isGeneratingCode?<TicketSkeleton/> 
+           {isGeneratingCode
+           ?<TicketSkeleton/> 
            :
            <Flex direction='column'>
                 <Flex direction='column' px='9' mb='5' w='100%'>
@@ -161,9 +162,14 @@ export default function Ticket(){
                 </VStack> 
                 <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                     
-                    <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
+                {isTxHash
+                        ?<>
+                            <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
                         <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
-                        {nftQuery.isLoading?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>:<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>}
+                        {nftQuery.isLoading
+                            ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
+                            :<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                        }
                     </Flex>
                     {nftQuery.isLoading
                     ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
@@ -184,7 +190,14 @@ export default function Ticket(){
                             </HStack>
                         </VStack>
                     </VStack>}
-            </Flex>}
+                        </>
+                        :nftQuery.isError
+                        ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
+                        :<NoHash/>
+                }
+                    
+           </Flex>
+           }
         </Flex>
     )
 }
@@ -212,3 +225,44 @@ const TicketSkeleton = ()=>{
     </Flex>
     )
 }
+
+
+
+function NoHash(){
+    return(
+        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='10vh' width={"100%"}>
+        <Flex direction='column' maxW={'350px'} alignItems='center'>
+            <Text as='h3' mb='5' textStyle={'h3'}>
+                Minting NFT ...
+            </Text>
+            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
+                Your NFT is currently being minted. Please check back later.
+            </Text>
+            {/* <Button variant='ghost' onClick={navigateToMarketPlace}>
+                Go back to marketplace
+            </Button> */}
+        </Flex>
+    </Flex>
+    )
+} 
+
+interface RefreshNFTViewProps{
+    refetchNFT: ()=>void
+}
+function RefreshNFTView({refetchNFT}:RefreshNFTViewProps){
+    return(
+        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='10vh' width={"100%"}>
+        <Flex direction='column' maxW={'350px'} alignItems='center'>
+            <Text as='h3' mb='5' textStyle={'h3'}>
+                Oh oh!
+            </Text>
+            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
+                There seem to be a problem fetching your NFT data. Please be patient with use and ...
+            </Text>
+            <Button variant='ghost' onClick={refetchNFT}>
+                Try Again
+            </Button>
+        </Flex>
+    </Flex>
+    )
+} 
