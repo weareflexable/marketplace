@@ -124,9 +124,9 @@ export default function Ticket(){
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Price</Text></Flex>
+                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
                             {/* @ts-ignore */}
-                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter(price/100)}`}</Text></Flex>
+                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemsDetails[0].price/100)}`}</Text></Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
