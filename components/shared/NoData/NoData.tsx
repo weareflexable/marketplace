@@ -15,7 +15,7 @@ export default function NoData(){
                 No data!
             </Text>
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
-                Seems like you don@apos;t have any booked services yet
+               {` Seems like you don't have any booked services yet`}
             </Text>
             <Button variant='ghost' onClick={navigateToMarketPlace}>
                 Go back to marketplace
