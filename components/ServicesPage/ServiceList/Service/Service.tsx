@@ -91,7 +91,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                                         <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
                                     </HStack>
                                 </HStack>
-                                <Text color={'white'}>${numberFormatter.from(subTotal)}</Text>
+                                {subTotal===0?null:<Text color={'white'}>${numberFormatter.from(subTotal)}</Text>}
                             </Flex>
                         </Flex>
                     </Flex>
