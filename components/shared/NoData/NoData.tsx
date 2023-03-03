@@ -12,10 +12,10 @@ export default function NoData(){
     <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='100vh' width={"100%"}>
         <Flex direction='column' maxW={'350px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
-                No data!
+                No Bookings!
             </Text>
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
-               {` Seems like you don't have any booked services yet`}
+               {` Seems like you don't have any booked service yet`}
             </Text>
             <Button variant='ghost' onClick={navigateToMarketPlace}>
                 Go back to marketplace
