@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button} from '@chakra-ui/react'
+import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
@@ -74,132 +74,136 @@ export default function Ticket(){
      
 
     return(
-        <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
-            {/* header */}
-            {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
-            <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
-                <HStack ml='5' spacing={'5'}>
-                    <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                    <Text as='h1' textStyle={'h4'} color='text.300' >{ctx_currentDat.serviceItemsDetails[0].name}</Text>
-                </HStack>
-            </Flex> 
-            }
+        <Grid templateColumns='repeat(5, 1fr)' bg='#171717'>
+            <GridItem colStart={[1,1,2]} colEnd={[6,6,5]}>
+            <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
+                {/* header */}
+                {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
+                <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
+                    <HStack ml='5' spacing={'5'}>
+                        <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
+                        <Text as='h1' textStyle={'h4'} color='text.300' >{ctx_currentDat.serviceItemsDetails[0].name}</Text>
+                    </HStack>
+                </Flex> 
+                }
 
-           {isGeneratingCode
-           ?<TicketSkeleton/> 
-           :
-           <Flex direction='column'>
-                <Flex direction='column' px='9' mb='5' w='100%'>
-                     <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
-                    { isRedeem
-                    ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                        <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
-                    </Flex>
-                    :dayjs().isAfter(dayjs(validityEnd))
-                    ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
-                        <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
-                    </Flex>
-                    :<>
-                        <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                            <HStack w='100%' justifyContent={'center'} mb='2'>
-                                <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
-                                <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
-                            </HStack>
-                            <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+            {isGeneratingCode
+            ?<TicketSkeleton/> 
+            :
+            <Flex direction='column'>
+                    <Flex direction='column' px='9' mb='5' w='100%'>
+                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
+                        { isRedeem
+                        ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                         </Flex>
-                        <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                            <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
+                        :dayjs().isAfter(dayjs(validityEnd))
+                        ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
                         </Flex>
-                    </>
-                    }
-                </Flex>  
-
-                <Divider borderColor={'#2b2b2b'}/>
-
-                <VStack px={'1rem'} mt='5' spacing='2'>
-                    <VStack w='100%' spacing={2}>
-                        <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
-                            <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
-                        </HStack>
-
-                        <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
-                            {/* @ts-ignore */}
-                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemsDetails[0].price/100)}`}</Text></Flex>
-                        </HStack>
-
-                        <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Quantity</Text></Flex>
-                            {/* @ts-ignore */}
-                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
-                        </HStack>
-
-                        <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
-                            {/* @ts-ignore */}
-                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
-                        </HStack>
-
-                        <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
-                            <Flex flex={7}>
-                                <Text color='brand.200' textStyle={'secondary'}> 
-                                    <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails[0].lat},${serviceDetails[0].lon}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
-                                </Text>
+                        :<>
+                            <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
+                                <HStack w='100%' justifyContent={'center'} mb='2'>
+                                    <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
+                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
+                                </HStack>
+                                <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
                             </Flex>
-                        </HStack> 
-
-                        <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
-                            <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
-                            <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails[0].contactNumber}`}>{`+1 (${serviceDetails[0].contactNumber.substring(2,5)}) ${serviceDetails[0].contactNumber.substring(5,8)}-${serviceDetails[0].contactNumber.substring(8)}`}</a></Text></Flex>
-                        </HStack>
-
-
-                    </VStack>
-                     
-                       
-                     
-                </VStack> 
-                <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
-                    
-                {isTxHash
-                        ?<>
-                            <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
-                        <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
-                        {nftQuery.isLoading
-                            ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
-                            :<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                            <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
+                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
+                            </Flex>
+                        </>
                         }
-                    </Flex>
-                    {nftQuery.isLoading
-                    ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
-                    :<VStack px={'1rem'} mt='5' width={'100%'}  mb={'6'} spacing='2'>
+                    </Flex>  
+
+                    <Divider borderColor={'#2b2b2b'}/>
+
+                    <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                            </HStack>
+
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
+                                {/* @ts-ignore */}
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemsDetails[0].price/100)}`}</Text></Flex>
+                            </HStack>
+
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Quantity</Text></Flex>
+                                {/* @ts-ignore */}
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
+                            </HStack>
+
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
+                                {/* @ts-ignore */}
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
+                            </HStack>
+
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                    <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData.tokenID}`}>View DAT on opensea</a> 
+                                        <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails[0].lat},${serviceDetails[0].lon}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
                                     </Text>
                                 </Flex>
+                            </HStack> 
+
+                            <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
+                                <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails[0].contactNumber}`}>{`+1 (${serviceDetails[0].contactNumber.substring(2,5)}) ${serviceDetails[0].contactNumber.substring(5,8)}-${serviceDetails[0].contactNumber.substring(8)}`}</a></Text></Flex>
                             </HStack>
-                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
-                                {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>#{nftData.tokenID}</Text></Flex>
-                            </HStack>
+
+
                         </VStack>
-                    </VStack>}
-                        </>
-                        :nftQuery.isError
-                        ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
-                        :<NoHash/>
-                }
-                    
-           </Flex>
-           }
-        </Flex>
+                        
+                        
+                        
+                    </VStack> 
+                    <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
+                        
+                    {isTxHash
+                            ?<>
+                                <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
+                            <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                            {nftQuery.isLoading
+                                ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
+                                :<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                            }
+                        </Flex>
+                        {nftQuery.isLoading
+                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
+                        :<VStack px={'1rem'} mt='5' width={'100%'}  mb={'6'} spacing='2'>
+                            <VStack w='100%' spacing={2}>
+                                <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                    <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
+                                    <Flex flex={7}>
+                                        <Text color='brand.200' textStyle={'secondary'}> 
+                                        <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData.tokenID}`}>View DAT on opensea</a> 
+                                        </Text>
+                                    </Flex>
+                                </HStack>
+                                <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                    <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
+                                    {/* @ts-ignore */}
+                                    <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>#{nftData.tokenID}</Text></Flex>
+                                </HStack>
+                            </VStack>
+                        </VStack>}
+                            </>
+                            :nftQuery.isError
+                            ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
+                            :<NoHash/>
+                    }
+                        
+            </Flex>
+            }
+            </Flex>
+            </GridItem>
+        </Grid>
     )
 }
 
