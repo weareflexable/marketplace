@@ -9,6 +9,7 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import request, { gql } from 'graphql-request'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { numberFormatter } from '../../utils/formatter'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -125,7 +126,7 @@ export default function Ticket(){
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                             <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Price</Text></Flex>
                             {/* @ts-ignore */}
-                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
+                            <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter(price/100)}`}</Text></Flex>
                         </HStack>
 
                         <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>

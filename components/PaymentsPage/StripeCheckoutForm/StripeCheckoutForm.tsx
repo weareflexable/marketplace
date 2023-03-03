@@ -1,11 +1,12 @@
 import React,{useState,useReducer} from 'react';
-import {Flex,Box,Button,Heading,useToast} from '@chakra-ui/react'
+import {Flex,Box,Button,Heading,HStack,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 import { deleteStorage } from '../../../utils/localStorage';
 import { number } from 'yup';
 import {numberFormatter} from '../../../utils/formatter' 
+import { useRouter } from 'next/router';
 
 const CheckoutForm = () => {
 
@@ -19,6 +20,7 @@ const CheckoutForm = () => {
   const [transactionStatus, setTransactionStatus] = useState<string>('')
 
   console.log(elements)
+  const router = useRouter()
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     // We don't want to let default form submission happen here,
@@ -77,7 +79,10 @@ const CheckoutForm = () => {
           <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button colorScheme={'brand'} mt='5' type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Complete Payment of ${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}`}</Button>
+          <HStack mt='5' spacing={3}>
+            <Button colorScheme={'brand'} onClick={()=>router.back()} variant='ghost'>Cancel</Button>
+            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Complete Payment of ${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}`}</Button>
+          </HStack>
           </form>
       </Box>     
   </Flex>
