@@ -59,7 +59,7 @@ export default function ServicesPage(){
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
-    const [selectedDate, setSelectedDate] = useState(dayjs().format())
+    const [selectedDate, setSelectedDate] = useState(dayjs().format('MMM DD, YYYY'))
 
 
     // const [isLoading, setIsLoading] = useState(false)
