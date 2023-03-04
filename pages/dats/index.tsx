@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Box,
@@ -44,6 +44,16 @@ export default function MyBookings() {
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
+  const [isDelaying, setIsDelaying] = useState(false)
+
+  useEffect(() => {
+  const interval =  setInterval(()=>{
+    setIsDelaying(true)
+  },4000)
+  return()=>{
+    clearInterval(interval)
+  }
+  }, [])
 
   const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=0}) => {
     const paseto = getPlatformPaseto();
@@ -72,7 +82,7 @@ export default function MyBookings() {
       if(totalDataLength < fetchedDataLength) return undefined
       return pages.length 
     },
-    enabled:isAuthenticated
+    enabled:isAuthenticated && isDelaying
   }
   );
 
@@ -133,7 +143,7 @@ const gotoTicketPage = (dat:any)=>{
                 </Text>
               </Box>
                 {
-                  datsQuery.isLoading
+                  datsQuery.isLoading || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     orders={datsQuery.data && datsQuery.data.pages}
