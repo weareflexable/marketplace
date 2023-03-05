@@ -24,7 +24,7 @@ const AuthContext = createContext(undefined);
 const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const {path, basePath, push, query } = useRouter();
+  const router = useRouter();
 
   const [paseto, setPaseto] =useState(()=>{
     const storedPaseto = getStorage('PLATFORM_PASETO')
@@ -35,8 +35,16 @@ const AuthContextProvider = ({ children }) => {
 })
 
 
-  const pasetoFromUrl = query.paseto 
+  const pasetoFromUrl = router.query.paseto 
   // console.log('urlpaseto',pasetoFromUrl)
+  const isPaymentPending = router.query.payment === 'pending' ? true : false
+
+  // push user to payment if it's pending
+  useEffect(() => {
+    if(isPaymentPending){
+      router.push('/payments')
+    }
+  }, [isPaymentPending])
 
   useEffect(()=>{
       if(paseto !== '' && paseto !== null){

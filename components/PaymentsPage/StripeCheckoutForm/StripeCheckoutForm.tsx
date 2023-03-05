@@ -7,11 +7,13 @@ import { deleteStorage } from '../../../utils/localStorage';
 import { number } from 'yup';
 import {numberFormatter} from '../../../utils/formatter' 
 import { useRouter } from 'next/router';
+import useLastVisitedPage from '../../../hooks/useLastVistedPage';
 
 const CheckoutForm = () => {
 
   const {totalAmount,cartItems}=  useCheckoutContext()
   const {buyNowTotal} = useInstantBuyContext()
+  const lastVisitedPage = useLastVisitedPage()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -73,6 +75,11 @@ const CheckoutForm = () => {
     }
   };
 
+  function navigateBack(){
+    console.log(lastVisitedPage)
+    router.replace(`http://localhost:3001${lastVisitedPage}`)
+  }  
+
   return (
   <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
       <Box w='100%' maxW='400px'>
@@ -80,7 +87,7 @@ const CheckoutForm = () => {
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
           <HStack mt='5' spacing={3}>
-            <Button colorScheme={'brand'} onClick={()=>router.back()} variant='ghost'>Cancel</Button>
+            <Button colorScheme={'brand'} onClick={navigateBack} variant='ghost'>Cancel</Button>
             <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}`}</Button>
           </HStack>
           </form>

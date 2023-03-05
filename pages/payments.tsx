@@ -63,7 +63,7 @@ const Payments = () => {
           }
         });
     
-        console.log(res)
+        // console.log(res)
         setClientSecret(res.data.clientSecret)
   
       }catch(err){
@@ -74,6 +74,7 @@ const Payments = () => {
       fetchSecret()
     },[]);
   
+    // Bring header to this page
 
   return (
     <Flex bg='gray.900' w='100' h='100vh' p='4'  justifyContent='center' alignItems='center'>

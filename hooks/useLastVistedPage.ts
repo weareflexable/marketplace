@@ -1,20 +1,21 @@
 import {useState} from 'react'
 import { setStorage,deleteStorage } from '../utils/localStorage'
+import useLocalStorage from './useLocalStorage';
 
 
 export default function useLastVisitedPage(){
 
-    const [lastVistitedPage, setLastVisitedPage] = useState('');
+    const {state:lastVistitedPage, setState:setLastVisitedPage} = useLocalStorage('lastVisitedPage','');
 
     
     const setPage = (route:string)=>{
-        setStorage('lasVisitedPage', route)
+        setStorage('lastVisitedPage', route)
     } 
 
     const removePage =(route:string)=>{
         deleteStorage(route)
     }
 
-    return {lastVistitedPage, }
+    return {lastVistitedPage, setLastVisitedPage }
 
 }

@@ -8,6 +8,7 @@ import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
+import useLastVisitedPage from '../../../../hooks/useLastVistedPage'
 
 // TODO: Have a separate context for handling cart items
 
@@ -20,6 +21,7 @@ const useService = (data:any)=>{
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
+    const {setLastVisitedPage} = useLastVisitedPage()
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -62,14 +64,15 @@ const useService = (data:any)=>{
         setTimeout(() => {
             setIsProceedingToPayment(false)
             router.push('/payments')
-        }, 3000);
+        }, 2000);
      }
 
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
-        setStorage('lastVisitedPage',currentPath);
-      //   location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
-      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
+        setLastVisitedPage(currentPath);
+      
+      location.href = "http://localhost:3002/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
 
@@ -84,6 +87,9 @@ const useService = (data:any)=>{
            description:ticketData.name,
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
+
+         setBuyItems([buyNowCartItem]) // passes cart items to checkout context
+         setBuyNowTotal(subTotal)
 
         if(isAuthenticated){
 
