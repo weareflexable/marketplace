@@ -19,7 +19,7 @@ const CheckoutForm = () => {
   const [transactionError,setTransactionError] = useState<string|undefined>('')
   const [transactionStatus, setTransactionStatus] = useState<string>('')
 
-  console.log(elements)
+  // console.log(elements)
   const router = useRouter()
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
@@ -81,7 +81,7 @@ const CheckoutForm = () => {
           <PaymentElement id='payment-element' />
           <HStack mt='5' spacing={3}>
             <Button colorScheme={'brand'} onClick={()=>router.back()} variant='ghost'>Cancel</Button>
-            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay ${buyNowTotal>0? numberFormatter.from(buyNowTotal):`$${numberFormatter.from(totalAmount/100)}`}`}</Button>
+            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}`}</Button>
           </HStack>
           </form>
       </Box>     

@@ -20,7 +20,7 @@ const InstantBuyContextProvider = ({children}:InstantBuyContextProps)=>{
 
     
     const {state:buyItem, setState:setBuyItem} =  useLocalStorage('buyNowItem',[]); // this should be in local storage
-    const [buyNowTotal, setBuyNowTotal] =  useState<number>(0);
+    const {state:buyNowTotal, setState:setBuyNowTotal} =  useLocalStorage('buyNowTotal',0);
 
     
     function setBuyItems(items:any){
