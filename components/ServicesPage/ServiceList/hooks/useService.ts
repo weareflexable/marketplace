@@ -71,8 +71,7 @@ const useService = (data:any)=>{
         // store users last page before starting logging process
         setLastVisitedPage(currentPath);
       
-      location.href = "http://localhost:3002/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
-      // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
 
