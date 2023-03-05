@@ -9,13 +9,15 @@ import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 
+// TODO: Have a separate context for handling cart items
+
 // This should accept a Service-item type in data
 const useService = (data:any)=>{
 
 
     const {isAuthenticated} = useAuthContext()
 
-    // Instant buy is the contentx that holds logic for when a user
+    // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
 
@@ -73,7 +75,7 @@ const useService = (data:any)=>{
 
      const buyTicketNow = ()=>{
 
-      console.log(ticketData)
+      // console.log(ticketData)
         const buyNowCartItem = {
            serviceItemId: ticketData.id,
            quantity: String(ticketData.quantity),
@@ -81,13 +83,13 @@ const useService = (data:any)=>{
            email: 'flexable@yahoo.com',
            description:ticketData.name,
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
-         //   date: ticketData.tickets[0].date
          }
 
         if(isAuthenticated){
 
             setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
+            // This local storage value is used in payment page to determine if payment is buy now or cart
             setStorage('shouldBuyInstantly','true')
             proceedToPayment();
             return

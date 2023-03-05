@@ -1,5 +1,6 @@
 import React,{createContext, useContext, useState} from 'react'
 import { Service } from '../data/services';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 
 const InstantBuyContext = createContext<providerValuesType|undefined>(undefined);
@@ -17,7 +18,8 @@ type providerValuesType = {
 
 const InstantBuyContextProvider = ({children}:InstantBuyContextProps)=>{
 
-    const [buyItem, setBuyItem] =  useState<any|null>([]);
+    
+    const {state:buyItem, setState:setBuyItem} =  useLocalStorage('buyNowItem',[]); // this should be in local storage
     const [buyNowTotal, setBuyNowTotal] =  useState<number>(0);
 
     

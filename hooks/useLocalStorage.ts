@@ -24,7 +24,7 @@ const useLocalStorage = (key:string, defaultValue:any)=>{
     // localStorage.setItem('cart', stringifiedValue)
     setStorage(key, stringifiedValue)
 
-    }, [state])
+    }, [key, state])
 
     return {state, setState}
 
