@@ -77,7 +77,7 @@ const CheckoutForm = () => {
 
   function navigateBack(){
     console.log(history.lastVistitedPage)
-    router.replace(`http://localhost:3001${history.lastVistitedPage}`)
+    router.push(`${history.lastVistitedPage}`)
   }  
 
   return (
