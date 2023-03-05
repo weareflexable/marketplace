@@ -6,7 +6,6 @@ import {MdLocationPin} from 'react-icons/md'
 import { useRouter } from 'next/router';
 
 interface StoreHeaderProps{
-    coverImageHash:string,
     storeName: string,
     city: string, 
     state: string,
@@ -15,7 +14,7 @@ interface StoreHeaderProps{
     street: string,
     logoImageHash: string
 }
-export default function StoreHeader({coverImageHash,logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
+export default function StoreHeader({logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
 
     const coverImage = logoImageHash && logoImageHash 
     

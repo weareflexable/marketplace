@@ -90,29 +90,31 @@ export default function ServicesPage(){
             return res.data
         },
         enabled: serviceId !== undefined,
-        staleTime: 30000
+        staleTime: Infinity
     })
     
     // Confirming object is not undefined before accessing fields
     const service = serviceQuery.data && serviceQuery.data.data[0]
+
+    console.log('services',service)  
     
-    const availabilityQuery = useQuery({
-        queryKey:['availability',serviceId], 
-        queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service/availability?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=availability`) 
+    // const availabilityQuery = useQuery({
+    //     queryKey:['availability',serviceId], 
+    //     queryFn:async()=>{
+    //         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service/availability?key=org_service_id&value=${serviceId}&pageNumber=0&pageSize=12&key2=availability`) 
 
-            return res.data.data
-        },
-        enabled: serviceId !== undefined,
-        staleTime: 30000 
-    })
+    //         return res.data.data
+    //     },
+    //     enabled: serviceId !== undefined,
+    //     staleTime: 30000 
+    // })
 
-    const availabilities = availabilityQuery.data && availabilityQuery.data
+    // const availabilities = availabilityQuery.data && availabilityQuery.data
 
 
     // The service-item query is dependent on the success of both the service and the availability queries
     // before it can finally be executed.
-    const shouldFetchServiceItems = serviceId !== undefined && availabilityQuery.isSuccess;
+    const shouldFetchServiceItems = serviceId !== undefined;
 
     const serviceItemsQuery = useQuery({
         queryKey:['serviceItems',serviceId,selectedDate], 
@@ -253,7 +255,6 @@ export default function ServicesPage(){
                        { serviceQuery.isLoading
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<StoreHeader 
-                         coverImageHash={service.logoImageHash || ''}
                          storeName={service.name}
                          lat = {service.latitude} 
                          lon = {service.longitude}
