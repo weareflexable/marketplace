@@ -1,5 +1,5 @@
 import React,{useState,useReducer} from 'react';
-import {Flex,Box,Button,Heading,HStack,useToast} from '@chakra-ui/react'
+import {Flex,Box,Button,Heading,Text, HStack,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
 import { useInstantBuyContext } from '../../../context/InstantBuyContext';
@@ -81,9 +81,9 @@ const CheckoutForm = () => {
   }  
 
   return (
-  <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
-      <Box w='100%' maxW='400px'>
-          <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
+  // <Flex w='100' h='100%' minHeight={'500px'}  justifyContent='center' alignItems='center'>
+      <Box w='100%' mt='9' maxW='500px'>
+        {!elements?<Text>Loading form...</Text>:null} 
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
           <HStack mt='5' spacing={3}>
@@ -92,7 +92,7 @@ const CheckoutForm = () => {
           </HStack>
           </form>
       </Box>     
-  </Flex>
+  // </Flex>
   )
 };
 

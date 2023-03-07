@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { Flex} from '@chakra-ui/react'
+import { Box, Flex, Heading, HStack, Text, VStack} from '@chakra-ui/react'
 
 import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
@@ -21,6 +21,7 @@ const Payments = () => {
     const {cartItems} = useCheckoutContext();
     const {buyItems} = useInstantBuyContext();
     const {isAuthenticated,paseto} = useAuthContext()
+    const [items,setItems] = useState({}) 
 
 
     const createPayloadObject = (cartItems: Array<any>)=>{
@@ -48,13 +49,13 @@ const Payments = () => {
       //   // check if paseto has expired or not
       //   paseto = getPlatformPaseto()
       // }
+      setItems(buyItems[0])
       
       const fetchSecret = async ()=>{
         let shouldBuyInstantly = getStorage('shouldBuyInstantly')
         // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
         // co
         // const payload = createPayloadObject(itemsToPurchase)
-        console.log('payload',buyItems)
         const payload = buyItems[0]
         try{
         const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
@@ -77,8 +78,22 @@ const Payments = () => {
     // Bring header to this page
 
   return (
-    <Flex bg='gray.900' w='100' h='100vh' p='4'  justifyContent='center' alignItems='center'>
-        { stripePromise && clientSecret && 
+    <Flex bg='gray.900' w='100' h='100vh' p='4' direction={'column'}  justifyContent='center' alignItems='center'>
+      <Box w='100%' maxW={'500px'}>
+          <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
+      </Box>
+      {/* { buyItems 
+      ?<Flex direction={'column'} w='100%' maxW='500px'>
+        <Flex mt='6' direction={'column'}>
+          <Text textStyle={'body'} color='text.300'>Summary</Text>
+          <VStack mt='5' border='1px solid #2b2b2b' borderRadius={'4px'} padding='4' w='100%'>
+            
+          </VStack>
+        </Flex>
+      </Flex>
+      :null} */}
+      {/* {!clientSecret?<Text>Loading form ...</Text>:null} */}
+        { stripePromise && clientSecret &&
         <Elements stripe={stripePromise} options={{clientSecret,appearance:{theme:'night'}}}>
             <CheckoutForm />
         </Elements>
