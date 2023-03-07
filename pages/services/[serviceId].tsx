@@ -250,7 +250,7 @@ export default function ServicesPage(){
                 :<Header/>
             }  
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
-                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
+                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
                        { serviceQuery.isLoading
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
@@ -296,7 +296,7 @@ export default function ServicesPage(){
                 </Flex> 
 
                     {/* Dont render web cart on mobile */}
-                <Flex display={['none','none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
+                {/* <Flex display={['none','none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
                     {cart.length>0?
                         <Cart 
                             onCreateOrder={createOrder} 
@@ -307,7 +307,7 @@ export default function ServicesPage(){
                             tickets={cart}
                         />
                     :null}
-                </Flex>
+                </Flex> */}
 
                 {/* Dont render mobile cart on large screen */}
                 {isCartDrawerOpen?<Flex display={['flex','flex','flex','none']} width={'100%'}>

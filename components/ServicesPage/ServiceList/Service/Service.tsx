@@ -8,6 +8,7 @@ import {
     Divider,
     Button,
     IconButton,
+    // Image,
     useMediaQuery
 } from '@chakra-ui/react'
 
@@ -69,7 +70,9 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
     return( 
         <Box display={['block']} bg='#242424' borderRadius={8} cursor='pointer' >
             <Flex direction={['column','column','row']}>
-                <Image alt='Artwork for ticket' loading='lazy' style={{borderRadius:'4px 4px 0 0'}} width={`${isLargerThan800?'550px':'100%'}`} height={'350px'} objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
+                <Box objectFit={'contain'} maxH='300px' height={'300px'} width='100%' maxW='400px' position={'relative'}>
+                    <Image alt='Artwork for ticket' loading='lazy' layout='fill'  objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
+                </Box>
                 <Flex direction={['column']}>
                     <Flex py='1em'>
                         <Flex px='1em' flex={4} direction='column'>
@@ -85,7 +88,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                                     <HStack spacing={1}>
                                         <Text textStyle={'secondary'} color='accent.300'>${numberFormatter.from(data.price/100)}</Text>
                                         <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
-                                    </HStack>
+                                    </HStack> 
                                     <HStack spacing={2}>
                                         <Text textStyle={'secondary'} color={'text.300'}>{numberFormatter.from(ticketData.ticketsAvailable)}</Text>
                                         <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
