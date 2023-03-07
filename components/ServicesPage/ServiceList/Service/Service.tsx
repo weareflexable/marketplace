@@ -55,6 +55,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
     const {
         ticketData,
         isTicketsAvailable,
+        isBuyingTicket,
         // isTicketsSoldOut,
         isMaxQuantity,
         isMinQuantity,
@@ -106,6 +107,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                             isMinQuantity= {isMinQuantity}
                             isTicketsAvailable = {isTicketsAvailable}
                             subTotal ={subTotal}
+                            isBuyingTicket={isBuyingTicket}
                             isMaxQuantity = {isMaxQuantity}
                             isAuthenticated = {isAuthenticated}
                             incrementQuantity = {incrementQuantity}
@@ -149,6 +151,7 @@ function FlexableStepper({isMinQuantity, decrementQuantity, isMaxQuantity, incre
 interface FlexableComboButtonProps{
     isMinQuantity: boolean,
     quantity: number,
+    isBuyingTicket: boolean,
     decrementQuantity: ()=>void,
     incrementQuantity: ()=>void,
     isMaxQuantity:boolean
@@ -156,10 +159,11 @@ interface FlexableComboButtonProps{
     isTicketsAvailable: boolean,
     isAuthenticated:boolean,
     buyTicketNow: ()=>void,
-    subTotal:number
+    subTotal:number,
+    // children:React.ReactNode
     
 }
-function FlexableComboButton({isMinQuantity, isMaxQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
+function FlexableComboButton({isMinQuantity, isBuyingTicket, isMaxQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
     
     return(
         <>
@@ -177,7 +181,7 @@ function FlexableComboButton({isMinQuantity, isMaxQuantity, quantity, isTicketsA
                     />
                 <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                 <Box py='1' mr='6'>
-                    <Button size='sm' textStyle={'buttonLabel'} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
+                    <Button size='sm' textStyle={'buttonLabel'} isLoading={isBuyingTicket} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
                 </Box>
              </Flex>
         </Flex>
@@ -192,3 +196,15 @@ function FlexableComboButton({isMinQuantity, isMaxQuantity, quantity, isTicketsA
 export default Ticket
 
 
+interface BuyNowButton{
+    isMinQuantity:boolean
+    buyTicketNow:()=>void
+    isAuthenticated: boolean
+}
+function BuyNowButton({isMinQuantity, buyTicketNow, isAuthenticated}:BuyNowButton){
+    return(
+        <Box py='1' mr='6'>
+            <Button size='sm' textStyle={'buttonLabel'} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
+        </Box>
+    )
+}

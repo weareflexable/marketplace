@@ -22,6 +22,7 @@ const useService = (data:any)=>{
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
     const {setLastVisitedPage} = useLastVisitedPage()
+    const [isBuyingTicket, setIsBuyingTicket] = useState(false)
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -77,6 +78,7 @@ const useService = (data:any)=>{
 
      const buyTicketNow = ()=>{
 
+      setIsBuyingTicket(true)
       // console.log(ticketData)
         const buyNowCartItem = {
            serviceItemId: ticketData.id,
@@ -97,8 +99,10 @@ const useService = (data:any)=>{
             // This local storage value is used in payment page to determine if payment is buy now or cart
             setStorage('shouldBuyInstantly','true')
             proceedToPayment();
+            setIsBuyingTicket(false)
             return
         }
+        setIsBuyingTicket(false)
         loginBeforeAction();
      }
  
@@ -121,6 +125,7 @@ const useService = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
+        isBuyingTicket,
         isMaxQuantity,
         subTotal,
         isAuthenticated,

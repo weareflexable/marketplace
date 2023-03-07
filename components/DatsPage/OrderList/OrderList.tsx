@@ -1,7 +1,8 @@
 import React from "react";
 import {
   Flex, Text, HStack, Button,
-  Badge
+  Badge,
+  Avatar
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import {ChevronRightIcon} from '@chakra-ui/icons'
@@ -44,35 +45,48 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                 >
                   <HStack justifyContent={'space-between'} mb="3" spacing="1">
                     <HStack>
-                      <Text color="text.200">
+                      <Text textStyle={'caption'} color="text.200">
                         {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")}
                       </Text>
                       
                       { order.isRedeem 
                       ?
-                        <Text textStyle={'secondary'} colorScheme={"yellow"} ml="1">
+                        <Text textStyle={'caption'} colorScheme={"yellow"} ml="1">
                           Redeemed
                         </Text>
                         :
                         dayjs().isAfter(dayjs(order.validityEnd))
                         ?
-                        <Text textStyle={'secondary'} color='#F16161' ml="1">
+                        <Text textStyle={'caption'} color='#F16161' ml="1">
                           Expired
                         </Text>
                       : (
-                        <Text textStyle={'secondary'} color='state.success' ml="1">
+                        <Text textStyle={'caption'} color='state.success' ml="1">
                           Valid
                         </Text>
                       )}
                     </HStack>
                     <ChevronRightIcon _hover={{color:'brand.300'}} style={{cursor:'pointer'}} boxSize={'6'} onClick={()=>gotoTicketPage(order)}/>
                   </HStack>
-                  <Flex mb="1" justifyContent="space-between">
+                  <Flex  justifyContent="space-between">
                     
                     {/* order name */}
-                    <Text color="whiteAlpha.900" as="h4" textStyle="body">
-                      {order.serviceItemsDetails[0].name} 
-                    </Text>
+                    <Flex alignItems={'center'}>
+                      <Avatar mr='3' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${order.serviceItemsDetails[0].logoImageHash}`}/>
+                      <Flex direction={'column'}>
+                        <Text color="whiteAlpha.900" as="h4" textStyle="body">
+                          {order.serviceItemsDetails[0].name} 
+                        </Text>
+                        <HStack mt="1" spacing="1">
+                          <Text textStyle={'secondary'} color="text.100">
+                            By
+                          </Text>
+                          <Text textStyle={'secondary'} color="text.200">
+                            {order.serviceDetails[0].name}
+                          </Text>
+                        </HStack>
+                      </Flex>
+                    </Flex>
 
                     {/* pricing */}
                     <Flex direction={'column'} alignItems='flex-end'>
@@ -91,7 +105,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                     </Flex>
 
                   </Flex>
-
+{/* 
                   <HStack mb="1" spacing="1">
                     <Text textStyle={'secondary'} color="text.100">
                       By
@@ -99,7 +113,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                     <Text textStyle={'secondary'} color="text.300">
                       {order.serviceDetails[0].name}
                     </Text>
-                  </HStack>
+                  </HStack> */}
 
                 </Flex>
               ))
