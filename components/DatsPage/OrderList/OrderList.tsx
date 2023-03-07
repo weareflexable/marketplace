@@ -65,7 +65,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                         </Text>
                       )}
                     </HStack>
-                    <ChevronRightIcon boxSize={'6'} onClick={()=>gotoTicketPage(order)}/>
+                    <ChevronRightIcon _hover={{color:'brand.300'}} style={{cursor:'pointer'}} boxSize={'6'} onClick={()=>gotoTicketPage(order)}/>
                   </HStack>
                   <Flex mb="1" justifyContent="space-between">
                     

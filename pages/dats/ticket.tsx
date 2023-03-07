@@ -171,7 +171,9 @@ export default function Ticket(){
                             <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
-                                :<Image width={'100%'} objectFit='cover'  height={'350px'} loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                                : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
+                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                                 </Box>   
                             }
                         </Flex>
                         {nftQuery.isLoading
