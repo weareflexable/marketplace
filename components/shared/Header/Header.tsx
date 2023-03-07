@@ -43,7 +43,7 @@ export default function Header(){
         console.log(route)
     }
 
-    console.log(isAuthenticated, userQuery.isFetched) 
+
 
     return(
         <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>

@@ -22,7 +22,6 @@ interface TicketListProps{
 }
 
 export default function TicketList({services,date,onAddToCart}:TicketListProps){
-    console.log(services)
 
     return(
         <>

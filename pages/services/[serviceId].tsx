@@ -94,9 +94,9 @@ export default function ServicesPage(){
     })
     
     // Confirming object is not undefined before accessing fields
-    const service = serviceQuery.data && serviceQuery.data.data[0]
+    const service = serviceQuery && serviceQuery.data && serviceQuery.data.data[0]
 
-    console.log('services',service)  
+    // console.log('services',service)   
     
     // const availabilityQuery = useQuery({
     //     queryKey:['availability',serviceId], 
@@ -252,7 +252,7 @@ export default function ServicesPage(){
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
-                       { serviceQuery.isLoading
+                       { serviceQuery.isLoading || service === undefined
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<StoreHeader 
                          storeName={service.name}
