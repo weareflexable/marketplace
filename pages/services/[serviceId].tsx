@@ -80,6 +80,7 @@ export default function ServicesPage(){
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
 
+    console.log(serviceId)
 
     
     const serviceQuery = useQuery({
@@ -130,16 +131,16 @@ export default function ServicesPage(){
 
     const { isOpen, onOpen:showPaymentModal, onClose } = useDisclosure() 
 
-    // effect to check if mobile cart was open before user got redirect to login page
-    useEffect(()=>{
-        const isCartOpenBeforeLogin = getStorage('isCartOpenBeforeLogin');
-        if(isCartOpenBeforeLogin === 'true'){
-            // Open cart drawer back up
-            setIsCartDrawerOpen(true)
-            // Then immediately clear storage
-            deleteStorage('isCartOpenBeforeLogin')
-        } 
-    },[])
+    // // effect to check if mobile cart was open before user got redirect to login page
+    // useEffect(()=>{
+    //     const isCartOpenBeforeLogin = getStorage('isCartOpenBeforeLogin');
+    //     if(isCartOpenBeforeLogin === 'true'){
+    //         // Open cart drawer back up
+    //         setIsCartDrawerOpen(true)
+    //         // Then immediately clear storage
+    //         deleteStorage('isCartOpenBeforeLogin')
+    //     } 
+    // },[])
 
 
  
@@ -206,20 +207,20 @@ export default function ServicesPage(){
     }
 
 
-    const loginBeforePayment = (totalCost:number)=>{
-        // this is to tell browser that payment was initiated before login
-            setAmount(totalCost)
-            setCartItems(cart)
-            // set current path
-            const currentPath = `${asPath}${basePath!==''? basePath:'/'}`
-            setStorage('lastVisitedPage',currentPath)
+    // const loginBeforePayment = (totalCost:number)=>{
+    //     // this is to tell browser that payment was initiated before login
+    //         setAmount(totalCost)
+    //         setCartItems(cart)
+    //         // set current path
+    //         const currentPath = `${asPath}${basePath!==''? basePath:'/'}`
+    //         setStorage('lastVisitedPage',currentPath)
 
-            // store that login was clicked from here
-            setStorage('isCartOpenBeforeLogin', 'true')
+    //         // store that login was clicked from here
+    //         setStorage('isCartOpenBeforeLogin', 'true')
 
-            push('/landing')
+    //         push('/landing')
         
-    }
+    // }
 
     function changeDate(date:any){ 
         //@ts-ignore
@@ -310,7 +311,7 @@ export default function ServicesPage(){
                 </Flex> */}
 
                 {/* Dont render mobile cart on large screen */}
-                {isCartDrawerOpen?<Flex display={['flex','flex','flex','none']} width={'100%'}>
+                {/* {isCartDrawerOpen?<Flex display={['flex','flex','flex','none']} width={'100%'}>
                     <MobileCart
                         onCreateOrder={createOrder} 
                         onIncrementCartItemQuantity={incrementCartItemQuantity} 
@@ -321,7 +322,7 @@ export default function ServicesPage(){
                         isDrawerOpen={isCartDrawerOpen}
                         onCloseDrawer={()=>setIsCartDrawerOpen(false)}
                     />
-                </Flex>:null}
+                </Flex>:null} */}
 
             </SimpleGrid>
             {/* cart button to only display on mobile */}
