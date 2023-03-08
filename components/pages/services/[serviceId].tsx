@@ -1,22 +1,22 @@
 import React,{useEffect,useState} from 'react'
 import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
-import Header from '../../components/shared/Header/Header'
-import Cart from '../../components/ServicesPage/Cart/Cart'
-import TicketList from '../../components/ServicesPage/ServiceList'
-import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
+import Header from '../../shared/Header/Header'
+import Cart from '../../ServicesPage/Cart/Cart'
+import TicketList from '../../ServicesPage/ServiceList'
+import CartSummary from '../../ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
-import { useCheckoutContext } from '../../context/CheckoutContext'
-import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
-import { deleteStorage, getStorage, setStorage } from '../../utils/localStorage'
+import { useCheckoutContext } from '../../../context/CheckoutContext'
+import StoreHeader from '../../ServicesPage/StoreHeader/StoreHeader'
+import { deleteStorage, getStorage, setStorage } from '../../../utils/localStorage'
 import { MdAddShoppingCart } from 'react-icons/md'
-import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
-import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
-import useLocalStorage from '../../hooks/useLocalStorage'
+import MobileCart from '../../ServicesPage/Cart/MobileCart/MobileCart'
+import MobileCartSummary from '../../ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
+import useLocalStorage from '../../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import ServiceSkeleton from '../../components/ServicesPage/ServiceList/Skeleton/Skeleton'
+import ServiceSkeleton from '../../ServicesPage/ServiceList/Skeleton/Skeleton'
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -28,7 +28,7 @@ dayjs.extend(advanced)
 
 //@ts-ignore
 import CalendarDates from "calendar-dates";
-import { Service } from '../../data/services'
+import { Service } from '../../../data/services'
 const calendarDates = new CalendarDates()
 
 
