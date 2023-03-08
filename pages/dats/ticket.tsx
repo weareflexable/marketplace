@@ -107,7 +107,9 @@ export default function Ticket(){
                                     <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
                                     <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
                                 </HStack>
+                                <Box bg={'#ffffff'} padding='5'>
                                 <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                                </Box>
                             </Flex>
                             <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                                 <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
