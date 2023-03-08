@@ -270,14 +270,14 @@ export default function ServicesPage(){
                     ? <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
                     :<Box w='93%' margin={'0 auto'}  p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
-                            <>
+                            <React.Fragment key={date.iso}>
                             {dayjs().isBefore(dayjs(date.iso)) || dayjs().isSame(dayjs(date.iso),'date')
                             ?<Flex background='#242424' position={dayjs().isSame(dayjs(date.iso),'date')?'sticky':'relative'}  onClick={date.type === 'previous'?()=>{}:()=>changeDate(date)} w={'70px'}  direction={'column'} alignItems='center'  p={2} cursor={'pointer'} display={'inline-block'}  ml={4} key={date.iso}>
                                 <Text textAlign={'center'} color={'text.300'}>{dayjs(date.iso).format('MMM')}</Text>
                                 <Text textAlign={'center'} color={dayjs(selectedDate).format('MMM DD, YYYY') ===  dayjs(date.iso).format('MMM DD, YYYY')?'accent.300':'text.200'} textStyle={'h3'}>{date.date}</Text>
                                 <Text textAlign={'center'} color={'text.300'}>{dayjs(date.iso).format('ddd')}</Text>
                             </Flex>:null}
-                            </> 
+                            </React.Fragment> 
                         ))}
                     </Box>}
 
