@@ -72,7 +72,7 @@ export default function Profile(){
                         <EditableImage selectedRecord={userQuery.data && userQuery.data[0]}/>
                         <EditableName selectedRecord={userQuery.data && userQuery.data[0]}/>
                         <EditableGender selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableEmail selectedRecord={userQuery.data && userQuery.data[0]}/>
+                        <EditableEmail isReadOnly selectedRecord={userQuery.data && userQuery.data[0]}/>
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
@@ -140,9 +140,10 @@ export default function Profile(){
 
 interface EditableProp{
     selectedRecord: User
+    isReadOnly?: boolean
 }
 
-function EditableEmail({selectedRecord}:EditableProp){
+function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
 
     console.log(selectedRecord)
 
@@ -200,7 +201,7 @@ function EditableEmail({selectedRecord}:EditableProp){
     const readOnly = (
       <Flex style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
         <Text textStyle={'secondary'} color='text.200'>{selectedRecord && selectedRecord.email}</Text>
-        <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
+       { isReadOnly? null:  <Button variant={'link'} onClick={toggleEdit}>Edit</Button>}
       </Flex>
   )
   
