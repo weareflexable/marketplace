@@ -48,6 +48,8 @@ export default function Home() {
   
  })
 
+console.log('type query',serviceTypesQuery.data)
+
   const infiniteServices = useInfiniteQuery(
     ['services',serviceFilter], 
     //@ts-ignore
@@ -66,7 +68,7 @@ export default function Home() {
         if(totalDataLength < fetchedDataLength) return undefined
         return pages.length 
       },
-      enabled: !! serviceTypesQuery.data
+      enabled: serviceTypesQuery.data !== undefined && serviceFilter !== ''
     }
 )
 
