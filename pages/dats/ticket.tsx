@@ -2,14 +2,14 @@ import {useState, useEffect} from 'react'
 import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
-import { useDatContext } from '../../../context/DatContext'
+import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
-import { getPlatformPaseto } from '../../../utils/storage'
+import { getPlatformPaseto } from '../../utils/storage'
 import { ChevronLeftIcon } from '@chakra-ui/icons' 
 import request, { gql } from 'graphql-request'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { numberFormatter } from '../../../utils/formatter'
+import { numberFormatter } from '../../utils/formatter'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")

@@ -1,7 +1,7 @@
 import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, Box, Text, FormControl, FormLabel, Input, FormHelperText, RadioGroup, Stack, Radio} from '@chakra-ui/react'
-import Layout from '../shared/Layout/Layout'
-import UnAuthenticated from '../shared/UnAuthenticated/UnAuthenticated'
-import { useAuthContext } from '../../context/AuthContext'
+import Layout from '../components/shared/Layout/Layout'
+import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
+import { useAuthContext } from '../context/AuthContext'
 import {Formik, Field, Form, useFormik, FormikProps} from 'formik'
 import * as Yup from 'yup';
 
@@ -10,8 +10,8 @@ import codes from 'country-calling-code';
 import axios from 'axios'
 import { useMutation, useQueryClient,useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { getPlatformPaseto } from '../../utils/storage'
-import { asyncStore } from '../../utils/nftStorage'
+import { getPlatformPaseto } from '../utils/storage'
+import { asyncStore } from '../utils/nftStorage'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()

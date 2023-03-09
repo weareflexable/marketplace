@@ -7,21 +7,21 @@ import {
   GridItem,
   Button,
 } from "@chakra-ui/react";
-import Layout from "../../shared/Layout/Layout";
+import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
-import { useAuthContext } from "../../../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { getPlatformPaseto } from "../../../utils/storage";
+import { getPlatformPaseto } from "../../utils/storage";
 import axios from "axios";
-import UnAuthenticated from "../../shared/UnAuthenticated/UnAuthenticated";
-import { OrderList } from "../../DatsPage/OrderList/OrderList";
-import NoData from "../../shared/NoData/NoData";
+import UnAuthenticated from "../../components/shared/UnAuthenticated/UnAuthenticated";
+import { OrderList } from "../../components/DatsPage/OrderList/OrderList";
+import NoData from "../../components/shared/NoData/NoData";
 // import moment from "moment-timezone";
 import { ErrorBoundary } from "react-error-boundary";
-import PopupError from "../../shared/PopupError/PopupError";
-import OrderListSkeleton from '../../DatsPage/OrderList/SkeletonList'
-import { useDatContext } from "../../../context/DatContext";
+import PopupError from "../../components/shared/PopupError/PopupError";
+import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
+import { useDatContext } from "../../context/DatContext";
 
 
 const fetchWithError = async(url:string, options:any)=>{

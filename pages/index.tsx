@@ -1,16 +1,16 @@
 import Head from 'next/head'
-import EventSearchBar from '../HomePage/EventSearchBar/EventSearchBar'
-import StoreCard from '../HomePage/StoreCard/StoreCard'
+import EventSearchBar from '../components/HomePage/EventSearchBar/EventSearchBar'
+import StoreCard from '../components/HomePage/StoreCard/StoreCard'
 import {Button, Flex,Skeleton,Text,Wrap,WrapItem} from '@chakra-ui/react'
-import Layout from '../shared/Layout/Layout'
-import {Store} from '../../Types/Stores.types'
+import Layout from '../components/shared/Layout/Layout'
+import {Store} from '../Types/Stores.types'
 import {useInfiniteQuery, useQuery} from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { mockData } from '../../data/events'
-import SkeletonList from '../HomePage/SkeletonList/SkeletonList'
+import { mockData } from '../data/events'
+import SkeletonList from '../components/HomePage/SkeletonList/SkeletonList'
 import axios from 'axios'
 import React, { useState } from 'react'
-import EmptyServices from '../shared/EmptyServices/EmptyServices'
+import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
 
 
 //@ts-ignore

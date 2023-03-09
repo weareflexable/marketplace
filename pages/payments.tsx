@@ -2,15 +2,15 @@ import React,{useState, useEffect} from 'react'
 import { Box, Flex, Heading, HStack, Text, VStack} from '@chakra-ui/react'
 
 import {Elements} from '@stripe/react-stripe-js';
-import CheckoutForm from '../PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
+import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
 
 import {loadStripe} from '@stripe/stripe-js';
-import { useCheckoutContext } from '../../context/CheckoutContext';
+import { useCheckoutContext } from '../context/CheckoutContext';
 import dayjs from 'dayjs';
-import { useAuthContext } from '../../context/AuthContext';
-import { getPlatformPaseto } from '../../utils/storage';
-import { useInstantBuyContext } from '../../context/InstantBuyContext';
-import { getStorage } from '../../utils/localStorage';
+import { useAuthContext } from '../context/AuthContext';
+import { getPlatformPaseto } from '../utils/storage';
+import { useInstantBuyContext } from '../context/InstantBuyContext';
+import { getStorage } from '../utils/localStorage';
 import axios from 'axios';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');

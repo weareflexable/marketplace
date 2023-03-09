@@ -35,7 +35,9 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
               ?<NoData/>
               : page.data && page.data.map((order:any)=>(
                 <Flex
-                  p="1em"
+                  px="1em"
+                  pt=".5em"
+                  pb=".7em"
                   bg="#242424"
                   mb="3"
                   w="100%"
@@ -43,7 +45,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                   borderRadius={'6px'}
                   key={order.id}
                 >
-                  <HStack justifyContent={'space-between'} mb="3" spacing="1">
+                  <HStack justifyContent={'space-between'} mb="1" spacing="1">
                     <HStack>
                       <Text textStyle={'caption'} color="text.200">
                         {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")}

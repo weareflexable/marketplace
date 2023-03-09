@@ -60,7 +60,7 @@ export default function Header(){
                             <MenuButton>
                                 <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
-                             <MenuList borderColor="#2b2b2b" bg='#121212'>
+                             <MenuList zIndex='3' borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem onClick={()=>push('/profile')} bg='#121212'>
                                     <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
                                 </MenuItem>
