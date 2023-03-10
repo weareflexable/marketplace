@@ -70,6 +70,7 @@ const AuthContextProvider = ({ children }) => {
         setIsAuthenticated(false)
         // clear all caches
         localStorage.clear()
+        router.replace('/')
         // redirect user to login page
     }
 

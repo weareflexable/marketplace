@@ -80,14 +80,12 @@ export default function ServicesPage(){
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
 
-    console.log(serviceId)
 
     
     const serviceQuery = useQuery({
         queryKey:['single-service',serviceId], 
         queryFn:async()=>{
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`) 
-
             return res.data
         },
         enabled: serviceId !== undefined,
@@ -253,7 +251,7 @@ export default function ServicesPage(){
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
-                       { serviceQuery.isLoading || service === undefined
+                       { serviceQuery.isLoading || service === undefined || serviceQuery.isError
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<StoreHeader 
                          storeName={service.name}
