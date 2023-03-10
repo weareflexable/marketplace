@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 
 interface TicketListProps{
     services: any
-    onAddToCart: (id:string)=>void,
+    onAddToCart?: (id:string)=>void,
     date: string
 }
 

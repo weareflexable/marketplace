@@ -58,7 +58,7 @@ export default function ServicesPage(){
 
     const {query,push,asPath,basePath} = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
-    const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
+    // const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
     const [selectedDate, setSelectedDate] = useState(dayjs().format('MMM DD, YYYY'))
 
 
@@ -144,65 +144,65 @@ export default function ServicesPage(){
  
 
     // TODO: rename to cartItemExist
-    const checkCartItemExist = (id:string)=>{
-        const clonedCart = cart.slice()
-        return clonedCart.filter((cartItem:any)=>cartItem.id === id).length>0 ? true: false;
-    } 
+    // const checkCartItemExist = (id:string)=>{
+    //     const clonedCart = cart.slice()
+    //     return clonedCart.filter((cartItem:any)=>cartItem.id === id).length>0 ? true: false;
+    // } 
 
 
-    const addToCartHandler = (id:string)=>{
+    // const addToCartHandler = (id:string)=>{
 
-        // dont duplicate items in cart
-        // TODO: find better name for this
-        const isDuplicateCartItem = checkCartItemExist(id)
-        if(isDuplicateCartItem) return
+    //     // dont duplicate items in cart
+    //     // TODO: find better name for this
+    //     const isDuplicateCartItem = checkCartItemExist(id)
+    //     if(isDuplicateCartItem) return
   
-        let clonedServices = serviceQuery && serviceQuery.data.serviceItems.slice() 
-        let targetTicket = clonedServices.find((service:any)=>service.id===id);
+    //     let clonedServices = serviceQuery && serviceQuery.data.serviceItems.slice() 
+    //     let targetTicket = clonedServices.find((service:any)=>service.id===id);
 
-        // add quantity field to service
-        const serviceWithQuantity = {
-            ...targetTicket,
-            venue: serviceQuery.data.name ,
-            quantity:1
-        }
+    //     // add quantity field to service
+    //     const serviceWithQuantity = {
+    //         ...targetTicket,
+    //         venue: serviceQuery.data.name ,
+    //         quantity:1
+    //     }
 
-        const clonedCart = cart.slice();
-        clonedCart.push(serviceWithQuantity);
-        console.log(clonedCart)
-        setCart(clonedCart);
-        setCartItems(clonedCart)
-        // always clear instant purchase whenever user adds to cart
-        deleteStorage('instantBuy')
+    //     const clonedCart = cart.slice();
+    //     clonedCart.push(serviceWithQuantity);
+    //     console.log(clonedCart)
+    //     setCart(clonedCart);
+    //     setCartItems(clonedCart)
+    //     // always clear instant purchase whenever user adds to cart
+    //     deleteStorage('instantBuy')
 
-    }
+    // }
 
-    const removeCartItemHandler = (id:string)=>{
-        const clonedCart = cart.slice();
-        const targetIndex = clonedCart.findIndex((cartItem:any)=>cartItem.id === id)
-        clonedCart[targetIndex].quantity = 0;
-        const updatedBookings = clonedCart.filter((cartItem:any)=>cartItem.id !== id);
-        setCart(updatedBookings);
-    }
+    // const removeCartItemHandler = (id:string)=>{
+    //     const clonedCart = cart.slice();
+    //     const targetIndex = clonedCart.findIndex((cartItem:any)=>cartItem.id === id)
+    //     clonedCart[targetIndex].quantity = 0;
+    //     const updatedBookings = clonedCart.filter((cartItem:any)=>cartItem.id !== id);
+    //     setCart(updatedBookings);
+    // }
 
-    const incrementCartItemQuantity = (id: string)=>{
-        const clonedCart = cart.slice();
-        const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
-        targetItem!.quantity++
-        setCart(clonedCart);
-    }
-    const decrementCartItemQuantity = (id: string)=>{
-        const clonedCart = cart.slice();
-        const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
-        targetItem!.quantity--
-        setCart(clonedCart);
-    }
+    // const incrementCartItemQuantity = (id: string)=>{
+    //     const clonedCart = cart.slice();
+    //     const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
+    //     targetItem!.quantity++
+    //     setCart(clonedCart);
+    // }
+    // const decrementCartItemQuantity = (id: string)=>{
+    //     const clonedCart = cart.slice();
+    //     const targetItem = clonedCart.find((cartItem:any)=>cartItem.id === id);
+    //     targetItem!.quantity--
+    //     setCart(clonedCart);
+    // }
 
 
-    const createOrder = (totalCost:number)=>{
-       setAmount(totalCost); // remove this
-       isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
-    }
+    // const createOrder = (totalCost:number)=>{
+    //    setAmount(totalCost); // remove this
+    //    isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
+    // }
 
 
     // const loginBeforePayment = (totalCost:number)=>{
@@ -239,7 +239,7 @@ export default function ServicesPage(){
 
         return( 
 
-    <> 
+       <> 
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
@@ -286,7 +286,7 @@ export default function ServicesPage(){
                     ?<ServiceSkeleton/>
                     :<TicketList 
                         date={selectedDate}
-                        onAddToCart={addToCartHandler} 
+                        // onAddToCart={addToCartHandler} 
                         services={activeServiceItems}
                     />
                     }
@@ -324,7 +324,7 @@ export default function ServicesPage(){
 
             </SimpleGrid>
             {/* cart button to only display on mobile */}
-            {cart.length>0?
+            {/* {cart.length>0? */}
                 <Box
                 display={['block','block','block','none']}
                 width='50px'
@@ -334,7 +334,7 @@ export default function ServicesPage(){
                 right='10%'
                 >
                     <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
-                        <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text>
+                        {/* <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text> */}
                     </Center>
 
                      <IconButton 
@@ -346,24 +346,23 @@ export default function ServicesPage(){
                         icon={<MdAddShoppingCart color='cyan.300'/>}
                       />
                 </Box>
-            :null}
+            {/* :null} */}
 
-           { isOpen? <CartSummary 
-              onCloseModal={onClose} 
-              isModalOpen={isOpen} 
-              cart={cart}
-              totalCost = {50}
-              />:null}
+           {/* { isOpen? <CartSummary  */}
+              {/* onCloseModal={onClose}  */}
+              {/* isModalOpen={isOpen}  */}
+            {/* //   cart={cart} */}
+              {/* totalCost = {50} */}
+              {/* />:null} */}
 
-              {isProcessDrawerOpen?<MobileCartSummary
-                onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
-                isDrawerOpen={isProcessDrawerOpen} 
-                cart={cart}
-                totalCost = {50}
-              />:null}
+              {/* {isProcessDrawerOpen?<MobileCartSummary */}
+                {/* onCloseDrawer={()=>setIsProcessDrawerOpen(false)}  */}
+                {/* isDrawerOpen={isProcessDrawerOpen}  */}
+                {/* // cart={cart} */}
+                {/* totalCost = {50} */}
+              {/* />:null} */}
         </Box> 
         </>
-    // </DarkMode>
     )
 }
 

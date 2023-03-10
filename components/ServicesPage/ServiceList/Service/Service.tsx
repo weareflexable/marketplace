@@ -33,7 +33,7 @@ dayjs.extend(advanced)
 
 interface TicketProps{
     data: any,
-    onTriggerAction:(id:string)=>void,
+    onTriggerAction?:(id:string)=>void,
     selectedDate: string
 }
 
