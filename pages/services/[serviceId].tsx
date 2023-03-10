@@ -199,10 +199,10 @@ export default function ServicesPage(){
     // }
 
 
-    // const createOrder = (totalCost:number)=>{
-    //    setAmount(totalCost); // remove this
-    //    isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
-    // }
+    const createOrder = (totalCost:number)=>{
+       setAmount(totalCost); // remove this
+       isLargerThan62? showPaymentModal(): setIsProcessDrawerOpen(true)
+    }
 
 
     // const loginBeforePayment = (totalCost:number)=>{
@@ -239,7 +239,7 @@ export default function ServicesPage(){
 
         return( 
 
-       <> 
+    <> 
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
       </Head>
@@ -323,46 +323,12 @@ export default function ServicesPage(){
                 </Flex>:null} */}
 
             </SimpleGrid>
-            {/* cart button to only display on mobile */}
-            {/* {cart.length>0? */}
-                <Box
-                display={['block','block','block','none']}
-                width='50px'
-                height='55px' 
-                position='absolute'
-                bottom ='8%'
-                right='10%'
-                >
-                    <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
-                        {/* <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text> */}
-                    </Center>
+          
 
-                     <IconButton 
-                        isRound
-                        onClick={()=>setIsCartDrawerOpen(true)}
-                        colorScheme='teal'
-                        aria-label='Open cart'
-                        size='lg'
-                        icon={<MdAddShoppingCart color='cyan.300'/>}
-                      />
-                </Box>
-            {/* :null} */}
-
-           {/* { isOpen? <CartSummary  */}
-              {/* onCloseModal={onClose}  */}
-              {/* isModalOpen={isOpen}  */}
-            {/* //   cart={cart} */}
-              {/* totalCost = {50} */}
-              {/* />:null} */}
-
-              {/* {isProcessDrawerOpen?<MobileCartSummary */}
-                {/* onCloseDrawer={()=>setIsProcessDrawerOpen(false)}  */}
-                {/* isDrawerOpen={isProcessDrawerOpen}  */}
-                {/* // cart={cart} */}
-                {/* totalCost = {50} */}
-              {/* />:null} */}
+          
         </Box> 
         </>
+    // </DarkMode>
     )
 }
 
@@ -384,3 +350,50 @@ const ServicePageSkeleton = ()=>{
         </Box> 
     )
 }
+
+
+
+
+
+
+
+
+// { isOpen? <CartSummary 
+//     onCloseModal={onClose} 
+//     isModalOpen={isOpen} 
+//     cart={cart}
+//     totalCost = {50}
+//     />:null}
+
+//     {isProcessDrawerOpen?<MobileCartSummary
+//       onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
+//       isDrawerOpen={isProcessDrawerOpen} 
+//       cart={cart}
+//       totalCost = {50}
+//     />:null}
+
+
+  {/* cart button to only display on mobile */}
+//   {cart.length>0?
+//     <Box
+//     display={['block','block','block','none']}
+//     width='50px'
+//     height='55px' 
+//     position='absolute'
+//     bottom ='8%'
+//     right='10%'
+//     >
+//         <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
+//             <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text>
+//         </Center>
+
+//          <IconButton 
+//             isRound
+//             onClick={()=>setIsCartDrawerOpen(true)}
+//             colorScheme='teal'
+//             aria-label='Open cart'
+//             size='lg'
+//             icon={<MdAddShoppingCart color='cyan.300'/>}
+//           />
+//     </Box>
+// :null}
