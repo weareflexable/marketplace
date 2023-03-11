@@ -31,7 +31,7 @@ export default function TicketList({services,date,onAddToCart}:TicketListProps){
                     <Service 
                         key={service.id}
                         selectedDate={date} 
-                        onTriggerAction={onAddToCart}   
+                        // onTriggerAction={onAddToCart}   
                         data={service}
                     />
                 ))}

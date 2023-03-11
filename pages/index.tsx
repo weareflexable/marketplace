@@ -48,7 +48,6 @@ export default function Home() {
   
  })
 
-console.log('type query',serviceTypesQuery.data)
 
   const infiniteServices = useInfiniteQuery(
     ['services',serviceFilter], 

@@ -76,7 +76,7 @@ export default function ServicesPage(){
     // const formatedDate = moment(serviceDate))
     // Extract service ID from query params to be used for data fetching
     // const pageQueryParam = query.serviceId
-    const pageQueryParam = asPath+basePath
+    // const pageQueryParam = asPath+basePath
     // console.log(asPath,basePath)
     const serviceId = query.serviceId;
 

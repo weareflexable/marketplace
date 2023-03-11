@@ -13,7 +13,7 @@ const CheckoutForm = () => {
 
   const {totalAmount,cartItems}=  useCheckoutContext()
   const {buyNowTotal} = useInstantBuyContext()
-  const history = useLastVisitedPage()
+  // const history = useLastVisitedPage()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -76,8 +76,8 @@ const CheckoutForm = () => {
   };
 
   function navigateBack(){
-    console.log(history.lastVistitedPage)
-    router.push(`${history.lastVistitedPage}`)
+    const lastVisitedPage = localStorage.getItem('lastVisitedPage')
+    router.push(`${lastVisitedPage}`)
   }  
 
   return (

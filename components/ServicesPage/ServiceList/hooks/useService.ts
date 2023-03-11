@@ -21,7 +21,6 @@ const useService = (data:any)=>{
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
-    const {setLastVisitedPage} = useLastVisitedPage()
     const [isBuyingTicket, setIsBuyingTicket] = useState(false)
 
     const router = useRouter()
@@ -70,7 +69,7 @@ const useService = (data:any)=>{
 
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
-        setLastVisitedPage(currentPath);
+        localStorage.setItem('lastVisitedPage',currentPath);
       
       location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
