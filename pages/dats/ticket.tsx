@@ -7,9 +7,10 @@ import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
 import { ChevronLeftIcon } from '@chakra-ui/icons' 
 import request, { gql } from 'graphql-request'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { numberFormatter } from '../../utils/formatter'
+import axios from 'axios'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -25,6 +26,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret, startTime, quantity, price, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+
 
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
@@ -48,6 +50,62 @@ export default function Ticket(){
           setIsGeneratingCode(false)
 
   }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
+
+  
+//   useEffect(() => {
+   
+//     async function generatePass(){
+//         const payload = {
+//             qrCode: JSON.stringify(qrCodePayload),
+//             expiryDate: validityEnd,
+//             location: {
+//                 latitude: serviceDetails[0].latitude,
+//                 longitude: serviceDetails[0].longitude,
+//             },
+//         }
+//         const response = await fetch("/api/generatePass", {
+//             method: "POST",
+//             body: JSON.stringify(payload)
+//           });
+//           return response;
+//         };
+
+//     //   Object.keys(qrCodePayload).length !== 0 ? generatePass() : null
+//         // const data = generatePass()
+//         // console.log(data)
+    
+//   }, [qrCodePayload, serviceDetails, validityEnd])
+
+
+   const generatePass = useMutation(async(payload:any)=>{
+    // const data = await axios.post('/api/generatePass',JSON.stringify(payload))
+    const data = await fetch('/api/generatePass',{
+        method:'POST',
+        body: JSON.stringify(payload),
+        headers:{
+            "Content-Type": "application/vnd.apple.pkpass"
+        }
+    })
+    const res = await data.json()
+    console.log('from request',res)
+    return data
+   })
+
+   function generatePassHandler(){
+    const payload = {
+        qrCode: qrCodePayload,
+        expiryDate: validityEnd,
+        location: {
+            latitude: serviceDetails[0].latitude,
+            longitude: serviceDetails[0].longitude,
+        },
+    }
+    generatePass.mutate(payload)
+   }
+
+
+   console.log('pass generation',generatePass.data)
+   
 
 
     const userNftQuery = gql`
@@ -117,6 +175,7 @@ export default function Ticket(){
                         </>
                         }
                     </Flex>  
+                        <Button colorScheme={'brand'} variant={'ghost'} onClick={generatePassHandler}>Add to Apple Pass</Button>
 
                     <Divider borderColor={'#2b2b2b'}/>
 

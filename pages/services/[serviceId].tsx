@@ -122,7 +122,8 @@ export default function ServicesPage(){
             return res.data.data
         },
         enabled: shouldFetchServiceItems,
-        staleTime: 30000 
+        staleTime: 10000,
+        cacheTime:0
     })
 
 
