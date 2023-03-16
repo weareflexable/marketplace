@@ -59,10 +59,11 @@ export default async function handler(req:any, res:NextApiResponse){
 
     pass.type = "eventTicket"
 
-    console.log('mimeType', pass.mimeType)
+    console.log('myself', pass)
     
     const buffer = pass.getAsBuffer();  
-    console.log('streaming...',buffer)
+    
+    // console.log('streaming...',buffer)
     res.status(200)
     res.setHeader("Content-Type", pass.mimeType)
     // res.setHeader("Content-Dispostion", 'attachment; filena.pkpass')

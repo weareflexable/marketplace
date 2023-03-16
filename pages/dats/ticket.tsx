@@ -52,59 +52,46 @@ export default function Ticket(){
   }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
-//   useEffect(() => {
-   
-//     async function generatePass(){
-//         const payload = {
-//             qrCode: JSON.stringify(qrCodePayload),
-//             expiryDate: validityEnd,
-//             location: {
-//                 latitude: serviceDetails[0].latitude,
-//                 longitude: serviceDetails[0].longitude,
-//             },
-//         }
-//         const response = await fetch("/api/generatePass", {
-//             method: "POST",
-//             body: JSON.stringify(payload)
-//           });
-//           return response;
-//         };
-
-//     //   Object.keys(qrCodePayload).length !== 0 ? generatePass() : null
-//         // const data = generatePass()
-//         // console.log(data)
-    
-//   }, [qrCodePayload, serviceDetails, validityEnd])
 
 
-   const generatePass = useMutation(async(payload:any)=>{
-    // const data = await axios.post('/api/generatePass',JSON.stringify(payload))
-    const data = await fetch('/api/generatePass',{
-        method:'POST',
-        body: JSON.stringify(payload),
-        headers:{
-            "Content-Type": "application/vnd.apple.pkpass"
-        }
-    })
-    const res = await data.json()
-    console.log('from request',res)
-    return data
-   })
-
-   function generatePassHandler(){
+   async function generateApplePass(){
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
         location: {
             latitude: serviceDetails[0].latitude,
-            longitude: serviceDetails[0].longitude,
+            longitude: serviceDetails[0].longitude, 
         },
     }
-    generatePass.mutate(payload)
+
+    const body = await fetch('/api/generatePass',{
+        method:'POST',
+        body: JSON.stringify(payload),
+        headers:{
+            "Content-Type": "application/vnd.apple.pkpass"
+       } 
+    })
+
+    console.log(body.headers)
+
+    const blob = await body.blob()
+    const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
+
+    const blobUrl = window.URL.createObjectURL(newBlob);
+
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.setAttribute('download', `${serviceItemsDetails[0].name}.zip`);
+    document.body.appendChild(link);
+    link.click();
+    // link.parentNode.removeChild(link);
+
+    return()=>{
+        window.URL.revokeObjectURL(blobUrl);
+    }
+
    }
 
-
-   console.log('pass generation',generatePass.data)
    
 
 
@@ -174,8 +161,8 @@ export default function Ticket(){
                             </Flex>
                         </>
                         }
+                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'ghost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
-                        <Button colorScheme={'brand'} variant={'ghost'} onClick={generatePassHandler}>Add to Apple Pass</Button>
 
                     <Divider borderColor={'#2b2b2b'}/>
 
