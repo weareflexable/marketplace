@@ -81,7 +81,7 @@ export default async function handler(req:any, res:NextApiResponse){
         value: eventName,
         textAlignment: "PKTextAlignmentLeft",
     }) 
-
+ 
     pass.setExpirationDate(new Date(expiryDate))
 
     // pass.type = "eventTicket"
