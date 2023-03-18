@@ -84,7 +84,7 @@ export default function Ticket(){
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${serviceItemsDetails[0].name}.pkpass`);
+    link.setAttribute('download', `${serviceItemsDetails[0].name}.zip`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
