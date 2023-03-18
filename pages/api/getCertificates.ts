@@ -19,30 +19,30 @@ export default async function getCertificates(){
 		[signerCert, signerKey, wwdr, signerKeyPassphrase] = await Promise.all([
 			fs.readFile(
 				path.resolve(
-					__dirname,
-					"../../../../",
-					"pages/api/passkit/certs/signerCert.pem",
+					// __dirname,
+					// "../",
+					"./certs/signerCert.pem",
 				),
 				"utf-8",
 			),
 			fs.readFile(
 				path.resolve(
-					__dirname,
-					"../../../../",
-					"pages/api/passkit/certs/signerKey.key",
+					// __dirname,
+					// "../../",
+					"./certs/signerKey.key",
 				),
 				"utf-8",
 			),
             
 			fs.readFile( 
 				path.resolve(
-					__dirname,
-					"../../../../",
-					"pages/api/passkit/certs/wwdr.pem",
+					// __dirname,
+					// "../../",
+					"./certs/wwdr.pem",
 				),
 				"utf-8",
 			),
-			Promise.resolve('1111'),
+			Promise.resolve('1111'), 
           
 		]);
 	
