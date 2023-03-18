@@ -88,7 +88,7 @@ const AuthContextProvider = ({ children }) => {
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
-const useAuthContext = () => { 
+const useAuthContext = () => {  
   const context = useContext(AuthContext);
 
   if (context === undefined) {
