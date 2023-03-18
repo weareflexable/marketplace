@@ -9,7 +9,7 @@ export default async function handler(req:any, res:NextApiResponse){
 
     const body = JSON.parse(req?.body)
 
-    const {qrCode,expiryDate, eventName, price, street, location} = body
+    const {qrCode,expiryDate, quantity, eventName, price, street, location} = body
 
     const {signerCert, signerKey, wwdr, signerKeyPassphrase} = await getCertificates()
     const pass = await PKPass.from({
@@ -61,8 +61,14 @@ export default async function handler(req:any, res:NextApiResponse){
 
     pass.auxiliaryFields.push(
         {
+            "key": "quantity",
+            "value": `${quantity} Ticket(s)`,
+            "label":'Quantity',
+            "row": 0
+        },
+        {
             "key": "price",
-            "value": price,
+            "value": `$${price}`,
             "label":'Price',
             "row": 0
         },
@@ -77,7 +83,7 @@ export default async function handler(req:any, res:NextApiResponse){
 
     pass.primaryFields.push({
         key: "Name",
-        label: "Event Name",
+        label: "Service Name",
         value: eventName,
         textAlignment: "PKTextAlignmentLeft",
     }) 
