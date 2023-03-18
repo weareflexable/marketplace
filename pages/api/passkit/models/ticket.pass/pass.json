@@ -3,9 +3,19 @@
 	"passTypeIdentifier": "pass.com.flexabledats.marketplace",
 	"serialNumber": "nmyuxofgna",
 	"teamIdentifier": "Z42689HHQ8",
-	"webServiceURL": "https:marketplace.dev.flexabledats.com",
+	"webServiceURL": "https://marketplace.dev.flexabledats.com",
+	"authenticationToken": "vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc",
 	"relevantDate": "2011-12-08T13:00-08:00",
-	
+	"locations": [
+		{
+			"longitude": -122.3748889,
+			"latitude": 37.6189722
+		},
+		{
+			"longitude": -122.03118,
+			"latitude": 37.33182
+		}
+	],
 	"barcodes": [
 		{
 			"message": "123456789",
@@ -20,5 +30,26 @@
 	"labelColor":"rgb(255, 255, 255)",
 	"eventTicket": {
 		
+		"secondaryFields": [
+			{
+				"key": "locations",
+				"label": "",
+				"value": " "
+			}
+		],
+		"auxiliaryFields": [
+			{
+				"key": "Foo",
+				"value": "foo2",
+				"label": "Foo(l)",
+				"row": 0
+			},
+			{
+				"key": "Foo2",
+				"value": "foo3",
+				"label": "Foo(l)2",
+				"row": 1
+			}
+		]
 	}
 }
