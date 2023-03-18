@@ -11,6 +11,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
+import Head from 'next/head'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -75,7 +76,6 @@ export default function Ticket(){
        } 
     })
 
-    console.log(body.headers)
 
     const blob = await body.blob()
     const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
@@ -122,6 +122,11 @@ export default function Ticket(){
      
 
     return(
+        <>
+        <Head>
+         <title>Ticket</title>
+         <link rel="icon" href="/favicon.png" />
+      </Head>
         <Grid templateColumns='repeat(5, 1fr)' bg='#171717'>
             <GridItem colStart={[1,1,2]} colEnd={[6,6,5]}>
             <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
@@ -257,6 +262,7 @@ export default function Ticket(){
             </Flex>
             </GridItem>
         </Grid>
+        </>
     )
 }
 

@@ -22,6 +22,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import PopupError from "../../components/shared/PopupError/PopupError";
 import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
 import { useDatContext } from "../../context/DatContext";
+import Head from "next/head";
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -121,6 +122,12 @@ const gotoTicketPage = (dat:any)=>{
   }
 
   return (
+    <>
+    <Head>
+    {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+     <title>DATs</title>
+     <link rel="icon" href="/favicon.png" />
+  </Head>
     <Layout>
       <Grid
         mx="1em"
@@ -172,6 +179,7 @@ const gotoTicketPage = (dat:any)=>{
       }
 
     </Layout>
+    </>
   );
 }
 

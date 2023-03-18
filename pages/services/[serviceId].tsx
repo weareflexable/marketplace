@@ -243,6 +243,8 @@ export default function ServicesPage(){
     <> 
       <Head>
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+         <title>{service && service.name}</title>
+         <link rel="icon" href="/favicon.png" />
       </Head>
         <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
             {serviceQuery.isLoading

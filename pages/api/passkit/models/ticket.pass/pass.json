@@ -3,8 +3,7 @@
 	"passTypeIdentifier": "pass.com.flexabledats.marketplace",
 	"serialNumber": "nmyuxofgna",
 	"teamIdentifier": "Z42689HHQ8",
-	"webServiceURL": "https://192.168.1.254:80/",
-	"authenticationToken": "vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc",
+	"webServiceURL": "https:marketplace.dev.flexabledats.com",
 	"relevantDate": "2011-12-08T13:00-08:00",
 	
 	"barcodes": [

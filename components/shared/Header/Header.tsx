@@ -65,7 +65,7 @@ export default function Header(){
                                     <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
                                 </MenuItem>
                                 <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
-                                    <Text textStyle={'secondary'}  color='text.300'>My Dats</Text>
+                                    <Text textStyle={'secondary'}  color='text.300'>My DATs</Text>
                                 </MenuItem>
                                 <MenuDivider/>
                                 <MenuItem bg='#121212'>

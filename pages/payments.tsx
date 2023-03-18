@@ -12,6 +12,7 @@ import { getPlatformPaseto } from '../utils/storage';
 import { useInstantBuyContext } from '../context/InstantBuyContext';
 import { getStorage } from '../utils/localStorage';
 import axios from 'axios';
+import Head from 'next/head';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
@@ -80,6 +81,13 @@ const Payments = () => {
     // Bring header to this page
 
   return (
+    <>
+    
+    <Head>
+    {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+     <title>Payment</title>
+     <link rel="icon" href="/favicon.png" />
+  </Head>
     <Flex bg='gray.900' w='100' h='100vh' p='4' direction={'column'}  justifyContent='center' alignItems='center'>
       <Box w='100%' maxW={'500px'}>
           <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
@@ -101,6 +109,7 @@ const Payments = () => {
         </Elements>
        }
     </Flex>
+    </>
   )
 };
 
