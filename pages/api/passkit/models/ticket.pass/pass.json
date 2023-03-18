@@ -32,9 +32,9 @@
 		
 		"secondaryFields": [
 			{
-				"key": "locations",
-				"label": "",
-				"value": " "
+				"key": "country",
+				"label": "Country",
+				"value": "United State of America"
 			}
 		],
 		"auxiliaryFields": [

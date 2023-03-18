@@ -54,12 +54,12 @@ export default function Ticket(){
 
   
 
-
-   async function generateApplePass(){
+// console.log(ctx_currentDat)
+   async function generateApplePass(){ 
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
-        price: price,
+        price: serviceItemsDetails[0].price,
         eventName: serviceItemsDetails[0].name,
         street: serviceDetails[0].street,
         location: {

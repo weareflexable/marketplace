@@ -78,7 +78,7 @@ const AuthContextProvider = ({ children }) => {
 
 
   const values = {
-    isAuthenticated,
+    isAuthenticated:true, 
     setIsAuthenticated,
     paseto,
     logout,

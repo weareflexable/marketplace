@@ -86,16 +86,13 @@ export default async function handler(req:any, res:NextApiResponse){
 
     // pass.type = "eventTicket"
     
-    const buffer = pass.getAsBuffer();  
- 
+    const buffer = pass.getAsBuffer();
 
-    console.log(pass.props['barcodes'])
-    console.log(pass.props['labelColor'])
+    // console.log(pass.props['barcodes'])
     
     // console.log('streaming...',buffer)
-    res.status(200)
+    res.status(200) 
     res.setHeader("Content-Type", pass.mimeType)
-    // res.setHeader("Content-Dispostion", 'attachment; filena.pkpass')
     res.send(buffer)
 
 }  
