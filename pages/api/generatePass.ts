@@ -14,9 +14,9 @@ export default async function handler(req:any, res:NextApiResponse){
     const {signerCert, signerKey, wwdr, signerKeyPassphrase} = await getCertificates()
     const pass = await PKPass.from({
         model: path.resolve(
-            __dirname,
-            "../../../../",
-            'pages/api/passkit/models/ticket.pass',
+            // __dirname,
+            // "../../../../",
+            './ticket.pass',
         ),
         certificates:{ 
             wwdr,
