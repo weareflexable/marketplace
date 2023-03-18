@@ -12,6 +12,7 @@ import { useMutation, useQueryClient,useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { getPlatformPaseto } from '../utils/storage'
 import { asyncStore } from '../utils/nftStorage'
+import Head from 'next/head'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
@@ -47,6 +48,11 @@ export default function Profile(){
     }
  
     return(
+      <>
+      <Head>
+       <title>Profile</title>
+       <link rel="icon" href="/favicon.png" />
+    </Head>
     <Layout>
             <Grid
                 mx="1em"
@@ -133,6 +139,7 @@ export default function Profile(){
                 </GridItem>
             </Grid>
     </Layout>
+    </>
     )
 }
 
