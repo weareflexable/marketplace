@@ -40,10 +40,18 @@ export default function ServicesPage(){
         async function getCalendarDates(){
             setIsLoadingDates(true)
             try{
-                const dates = await calendarDates.getDates(new Date())
+                var now = new Date();
+                const current = new Date(now.getFullYear(), now.getMonth()+1, 1);
+
+                const dates = await calendarDates.getDates(now)
+                const filteredDates = dates.filter((date:any)=>date.type === 'current')
+                const nextMonth = await calendarDates.getDates(current)
+                const combinedDates = filteredDates.concat(nextMonth)
+
                 setIsLoadingDates(false)
-                setDates(dates)
-            }catch{
+                setDates(combinedDates)
+            }catch(err){
+                console.log('error getting dates',err)
                 setIsLoadingDates(false)
             }
         }
