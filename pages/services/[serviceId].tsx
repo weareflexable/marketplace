@@ -46,7 +46,8 @@ export default function ServicesPage(){
                 const dates = await calendarDates.getDates(now)
                 const filteredDates = dates.filter((date:any)=>date.type === 'current')
                 const nextMonth = await calendarDates.getDates(current)
-                const combinedDates = filteredDates.concat(nextMonth)
+                const filteredNextMonth = nextMonth.filter((date:any)=>date.type === 'current'|| date.type ==='next')
+                const combinedDates = filteredDates.concat(filteredNextMonth)
 
                 setIsLoadingDates(false)
                 setDates(combinedDates)
