@@ -44,6 +44,8 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                   direction="column"
                   borderRadius={'6px'}
                   key={order.id}
+                  cursor={'pointer'}
+                  onClick={()=>gotoTicketPage(order)}
                 >
                   <HStack justifyContent={'space-between'} mb="1" spacing="1">
                     <HStack>
