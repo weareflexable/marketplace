@@ -245,7 +245,7 @@ export default function ServicesPage(){
     
     const activeServiceItems = serviceItemsQuery.data && serviceItemsQuery.data.filter((serviceItem: any)=>serviceItem.status == 1)
    
-        
+    console.log(activeServiceItems)
 
         return( 
 
