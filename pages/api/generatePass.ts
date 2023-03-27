@@ -4,6 +4,7 @@ import getCertificates from './getCertificates'
 import path from 'path'
 import { NextApiResponse } from 'next'
 import dayjs from 'dayjs'
+import exp from 'constants'
 
 export default async function handler(req:any, res:NextApiResponse){
 
@@ -89,6 +90,8 @@ export default async function handler(req:any, res:NextApiResponse){
     }) 
  
     pass.setExpirationDate(new Date(expiryDate))
+
+    pass.setRelevantDate(new Date(expiryDate))
 
     // pass.type = "eventTicket"
     
