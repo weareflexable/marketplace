@@ -108,7 +108,7 @@ export default function Home() {
 
                 <Flex w={['100%']} h={['20vh','40vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
                   {/* <EventSearchBar/> */}
-                  <Text  as='h1' w='100' textStyle={'h1'}>Showing you venues in Syracuse NY</Text>
+                  <Text  as='h1' w='100' textStyle={'h1'}>Showing you venues in Syracuse, NY</Text>
                 </Flex>
 
                 <Flex mx={'1rem'} mb='1rem'>
