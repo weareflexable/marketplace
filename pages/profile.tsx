@@ -2,7 +2,7 @@ import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, B
 import Layout from '../components/shared/Layout/Layout'
 import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
 import { useAuthContext } from '../context/AuthContext'
-import {Formik, Field, Form, useFormik} from 'formik'
+import {Formik, Field, Form, useFormik, FormikProps} from 'formik'
 import * as Yup from 'yup';
 
 const countryList = require('country-list')
@@ -12,6 +12,7 @@ import { useMutation, useQueryClient,useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { getPlatformPaseto } from '../utils/storage'
 import { asyncStore } from '../utils/nftStorage'
+import Head from 'next/head'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
@@ -34,12 +35,7 @@ export default function Profile(){
         enabled:paseto!=='' ,
         staleTime: Infinity
     })
-
-    console.log(userQuery.data) 
-
-  
       
-
 
 
 
@@ -52,6 +48,11 @@ export default function Profile(){
     }
  
     return(
+      <>
+      <Head>
+       <title>Profile</title>
+       <link rel="icon" href="/favicon.png" />
+    </Head>
     <Layout>
             <Grid
                 mx="1em"
@@ -77,7 +78,7 @@ export default function Profile(){
                         <EditableImage selectedRecord={userQuery.data && userQuery.data[0]}/>
                         <EditableName selectedRecord={userQuery.data && userQuery.data[0]}/>
                         <EditableGender selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableEmail selectedRecord={userQuery.data && userQuery.data[0]}/>
+                        <EditableEmail isReadOnly selectedRecord={userQuery.data && userQuery.data[0]}/>
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
@@ -138,6 +139,7 @@ export default function Profile(){
                 </GridItem>
             </Grid>
     </Layout>
+    </>
     )
 }
 
@@ -145,9 +147,10 @@ export default function Profile(){
 
 interface EditableProp{
     selectedRecord: User
+    isReadOnly?: boolean
 }
 
-function EditableEmail({selectedRecord}:EditableProp){
+function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
 
     console.log(selectedRecord)
 
@@ -205,7 +208,7 @@ function EditableEmail({selectedRecord}:EditableProp){
     const readOnly = (
       <Flex style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
         <Text textStyle={'secondary'} color='text.200'>{selectedRecord && selectedRecord.email}</Text>
-        <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
+       { isReadOnly? null:  <Button variant={'link'} onClick={toggleEdit}>Edit</Button>}
       </Flex>
   )
   
@@ -244,6 +247,10 @@ function EditableEmail({selectedRecord}:EditableProp){
       </div>
     )
   }
+
+  type Values = {
+    gender: string
+  }
 function EditableGender({selectedRecord}:EditableProp){
 
 
@@ -274,6 +281,22 @@ function EditableGender({selectedRecord}:EditableProp){
             //   mutation.mutate(payload)
         },
       });
+
+      function handleSubmit(values:any,actions:any){
+        //  preventDefault() 
+        console.log(values,actions)
+        const payload = {
+            key:'gender',
+            value:value,
+          }
+          console.log(payload)
+          mutation.mutate(payload)
+     }
+
+     function handleChange(value:any){
+      console.log(value)
+      setValue(value)
+     }
 
    
   
@@ -308,32 +331,42 @@ function EditableGender({selectedRecord}:EditableProp){
   )
   
     const editable = (
-      <form
+      <Formik
        style={{ marginTop:'.5rem' }}
-       onSubmit={formik.handleSubmit}
+       initialValues= {{gender: selectedRecord && selectedRecord.gender}}
+       onSubmit={handleSubmit}
        >
-        <FormControl is={formik.errors.gender}  mb={'5'}>
+        {
+          (props:FormikProps<Values>)=>(
+            <Form onSubmit={props.handleSubmit}>
+              <RadioGroup
+                colorScheme={'brand.300'}
+                color={'text.300'}
+                name='gender'
+                onChange={handleChange}
+                // {...formik.getFieldProps('gender')}
+                defaultValue={value}
+              >
+                  {/* <Stack direction='row' spacing={6}> */}
+                      <Radio value='Male'>Male</Radio>
+                      <Radio value='Female'>Female</Radio>
+                  {/* </Stack> */}
+              </RadioGroup>
+              <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
+                  Cancel
+              </Text>
+              <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
+                  Apply changes
+              </Button>
+            </Form>
+          )
+        }
+        {/* <FormControl  mb={'5'}> */}
             {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
-             <RadioGroup
-              colorScheme={'brand.300'}
-              color={'text.300'}
-              {...formik.getFieldProps('gender')}
-            //   defaultValue={value}
-             >
-                <Stack direction='row' spacing={6}>
-                    <Radio value='Male'>Male</Radio>
-                    <Radio value='Female'>Female</Radio>
-                </Stack>
-            </RadioGroup>
-            {formik.touched.gender&&formik.errors.gender?<FormErrorMessage>{formik.errors.gender}</FormErrorMessage>:null}
-        </FormControl>
-        <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
-            Cancel
-        </Text>
-        <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
-            Apply changes
-        </Button>
-      </form>
+            
+        {/* </FormControl> */}
+        
+      </Formik>
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
@@ -344,7 +377,6 @@ function EditableGender({selectedRecord}:EditableProp){
   }
 function EditableName({selectedRecord}:EditableProp){
 
-    console.log(selectedRecord)
 
     // const [state, setState] = useState(selectedRecord)
   
@@ -364,7 +396,6 @@ function EditableName({selectedRecord}:EditableProp){
         },
         onSubmit: (values,actions) => {
             // e.preventDefault() 
-            console.log(values, actions)
             const payload = {
                 key:'name',
                 value:values.name,

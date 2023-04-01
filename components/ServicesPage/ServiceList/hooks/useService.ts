@@ -8,6 +8,9 @@ import useLocalStorage from '../../../../hooks/useLocalStorage'
 import useLocalBuy from '../../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
+import useLastVisitedPage from '../../../../hooks/useLastVistedPage'
+
+// TODO: Have a separate context for handling cart items
 
 // This should accept a Service-item type in data
 const useService = (data:any)=>{
@@ -15,9 +18,10 @@ const useService = (data:any)=>{
 
     const {isAuthenticated} = useAuthContext()
 
-    // Instant buy is the contentx that holds logic for when a user
+    // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
+    const [isBuyingTicket, setIsBuyingTicket] = useState(false)
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -39,7 +43,6 @@ const useService = (data:any)=>{
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
  
-     console.log(data)
      // checks to see if there are available tickets for selected date
      const isTicketsAvailable = ticketData.ticketsAvailable > 0;
  
@@ -50,6 +53,7 @@ const useService = (data:any)=>{
 
  
      const isMinQuantity = ticketData.quantity <= 0
+     const isMaxQuantity = ticketData.quantity === 6
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
 
@@ -60,20 +64,21 @@ const useService = (data:any)=>{
         setTimeout(() => {
             setIsProceedingToPayment(false)
             router.push('/payments')
-        }, 3000);
+        }, 2000);
      }
 
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
-        setStorage('lastVisitedPage',currentPath);
-      //   location.href = `${process.env.NEXT_PUBLIC_AUTH}/login?redirect_to=marketplace`
-      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
+        localStorage.setItem('lastVisitedPage',currentPath);
+      
+      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
 
      const buyTicketNow = ()=>{
 
-      console.log(ticketData)
+      setIsBuyingTicket(true)
+      // console.log(ticketData)
         const buyNowCartItem = {
            serviceItemId: ticketData.id,
            quantity: String(ticketData.quantity),
@@ -81,17 +86,22 @@ const useService = (data:any)=>{
            email: 'flexable@yahoo.com',
            description:ticketData.name,
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
-         //   date: ticketData.tickets[0].date
          }
+
+         setBuyItems([buyNowCartItem]) // passes cart items to checkout context
+         setBuyNowTotal(subTotal)
 
         if(isAuthenticated){
 
             setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
+            // This local storage value is used in payment page to determine if payment is buy now or cart
             setStorage('shouldBuyInstantly','true')
             proceedToPayment();
+            setIsBuyingTicket(false)
             return
         }
+        setIsBuyingTicket(false)
         loginBeforeAction();
      }
  
@@ -114,6 +124,8 @@ const useService = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
+        isBuyingTicket,
+        isMaxQuantity,
         subTotal,
         isAuthenticated,
         isProceedingToPayment,

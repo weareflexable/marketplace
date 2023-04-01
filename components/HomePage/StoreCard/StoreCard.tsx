@@ -16,7 +16,7 @@ export const StoreCard = ({data}:StoreCardProps) =>{
     const router = useRouter()
     
     const navigateToServicePage=(serviceId:string)=>{
-        console.log(serviceId)
+        // console.log(serviceId)
         router.push(`/services/${serviceId}`)
     }
 

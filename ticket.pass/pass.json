@@ -1,0 +1,50 @@
+{
+	"formatVersion": 1,
+	"passTypeIdentifier": "pass.com.flexabledats.marketplace",
+	"serialNumber": "nmyuxofgna",
+	"teamIdentifier": "Z42689HHQ8",
+	"webServiceURL": "https://marketplace.dev.flexabledats.com",
+	"authenticationToken": "vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc",
+	"relevantDate": "2011-12-08T13:00-08:00",
+	"locations": [
+		{
+			"longitude": -122.3748889,
+			"latitude": 37.6189722
+		},
+		{
+			"longitude": -122.03118,
+			"latitude": 37.33182
+		}
+	],
+	"barcodes": [
+		{
+			"message": "123456789",
+			"format": "PKBarcodeFormatQR",
+			"messageEncoding": "iso-8859-1"
+		}
+	],
+	"organizationName": "Apple Inc.",
+	"description": "Apple Event Ticket",
+	"foregroundColor": "rgb(0, 0, 0)",
+	"backgroundColor": "rgb(60, 65, 76)",
+	"labelColor":"rgb(255, 255, 255)",
+	"eventTicket": {
+		
+		"secondaryFields": [
+			{
+				"key": "country",
+				"label": " ",
+				"value": " "
+			}
+		],
+		"auxiliaryFields": [
+	
+			{
+				"key": "Foo2",
+				"value": " ",
+				"label": " ",
+				"row": 1
+			}
+		]
+	}
+}

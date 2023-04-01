@@ -17,12 +17,11 @@ import dayjs from 'dayjs'
 
 interface TicketListProps{
     services: any
-    onAddToCart: (id:string)=>void,
+    onAddToCart?: (id:string)=>void,
     date: string
 }
 
 export default function TicketList({services,date,onAddToCart}:TicketListProps){
-    console.log(services)
 
     return(
         <>
@@ -32,7 +31,7 @@ export default function TicketList({services,date,onAddToCart}:TicketListProps){
                     <Service 
                         key={service.id}
                         selectedDate={date} 
-                        onTriggerAction={onAddToCart}   
+                        // onTriggerAction={onAddToCart}   
                         data={service}
                     />
                 ))}

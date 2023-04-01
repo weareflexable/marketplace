@@ -9,8 +9,6 @@ interface LayoutProps{
 }
 export default function Layout({children}:LayoutProps){
 
-    const router = useRouter()
-
     return(
         <Flex bg='#121212' direction='column' w='100%'>
             <Header/>

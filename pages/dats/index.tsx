@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Box,
@@ -22,6 +22,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import PopupError from "../../components/shared/PopupError/PopupError";
 import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
 import { useDatContext } from "../../context/DatContext";
+import Head from "next/head";
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -44,6 +45,16 @@ export default function MyBookings() {
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
+  const [isDelaying, setIsDelaying] = useState(false)
+
+  useEffect(() => {
+  const interval =  setInterval(()=>{
+    setIsDelaying(true)
+  },4000)
+  return()=>{
+    clearInterval(interval)
+  }
+  }, [])
 
   const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=0}) => {
     const paseto = getPlatformPaseto();
@@ -72,7 +83,7 @@ export default function MyBookings() {
       if(totalDataLength < fetchedDataLength) return undefined
       return pages.length 
     },
-    enabled:isAuthenticated
+    enabled:isAuthenticated && isDelaying
   }
   );
 
@@ -111,6 +122,12 @@ const gotoTicketPage = (dat:any)=>{
   }
 
   return (
+    <>
+    <Head>
+    {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+     <title>DATs</title>
+     <link rel="icon" href="/favicon.png" />
+  </Head>
     <Layout>
       <Grid
         mx="1em"
@@ -133,7 +150,7 @@ const gotoTicketPage = (dat:any)=>{
                 </Text>
               </Box>
                 {
-                  datsQuery.isLoading
+                  datsQuery.isLoading || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     orders={datsQuery.data && datsQuery.data.pages}
@@ -162,6 +179,7 @@ const gotoTicketPage = (dat:any)=>{
       }
 
     </Layout>
+    </>
   );
 }
 
