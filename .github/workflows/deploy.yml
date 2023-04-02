@@ -90,6 +90,7 @@ jobs:
           script: |
             pwd
             cd ~
+            echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
             podman pull ghcr.io/weareflexable/marketplace:main
             podman stop marketplace
             podman rm marketplace
@@ -106,6 +107,7 @@ jobs:
           script: |
             pwd
             cd ~
+            echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
             podman pull ghcr.io/weareflexable/marketplace:staging
             podman stop marketplace
             podman rm marketplace
