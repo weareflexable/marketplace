@@ -121,6 +121,8 @@ export default function Ticket(){
     })
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
+
+    console.log(nftData)
      
 
     return(
