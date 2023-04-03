@@ -38,15 +38,19 @@ const fetchWithError = async(url:string, options:any)=>{
 }
 
 const PAGE_SIZE = 10;
-export default function MyBookings() {
-  // TODO: fetch user specific data
-  // TODO: fallback ui for when user tries to access page without authorization
+
+export default function MyDats() {
+
   const { push } = useRouter();
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isDelaying, setIsDelaying] = useState(false)
 
+  /* 
+  * Effect for adding an extra delay before fetching user tickets to give enough
+  * time to db to update
+  */  
   useEffect(() => {
   const interval =  setInterval(()=>{
     setIsDelaying(true)
@@ -87,8 +91,6 @@ export default function MyBookings() {
   }
   );
 
-  // console.log(datsQuery.data)
-  // console.log(datsQuery.hasNextPage)
 
 
 const gotoTicketPage = (dat:any)=>{

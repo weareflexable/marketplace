@@ -121,6 +121,8 @@ export default function Ticket(){
     })
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
+
+    console.log(nftData)
      
 
     return(
@@ -242,14 +244,14 @@ export default function Ticket(){
                                     <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                     <Flex flex={7}>
                                         <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData.tokenID}`}>View DAT on opensea</a> 
+                                        <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
                                         </Text>
                                     </Flex>
                                 </HStack>
                                 <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                     <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Token ID</Text></Flex>
                                     {/* @ts-ignore */}
-                                    <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>#{nftData.tokenID}</Text></Flex>
+                                    <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>#{nftData && nftData.tokenID}</Text></Flex>
                                 </HStack>
                             </VStack>
                         </VStack>}
