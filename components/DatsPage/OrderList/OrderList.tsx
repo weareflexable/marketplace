@@ -24,6 +24,9 @@ interface OrderListProps {
 export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
 
 
+
+
+
   return (
 
     <Flex direction="column" w="100">
@@ -50,7 +53,8 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                   <HStack justifyContent={'space-between'} mb="1" spacing="1">
                     <HStack>
                       <Text textStyle={'caption'} color="text.200">
-                        {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")}
+                        {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
+                        {dayjs(order.validityEnd.substring(0,10)).format("MMM D, YYYY")}
                       </Text>
                       
                       { order.isRedeem 
