@@ -54,7 +54,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
                     <HStack>
                       <Text textStyle={'caption'} color="text.200">
                         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
-                        {dayjs(order.validityEnd.substring(0,10)).format("MMM D, YYYY")}
+                        {dayjs(order.targetDate).format("MMM D, YYYY")}
                       </Text>
                       
                       { order.isRedeem 
