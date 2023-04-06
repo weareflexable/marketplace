@@ -24,9 +24,12 @@ export default async function handler(req:any, res:NextApiResponse){
             signerKey,
             signerCert,
             signerKeyPassphrase
-        },
+        }
+    },
+    {
         serialNumber: ticketSecret
-    })
+    }
+    )
 
     // pass.set
     // pass.headerFields.push(
