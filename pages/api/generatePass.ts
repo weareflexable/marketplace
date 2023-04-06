@@ -10,7 +10,7 @@ export default async function handler(req:any, res:NextApiResponse){
 
     const body = JSON.parse(req?.body)
 
-    const {qrCode,expiryDate, quantity, targetDate, eventName, price, street, location} = body
+    const {qrCode,expiryDate, quantity, ticketSecret, targetDate, eventName, price, street, location} = body
 
     const {signerCert, signerKey, wwdr, signerKeyPassphrase} = await getCertificates()
     const pass = await PKPass.from({
@@ -24,7 +24,8 @@ export default async function handler(req:any, res:NextApiResponse){
             signerKey,
             signerCert,
             signerKeyPassphrase
-        }
+        },
+        serialNumber: ticketSecret
     })
 
     // pass.set
@@ -92,6 +93,8 @@ export default async function handler(req:any, res:NextApiResponse){
     pass.setExpirationDate(new Date(expiryDate))
 
     pass.setRelevantDate(new Date(targetDate))
+
+
 
     // pass.type = "eventTicket"
     

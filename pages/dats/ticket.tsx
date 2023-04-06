@@ -62,6 +62,7 @@ export default function Ticket(){
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
+        ticketSecret: ticketSecret,
         targetDate: targetDate,
         quantity: quantity,
         price: serviceItemsDetails[0].price/100,
