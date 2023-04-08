@@ -67,7 +67,7 @@ const AuthContextProvider = ({ children }) => {
 }, [pasetoFromUrl])
 
 
-    const logout = () =>{
+    function logout(){
         setIsAuthenticated(false)
         // clear all caches
         localStorage.clear()
@@ -81,7 +81,7 @@ const AuthContextProvider = ({ children }) => {
     isAuthenticated, 
     setIsAuthenticated,
     paseto,
-    logout,
+    logout: logout,
     currentUser,
   };
 
