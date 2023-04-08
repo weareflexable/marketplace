@@ -38,6 +38,12 @@ const config: ThemeConfig ={
           },
           ghost:{
             fontWeight:650,
+            color:'text.200',
+            backgroundColor:'#464646',
+            borderRadius: '50px'
+          },
+          activeGhost:{
+            fontWeight:650,
             color:'brand.200',
             backgroundColor:'#464646',
             borderRadius: '50px'

@@ -26,8 +26,10 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret, startTime, quantity, price, isRedeem, targetUserID, validityStart, validityEnd, tokenId, status, endTime, serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeem, targetUserID, targetDate, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
+    const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
+    const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
@@ -60,6 +62,8 @@ export default function Ticket(){
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
+        ticketSecret: ticketSecret,
+        targetDate: targetDate,
         quantity: quantity,
         price: serviceItemsDetails[0].price/100,
         eventName: serviceItemsDetails[0].name,
@@ -122,7 +126,6 @@ export default function Ticket(){
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
 
-    console.log(nftData)
      
 
     return(
@@ -169,11 +172,11 @@ export default function Ticket(){
                                 </Box>
                             </Flex>
                             <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>Cut the line and show this QR code to the bouncer to redeem it.</Text>
+                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
                             </Flex>
                         </>
                         }
-                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'ghost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
