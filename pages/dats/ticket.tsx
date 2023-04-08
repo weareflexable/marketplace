@@ -176,7 +176,7 @@ export default function Ticket(){
                             </Flex>
                         </>
                         }
-                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'ghost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
