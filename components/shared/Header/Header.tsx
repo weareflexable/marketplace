@@ -53,13 +53,13 @@ export default function Header(){
 
 
     return(
-        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>
+        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1.2rem' h='100%' minH='2vh'>
             <Link href='/'>
-               <a> <Image src='/new_logo.svg' w={['150','200']} height={'70px'} alt='Logo of flexable app'/></a>
+               <a> <Image src='/new_logo.svg' w={['150','200']} height={'60px'} alt='Logo of flexable app'/></a>
             </Link>
             <Flex as='nav'>
                 {
-                    !isAuthenticated
+                    !isAuthenticated 
                     ? <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
                     :  userQuery.isFetched && !isAuthenticated
                     ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
