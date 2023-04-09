@@ -102,7 +102,7 @@ function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
                     
 
                     {/* bottom panel */}
-                    <Flex px='1em' py='.5em' mb={3} width={'100%'} alignItems='center' justifyContent={['space-between','center','center']} bg='gray.800'>
+                    <Flex px='1em' py='.5em' mb={3} width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
                         <FlexableComboButton
                             isMinQuantity= {isMinQuantity}
                             isTicketsAvailable = {isTicketsAvailable}
