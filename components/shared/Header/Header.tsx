@@ -25,7 +25,14 @@ export default function Header(){
         queryKey:['user'],  
         queryFn: fetchUserDetails,
         enabled:paseto!=='' ,
-        staleTime: Infinity
+        staleTime: Infinity,
+        onError:(error:any)=>{
+            const statusCode = error.response.status
+            if(statusCode === 401){
+                //@ts-ignore
+                logout()
+            }
+        }
     })
 
 

@@ -7,28 +7,35 @@ import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
 import {InstantBuyContextProvider} from '../context/InstantBuyContext'
 import {DatContextProvider} from '../context/DatContext'
+import {useToast} from '@chakra-ui/react'
 
 
 
-const queryClient = new QueryClient({
-  // queryCache: new QueryCache({
-  //   onError:(error)=>{
-  //     toast({
-  //       title: `Error`,
-  //       position:'top',
-  //       containerStyle:{
-  //         width:'100%'
-  //       },
-  //       description: error.message,
-  //       status: 'error',
-  //       isClosable: true,
-  //     })
-  //   }
-  // })
-})
+
 
 
 function MyApp({ Component, pageProps }) {
+
+  const toast = useToast()
+
+  const queryClient = new QueryClient({
+    // queryCache: new QueryCache({
+    //   onError:(error)=>{
+    //     const errorStatus = error.response.status
+    //     if(errorStatus !== 401) return; 
+    //     toast({
+    //       title: `Your token has expiered`,
+    //       position:'top',
+    //       containerStyle:{
+    //         width:'100%'
+    //       },
+    //       description: 'Please login again to continue',
+    //       status: 'error',
+    //       isClosable: true,
+    //     })
+    //   }
+    // })
+  })
 
   return (
     <AuthContextProvider>
