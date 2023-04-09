@@ -31,7 +31,6 @@ export default function Header(){
             if(statusCode === 401){
                 //@ts-ignore
                 logout()
-                console.log('token has expired')
             }
         }
     })

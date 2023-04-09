@@ -160,7 +160,7 @@ const gotoTicketPage = (dat:any)=>{
                    />
             }
 
-{
+            {
                datsQuery.hasNextPage
                ?<Button my='4' colorScheme={'brand'} variant='ghost' isLoading={datsQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>datsQuery.fetchNextPage()}>Load more DATs</Button>
                : null

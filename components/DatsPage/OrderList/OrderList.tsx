@@ -17,15 +17,15 @@ dayjs.extend(utc)
 dayjs.extend(advanced)
 
 import { numberFormatter } from "../../../utils/formatter";
+
+
 interface OrderListProps {
   orders: any;
   gotoTicketPage: (dat:any) => void;
 }
+
+
 export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
-
-
-
-
 
   return (
 
