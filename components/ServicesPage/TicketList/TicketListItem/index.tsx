@@ -44,7 +44,7 @@ const numberFormatter = new FormatMoney({
   });
   
 
-function Ticket ({data,selectedDate, onTriggerAction}:TicketProps){
+function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
 
 
     const [isLargerThan800] = useMediaQuery('(min-width: 600px)', {
@@ -193,7 +193,7 @@ function FlexableComboButton({isMinQuantity, isBuyingTicket, isMaxQuantity, quan
     )
 }
 
-export default Ticket
+export default TicketListItem
 
 
 interface BuyNowButton{

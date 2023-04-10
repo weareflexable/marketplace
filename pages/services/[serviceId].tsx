@@ -29,6 +29,7 @@ dayjs.extend(advanced)
 //@ts-ignore
 import CalendarDates from "calendar-dates";
 import { Service } from '../../data/services'
+import TicketListItem from '../../components/ServicesPage/TicketList/TicketListItem'
 const calendarDates = new CalendarDates()
 
 
@@ -288,11 +289,15 @@ export default function ServicesPage(){
                     {
                     serviceItemsQuery.isLoading || serviceItemsQuery.isRefetching
                     ?<ServiceSkeleton/>
-                    :<TicketList 
-                        date={selectedDate}
-                        // onAddToCart={addToCartHandler} 
-                        services={activeServiceItems}
-                    />
+                    :<TicketList>
+                         {activeServiceItems && activeServiceItems.map((service: any)=>(
+                            <TicketListItem 
+                                key={service.id}
+                                selectedDate={selectedDate} 
+                                data={service}
+                            />
+                        ))}
+                        </TicketList>
                     }
                         
 
