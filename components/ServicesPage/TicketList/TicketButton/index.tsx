@@ -40,7 +40,7 @@ interface TicketStepperProps{
 }
 // Signature stepper button which features
 // increment btn, quantity incremented, decrement btn in that order
-export function TicketStepper({isMinQuantity, decrementQuantity, isMaxQuantity, incrementQuantity, quantity, label}:TicketStepperProps){
+export function TicketButtonStepper({isMinQuantity, decrementQuantity, isMaxQuantity, incrementQuantity, quantity, label}:TicketStepperProps){
     return(
             <Flex width={'50%'}  borderRadius={'50px'} p={1} justifyContent={'space-between'} alignItems='center'>
                 <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} bg={isMinQuantity?'brand.disabled':'brand.400'} color={isMinQuantity?'text.100':'text.300'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
@@ -60,7 +60,7 @@ interface BuyNowButton{
     isAuthenticated: boolean
     isBuyingTicket: boolean
 }
-export function BuyNowButton({isMinQuantity, isBuyingTicket, buyTicketNow, isAuthenticated}:BuyNowButton){
+export function TicketButtonAction({isMinQuantity, isBuyingTicket, buyTicketNow, isAuthenticated}:BuyNowButton){
     console.log(isBuyingTicket)
     return(
         <Box py='1' mr='6'>

@@ -17,7 +17,7 @@ import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
 import useService from '../hooks/useTicket';
 import useTicket from '../hooks/useTicket';
-import TicketButton, { BuyNowButton, TicketStepper } from '../TicketButton';
+import TicketButton, { TicketButtonAction, TicketButtonStepper } from '../TicketButton';
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -108,7 +108,7 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                         <TicketButton
                             isTicketsAvailable = {isTicketsAvailable} 
                         >
-                             <TicketStepper 
+                             <TicketButtonStepper 
                                 isMinQuantity={isMinQuantity}
                                 isMaxQuantity={isMaxQuantity}
                                 quantity={ticketData.quantity}
@@ -117,7 +117,7 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                                 label = {'Tickets'}
                             />
                             <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
-                            <BuyNowButton
+                            <TicketButtonAction
                                 isAuthenticated = {isAuthenticated}
                                 isMinQuantity = {isMinQuantity}
                                 isBuyingTicket = {isBuyingTicket}
