@@ -21,7 +21,6 @@ const useTicket = (data:any)=>{
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
-    const [isBuyingTicket, setIsBuyingTicket] = useState(false)
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -77,8 +76,6 @@ const useTicket = (data:any)=>{
 
      const buyTicketNow = ()=>{
 
-      setIsBuyingTicket(true)
-      // console.log(ticketData)
         const buyNowCartItem = {
            serviceItemId: ticketData.id,
            quantity: String(ticketData.quantity),
@@ -96,12 +93,11 @@ const useTicket = (data:any)=>{
             setBuyItems([buyNowCartItem]) // passes cart items to checkout context
             setBuyNowTotal(subTotal)
             // This local storage value is used in payment page to determine if payment is buy now or cart
-            setStorage('shouldBuyInstantly','true')
+            setStorage('shouldBuyInstantly','true') // rename to checkoutType: buyNow || cart
             proceedToPayment();
-            setIsBuyingTicket(false)
+
             return
         }
-        setIsBuyingTicket(false)
         loginBeforeAction();
      }
  
@@ -124,7 +120,6 @@ const useTicket = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
-        isBuyingTicket,
         isMaxQuantity,
         subTotal,
         isAuthenticated,

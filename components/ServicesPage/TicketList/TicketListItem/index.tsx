@@ -48,21 +48,16 @@ const numberFormatter = new FormatMoney({
 function TicketListItem ({data,selectedDate}:TicketProps){
 
 
-    const [isLargerThan800] = useMediaQuery('(min-width: 600px)', {
-        ssr: true,
-        fallback: false, // return false on the server, and re-evaluate on the client side
-      })
-
       // I need each ticketListItem to manage it's own state (quantity, action buttons), hence the reason for passing the state to useTicket hook.
     const {
         ticketData,
         isTicketsAvailable,
-        isBuyingTicket,
         // isTicketsSoldOut,
         isMaxQuantity,
         isMinQuantity,
         // ticketDate,
         subTotal,
+        isProceedingToPayment,
         isAuthenticated,
         incrementQuantity,
         decrementQuantity,
@@ -120,7 +115,7 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                             <TicketButtonAction
                                 isAuthenticated = {isAuthenticated}
                                 isMinQuantity = {isMinQuantity}
-                                isBuyingTicket = {isBuyingTicket}
+                                isBuyingTicket = {isProceedingToPayment}
                                 buyTicketNow={buyTicketNow}
                             />
                         </TicketButton>
