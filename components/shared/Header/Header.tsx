@@ -65,7 +65,7 @@ export default function Header(){
                     ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
                     :   <Menu>                            
                             <MenuButton>
-                                <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
+                                <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
                              <MenuList zIndex='3' borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
