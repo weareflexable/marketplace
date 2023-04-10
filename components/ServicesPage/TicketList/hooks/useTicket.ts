@@ -13,7 +13,7 @@ import useLastVisitedPage from '../../../../hooks/useLastVistedPage'
 // TODO: Have a separate context for handling cart items
 
 // This should accept a Service-item type in data
-const useService = (data:any)=>{
+const useTicket = (data:any)=>{
 
 
     const {isAuthenticated} = useAuthContext()
@@ -136,4 +136,4 @@ const useService = (data:any)=>{
  
 }
 
-export default useService
+export default useTicket

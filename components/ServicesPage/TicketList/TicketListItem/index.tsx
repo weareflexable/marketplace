@@ -15,7 +15,9 @@ import {
 import Image from 'next/image'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
-import useService from '../hooks/useService';
+import useService from '../hooks/useTicket';
+import useTicket from '../hooks/useTicket';
+import TicketButton, { BuyNowButton, TicketStepper } from '../TicketButton';
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -33,7 +35,6 @@ dayjs.extend(advanced)
 
 interface TicketProps{
     data: any,
-    onTriggerAction?:(id:string)=>void,
     selectedDate: string
 }
 
@@ -44,7 +45,7 @@ const numberFormatter = new FormatMoney({
   });
   
 
-function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
+function TicketListItem ({data,selectedDate}:TicketProps){
 
 
     const [isLargerThan800] = useMediaQuery('(min-width: 600px)', {
@@ -52,6 +53,7 @@ function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
         fallback: false, // return false on the server, and re-evaluate on the client side
       })
 
+      // I need each ticketListItem to manage it's own state (quantity, action buttons), hence the reason for passing the state to useTicket hook.
     const {
         ticketData,
         isTicketsAvailable,
@@ -65,7 +67,7 @@ function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
         incrementQuantity,
         decrementQuantity,
         buyTicketNow
-         }= useService(data)
+         }= useTicket(data)
 
     
     return( 
@@ -77,7 +79,7 @@ function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
                 <Flex direction={['column']}>
                     <Flex py='1em'>
                         <Flex px='1em' flex={4} direction='column'>
-                            <Text textStyle={'secondary'} color='accent.300'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
+                            <Text textStyle={'secondary'} color='accent.200'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
                             <Text as='h4' mb='0' textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
                                 {data.name}
                             </Text>    
@@ -103,19 +105,25 @@ function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
 
                     {/* bottom panel */}
                     <Flex px='1em' py='.5em' mb={3} width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
-                        <FlexableComboButton
-                            isMinQuantity= {isMinQuantity}
-                            isTicketsAvailable = {isTicketsAvailable}
-                            subTotal ={subTotal}
-                            isBuyingTicket={isBuyingTicket}
-                            isMaxQuantity = {isMaxQuantity}
-                            isAuthenticated = {isAuthenticated}
-                            incrementQuantity = {incrementQuantity}
-                            decrementQuantity = {decrementQuantity}
-                            buyTicketNow ={buyTicketNow}
-                            label='Tickets'
-                            quantity={ticketData.quantity}
-                        />
+                        <TicketButton
+                            isTicketsAvailable = {isTicketsAvailable} 
+                        >
+                             <TicketStepper 
+                                isMinQuantity={isMinQuantity}
+                                isMaxQuantity={isMaxQuantity}
+                                quantity={ticketData.quantity}
+                                decrementQuantity ={decrementQuantity}
+                                incrementQuantity = {incrementQuantity}
+                                label = {'Tickets'}
+                            />
+                            <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
+                            <BuyNowButton
+                                isAuthenticated = {isAuthenticated}
+                                isMinQuantity = {isMinQuantity}
+                                isBuyingTicket = {isBuyingTicket}
+                                buyTicketNow={buyTicketNow}
+                            />
+                        </TicketButton>
                     </Flex>
                 </Flex>
             </Flex>
@@ -124,87 +132,7 @@ function TicketListItem ({data,selectedDate, onTriggerAction}:TicketProps){
 }
 
 
-interface FlexableStepperProps{
-    isMinQuantity: boolean,
-    isMaxQuantity: boolean,
-    decrementQuantity: ()=>void
-    incrementQuantity: ()=>void,
-    quantity: number
-    label: string
-}
-// Signature stepper button which features
-// increment btn, quantity incremented, decrement btn in that order
-function FlexableStepper({isMinQuantity, decrementQuantity, isMaxQuantity, incrementQuantity, quantity, label}:FlexableStepperProps){
-    return(
-            <Flex width={'50%'}  borderRadius={'50px'} p={1} justifyContent={'space-between'} alignItems='center'>
-                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} isRound disabled={isMinQuantity} onClick={isMinQuantity?()=>{}:decrementQuantity} bg={isMinQuantity?'brand.disabled':'brand.400'} color={isMinQuantity?'text.100':'text.300'} size='sm' icon={<MdRemove/>} aria-label='remove-item'/>
-                <HStack spacing="2">
-                    <Text textStyle={'secondary'}  color={isMinQuantity?'text.100':'text.300'}>{quantity}</Text>
-                    <Text textStyle={'secondary'} color={'text.200'}>{label}</Text>
-                </HStack>
-                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} bg='brand.400' disabled={isMaxQuantity} isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
-            </Flex>
-    )
-}
-
-
-interface FlexableComboButtonProps{
-    isMinQuantity: boolean,
-    quantity: number,
-    isBuyingTicket: boolean,
-    decrementQuantity: ()=>void,
-    incrementQuantity: ()=>void,
-    isMaxQuantity:boolean
-    label: string,
-    isTicketsAvailable: boolean,
-    isAuthenticated:boolean,
-    buyTicketNow: ()=>void,
-    subTotal:number,
-    // children:React.ReactNode
-    
-}
-function FlexableComboButton({isMinQuantity, isBuyingTicket, isMaxQuantity, quantity, isTicketsAvailable, subTotal, decrementQuantity, incrementQuantity, label, isAuthenticated, buyTicketNow}:FlexableComboButtonProps){
-    
-    return(
-        <>
-    { isTicketsAvailable
-        ?
-        <Flex maxW='400px' outline={'2px solid'} outlineColor='rgba(171, 77, 247, 0.4)' outlineOffset={2} bg='brand.300' width={'100%'} borderRadius={'60px'} direction={'column'}>
-             <Flex width={'100%'}  maxW='400px' justifyContent={'space-between'} alignItems='center'>
-                <FlexableStepper 
-                    isMinQuantity={isMinQuantity}
-                    isMaxQuantity={isMaxQuantity}
-                    quantity={quantity}
-                    decrementQuantity ={decrementQuantity}
-                    incrementQuantity = {incrementQuantity}
-                    label = {'Tickets'}
-                    />
-                <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
-                <Box py='1' mr='6'>
-                    <Button size='sm' textStyle={'buttonLabel'} isLoading={isBuyingTicket} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
-                </Box>
-             </Flex>
-        </Flex>
-        : <Flex width={'100%'} justifyContent={'center'} alignItems='center'>
-            <Text>Sorry! Tickets are sold out</Text>
-          </Flex>
-    }
-    </>
-    )
-}
 
 export default TicketListItem
 
 
-interface BuyNowButton{
-    isMinQuantity:boolean
-    buyTicketNow:()=>void
-    isAuthenticated: boolean
-}
-function BuyNowButton({isMinQuantity, buyTicketNow, isAuthenticated}:BuyNowButton){
-    return(
-        <Box py='1' mr='6'>
-            <Button size='sm' textStyle={'buttonLabel'} layerStyle={'primaryBtn'} disabled={isMinQuantity&&isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
-        </Box>
-    )
-}
