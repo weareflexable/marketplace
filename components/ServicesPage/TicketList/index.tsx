@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 
 // import {Service} from '../../../data/services'
-import Service from './Service/Service'
+import Service from './TicketListItem'
 import dayjs from 'dayjs'
 
 

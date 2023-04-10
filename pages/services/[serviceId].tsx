@@ -3,7 +3,7 @@ import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skel
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
-import TicketList from '../../components/ServicesPage/ServiceList'
+import TicketList from '../../components/ServicesPage/TicketList'
 import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
@@ -16,7 +16,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import ServiceSkeleton from '../../components/ServicesPage/ServiceList/Skeleton/Skeleton'
+import ServiceSkeleton from '../../components/ServicesPage/TicketList/Skeleton/Skeleton'
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -35,7 +35,7 @@ const calendarDates = new CalendarDates()
 export default function ServicesPage(){
     
 
-
+// Get calendar dates of current and next month
     useEffect(() => {
         async function getCalendarDates(){
             setIsLoadingDates(true)
@@ -65,14 +65,11 @@ export default function ServicesPage(){
     const [dates, setDates] = useState([])
     const [isLoadingDates, setIsLoadingDates] = useState(false)
 
-    const {query,push,asPath,basePath} = useRouter();
+    const router = useRouter();
     const {setAmount,setCart:setCartItems} =  useCheckoutContext()
     // const {state:cart, setState:setCart} = useLocalStorage('cart',[]);
-    const [selectedDate, setSelectedDate] = useState(dayjs().format('MMM DD, YYYY'))
+    const {state:selectedDate, setState:setSelectedDate} = useLocalStorage('selectedDate', dayjs().format('MMM DD, YYYY'))
 
-
-    // const [isLoading, setIsLoading] = useState(false)
-    // const [data, setData] = useState<any>({})
 
     // TODO: mark state to show that it interacts with local storage
 
@@ -87,7 +84,7 @@ export default function ServicesPage(){
     // const pageQueryParam = query.serviceId
     // const pageQueryParam = asPath+basePath
     // console.log(asPath,basePath)
-    const serviceId = query.serviceId;
+    const serviceId = router.query.serviceId;
 
 
     
@@ -231,12 +228,8 @@ export default function ServicesPage(){
     // }
 
     function changeDate(date:any){ 
-        //@ts-ignore
-        const utcFormat = dayjs.utc(date.iso, 'MMM DD, YYYY').format()
         const readableFormat = dayjs(date.iso).format('MMM DD, YYYY')
-
-
-        setStorage('selectedDate', readableFormat)
+        // set selected date value in storage
         setSelectedDate(readableFormat);
     }
 
@@ -245,7 +238,6 @@ export default function ServicesPage(){
     
     const activeServiceItems = serviceItemsQuery.data && serviceItemsQuery.data.filter((serviceItem: any)=>serviceItem.status == 1)
    
-    console.log(activeServiceItems)
 
         return( 
 
@@ -257,14 +249,14 @@ export default function ServicesPage(){
       </Head>
         <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
             {serviceQuery.isLoading
-                ?<Skeleton mx='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
+                ?<Skeleton mx='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>
                 :<Header/>
             }  
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
                        { serviceQuery.isLoading || service === undefined || serviceQuery.isError
-                       ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
+                       ?<Skeleton mx='1rem' mb='1rem' startColor='#2b2b2b' endColor="#464646" height={'40vh'}/> 
                        :<StoreHeader 
                          storeName={service.name}
                          lat = {service.latitude} 
@@ -306,33 +298,6 @@ export default function ServicesPage(){
 
                 </Flex> 
 
-                    {/* Dont render web cart on mobile */}
-                {/* <Flex display={['none','none','none','flex']} gridColumnStart={6} gridColumnEnd={8} h='100%'>
-                    {cart.length>0?
-                        <Cart 
-                            onCreateOrder={createOrder} 
-                            onIncrementCartItemQuantity={incrementCartItemQuantity} 
-                            onDecrementCartItemQuantity={decrementCartItemQuantity} 
-                            onRemoveCartItem={removeCartItemHandler} 
-                            loginBeforePayment = {loginBeforePayment}
-                            tickets={cart}
-                        />
-                    :null}
-                </Flex> */}
-
-                {/* Dont render mobile cart on large screen */}
-                {/* {isCartDrawerOpen?<Flex display={['flex','flex','flex','none']} width={'100%'}>
-                    <MobileCart
-                        onCreateOrder={createOrder} 
-                        onIncrementCartItemQuantity={incrementCartItemQuantity} 
-                        onDecrementCartItemQuantity={decrementCartItemQuantity} 
-                        onRemoveCartItem={removeCartItemHandler} 
-                        loginBeforePayment = {loginBeforePayment}
-                        tickets={cart}
-                        isDrawerOpen={isCartDrawerOpen}
-                        onCloseDrawer={()=>setIsCartDrawerOpen(false)}
-                    />
-                </Flex>:null} */}
 
             </SimpleGrid>
           
@@ -344,68 +309,5 @@ export default function ServicesPage(){
     )
 }
 
-const ServicePageSkeleton = ()=>{
-    return(
-        <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
-            <Skeleton height={'1.2rem'}/>
-            <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
-                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,6]} direction='column'  flex='2'>
-                    <Skeleton w='100%' height={'350px'}/>
-
-                    <Skeleton my='1' height={'1rem'}/>
-
-                    <SkeletonText mt='3' noOfLines={4} spacing='4' skeletonHeight='2' />
-                    <SkeletonText mt='3' noOfLines={4} spacing='4' skeletonHeight='2' />
-
-                </Flex> 
-            </SimpleGrid>       
-        </Box> 
-    )
-}
 
 
-
-
-
-
-
-
-// { isOpen? <CartSummary 
-//     onCloseModal={onClose} 
-//     isModalOpen={isOpen} 
-//     cart={cart}
-//     totalCost = {50}
-//     />:null}
-
-//     {isProcessDrawerOpen?<MobileCartSummary
-//       onCloseDrawer={()=>setIsProcessDrawerOpen(false)} 
-//       isDrawerOpen={isProcessDrawerOpen} 
-//       cart={cart}
-//       totalCost = {50}
-//     />:null}
-
-
-  {/* cart button to only display on mobile */}
-//   {cart.length>0?
-//     <Box
-//     display={['block','block','block','none']}
-//     width='50px'
-//     height='55px' 
-//     position='absolute'
-//     bottom ='8%'
-//     right='10%'
-//     >
-//         <Center zIndex={2} position='absolute' borderRadius={'50%'} w='20px' h='20px' bg='tomato' color='white'>
-//             <Text fontSize='12px' fontWeight='bold'>{cart.length}</Text>
-//         </Center>
-
-//          <IconButton 
-//             isRound
-//             onClick={()=>setIsCartDrawerOpen(true)}
-//             colorScheme='teal'
-//             aria-label='Open cart'
-//             size='lg'
-//             icon={<MdAddShoppingCart color='cyan.300'/>}
-//           />
-//     </Box>
-// :null}
