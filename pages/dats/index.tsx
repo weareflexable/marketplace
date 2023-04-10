@@ -140,13 +140,13 @@ const gotoTicketPage = (dat:any)=>{
       >
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
-              <Box ml={[0, 6]}>
+              <Box ml={[0]}>
                 <Text
                   as="h1"
                   textStyle='h3'
                   color='text.300'
                   mt="10"
-                  mb="6"
+                  mb="7"
                 >
                   My Digital Access Tokens
                 </Text>
