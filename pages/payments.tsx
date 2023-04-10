@@ -20,9 +20,9 @@ const Payments = () => {
   
     const [clientSecret, setClientSecret] = useState('')
     const [payamentIntentId, setPayamentIntentId] = useState('')
-    const {cartItems} = useCheckoutContext();
+    // const {cartItems} = useCheckoutContext();
     const {buyItems} = useInstantBuyContext();
-    const {isAuthenticated,paseto} = useAuthContext()
+    const {paseto} = useAuthContext()
     const [items,setItems] = useState({}) 
 
 
@@ -45,18 +45,12 @@ const Payments = () => {
     }
   
     useEffect(()=>{
-      // let paseto:string|null = '';
-      // if(isAuthenticated){
-      //   // paseto got set immediately after user was authenticated in in cart page
-      //   // check if paseto has expired or not
-      //   paseto = getPlatformPaseto()
-      // }
+
       setItems(buyItems[0])
       
       const fetchSecret = async ()=>{
-        let shouldBuyInstantly = getStorage('shouldBuyInstantly')
+        // check checkoutType
         // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
-        // co
         // const payload = createPayloadObject(itemsToPurchase)
         const payload = buyItems[0]
         try{
