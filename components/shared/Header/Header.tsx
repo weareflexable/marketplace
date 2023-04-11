@@ -25,7 +25,11 @@ export default function Header(){
         queryKey:['user'],  
         queryFn: fetchUserDetails,
         enabled:paseto!=='' ,
-        staleTime: Infinity,
+        refetchInterval: 30000,
+        retry: (failureCount, error) =>{
+          if(failureCount >2) return false
+          return true  
+        },
         onError:(error:any)=>{
             const statusCode = error.response.status
             if(statusCode === 401){
