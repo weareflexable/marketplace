@@ -34,7 +34,9 @@ export default function Header(){
             const statusCode = error.response.status
             if(statusCode === 401){
                 //@ts-ignore
-                logout()
+                setIsAuthenticated(false)
+                // clear all caches
+                localStorage.clear()
             }
         }
     })
