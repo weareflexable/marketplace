@@ -56,9 +56,9 @@ export default function Ticket(){
 
   
 
-// console.log(ctx_currentDat)
+
    async function generateApplePass(){ 
-    console.log(validityEnd)
+
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
