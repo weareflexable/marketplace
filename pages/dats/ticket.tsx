@@ -247,7 +247,7 @@ export default function Ticket(){
                                     <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                     <Flex flex={7}>
                                         <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
+                                        <a target='_blank' href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
                                         </Text>
                                     </Flex>
                                 </HStack>
