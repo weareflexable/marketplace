@@ -31,6 +31,8 @@ export default function Ticket(){
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
+    console.log(serviceDetails)
+
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
@@ -67,6 +69,7 @@ export default function Ticket(){
         quantity: quantity,
         price: serviceItemsDetails[0].price/100,
         eventName: serviceItemsDetails[0].name,
+        venueName: serviceDetails[0].name,
         street: serviceDetails[0].street,
         location: {
             latitude: serviceDetails[0].latitude,
