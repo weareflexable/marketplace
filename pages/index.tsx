@@ -36,7 +36,7 @@ export default function Home() {
   const serviceTypesQuery = useQuery({
     queryKey:['seviceTypes']
   , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=0`)
+    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=1`)
     return res.data.data
   },
   onSuccess:(data)=>{
@@ -52,7 +52,7 @@ export default function Home() {
   const infiniteServices = useInfiniteQuery(
     ['services',serviceFilter], 
     //@ts-ignore
-    async({pageParam=0})=>{
+    async({pageParam=1})=>{
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&itemStatus=active`)
       return res.data
     },
