@@ -60,7 +60,7 @@ export default function MyDats() {
   }
   }, [])
 
-  const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=0}) => {
+  const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=1}) => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError(
       `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`,

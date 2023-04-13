@@ -94,7 +94,7 @@ export default function ServicesPage(){
     const serviceQuery = useQuery({
         queryKey:['single-service',serviceId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=0&pageSize=12&key2=id&value2=${serviceId}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=1&pageSize=12&key2=id&value2=${serviceId}`) 
             return res.data
         },
         enabled: serviceId !== undefined,
