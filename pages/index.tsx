@@ -89,56 +89,12 @@ export default function Home() {
         </Head>
           <Layout>
 
-<<<<<<< HEAD
-                {/* hero section */}
-                <Flex w={['100%']} h={['20vh','25vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
-                  {/* <EventSearchBar/> */}
-=======
                 {/* <Flex w={['100%']} h={['20vh','40vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
->>>>>>> main
                   <Text  as='h1' w='100' textStyle={'h1'}>Showing you venues in Syracuse, NY</Text>
                 </Flex> */}
 
-<<<<<<< HEAD
-                {/* service type filter */}
-                <Flex mx={'1rem'} mb='1rem'>
-                  {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
-                    <Button variant={serviceType.id === serviceFilter?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
-                  ))}
-                </Flex>
-
-                { infiniteServices.isLoading 
-                 ?<SkeletonList/>
-                
-                :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
-                  {
-                    infiniteServices.data.pages.map((page:any,index:any)=>(
-                      <React.Fragment key={index}>
-                      {page.data.length==0
-                        ?<EmptyServices/>
-                        :page.data.map((data:Store)=>(
-                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
-                             <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
-                             <StoreCard data={data}/>
-                            </Skeleton>
-                        </WrapItem> 
-                        ))
-                      }
-                      </React.Fragment>
-                    ))
-                  }
-                 </Wrap> 
-
-               }
-               {
-               infiniteServices.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
-               : null
-                }
-=======
                 <VenuePanel/>
                 <CommunityPanel/>
->>>>>>> main
 
          </Layout>
          </>

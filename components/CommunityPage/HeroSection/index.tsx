@@ -11,20 +11,20 @@ interface Props{
     artworkHash: string,
     price: number
 }
-export default function HeroSection({logoImageHash, price, name}:Props){
+export default function HeroSection({logoImageHash, artworkHash, price, name}:Props){
 
-    const coverImage = logoImageHash && logoImageHash 
+    const coverImage = artworkHash && artworkHash 
     
 
     return(
-        <Flex mt='4' w='100%' position='relative' direction='column'>
-            <Box height='400px' maxW='100%'>
+        <Flex mt='4' w='100%' position={"relative"} direction='column'>
+            <Box height='400px' border={"1px solid"} position={"relative"} maxW='100%'>
                 <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' />
             </Box>
-            <Flex alignItems={'center'} p='2' zIndex='3' position='absolute' left={['3','5']} bottom='5'>
-                <Box mt={5}>
-                <Text color={'white'} textStyle={'h1'} as='h1' size='lg'>{name}</Text>
-                <Text color={'white'} textStyle={'h4'} as='h1' size='lg'>${price/100}</Text>
+            <Flex alignItems={'center'} p='2' zIndex='3' >
+                <Box mt={5}> 
+                <Text mb={3} textStyle={'h4'} as='h1'>${price/100}</Text>
+                <Text color={'white'} mt={3} textStyle={'h1'} as='h1' size='lg'>{name}</Text>
                     {/* <HStack width={['100%','90%','100%']} mt='1' spacing='1'>
                         <Text>{name}</Text>
                         <Link color='brand.200'  textStyle={'secondary'} href={`https://www.google.com/maps/search/?api=1&query=${lat},${lon}`}>{street}</Link>

@@ -54,7 +54,7 @@ const Payments = () => {
         // const payload = createPayloadObject(itemsToPurchase)
         const payload = buyItems[0]
         try{
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/community/buy-now`,payload,{
           headers:{
             'Authorization': paseto
           }

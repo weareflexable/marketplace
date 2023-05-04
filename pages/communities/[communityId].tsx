@@ -1,9 +1,8 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
 import Cart from '../../components/ServicesPage/Cart/Cart'
-import TicketList from '../../components/ServicesPage/ServiceList'
 import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
 import { useCheckoutContext } from '../../context/CheckoutContext'
@@ -16,7 +15,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import ServiceSkeleton from '../../components/ServicesPage/ServiceList/Skeleton/Skeleton'
+
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -28,6 +27,12 @@ dayjs.extend(advanced)
 
 //@ts-ignore
 import HeroSection from '../../components/CommunityPage/HeroSection'
+import TicketButton from '../../components/ServicesPage/TicketList/TicketButton'
+import TicketButtonStepper from '../../components/ServicesPage/TicketList/TicketButton/TicketButtonStepper'
+import useTicket from '../../components/ServicesPage/TicketList/hooks/useTicket'
+import useCommunityTicket from '../../components/CommunityPage/hooks/useCommunityTicket'
+import TicketButtonAction from '../../components/ServicesPage/TicketList/TicketButton/TicketButtonAction'
+import { useAuthContext } from '../../context/AuthContext'
 
 
 export default function CommunityPage(){
@@ -40,13 +45,13 @@ export default function CommunityPage(){
     const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
     const communityId  = router.query.communityId;
-
-
+    
+    
     
     const communityQuery = useQuery({
         queryKey:['single-community',communityId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/community?key=status&value=1&pageNumber=1&pageSize=12&key2=id&value2=${communityId}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/community?pageNumber=1&pageSize=12&id=${communityId}`) 
             return res.data
         },
         enabled: communityId !== undefined,
@@ -55,7 +60,18 @@ export default function CommunityPage(){
     
     // Confirming object is not undefined before accessing fields
     const community = communityQuery && communityQuery.data && communityQuery.data.data[0]
+    
+    const {
+        isMinQuantity,
+        isMaxQuantity,
+        decrementQuantity,
+        incrementQuantity,
+        ticketData,
+        isProceedingToPayment,
+        buyTicketNow
+    } = useCommunityTicket(community && community) 
 
+    const {isAuthenticated} = useAuthContext()
 
 
 
@@ -79,7 +95,7 @@ export default function CommunityPage(){
                 :<Header/>
             }  
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
-                <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
+                <Flex h='100%' position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
@@ -91,13 +107,31 @@ export default function CommunityPage(){
                          />
                         }  
 
-                        <Text mt={2} textStyle={'body'} layerStyle={'mediumPop'}>{community && community.description}</Text>
+                        <Text mt={2} textStyle={'body'} layerStyle={'highPop'}>{community && community.description}</Text>
                         
-                        <Flex py={5}>
-                            <Text>{community && community.name}</Text>
-                            <Box>
-                                <Button>Reserve ticket</Button>
-                            </Box>
+                        <Flex py={5} width={'100%'} mt={6} alignItems={"baseline"} border={"2px solid"}>
+                            <Text textStyle={"body"} layerStyle={"highPop"}>{community && community.name}</Text>
+                            <Flex px='1em' py='.5em' mb={3} width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
+                                <TicketButton
+                                    isTicketsAvailable = {true} 
+                                >
+                                    <TicketButtonStepper 
+                                        isMinQuantity={isMinQuantity}
+                                        isMaxQuantity={isMaxQuantity}
+                                        quantity={ticketData.quantity}
+                                        decrementQuantity ={decrementQuantity}
+                                        incrementQuantity = {incrementQuantity}
+                                        label = {'Tickets'}
+                                    />
+                                    <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
+                                    <TicketButtonAction
+                                        isAuthenticated = {isAuthenticated}
+                                        isMinQuantity = {isMinQuantity}
+                                        isBuyingTicket = {isProceedingToPayment}
+                                        buyTicketNow={buyTicketNow}
+                                    />
+                                </TicketButton>
+                            </Flex>
                         </Flex>
 
                 </Flex> 
