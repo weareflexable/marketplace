@@ -25,10 +25,6 @@ const useTicket = (data:any)=>{
     const router = useRouter()
     const {currentPath} = usePath()
 
-    //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
-       //       ...data&&data,
-       //       quantity:0
-       //   })
        
        
    // Each ticket will maintain it's own state from props because
@@ -44,6 +40,7 @@ const useTicket = (data:any)=>{
  
      // checks to see if there are available tickets for selected date
      const isTicketsAvailable = ticketData.ticketsAvailable > 0;
+     const maxPurchasableTickets = ticketData.ticketsAvailable < 6 ? ticketData.ticketsAvailable : 6
  
      // Determines whether or not tickets are sold out
     // const isTicketsSoldOut = 
@@ -52,7 +49,7 @@ const useTicket = (data:any)=>{
 
  
      const isMinQuantity = ticketData.quantity <= 0
-     const isMaxQuantity = ticketData.quantity === 6
+     const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
 

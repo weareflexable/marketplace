@@ -31,6 +31,8 @@ export default function Ticket(){
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
+    console.log(serviceDetails)
+
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
@@ -56,9 +58,9 @@ export default function Ticket(){
 
   
 
-// console.log(ctx_currentDat)
+
    async function generateApplePass(){ 
-    console.log(validityEnd)
+
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
@@ -67,6 +69,7 @@ export default function Ticket(){
         quantity: quantity,
         price: serviceItemsDetails[0].price/100,
         eventName: serviceItemsDetails[0].name,
+        venueName: serviceDetails[0].name,
         street: serviceDetails[0].street,
         location: {
             latitude: serviceDetails[0].latitude,
@@ -247,7 +250,7 @@ export default function Ticket(){
                                     <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                     <Flex flex={7}>
                                         <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
+                                        <a target='_blank' href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
                                         </Text>
                                     </Flex>
                                 </HStack>

@@ -60,7 +60,6 @@ const Payments = () => {
           }
         });
     
-        // console.log(res)
         setClientSecret(res.data.clientSecret)
         setPayamentIntentId(res.data.payment_intent_id)
   

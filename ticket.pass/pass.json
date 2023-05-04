@@ -23,13 +23,12 @@
 			"messageEncoding": "iso-8859-1"
 		}
 	],
-	"organizationName": "Apple Inc.",
+	"organizationName": "Flexable Event",
 	"description": "Apple Event Ticket",
 	"foregroundColor": "rgb(0, 0, 0)",
 	"backgroundColor": "rgb(60, 65, 76)",
 	"labelColor":"rgb(255, 255, 255)",
 	"eventTicket": {
-		
 		"secondaryFields": [
 			{
 				"key": "country",

@@ -17,7 +17,10 @@ import { MdAdd, MdRemove } from 'react-icons/md'
 import dayjs from 'dayjs';
 import useService from '../hooks/useTicket';
 import useTicket from '../hooks/useTicket';
-import TicketButton, { TicketButtonAction, TicketButtonStepper } from '../TicketButton';
+import TicketButton from '../TicketButton';
+import TicketButtonStepper from '../TicketButton/TicketButtonStepper';
+import TicketButtonAction from '../TicketButton/TicketButtonAction';
+
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")

@@ -1,23 +1,15 @@
-import Head from 'next/head'
-import StoreCard from '../components/HomePage/StoreCard/StoreCard'
-import {Button, Flex,Skeleton,Text,Wrap,WrapItem} from '@chakra-ui/react'
-import Layout from '../components/shared/Layout/Layout'
-import {Store} from '../Types/Stores.types'
-import {useInfiniteQuery, useQuery} from '@tanstack/react-query'
-import { useRouter } from 'next/router'
-import { mockData } from '../data/events'
-import SkeletonList from '../components/HomePage/SkeletonList/SkeletonList'
-import axios from 'axios'
-import React, { useState } from 'react'
-import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
-import VenuePanel from '../components/HomePage/VenuePanel'
-import CommunityPanel from '../components/HomePage/CommunityPanel'
-
-
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Store } from "../../../Types/Stores.types";
+import EmptyServices from "../../shared/EmptyServices/EmptyServices";
+import SkeletonList from "../SkeletonList/SkeletonList";
+import StoreCard from "../StoreCard/StoreCard";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const PAGE_SIZE = 10;
 
-export default function Home() {
+export default function VenuePanel(){
 
 
   const [serviceFilter, setServiceFilter] = useState('')
@@ -68,45 +60,23 @@ export default function Home() {
 
 
 
-  
-
-  
-
-  if(infiniteServices.isError){
+if(infiniteServices.isError){
     // TODO: create error boundary to catch this error.
     throw new Error('Error fetching stores')
   }
 
 
+    return(
+        <Flex mt={'3rem'}  direction={"column"}>
 
-
- 
-  return (
-    <>
-        <Head>
-          <title>Flexable</title>
-          <link rel="icon" href="/favicon.png" />
-        </Head>
-          <Layout>
-
-<<<<<<< HEAD
-                {/* hero section */}
-                <Flex w={['100%']} h={['20vh','25vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
-                  {/* <EventSearchBar/> */}
-=======
-                {/* <Flex w={['100%']} h={['20vh','40vh']} mb={['3','5']} px={['6','0']}  alignSelf={'center'} justifySelf={'center'} direction='column' justifyContent='center' alignItems='center'>
->>>>>>> main
-                  <Text  as='h1' w='100' textStyle={'h1'}>Showing you venues in Syracuse, NY</Text>
-                </Flex> */}
-
-<<<<<<< HEAD
-                {/* service type filter */}
-                <Flex mx={'1rem'} mb='1rem'>
+              <Flex mx={'1rem'} mb='2rem'>
+                <Text  as='h4' w='100' textStyle={'h1'}>Venues</Text>
+              </Flex>
+              <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
                     <Button variant={serviceType.id === serviceFilter?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
                 </Flex>
-
                 { infiniteServices.isLoading 
                  ?<SkeletonList/>
                 
@@ -135,12 +105,6 @@ export default function Home() {
                ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
                : null
                 }
-=======
-                <VenuePanel/>
-                <CommunityPanel/>
->>>>>>> main
-
-         </Layout>
-         </>
-  )
+        </Flex>
+    )
 }
