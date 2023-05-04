@@ -11,6 +11,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
 import VenuePanel from '../components/HomePage/VenuePanel'
+import CommunityPanel from '../components/HomePage/CommunityPanel'
 
 
 
@@ -93,6 +94,7 @@ export default function Home() {
                 </Flex> */}
 
                 <VenuePanel/>
+                <CommunityPanel/>
 
          </Layout>
          </>
