@@ -26,10 +26,6 @@ const useService = (data:any)=>{
     const router = useRouter()
     const {currentPath} = usePath()
 
-    //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
-       //       ...data&&data,
-       //       quantity:0
-       //   })
        
        
    // Each ticket will maintain it's own state from props because
