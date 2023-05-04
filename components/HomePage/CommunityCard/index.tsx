@@ -1,7 +1,7 @@
 import React from 'react'
 import {Box, Flex,Text, Avatar,Image} from '@chakra-ui/react'
 // import Image from 'next/image'
-import {Store} from '../../../Types/Stores.types'
+
 import {useRouter} from 'next/router'
 import { Community } from '../../../Types/Community.types'
 
@@ -35,8 +35,8 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                     <Text color='gray.300' textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                         {data.description}
                     </Text>
-                    <Text color='gray.300' mt={3} textStyle={'h4'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        $&#8201;{data.price}
+                    <Text color='gray.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
+                        $&#8201;{data.price/100}
                     </Text>
                 </Flex>
             </Flex>

@@ -1,46 +1,26 @@
 import { Button, Flex, Skeleton, Wrap, WrapItem, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Store } from "../../../Types/Stores.types";
+
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
 import SkeletonList from "../SkeletonList/SkeletonList";
-import StoreCard from "../StoreCard/StoreCard";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import CommunityCard from "../CommunityCard";
+import { Community } from "../../../Types/Community.types";
 
 const PAGE_SIZE = 10;
 
 export default function CommunityPanel(){
 
-
-  const [serviceFilter, setServiceFilter] = useState('')
   const [page, setPage] = useState(1)
 
-  function changeServiceFilter(filter:string){
-    setServiceFilter(filter)
-  }
-
-
-  const serviceTypesQuery = useQuery({
-    queryKey:['seviceTypes']
-  , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=1`)
-    return res.data.data
-  },
-  onSuccess:(data)=>{
-    if(data.length !==0){
-      const barId = data[0].id;
-      setServiceFilter(barId) 
-    }
-  }
-  
- })
 
 
   const infiniteServices = useInfiniteQuery(
-    ['services',serviceFilter], 
+    ['communities'], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&itemStatus=active`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/community?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
       return res.data
     },
     {
@@ -54,7 +34,6 @@ export default function CommunityPanel(){
         if(totalDataLength < fetchedDataLength) return undefined
         return pages.length 
       },
-      enabled: serviceTypesQuery.data !== undefined && serviceFilter !== ''
     }
 )
 
@@ -69,14 +48,10 @@ if(infiniteServices.isError){
     return(
         <Flex mt={'3rem'}  direction={"column"}>
 
-              <Flex mx={'1rem'} mb='2rem'>
-                <Text  as='h4' w='100' textStyle={'h1'}>Community</Text>
+              <Flex mx={'1rem'} mb='3rem'>
+                <Text  as='h4' w='100' textStyle={'h1'}>Communities</Text>
               </Flex>
-              <Flex mx={'1rem'} mb='1rem'>
-                  {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
-                    <Button variant={serviceType.id === serviceFilter?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
-                  ))}
-                </Flex>
+
                 { infiniteServices.isLoading 
                  ?<SkeletonList/>
                 
@@ -86,10 +61,10 @@ if(infiniteServices.isError){
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>
-                        :page.data.map((data:Store)=>(
+                        :page.data.map((data:Community)=>(
                           <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
                              <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
-                             <StoreCard data={data}/>
+                             <CommunityCard data={data}/>
                             </Skeleton>
                         </WrapItem> 
                         ))
