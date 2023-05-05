@@ -16,7 +16,7 @@ export default function CommunityPanel(){
 
 
 
-  const infiniteServices = useInfiniteQuery(
+  const infiniteCommunityQuery = useInfiniteQuery(
     ['communities'], 
     //@ts-ignore
     async({pageParam=1})=>{
@@ -39,7 +39,7 @@ export default function CommunityPanel(){
 
 
 
-if(infiniteServices.isError){
+if(infiniteCommunityQuery.isError){
     // TODO: create error boundary to catch this error.
     throw new Error('Error fetching stores')
   }
@@ -52,18 +52,18 @@ if(infiniteServices.isError){
                 <Text  as='h4' w='100' textStyle={'h1'}>Communities</Text>
               </Flex>
 
-                { infiniteServices.isLoading 
+                { infiniteCommunityQuery.isLoading 
                  ?<SkeletonList/>
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                   {
-                    infiniteServices.data.pages.map((page:any,index:any)=>(
+                    infiniteCommunityQuery.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>
                         :page.data.map((data:Community)=>(
                           <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
-                             <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
+                             <Skeleton w={'100%'} isLoaded={!infiniteCommunityQuery.isLoading}>
                              <CommunityCard data={data}/>
                             </Skeleton>
                         </WrapItem> 
@@ -76,8 +76,8 @@ if(infiniteServices.isError){
 
                }
                {
-               infiniteServices.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
+               infiniteCommunityQuery.hasNextPage
+               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteCommunityQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteCommunityQuery.fetchNextPage()}>Load more services</Button>
                : null
                 }
         </Flex>
