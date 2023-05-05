@@ -230,6 +230,7 @@ export default function ServicesPage(){
 
     function changeDate(date:any){ 
         const readableFormat = dayjs(date.iso).format('MMM DD, YYYY')
+
         // set selected date value in storage
         setSelectedDate(readableFormat);
     }

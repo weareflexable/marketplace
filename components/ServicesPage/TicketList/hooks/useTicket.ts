@@ -73,6 +73,8 @@ const useTicket = (data:any)=>{
 
      const buyTicketNow = ()=>{
 
+       const selectedDateFromStorage = getStorage('selectedDate')
+
         const buyNowCartItem = {
            item:{
             id: ticketData.id,
@@ -82,7 +84,8 @@ const useTicket = (data:any)=>{
            unitPrice: ticketData.price,
            email: 'flexable@yahoo.com',
            description:ticketData.name,
-           targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
+           //@ts-ignore
+           targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
          setBuyItems([buyNowCartItem]) // passes cart items to checkout context
