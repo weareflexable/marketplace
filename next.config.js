@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withBundleAnalyzer = require('@next/bundle-analyzer')
-const bundleAnalyzer = withBundleAnalyzer({enabled: process.env.ANALYZE === 'true'})
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -22,4 +20,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(bundleAnalyzer, nextConfig);
+module.exports =  nextConfig;
