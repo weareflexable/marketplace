@@ -94,8 +94,8 @@ export default function CommunityPage(){
                 ?<Skeleton mx='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
                 :<Header/>
             }  
-            <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
-                <Flex h='100%' position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
+            <SimpleGrid mt='2'layerStyle={'base'} minH={'100%'} h={'100%'} columns={8} spacing='2'>
+                <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
                     
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
@@ -108,37 +108,55 @@ export default function CommunityPage(){
                         }  
 
                         <Text mt={2} textStyle={'body'} layerStyle={'highPop'}>{community && community.description}</Text>
-                        
-                        <Flex py={5} width={'100%'} mt={6} alignItems={"baseline"} border={"2px solid"}>
-                            <Text textStyle={"body"} layerStyle={"highPop"}>{community && community.name}</Text>
-                            <Flex px='1em' py='.5em' mb={3} width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
-                                <TicketButton
-                                    isTicketsAvailable = {true} 
-                                >
-                                    <TicketButtonStepper 
-                                        isMinQuantity={isMinQuantity}
-                                        isMaxQuantity={isMaxQuantity}
-                                        quantity={ticketData.quantity}
-                                        decrementQuantity ={decrementQuantity}
-                                        incrementQuantity = {incrementQuantity}
-                                        label = {'Tickets'}
-                                    />
-                                    <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
-                                    <TicketButtonAction
-                                        isAuthenticated = {isAuthenticated}
-                                        isMinQuantity = {isMinQuantity}
-                                        isBuyingTicket = {isProceedingToPayment}
-                                        buyTicketNow={buyTicketNow}
-                                    />
-                                </TicketButton>
-                            </Flex>
+
+                        <Flex mt={5} border={"1px solid #333333"} borderRadius={'4px'} px='4' py={5} mb={3}> 
+                            <Text textStyle={'body'} layerStyle={'mediumPop'} flex={1}>Benjamains On Franklin</Text>
+                            <VStack alignItems={'flex-start'}  flex={3} spacing={1}>
+                                <Text textStyle={'body'} layerStyle={'highPop'}>Buy one get one free</Text>
+                                <Text textStyle={'body'} layerStyle={'mediumPop'}>4641 Buffalo Street, Wiscontin, United States</Text>
+                                <Text textStyle={'body'} layerStyle={'highPop'}>+1 (453) 434 8543</Text> 
+                            </VStack> 
+                        </Flex> 
+
+                        <Flex mt={2} border={"1px solid #333333"} borderRadius={'4px'} p='1rem' mb={3}>
+                            <Text textStyle={'body'} layerStyle={'highPop'} flex={1}>Mully's Restaurant</Text>
+                            <VStack alignItems={'flex-start'} flex={3} spacing={1}>
+                                <Text textStyle={'body'} layerStyle={'mediumPop'}>Buy 43 bottles get 3 free invoice going on with you forward</Text>
+                                <Text textStyle={'body'} layerStyle={'mediumPop'}>4641 Buffalo Street, Wiscontin, United States</Text>
+                                <Text textStyle={'body'} layerStyle={'highPop'}>+1 (453) 434 8543</Text> 
+                            </VStack> 
                         </Flex>
+                        
 
                 </Flex> 
-
             </SimpleGrid>
-          
 
+            <SimpleGrid width={'100%'} position={'fixed'} bottom={'0'}  borderTop={"1px solid"} bg={"#2b2b2b"} columns={8} spacing='2'>
+            <Flex  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} py={2} px={3}  width={'100%'}  alignItems={"baseline"} >
+                <Text textStyle={"body"} display={['none','block']}  layerStyle={"highPop"}>{community && community.name}</Text>
+                <Flex px='1em' py='.5em' width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
+                    <TicketButton
+                        isTicketsAvailable = {true} 
+                    > 
+                        <TicketButtonStepper 
+                            isMinQuantity={isMinQuantity}
+                            isMaxQuantity={isMaxQuantity}
+                            quantity={ticketData.quantity}
+                            decrementQuantity ={decrementQuantity}
+                            incrementQuantity = {incrementQuantity}
+                            label = {'Tickets'}
+                        />
+                        <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
+                        <TicketButtonAction
+                            isAuthenticated = {isAuthenticated}
+                            isMinQuantity = {isMinQuantity}
+                            isBuyingTicket = {isProceedingToPayment}
+                            buyTicketNow={buyTicketNow}
+                        />
+                    </TicketButton>
+                </Flex>
+            </Flex>
+            </SimpleGrid>
           
         </Box> 
         </>
