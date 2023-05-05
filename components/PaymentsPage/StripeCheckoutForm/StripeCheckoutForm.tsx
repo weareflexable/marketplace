@@ -101,7 +101,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
       {
         onSuccess:()=>{ 
           const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-          router.push(`${lastVisitedPage}`)
+          lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
         },
       })
   }

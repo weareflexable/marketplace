@@ -74,7 +74,10 @@ const useTicket = (data:any)=>{
      const buyTicketNow = ()=>{
 
         const buyNowCartItem = {
-           serviceItemId: ticketData.id,
+           item:{
+            id: ticketData.id,
+            type: 'venue'
+           },
            quantity: String(ticketData.quantity),
            unitPrice: ticketData.price,
            email: 'flexable@yahoo.com',
