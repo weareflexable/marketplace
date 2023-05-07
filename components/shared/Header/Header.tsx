@@ -41,7 +41,6 @@ export default function Header(){
         }
     })
 
-    console.log(isAuthenticated)
 
 
     const profilePicHash = userQuery.data && userQuery.data[0].profilePic

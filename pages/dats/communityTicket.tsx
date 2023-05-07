@@ -32,6 +32,7 @@ export default function Ticket(){
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
+    console.log('selected',ctx_currentDat)
 
     const communityDats = communityDetails && communityDetails[0]
 
@@ -51,7 +52,7 @@ export default function Ticket(){
             },
             ticketId: id, // ticketId
             ticketSecret: ticketSecret,
-            validDate: validityEnd,
+            // validDate: validityEnd,
             quantity: quantity,
             userId: targetUserID,
           };
@@ -62,15 +63,16 @@ export default function Ticket(){
   }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
+  console.log(dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'))
 
 
    async function generateApplePass(){ 
 
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: validityEnd, // add 30 days
+        expiryDate: dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'), // add 30 days
         ticketSecret: ticketSecret,
-        targetDate: targetDate,
+        targetDate: dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
         eventName: communityDats.name,
@@ -199,7 +201,7 @@ export default function Ticket(){
                             </HStack>
 
 
-                            <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                            {/* <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
@@ -211,7 +213,7 @@ export default function Ticket(){
                             <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
                                 <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails[0].contactNumber}`}>{`+1 (${serviceDetails[0].contactNumber.substring(2,5)}) ${serviceDetails[0].contactNumber.substring(5,8)}-${serviceDetails[0].contactNumber.substring(8)}`}</a></Text></Flex>
-                            </HStack>
+                            </HStack> */}
 
 
                         </VStack>

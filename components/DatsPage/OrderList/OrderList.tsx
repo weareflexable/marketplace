@@ -42,9 +42,9 @@ export function OrderList({ orders, gotoTicketPage, gotoCommunityPage }: OrderLi
               : page.data && page.data.map((order:any)=>{
                 const isCommunity = order.communityDetails.length !== 0
                 if(isCommunity){
-                  return <CommunityListItem gotoCommunityPage={gotoCommunityPage} order={order}/>
+                  return <CommunityListItem key={order.id} gotoCommunityPage={gotoCommunityPage} order={order}/>
                 }else{
-                  return <VenueListItem order={order} gotoTicketPage={gotoTicketPage}/>
+                  return <VenueListItem key={order.id} order={order} gotoTicketPage={gotoTicketPage}/>
                 }
                 
                }
