@@ -206,7 +206,7 @@ export default function Ticket(){
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails[0].latitude},${serviceDetails[0].longitude}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
+                                        <a href={`https://www.google.com/maps/place/?q=place_id:${communityDats.address.placeId}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
                                     </Text>
                                 </Flex>
                             </HStack> 

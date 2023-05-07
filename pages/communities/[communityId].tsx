@@ -114,7 +114,10 @@ export default function CommunityPage(){
                                 <Text textStyle={'body'} layerStyle={'mediumPop'} flex={1}>{venue.name}</Text>
                                 <VStack alignItems={'flex-start'}  flex={3} spacing={1}>
                                     <Text textStyle={'body'} layerStyle={'highPop'}>{venue.promotion}</Text>
-                                    <Text textStyle={'body'} layerStyle={'mediumPop'}>{venue.address.fullAddress}</Text>
+                                    <Text color='brand.200' textStyle={'secondary'}> 
+                                        <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
+                                    </Text>
+                                    <Text textStyle={'body'} layerStyle={'mediumPop'}>{}</Text>
                                     <Text textStyle={'body'} layerStyle={'highPop'}>{(venue.contactNumber)}</Text> 
                                 </VStack> 
                             </Flex> 
