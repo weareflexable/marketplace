@@ -17,11 +17,10 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
     const router = useRouter()
     
     const navigateToCommunityPage=(communityId:string)=>{
-        // console.log(serviceId)
         router.push(`/communities/${communityId}`)
     }
 
-    const imageHash = data?.artworkHash
+    const imageHash = data?.logoImageHash
 
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToCommunityPage(data.id)}>

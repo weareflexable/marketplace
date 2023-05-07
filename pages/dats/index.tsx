@@ -99,6 +99,10 @@ const gotoTicketPage = (dat:any)=>{
   push('/dats/ticket')
 }
 
+const gotoCommunityTicketPage =(dat:any)=>{
+  ctx_setDat(dat)
+  push('/dats/communityTicket')
+}
 // This sorts orders in descending order after it's received from DB
   // const sortedOrders =
   //   datsQuery.data &&
@@ -157,6 +161,7 @@ const gotoTicketPage = (dat:any)=>{
                   :<OrderList
                     orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
+                    gotoCommunityPage={gotoCommunityTicketPage}
                    />
             }
 

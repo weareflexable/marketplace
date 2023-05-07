@@ -24,10 +24,11 @@ import Image from "next/image";
 interface OrderListProps {
   orders: any;
   gotoTicketPage: (dat:any) => void;
+  gotoCommunityPage: (dat:any) => void;
 }
 
 
-export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
+export function OrderList({ orders, gotoTicketPage, gotoCommunityPage }: OrderListProps) {
 
   return (
 
@@ -41,7 +42,7 @@ export function OrderList({ orders, gotoTicketPage }: OrderListProps) {
               : page.data && page.data.map((order:any)=>{
                 const isCommunity = order.communityDetails.length !== 0
                 if(isCommunity){
-                  return <CommunityListItem order={order}/>
+                  return <CommunityListItem gotoCommunityPage={gotoCommunityPage} order={order}/>
                 }else{
                   return <VenueListItem order={order} gotoTicketPage={gotoTicketPage}/>
                 }
@@ -148,14 +149,11 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
 }
 
 interface CommunityListItemProp{
-  order:any
+  order:any,
+  gotoCommunityPage: (dat:any) => void
 }
 
-function CommunityListItem({order}:CommunityListItemProp){
-
-    function gotoCommunityTicketPage(order:any){
-      
-    }
+function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
 
 
   return(
@@ -171,7 +169,7 @@ function CommunityListItem({order}:CommunityListItemProp){
     borderRadius={'6px'}
     key={order.id}
     cursor={'pointer'}
-    onClick={()=>gotoCommunityTicketPage(order)}
+    onClick={()=>gotoCommunityPage(order)}
   >
      
     <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${order.communityDetails[0].artworkHash}`}/>

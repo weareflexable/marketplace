@@ -41,6 +41,8 @@ export default function Header(){
         }
     })
 
+    console.log(isAuthenticated)
+
 
     const profilePicHash = userQuery.data && userQuery.data[0].profilePic
 
@@ -52,9 +54,7 @@ export default function Header(){
         // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
     }
 
-    function navigate(route:string){
-        console.log(route)
-    }
+ 
 
 
 
