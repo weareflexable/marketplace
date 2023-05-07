@@ -110,7 +110,7 @@ export default function CommunityPage(){
                         <Text mt={2} textStyle={'body'} layerStyle={'highPop'}>{community && community.description}</Text>
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
-                            <Flex mt={5} border={"1px solid #333333"} borderRadius={'4px'} px='4' py={5} mb={3}> 
+                            <Flex mt={5} key={venue.id} border={"1px solid #333333"} borderRadius={'4px'} px='4' py={5} mb={3}> 
                                 <Text textStyle={'body'} layerStyle={'mediumPop'} flex={1}>{venue.name}</Text>
                                 <VStack alignItems={'flex-start'}  flex={3} spacing={1}>
                                     <Text textStyle={'body'} layerStyle={'highPop'}>{venue.promotion}</Text>

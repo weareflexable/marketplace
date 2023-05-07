@@ -27,7 +27,7 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, targetDate, validityStart, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, targetDate, validityStart, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
@@ -71,9 +71,9 @@ export default function Ticket(){
 
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: communityDats && dayjs(communityDats.createdAt).add(31,'days').format('MMM DD, YYYY'), // add 30 days
+        expiryDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'), // add 30 days
         ticketSecret: ticketSecret,
-        targetDate: communityDats && dayjs(communityDats.createdAt).add(31,'days').format('MMM DD, YYYY'),
+        targetDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
         communityName: communityDats.name,
