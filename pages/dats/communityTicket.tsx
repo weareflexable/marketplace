@@ -73,10 +73,10 @@ export default function Ticket(){
         targetDate: communityDats && dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
-        eventName: communityDats.name,
+        communityName: communityDats.name,
     }
 
-    const body = await fetch('/api/generatePass',{
+    const body = await fetch('/api/generateCommunityPass',{
         method:'POST',
         body: JSON.stringify(payload),
         headers:{
