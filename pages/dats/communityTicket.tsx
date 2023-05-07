@@ -32,8 +32,6 @@ export default function Ticket(){
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
-    console.log('selected',ctx_currentDat)
-
     const communityDats = communityDetails && communityDetails[0]
 
     const isTxHash = transactionHash !== ''
@@ -47,7 +45,7 @@ export default function Ticket(){
 
           qrCodePayload = {
             item:{
-                id: serviceItemsDetails[0].id,
+                id: communityDats.id,
                 type: 'community'
             },
             ticketId: id, // ticketId
@@ -63,16 +61,16 @@ export default function Ticket(){
   }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
-  console.log(dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'))
+
 
 
    async function generateApplePass(){ 
 
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'), // add 30 days
+        expiryDate: communityDats && dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'), // add 30 days
         ticketSecret: ticketSecret,
-        targetDate: dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'),
+        targetDate: communityDats && dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
         eventName: communityDats.name,
@@ -94,7 +92,7 @@ export default function Ticket(){
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${serviceItemsDetails[0].name}.pkpass`);
+    link.setAttribute('download', `${communityDats.name}.pkpass`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
