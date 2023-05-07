@@ -22,6 +22,7 @@ dayjs.extend(advanced)
 
 
 export default function Ticket(){
+
     const router = useRouter()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
@@ -33,6 +34,8 @@ export default function Ticket(){
 
 
     const communityDats = communityDetails && communityDetails[0]
+
+    console.log(ctx_currentDat)
 
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
@@ -68,9 +71,9 @@ export default function Ticket(){
 
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: communityDats && dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'), // add 30 days
+        expiryDate: communityDats && dayjs(communityDats.createdAt).add(31,'days').format('MMM DD, YYYY'), // add 30 days
         ticketSecret: ticketSecret,
-        targetDate: communityDats && dayjs(communityDats.createdAt).add(30,'days').format('MMM DD, YYYY'),
+        targetDate: communityDats && dayjs(communityDats.createdAt).add(31,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
         communityName: communityDats.name,

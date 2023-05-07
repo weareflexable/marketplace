@@ -53,9 +53,9 @@ export default async function handler(req:any, res:NextApiResponse){
             "row": 0
         },
         {
-            "key": "validOn",
-            "value": dayjs(targetDate).format("MMM DD, YYYY"), //  convert this to us timezone
-            "label":'Valid On',
+            "key": "validUntil",
+            "value": targetDate, //  convert this to us timezone
+            "label":'Valid Until',
             "row": 0
         },
     )

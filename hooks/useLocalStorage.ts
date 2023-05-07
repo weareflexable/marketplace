@@ -12,7 +12,6 @@ const useLocalStorage = (key:string, defaultValue:any)=>{
 
         const valueExist = valueFromStorage === null || valueFromStorage === undefined ? false : true
             if(valueExist){
-                console.log('date',valueFromStorage)
                 const parsedValueFromStrorage = JSON.parse(valueFromStorage || '')
                 return parsedValueFromStrorage;
             }
