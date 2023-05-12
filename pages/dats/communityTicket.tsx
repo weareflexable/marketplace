@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
 import Head from 'next/head'
+import RedeemHistory from '../../components/DatsPage/RedeemHistory'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -259,6 +260,8 @@ export default function Ticket(){
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
+
+                    <RedeemHistory ticketId='kdfadfiadfa'/>
                         
             </Flex>
             }
