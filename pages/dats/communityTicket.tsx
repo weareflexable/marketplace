@@ -260,8 +260,11 @@ export default function Ticket(){
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
-
-                    <RedeemHistory ticketId='kdfadfiadfa'/>
+                     <Text px='1rem' mt='9'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                    <RedeemHistory 
+                        quantity={quantity}    
+                        ticketId={id}
+                     />
                         
             </Flex>
             }

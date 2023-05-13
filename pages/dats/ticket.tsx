@@ -44,7 +44,7 @@ export default function Ticket(){
 
           qrCodePayload = {
             item:{
-                id: serviceItemsDetails[0].id,
+                id: serviceItemsDetails.id,
                 type: 'venue'
             },
             ticketId: id, // ticketId
@@ -70,8 +70,8 @@ export default function Ticket(){
         ticketSecret: ticketSecret,
         targetDate: targetDate,
         quantity: quantity,
-        price: serviceItemsDetails[0].price/100,
-        eventName: serviceItemsDetails[0].name,
+        price: serviceItemsDetails.price/100,
+        eventName: serviceItemsDetails.name,
         venueName: serviceDetails[0].name,
         street: serviceDetails[0].street,
         location: {
@@ -96,7 +96,7 @@ export default function Ticket(){
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${serviceItemsDetails[0].name}.pkpass`);
+    link.setAttribute('download', `${serviceItemsDetails.name}.pkpass`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
@@ -148,7 +148,7 @@ export default function Ticket(){
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                     <HStack ml='5' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                        <Text as='h1' textStyle={'h4'} color='text.300' >{ctx_currentDat.serviceItemsDetails[0].name}</Text>
+                        <Text as='h1' textStyle={'h4'} color='text.300' >{ctx_currentDat.serviceItemsDetails.name}</Text>
                     </HStack>
                 </Flex> 
                 }
@@ -197,7 +197,7 @@ export default function Ticket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemsDetails[0].price/100)}`}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemsDetails.price/100)}`}</Text></Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -241,7 +241,7 @@ export default function Ticket(){
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
-                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails[0].logoImageHash}`}  alt='An image of the nft token'/>
+                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemsDetails.logoImageHash}`}  alt='An image of the nft token'/>
                                  </Box>   
                             }
                         </Flex>
