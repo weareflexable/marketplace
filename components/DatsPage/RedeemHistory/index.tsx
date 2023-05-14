@@ -1,4 +1,4 @@
-import { Flex, Text, Box, Skeleton, Image, List, ListIcon, ListItem, HStack } from "@chakra-ui/react";
+import { Flex, Text, Box, Skeleton, Image, List, ListIcon, ListItem, HStack, Button } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MdCheckCircle, MdSettings } from "react-icons/md";
@@ -8,7 +8,8 @@ import { useAuthContext } from "../../../context/AuthContext";
 
 interface Props{
     ticketId: string,
-    quantity: number
+    quantity: number,
+    type?: string
 }
 
 const data = [
@@ -18,7 +19,7 @@ const data = [
 
 ]
 
-export default function RedeemHistory({ticketId,quantity}:Props){
+export default function RedeemHistory({ticketId,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
 
@@ -49,7 +50,7 @@ export default function RedeemHistory({ticketId,quantity}:Props){
         {redeemHistoryQuery.isLoading 
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'10  rem'}/>
             : history && history.length === 0
-            ? <EmptyList/>
+            ? <EmptyList refresh={()=> redeemHistoryQuery.refetch}/>
             :
             <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
                 <List spacing={3}>
@@ -76,21 +77,24 @@ export default function RedeemHistory({ticketId,quantity}:Props){
     )
 }
 
-
-function EmptyList(){
+interface EmptyListProps{
+    refresh: ()=>void
+}
+function EmptyList({refresh}:EmptyListProps){
     return(
-        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='10vh' width={"100%"}>
-        <Flex direction='column' maxW={'350px'} alignItems='center'>
+        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' width={"100%"}>
+        <Flex direction='column' mt='2rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'320px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
-                Awaiting redemption
+                Awaiting Redemption
             </Text>
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
                 You are yet to start redeeming any one of your tickets
             </Text>
-            {/* <Button variant='ghost' onClick={navigateToMarketPlace}>
-                Go back to marketplace
-            </Button> */}
+            <Button variant='ghost' onClick={refresh}>
+               Refresh
+            </Button>
         </Flex>
     </Flex>
+    
     )
 } 

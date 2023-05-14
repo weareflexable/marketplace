@@ -225,10 +225,10 @@ export default function Ticket(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
+                    <Text  as='h3'  px='1rem' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
                     {isTxHash
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
-                            <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
@@ -260,7 +260,7 @@ export default function Ticket(){
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
-                     <Text px='1rem' mt='9'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                     <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
                     <RedeemHistory 
                         quantity={quantity}    
                         ticketId={id}
@@ -303,8 +303,8 @@ const TicketSkeleton = ()=>{
 
 function NoHash(){
     return(
-        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='10vh' width={"100%"}>
-        <Flex direction='column' maxW={'350px'} alignItems='center'>
+        <Flex justifyContent='center' alignItems='center' height='100%' width={"100%"}>
+        <Flex direction='column' mt='2rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'320px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
                 Minting NFT ...
             </Text>

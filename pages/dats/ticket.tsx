@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
 import Head from 'next/head'
+import RedeemHistory from '../../components/DatsPage/RedeemHistory'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -31,7 +32,6 @@ export default function Ticket(){
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
-    console.log(serviceDetails)
 
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
@@ -234,10 +234,10 @@ export default function Ticket(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    {isTxHash
+                    <Text px='1rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='2' color='text.300'>Digital access token</Text>
+                    {isTxHash 
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
-                            <Text  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
@@ -269,6 +269,13 @@ export default function Ticket(){
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
+
+                        <Text px='1rem' mt='4re'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                            <RedeemHistory 
+                                quantity={quantity}    
+                                ticketId={id}
+                            />
+        
                         
             </Flex>
             }
@@ -307,8 +314,8 @@ const TicketSkeleton = ()=>{
 
 function NoHash(){
     return(
-        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' minHeight='10vh' width={"100%"}>
-        <Flex direction='column' maxW={'350px'} alignItems='center'>
+        <Flex justifyContent='center' alignItems='center' height='100%' width={"100%"}>
+        <Flex direction='column' mt='2rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'320px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
                 Minting NFT ...
             </Text>
