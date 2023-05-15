@@ -90,27 +90,43 @@ export default function CommunityPage(){
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<HeroSection 
-                         name={community && community.name}
+                         name={community && community.name} 
                          price={community && community.price}
                          artworkHash={community && community.artworkHash}
+                         description= {community && community.description}
                          logoImageHash = {community && community.logoImageHash}
                          />
                         }  
 
-                        <Text mt={2} textStyle={'body'} layerStyle={'highPop'}>{community && community.description}</Text>
+                       
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
-                            <Flex mt={5} key={venue.id} border={"1px solid #333333"} borderRadius={'4px'} px='4' py={5} mb={3}> 
-                                <Text textStyle={'body'} layerStyle={'mediumPop'} flex={1}>{venue.name}</Text>
-                                <VStack alignItems={'flex-start'}  flex={3} spacing={1}>
-                                    <Text textStyle={'body'} layerStyle={'highPop'}>{venue.promotion}</Text>
-                                    <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
-                                    </Text>
-                                    <Text textStyle={'body'} layerStyle={'mediumPop'}>{}</Text>
-                                    <Text textStyle={'body'} layerStyle={'highPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
+                            <>
+                            
+                            <Flex   direction={['column','column','row']} key={venue.id} mx={[0]} borderRadius={'4px'} px='4' py={5} mb={3}>  
+                                <Text textStyle={'h4'} mb={8} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
+                                <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
+  
+                                    <Flex direction={'column'} >
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Promotion</Text>
+                                        <Text textStyle={'body'} layerStyle={'highPop'}>{venue.promotion}</Text>
+                                    </Flex>
+
+                                    <Flex direction={'column'} >
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Location</Text>
+                                        <Text color='brand.100' textStyle={'body'}> 
+                                            <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
+                                        </Text>
+                                    </Flex>
+
+                                    <Flex direction={'column'}>
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Contact </Text>
+                                        <Text textStyle={'body'} layerStyle={'mediumPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
+                                    </Flex>
                                 </VStack> 
-                            </Flex> 
+                            </Flex>
+                            <Divider my={9} borderColor={'#232323'}    _last={{display:'none'}}></Divider>  
+                            </>
                         ))}
 
                         
