@@ -1,17 +1,8 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, SkeletonText, Heading,useDisclosure,Image,SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
-import Cart from '../../components/ServicesPage/Cart/Cart'
-import CartSummary from '../../components/ServicesPage/CartSummary/CartSummary'
 import {useQuery} from '@tanstack/react-query'
-import { useCheckoutContext } from '../../context/CheckoutContext'
-import StoreHeader from '../../components/ServicesPage/StoreHeader/StoreHeader'
-import { deleteStorage, getStorage, setStorage } from '../../utils/localStorage'
-import { MdAddShoppingCart } from 'react-icons/md'
-import MobileCart from '../../components/ServicesPage/Cart/MobileCart/MobileCart'
-import MobileCartSummary from '../../components/ServicesPage/CartSummary/MobileCartSummary/MobileCartSummary'
-import useLocalStorage from '../../hooks/useLocalStorage'
 import Head from 'next/head'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -29,10 +20,10 @@ dayjs.extend(advanced)
 import HeroSection from '../../components/CommunityPage/HeroSection'
 import TicketButton from '../../components/ServicesPage/TicketList/TicketButton'
 import TicketButtonStepper from '../../components/ServicesPage/TicketList/TicketButton/TicketButtonStepper'
-import useTicket from '../../components/ServicesPage/TicketList/hooks/useTicket'
 import useCommunityTicket from '../../components/CommunityPage/hooks/useCommunityTicket'
 import TicketButtonAction from '../../components/ServicesPage/TicketList/TicketButton/TicketButtonAction'
 import { useAuthContext } from '../../context/AuthContext'
+import { convertToAmericanFormat } from '../../utils/phoneNumberFormatter'
 
 
 export default function CommunityPage(){
@@ -42,7 +33,6 @@ export default function CommunityPage(){
 
     const router = useRouter();
 
-    const [isLargerThan62] = useMediaQuery('(min-width: 62em)')
 
     const communityId  = router.query.communityId;
     
@@ -118,7 +108,7 @@ export default function CommunityPage(){
                                         <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
                                     </Text>
                                     <Text textStyle={'body'} layerStyle={'mediumPop'}>{}</Text>
-                                    <Text textStyle={'body'} layerStyle={'highPop'}>{(venue.contactNumber)}</Text> 
+                                    <Text textStyle={'body'} layerStyle={'highPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
                                 </VStack> 
                             </Flex> 
                         ))}

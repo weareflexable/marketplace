@@ -31,7 +31,7 @@ export default function Header(){
           return true  
         },
         onError:(error:any)=>{
-            const statusCode = error.response.status
+            const statusCode = error.status
             if(statusCode === 401){
                 //@ts-ignore
                 setIsAuthenticated(false)
