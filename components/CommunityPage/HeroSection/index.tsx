@@ -24,8 +24,8 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
             </Box>
             <Flex alignItems={'center'} mx='4' > 
                 <Box mb={4} mt={9}> 
-                    <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h2'>${price/100}</Text>
-                    <Text color={'white'} mt={3} textStyle={'h1'} as='h1' size='lg'>{name}</Text>
+                    <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${price/100}</Text>
+                    <Text color={'white'} mt={3} textStyle={'h1'} as='h2' size='lg'>{name}</Text>
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
                 </Box>
             </Flex>
