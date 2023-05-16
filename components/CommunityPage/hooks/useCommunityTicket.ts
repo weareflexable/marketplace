@@ -10,6 +10,7 @@ import { useInstantBuyContext } from '../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
+import { usePaymentContext } from '../../../context/PaymentContext'
 
 // TODO: Have a separate context for handling cart items
 
@@ -25,6 +26,7 @@ const useCommunityTicket = (data:any)=>{
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
     const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
+    const {setPayload} = usePaymentContext()
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -128,6 +130,9 @@ const useCommunityTicket = (data:any)=>{
                   paymentIntentId: res.data.payment_intent_id,
                   totalAmount: subTotal
                 }
+
+                // set stripePayload to payment context
+                setPayload(stripePayload)
                 console.log(stripePayload)
                 // proceed with payment
               }

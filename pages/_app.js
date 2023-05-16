@@ -7,6 +7,7 @@ import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
 import {InstantBuyContextProvider} from '../context/InstantBuyContext'
 import {DatContextProvider} from '../context/DatContext'
+import {PaymentContextProvider} from '../context/PaymentContext'
 import {useToast} from '@chakra-ui/react'
 
 
@@ -40,6 +41,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
+        <PaymentContextProvider>
         <InstantBuyContextProvider>
                 <CheckoutContextProvider>
            <DatContextProvider>
@@ -50,6 +52,7 @@ function MyApp({ Component, pageProps }) {
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
         </InstantBuyContextProvider>
+        </PaymentContextProvider> 
     </QueryClientProvider>
       </AuthContextProvider> 
   ) 
