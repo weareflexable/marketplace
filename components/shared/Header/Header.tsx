@@ -18,7 +18,7 @@ export default function Header(){
             "Authorization": paseto
           }
         })
-        return res.data.data
+        return res.data
       }
 
      const userQuery = useQuery({
@@ -29,6 +29,19 @@ export default function Header(){
         retry: (failureCount, error) =>{
           if(failureCount >2) return false
           return true  
+        },
+        // onSettled:(res)=>{
+        //     console.log(res)
+        // },
+        onSuccess:(res)=>{
+            console.log(res)
+            const statusCode = res.status
+            if(statusCode === 401){
+                //@ts-ignore
+                setIsAuthenticated(false)
+                // clear all caches
+                localStorage.clear()
+            }
         },
         onError:(error:any)=>{
             const statusCode = error.status
@@ -43,7 +56,7 @@ export default function Header(){
 
 
 
-    const profilePicHash = userQuery.data && userQuery.data[0].profilePic
+    const profilePicHash = userQuery.data && userQuery.data.data && userQuery.data.data[0].profilePic 
 
 
     const login =()=>{
