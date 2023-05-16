@@ -9,6 +9,7 @@ import useLocalBuy from '../../../hooks/useLocalBuy'
 import { useInstantBuyContext } from '../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 import useLastVisitedPage from '../../../hooks/useLastVistedPage'
+import axios from 'axios'
 
 // TODO: Have a separate context for handling cart items
 
@@ -17,9 +18,9 @@ const useCommunityTicket = (data:any)=>{
 
     
     
-    console.log('communityData',data)
 
-    const {isAuthenticated} = useAuthContext()
+
+    const {isAuthenticated, paseto} = useAuthContext()
 
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
@@ -53,12 +54,27 @@ const useCommunityTicket = (data:any)=>{
 
      const subTotal =  ticketData.quantity * (data && data.price /100)
 
-     console.log(subTotal)
+     async function fetchSecret(payload:any) {
+      try{
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+        headers:{
+          'Authorization': paseto
+        }
+      });
+  
+      return res;
+
+    }catch(err){
+      console.log(err)
+      // show error message
+      return err
+    }
+    }
 
  
      const proceedToPayment = ()=>{
         // Timeout in order to show loading state
-        setIsProceedingToPayment(true)
+      
         setTimeout(() => {
             setIsProceedingToPayment(false)
             router.push('/payments')
@@ -74,7 +90,7 @@ const useCommunityTicket = (data:any)=>{
      }
 
 
-     const buyTicketNow = ()=>{
+     const buyTicketNow = async()=>{
 
         console.log(ticketData)
 
@@ -90,7 +106,6 @@ const useCommunityTicket = (data:any)=>{
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
-         console.log(buyNowCartItem)
 
          setBuyItems([buyNowCartItem]) // passes cart items to checkout context
          setBuyNowTotal(subTotal)
@@ -101,7 +116,31 @@ const useCommunityTicket = (data:any)=>{
             setBuyNowTotal(subTotal)
             // This local storage value is used in payment page to determine if payment is buy now or cart
             setStorage('shouldBuyInstantly','true') // rename to checkoutType: buyNow || cart
-            proceedToPayment();
+
+
+            try{
+              setIsProceedingToPayment(true)
+              // make request to fetch client secret, paymentIntentId
+              const res:any = await fetchSecret(buyNowCartItem)
+              if(res.status == 200){
+                const stripePayload = {
+                  clientSecret: res.data.clientSecret,
+                  paymentIntentId: res.data.payment_intent_id,
+                  totalAmount: subTotal
+                }
+                console.log(stripePayload)
+                // proceed with payment
+              }
+              setIsProceedingToPayment(false)
+              console.log(res)
+            }catch(err){
+              setIsProceedingToPayment(false)
+              console.log('Error while while fetching client secret')
+            }
+            // if secret is available then set it to payment context
+            // navigate to payment page
+            // else show error toast message
+            // proceedToPayment();
 
             return
         }

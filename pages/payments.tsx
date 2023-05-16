@@ -19,7 +19,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY|
 const Payments = () => {
   
     const [clientSecret, setClientSecret] = useState('')
-    const [payamentIntentId, setPayamentIntentId] = useState('')
+    const [paymentIntentId, setPaymentIntentId] = useState('')
     // const {cartItems} = useCheckoutContext();
     const {buyItems} = useInstantBuyContext();
     const {paseto} = useAuthContext()
@@ -61,7 +61,7 @@ const Payments = () => {
         });
     
         setClientSecret(res.data.clientSecret)
-        setPayamentIntentId(res.data.payment_intent_id)
+        setPaymentIntentId(res.data.payment_intent_id)
   
       }catch(err){
         console.log(err)
@@ -98,7 +98,7 @@ const Payments = () => {
       {/* {!clientSecret?<Text>Loading form ...</Text>:null} */}
         { stripePromise && clientSecret &&
         <Elements stripe={stripePromise} options={{clientSecret,appearance:{theme:'night'}}}>
-            <CheckoutForm paymentIntentId={payamentIntentId} />
+            <CheckoutForm paymentIntentId={paymentIntentId} />
         </Elements>
        }
     </Flex>
