@@ -108,19 +108,19 @@ export default function CommunityPage(){
                                 <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
   
                                     <Flex direction={'column'} >
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Promotion</Text>
-                                        <Text textStyle={'body'} layerStyle={'highPop'}>{venue.promotion}</Text>
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Promotion</Text>
+                                        <Text textStyle={'body'} layerStyle={'mediumPop'}>{venue.promotion}</Text>
                                     </Flex>
 
                                     <Flex direction={'column'} >
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Location</Text>
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Location</Text>
                                         <Text color='brand.100' textStyle={'body'}> 
                                             <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
                                         </Text>
                                     </Flex>
 
                                     <Flex direction={'column'}>
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'lowPop'}>Contact </Text>
+                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Contact </Text>
                                         <Text textStyle={'body'} layerStyle={'mediumPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
                                     </Flex>
                                 </VStack> 

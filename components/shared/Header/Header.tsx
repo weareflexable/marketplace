@@ -34,14 +34,13 @@ export default function Header(){
         //     console.log(res)
         // },
         onSuccess:(res)=>{
-            console.log(res)
             const statusCode = res.status
             if(statusCode === 401){
                 //@ts-ignore
                 setIsAuthenticated(false)
                 // clear all caches
                 localStorage.clear()
-            }
+            } 
         },
         onError:(error:any)=>{
             const statusCode = error.status
