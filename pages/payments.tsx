@@ -13,65 +13,53 @@ import { useInstantBuyContext } from '../context/InstantBuyContext';
 import { getStorage } from '../utils/localStorage';
 import axios from 'axios';
 import Head from 'next/head';
+import { usePaymentContext } from '../context/PaymentContext';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
 const Payments = () => {
   
-    const [clientSecret, setClientSecret] = useState('')
-    const [paymentIntentId, setPaymentIntentId] = useState('')
-    // const {cartItems} = useCheckoutContext();
-    const {buyItems} = useInstantBuyContext();
-    const {paseto} = useAuthContext()
-    const [items,setItems] = useState({}) 
+
+    const {stripePayload} = usePaymentContext()
+    const [isHydrated, setIsHydrated] = useState(false)
+    const [payload, setPayload] = useState<any>({})
 
 
-    const createPayloadObject = (cartItems: Array<any>)=>{
-        const cartDetails: Array<any> = [];
-        let totalPrice = 0;
-        // consider using array.map here instead of forEach
-        cartItems.forEach(cart=>{
-          cartDetails.push({orgServiceItemId: cart.id, quantity: cart.quantity})
-          // calculate total price
-          totalPrice =+ (cart.quantity*cart.price)
-        })
-        const selectedDate = getStorage('selectedDate') ? getStorage('selectedDate') : dayjs().format('YYYY-MMM-DD')
-        const payloadObject = { 
-          orgServiceItems: cartDetails,
-          price: totalPrice,
-          date: selectedDate
-        }
-        return payloadObject
-    }
-  
     useEffect(()=>{
+      setIsHydrated(true)
+      if(isHydrated){
+        setPayload(stripePayload)
+      }
+    },[isHydrated])
 
-      setItems(buyItems[0])
+  
+    // useEffect(()=>{
+
+
       
-      const fetchSecret = async ()=>{
-        // check checkoutType
-        // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
-        // const payload = createPayloadObject(itemsToPurchase)
-        const payload = buyItems[0]
-        try{
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
-          headers:{
-            'Authorization': paseto
-          }
-        });
+    //   const fetchSecret = async ()=>{
+    //     // check checkoutType
+    //     // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
+    //     // const payload = createPayloadObject(itemsToPurchase)
+    //     const payload = buyItems[0]
+    //     try{
+    //     const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+    //       headers:{
+    //         'Authorization': paseto
+    //       }
+    //     });
     
-        setClientSecret(res.data.clientSecret)
-        setPaymentIntentId(res.data.payment_intent_id)
+    //     setClientSecret(res.data.clientSecret)
+    //     setPaymentIntentId(res.data.payment_intent_id)
   
-      }catch(err){
-        console.log(err)
-        throw new Error('Error while fetching secret, try refreshing the page')
-      }
-      }
-      fetchSecret()
-    },[]);
+    //   }catch(err){
+    //     console.log(err)
+    //     throw new Error('Error while fetching secret, try refreshing the page')
+    //   }
+    //   }
+    //   fetchSecret()
+    // },[]);
   
-    // Bring header to this page
 
   return (
     <>
@@ -95,13 +83,13 @@ const Payments = () => {
         </Flex>
       </Flex>
       :null} */}
-      {/* {!clientSecret?<Text>Loading form ...</Text>:null} */}
-        { stripePromise && clientSecret &&
-        <Elements stripe={stripePromise} options={{clientSecret,appearance:{theme:'night'}}}>
-            <CheckoutForm paymentIntentId={paymentIntentId} />
+      {/* {!clientSecret?<Text>Loading form ...</Text>:null} */} 
+        { stripePromise && isHydrated && payload &&
+        <Elements stripe={stripePromise} options={{clientSecret: isHydrated && payload.clientSecret,appearance:{theme:'night'}}}>
+            <CheckoutForm paymentIntentId={isHydrated && payload.paymentIntentId} />
         </Elements>
        }
-    </Flex>
+    </Flex> 
     </>
   )
 };

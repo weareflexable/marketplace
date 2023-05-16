@@ -94,7 +94,7 @@ const useCommunityTicket = (data:any)=>{
 
      const buyTicketNow = async()=>{
 
-        console.log(ticketData)
+        // console.log(ticketData)
 
         const buyNowCartItem = {
             item:{
@@ -133,11 +133,10 @@ const useCommunityTicket = (data:any)=>{
 
                 // set stripePayload to payment context
                 setPayload(stripePayload)
-                console.log(stripePayload)
                 // proceed with payment
+                proceedToPayment()
               }
               setIsProceedingToPayment(false)
-              console.log(res)
             }catch(err){
               setIsProceedingToPayment(false)
               console.log('Error while while fetching client secret')
