@@ -10,6 +10,7 @@ import { useInstantBuyContext } from '../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
+import { useToast } from '@chakra-ui/react'
 import { usePaymentContext } from '../../../context/PaymentContext'
 
 // TODO: Have a separate context for handling cart items
@@ -22,6 +23,7 @@ const useCommunityTicket = (data:any)=>{
 
 
     const {isAuthenticated, paseto} = useAuthContext()
+    const toast = useToast()
 
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
@@ -138,8 +140,15 @@ const useCommunityTicket = (data:any)=>{
               }
               setIsProceedingToPayment(false)
             }catch(err){
+              toast({
+                title: 'Payment Error',
+                description: "Unable to complete your payment",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+                position:'top-right'
+              })
               setIsProceedingToPayment(false)
-              console.log('Error while while fetching client secret')
             }
             // if secret is available then set it to payment context
             // navigate to payment page

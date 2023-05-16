@@ -101,9 +101,8 @@ export default function CommunityPage(){
                        
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
-                            <>
-                            
-                            <Flex   direction={['column','column','row']} key={venue.id} mx={[0]} borderRadius={'4px'} px='4' py={5} mb={3}>  
+                            <React.Fragment key={venue.id}>
+                            <Flex   direction={['column','column','row']}  mx={[0]} borderRadius={'4px'} px='4' py={5} mb={3}>  
                                 <Text textStyle={'h4'} mb={8} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
                                 <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
   
@@ -126,7 +125,7 @@ export default function CommunityPage(){
                                 </VStack> 
                             </Flex>
                             <Divider my={9} borderColor={'#232323'}    _last={{display:'none'}}></Divider>  
-                            </>
+                            </React.Fragment>
                         ))}
 
                         

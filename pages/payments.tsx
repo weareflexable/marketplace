@@ -33,33 +33,6 @@ const Payments = () => {
     },[isHydrated])
 
   
-    // useEffect(()=>{
-
-
-      
-    //   const fetchSecret = async ()=>{
-    //     // check checkoutType
-    //     // const itemsToPurchase = shouldBuyInstantly? buyItems: cartItems 
-    //     // const payload = createPayloadObject(itemsToPurchase)
-    //     const payload = buyItems[0]
-    //     try{
-    //     const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
-    //       headers:{
-    //         'Authorization': paseto
-    //       }
-    //     });
-    
-    //     setClientSecret(res.data.clientSecret)
-    //     setPaymentIntentId(res.data.payment_intent_id)
-  
-    //   }catch(err){
-    //     console.log(err)
-    //     throw new Error('Error while fetching secret, try refreshing the page')
-    //   }
-    //   }
-    //   fetchSecret()
-    // },[]);
-  
 
   return (
     <>
@@ -73,17 +46,6 @@ const Payments = () => {
       <Box w='100%' maxW={'500px'}>
           <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
       </Box>
-      {/* { buyItems 
-      ?<Flex direction={'column'} w='100%' maxW='500px'>
-        <Flex mt='6' direction={'column'}>
-          <Text textStyle={'body'} color='text.300'>Summary</Text>
-          <VStack mt='5' border='1px solid #2b2b2b' borderRadius={'4px'} padding='4' w='100%'>
-            
-          </VStack>
-        </Flex>
-      </Flex>
-      :null} */}
-      {/* {!clientSecret?<Text>Loading form ...</Text>:null} */} 
         { stripePromise && isHydrated && payload &&
         <Elements stripe={stripePromise} options={{clientSecret: isHydrated && payload.clientSecret,appearance:{theme:'night'}}}>
             <CheckoutForm paymentIntentId={isHydrated && payload.paymentIntentId} />

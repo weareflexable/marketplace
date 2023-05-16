@@ -7,7 +7,6 @@ interface BuyNowButton{
     isBuyingTicket: boolean
 }
 export default function TicketButtonAction({isMinQuantity, isBuyingTicket, buyTicketNow, isAuthenticated}:BuyNowButton){
-    console.log(isBuyingTicket)
     return(
         <Box py='1' mr='6'>
             <Button size='sm' textStyle={'buttonLabel'} isLoading={isBuyingTicket} layerStyle={'primaryBtn'} disabled={isMinQuantity && isAuthenticated} onClick={buyTicketNow} variant='flexable-combo'>Buy Now!</Button>
