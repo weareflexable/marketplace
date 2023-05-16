@@ -120,7 +120,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
             By
           </Text>
           <Text textStyle={'secondary'} color="text.200">
-            {order.serviceDetails.name}
+            {order.serviceDetails[0].name}
           </Text>
         </HStack>
       </Flex>
