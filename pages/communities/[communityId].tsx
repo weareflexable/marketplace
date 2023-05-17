@@ -98,18 +98,25 @@ export default function CommunityPage(){
                          />
                         }  
 
+
+                        <Flex mx={4}  w='100%' mb='2rem' direction={'column'}> 
+                            <Text textStyle={'h3'} mb={3} layerStyle={'highPop'}>What you get</Text>
+                            <Text textStyle={'body'} layerStyle={'mediumPop'}>This key gives you promotions to some to some of the venues that you otherwise wouldn't have access to</Text>
+                        </Flex>
                        
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
                             <React.Fragment key={venue.id}>
-                                <Accordion mb={'3'} px={[3,3,3]}  defaultIndex={[0]} allowMultiple>
-                                    <AccordionItem p={3} background={'#2b2b2b'} borderRadius={'4px'} border={'none'}>
-                                        <AccordionButton display={'flex'} alignItems={'center'}>
-                                            <Box as="span" flex='1' textAlign='left'>
-                                                <Text textStyle={'h4'} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
-                                            </Box>
-                                            <AccordionIcon />
-                                        </AccordionButton>
+                                <Accordion mb={'3'} px={3}  defaultIndex={[0]} allowMultiple>
+                                    <AccordionItem  background={'#333333'} borderRadius={'4px'} border={'none'}>
+                                        <Box p={3} borderRadius={'4px'} background={'#2b2b2b'}>
+                                            <AccordionButton display={'flex'} alignItems={'center'}>
+                                                <Box as="span" flex='1' textAlign='left'>
+                                                    <Text textStyle={'body'} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
+                                                </Box>
+                                                <AccordionIcon /> 
+                                            </AccordionButton>
+                                        </Box>
                                     
                                     <AccordionPanel pb={4}>
                                         <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
@@ -137,15 +144,6 @@ export default function CommunityPage(){
                         ))}
 
                         
-
-                        {/* <Flex mt={2} border={"1px solid #333333"} borderRadius={'4px'} p='1rem' mb={3}>
-                            <Text textStyle={'body'} layerStyle={'highPop'} flex={1}>Mully's Restaurant</Text>
-                            <VStack alignItems={'flex-start'} flex={3} spacing={1}>
-                                <Text textStyle={'body'} layerStyle={'mediumPop'}>Buy 43 bottles get 3 free invoice going on with you forward</Text>
-                                <Text textStyle={'body'} layerStyle={'mediumPop'}>4641 Buffalo Street, Wiscontin, United States</Text>
-                                <Text textStyle={'body'} layerStyle={'highPop'}>+1 (453) 434 8543</Text> 
-                            </VStack> 
-                        </Flex> */}
                         
 
                 </Flex> 
