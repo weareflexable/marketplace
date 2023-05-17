@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MdCheckCircle, MdSettings } from "react-icons/md";
 import { useAuthContext } from "../../../context/AuthContext";
+import dayjs from "dayjs";
 
 
 
@@ -41,6 +42,8 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
     const totalTicketsRedeemed =  history && history.length;
     const redeemableTickets = quantity - totalTicketsRedeemed  
 
+    console.log(history)
+
     
 
 
@@ -55,14 +58,14 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
             <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
                 <List spacing={3}>
                     {history && history.map((item:any, index:number)=>(
-                        <ListItem key={index}>
-                            <Flex alignItems={'flex-start'} >
-                                <ListIcon as={MdCheckCircle} color='accent.100' />
-                                <Flex ml={3} mb={3} direction={'column'} width='100%'>
-                                    <HStack mb={1} spacing={1}>
-                                    <Text color={'text.200'} textStyle={'secondary'}>1</Text>  
-                                    <Text color={'text.300'} textStyle={'secondary'}>Ticket Redeemed @</Text>  
-                                    <Text color={'accent.200'} textStyle={'secondary'}>{history.date}</Text>  
+                        <ListItem border={'1px solid #2b2b2b'} borderRadius={3} key={index}>
+                            <Flex borderBottom={'1px solid #2b2b2b'} alignItems={'flex-start'} >
+                                {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
+                                <Flex ml={2} my={3} direction={'column'} width='100%'>
+                                    <HStack mb={1} spacing={0}>
+                                    <Text color={'text.300'} mr={1} textStyle={'secondary'}>1 </Text>  
+                                    <Text color={'text.300'} textStyle={'secondary'}>Ticket Redeemed •</Text>  
+                                    <Text color={'accent.200'} ml={1} textStyle={'secondary'}>{dayjs(item.date).format('MMM DD, YYYY HH:MM A')}</Text>  
                                     </HStack>
                                     {/* <Text textStyle={'secondary'} color={'text.200'}>{history.name}</Text> */}
                                 </Flex>
