@@ -136,7 +136,6 @@ const useCommunityTicket = (data:any)=>{
                 // proceed with payment
                 proceedToPayment()
               }
-              setIsProceedingToPayment(false)
             }catch(err){
               console.log(err)
               setIsProceedingToPayment(false)

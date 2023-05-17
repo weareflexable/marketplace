@@ -130,7 +130,6 @@ const useTicket = (data:any)=>{
               // proceed with payment
               proceedToPayment()
             }
-            setIsProceedingToPayment(false)
           }catch(err){
             
             setIsProceedingToPayment(false)
