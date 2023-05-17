@@ -129,6 +129,10 @@ const useTicket = (data:any)=>{
 
               // set stripePayload to payment context
               setPayload(stripePayload)
+
+              // set current page as last visited page
+              localStorage.setItem('lastVisitedPage',currentPath);
+                
               // proceed with payment
               proceedToPayment()
             }
