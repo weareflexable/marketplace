@@ -27,7 +27,7 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
     const redeemHistoryQuery = useQuery({
         queryKey:['redeem-history', ticketId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?pageNumber=1&pageSize=12&ticketId=${ticketId}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?ticketId=${ticketId}`,{
                 headers:{
                     "Authorization": paseto
                 }
@@ -50,7 +50,7 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
         {redeemHistoryQuery.isLoading 
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'10  rem'}/>
             : history && history.length === 0
-            ? <EmptyList refresh={()=> redeemHistoryQuery.refetch}/>
+            ? <EmptyList isRefreshingHistory={redeemHistoryQuery.isFetching} refresh={redeemHistoryQuery.refetch}/>
             :
             <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
                 <List spacing={3}>
@@ -78,9 +78,10 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
 }
 
 interface EmptyListProps{
-    refresh: ()=>void
+    refresh: ()=>void,
+    isRefreshingHistory: boolean
 }
-function EmptyList({refresh}:EmptyListProps){
+function EmptyList({refresh, isRefreshingHistory}:EmptyListProps){
     return(
         <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' width={"100%"}>
         <Flex direction='column' mt='2rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'320px'} alignItems='center'>
@@ -90,7 +91,7 @@ function EmptyList({refresh}:EmptyListProps){
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
                 You are yet to start redeeming any one of your tickets
             </Text>
-            <Button variant='ghost' onClick={refresh}>
+            <Button isLoading={isRefreshingHistory} variant='ghost' colorScheme="brand" onClick={refresh}>
                Refresh
             </Button>
         </Flex>
