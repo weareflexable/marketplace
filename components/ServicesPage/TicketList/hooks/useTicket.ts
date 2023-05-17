@@ -3,7 +3,6 @@ import { useAuthContext } from '../../../../context/AuthContext'
 import { useRouter } from 'next/router'
 import { getStorage } from '../../../../utils/localStorage'
 import usePath from '../../../../hooks/usePath'
-import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import { usePaymentContext } from '../../../../context/PaymentContext'
@@ -19,9 +18,6 @@ const useTicket = (data:any)=>{
     const {setPayload} = usePaymentContext()
     const toast = useToast()
 
-    // Instant buy is the context that holds logic for when a user
-    // clicks on the "buy now" button to expedite checkout process
-    const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
 
     const router = useRouter()
     const {currentPath} = usePath()
@@ -111,8 +107,6 @@ const useTicket = (data:any)=>{
            targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
-         setBuyItems([buyNowCartItem]) // passes cart items to checkout context
-         setBuyNowTotal(subTotal)
 
         if(isAuthenticated){
 
