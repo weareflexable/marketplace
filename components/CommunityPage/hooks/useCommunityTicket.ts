@@ -65,8 +65,14 @@ const useCommunityTicket = (data:any)=>{
       return res;
 
     }catch(err){
-      console.log(err)
-      // show error message
+      toast({
+        title: 'Payment Error',
+        description: "Unable to complete your payment. Please try again",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position:'top-right'
+      })
       return err
     }
     }
@@ -132,14 +138,7 @@ const useCommunityTicket = (data:any)=>{
               }
               setIsProceedingToPayment(false)
             }catch(err){
-              toast({
-                title: 'Payment Error',
-                description: "Unable to complete your payment",
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-                position:'top-right'
-              })
+              console.log(err)
               setIsProceedingToPayment(false)
             }
             // if secret is available then set it to payment context

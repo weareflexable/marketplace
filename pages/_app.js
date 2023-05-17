@@ -11,29 +11,10 @@ import {PaymentContextProvider} from '../context/PaymentContext'
 
 
 
-
-
 function MyApp({ Component, pageProps }) {
 
 
-  const queryClient = new QueryClient({
-    // queryCache: new QueryCache({
-    //   onError:(error)=>{
-    //     const errorStatus = error.response.status
-    //     if(errorStatus !== 401) return; 
-    //     toast({
-    //       title: `Your token has expiered`,
-    //       position:'top',
-    //       containerStyle:{
-    //         width:'100%'
-    //       },
-    //       description: 'Please login again to continue',
-    //       status: 'error',
-    //       isClosable: true,
-    //     })
-    //   }
-    // })
-  })
+  const queryClient = new QueryClient({})
 
   return (
     <AuthContextProvider>
