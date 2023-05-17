@@ -98,7 +98,7 @@ const useCommunityTicket = (data:any)=>{
 
         // console.log(ticketData)
 
-        const buyNowCartItem = {
+        const itemPayload = {
             item:{
                 id: data.id,
                 type: "community"
@@ -111,21 +111,13 @@ const useCommunityTicket = (data:any)=>{
          }
 
 
-         setBuyItems([buyNowCartItem]) // passes cart items to checkout context
-         setBuyNowTotal(subTotal)
-
         if(isAuthenticated){
-
-            setBuyItems([buyNowCartItem]) // passes cart items to checkout context
-            setBuyNowTotal(subTotal)
-            // This local storage value is used in payment page to determine if payment is buy now or cart
-            setStorage('shouldBuyInstantly','true') // rename to checkoutType: buyNow || cart
 
 
             try{
               setIsProceedingToPayment(true)
               // make request to fetch client secret, paymentIntentId
-              const res:any = await fetchSecret(buyNowCartItem)
+              const res:any = await fetchSecret(itemPayload)
               if(res.status == 200){
                 const stripePayload = {
                   clientSecret: res.data.clientSecret,
@@ -138,7 +130,7 @@ const useCommunityTicket = (data:any)=>{
 
                 // set current page as last visited page
                 localStorage.setItem('lastVisitedPage',currentPath);
-                
+
                 // proceed with payment
                 proceedToPayment()
               }
