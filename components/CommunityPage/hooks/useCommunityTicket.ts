@@ -4,9 +4,6 @@ import { useCheckoutContext } from '../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
 import { getStorage, setStorage } from '../../../utils/localStorage'
 import usePath from '../../../hooks/usePath'
-import useLocalStorage from '../../../hooks/useLocalStorage'
-import useLocalBuy from '../../../hooks/useLocalBuy'
-import { useInstantBuyContext } from '../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
 import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
@@ -27,7 +24,6 @@ const useCommunityTicket = (data:any)=>{
 
     // Instant buy is the context that holds logic for when a user
     // clicks on the "buy now" button to expedite checkout process
-    const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
     const {setPayload} = usePaymentContext()
 
     const router = useRouter()

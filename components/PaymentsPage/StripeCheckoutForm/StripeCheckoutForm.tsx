@@ -2,12 +2,9 @@ import React,{useState,useReducer} from 'react';
 import {Flex,Box,Button,Heading,Text, HStack,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
-import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 import { deleteStorage } from '../../../utils/localStorage';
-import { number } from 'yup';
 import {numberFormatter} from '../../../utils/formatter' 
 import { useRouter } from 'next/router';
-import useLastVisitedPage from '../../../hooks/useLastVistedPage';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuthContext } from '../../../context/AuthContext';

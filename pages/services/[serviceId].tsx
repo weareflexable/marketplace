@@ -28,7 +28,6 @@ dayjs.extend(advanced)
 
 //@ts-ignore
 import CalendarDates from "calendar-dates";
-import { Service } from '../../data/services'
 import TicketListItem from '../../components/ServicesPage/TicketList/TicketListItem'
 const calendarDates = new CalendarDates()
 

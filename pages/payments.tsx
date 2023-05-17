@@ -5,13 +5,6 @@ import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
 
 import {loadStripe} from '@stripe/stripe-js';
-import { useCheckoutContext } from '../context/CheckoutContext';
-import dayjs from 'dayjs';
-import { useAuthContext } from '../context/AuthContext';
-import { getPlatformPaseto } from '../utils/storage';
-import { useInstantBuyContext } from '../context/InstantBuyContext';
-import { getStorage } from '../utils/localStorage';
-import axios from 'axios';
 import Head from 'next/head';
 import { usePaymentContext } from '../context/PaymentContext';
 

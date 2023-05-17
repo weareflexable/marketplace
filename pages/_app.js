@@ -5,10 +5,8 @@ import { QueryCache, QueryClient, QueryClientProvider, useQuery } from '@tanstac
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
-import {InstantBuyContextProvider} from '../context/InstantBuyContext'
 import {DatContextProvider} from '../context/DatContext'
 import {PaymentContextProvider} from '../context/PaymentContext'
-import {useToast} from '@chakra-ui/react'
 
 
 
@@ -17,7 +15,6 @@ import {useToast} from '@chakra-ui/react'
 
 function MyApp({ Component, pageProps }) {
 
-  const toast = useToast()
 
   const queryClient = new QueryClient({
     // queryCache: new QueryCache({
@@ -42,7 +39,6 @@ function MyApp({ Component, pageProps }) {
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
         <PaymentContextProvider>
-        <InstantBuyContextProvider>
                 <CheckoutContextProvider>
            <DatContextProvider>
                   <ChakraProvider theme={theme}> 
@@ -51,7 +47,6 @@ function MyApp({ Component, pageProps }) {
             </DatContextProvider>
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
-        </InstantBuyContextProvider>
         </PaymentContextProvider> 
     </QueryClientProvider>
       </AuthContextProvider> 
