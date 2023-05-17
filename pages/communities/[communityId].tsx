@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, SkeletonText, SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
 import {useQuery} from '@tanstack/react-query'
@@ -102,29 +102,37 @@ export default function CommunityPage(){
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
                             <React.Fragment key={venue.id}>
-                            <Flex   direction={['column','column','row']}  mx={[0]} borderRadius={'4px'} px='4' py={5} mb={3}>  
-                                <Text textStyle={'h4'} mb={8} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
-                                <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
-  
-                                    <Flex direction={'column'} >
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Promotion</Text>
-                                        <Text textStyle={'body'} layerStyle={'mediumPop'}>{venue.promotion}</Text>
-                                    </Flex>
+                                <Accordion mb={'3'} px={[3,3,3]}  defaultIndex={[0]} allowMultiple>
+                                    <AccordionItem p={3} background={'#2b2b2b'} borderRadius={'4px'} border={'none'}>
+                                        <AccordionButton display={'flex'} alignItems={'center'}>
+                                            <Box as="span" flex='1' textAlign='left'>
+                                                <Text textStyle={'h4'} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
+                                            </Box>
+                                            <AccordionIcon />
+                                        </AccordionButton>
+                                    
+                                    <AccordionPanel pb={4}>
+                                        <VStack alignItems={'flex-start'} mt={2}  flex={3} spacing={7}>  
+                                            <Flex direction={'column'} >
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Promotion</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{venue.promotion}</Text>
+                                            </Flex>
 
-                                    <Flex direction={'column'} >
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Location</Text>
-                                        <Text color='brand.100' textStyle={'body'}> 
-                                            <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
-                                        </Text>
-                                    </Flex>
+                                            <Flex direction={'column'} >
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Location</Text>
+                                                <Text color='brand.100' textStyle={'body'}> 
+                                                    <a href={`https://www.google.com/maps/place/?q=place_id:${venue.address.placeId}`}>{venue.address.fullAddress}</a> 
+                                                </Text>
+                                            </Flex>
 
-                                    <Flex direction={'column'}>
-                                        <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Contact </Text>
-                                        <Text textStyle={'body'} layerStyle={'mediumPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
-                                    </Flex>
-                                </VStack> 
-                            </Flex>
-                            <Divider my={9} borderColor={'#232323'}    _last={{display:'none'}}></Divider>  
+                                            <Flex direction={'column'}>
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Contact </Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
+                                            </Flex>
+                                        </VStack>
+                                    </AccordionPanel>
+                                    </AccordionItem>
+                                </Accordion>
                             </React.Fragment>
                         ))}
 
