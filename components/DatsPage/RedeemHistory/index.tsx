@@ -83,8 +83,8 @@ interface EmptyListProps{
 }
 function EmptyList({refresh, isRefreshingHistory}:EmptyListProps){
     return(
-        <Flex justifyContent='center' bg='#121212' alignItems='center' height='100%' width={"100%"}>
-        <Flex direction='column' mt='2rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'320px'} alignItems='center'>
+        <Flex justifyContent='center' mb={'3rem'} bg='#121212' alignItems='center' height='100%' width={"100%"}>
+        <Flex direction='column' mt='1rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'350px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
                 Awaiting Redemption
             </Text>
