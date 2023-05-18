@@ -35,7 +35,7 @@ export default async function handler(req:any, res:NextApiResponse){
     pass.setBarcodes({
         message: JSON.stringify(qrCode),
         format: "PKBarcodeFormatQR",
-        altText: "Qr code for bars"
+        altText: "Qr code for community"
     })
 
 
