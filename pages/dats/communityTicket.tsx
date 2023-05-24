@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem} from '@chakra-ui/react'
+import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem, Select} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
@@ -36,7 +36,6 @@ export default function Ticket(){
 
     const communityDats = communityDetails && communityDetails[0]
 
-    console.log(ctx_currentDat)
 
     const isTxHash = transactionHash !== ''
     // const serviceItemName = serviceItemDetails[0].name
@@ -54,6 +53,7 @@ export default function Ticket(){
             },
             ticketId: id, // ticketId
             ticketSecret: ticketSecret,
+            communityVenueId: '',
             // validDate: validityEnd,
             quantity: quantity,
             userId: targetUserID,
@@ -132,6 +132,9 @@ export default function Ticket(){
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
 
+
+   const communityVenues = communityDats && communityDats.venuesDetails
+    console.log(communityVenues) 
      
 
     return(
@@ -165,6 +168,11 @@ export default function Ticket(){
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
+                                <Select mb={5} variant='filled' bg='#232323' color='text.300' defaultValue={communityVenues&&communityVenues[0]}  placeholder='Select venue'>
+                                    {communityVenues&&communityVenues.map((venue:any)=>(
+                                        <option key={venue.id} value={[venue.name,venue.id]}>{venue.name}</option>
+                                    ))}
+                                </Select>
                                 <HStack w='100%' justifyContent={'center'} mb='2'>
                                     <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
                                     <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
