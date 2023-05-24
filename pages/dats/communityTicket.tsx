@@ -42,6 +42,11 @@ export default function Ticket(){
     // const serviceItemName = serviceItemDetails[0].name
     // const address = serviceDetails[0].street
 
+    useEffect(()=>{
+        const firstVenue = communityDats.venuesDetails[0]
+        setSelectedVenue({name: firstVenue.name, id: firstVenue.id})
+    },[])
+
     useEffect(() => {
 
         let qrCodePayload;
@@ -179,7 +184,7 @@ export default function Ticket(){
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <Select mb={5}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' placeholder='Select venue'>
+                                <Select mb={5}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
                                     {communityVenues&&communityVenues.map((venue:any)=>(
                                         <option key={venue.id} value={[venue.name,venue.id]}>{venue.name}</option>
                                     ))}
