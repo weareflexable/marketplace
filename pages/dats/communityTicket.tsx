@@ -29,6 +29,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, targetDate, validityStart, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const [selectedVenue, setSelectedVenue] = useState({name:'', id: ''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
@@ -53,7 +54,7 @@ export default function Ticket(){
             },
             ticketId: id, // ticketId
             ticketSecret: ticketSecret,
-            communityVenueId: '',
+            communityVenueId: selectedVenue.id,
             // validDate: validityEnd,
             quantity: quantity,
             userId: targetUserID,
@@ -62,7 +63,7 @@ export default function Ticket(){
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
+  }, [id, quantity, selectedVenue, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
 
@@ -77,6 +78,7 @@ export default function Ticket(){
         targetDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
+        communityVenueName: selectedVenue.name,
         communityName: communityDats.name,
     }
 
@@ -107,6 +109,7 @@ export default function Ticket(){
 
    }
 
+
    
 
 
@@ -134,7 +137,15 @@ export default function Ticket(){
 
 
    const communityVenues = communityDats && communityDats.venuesDetails
-    console.log(communityVenues) 
+
+   function handleVenues(e:any){
+    const [name, id] = e.target.value.split(',')
+    setSelectedVenue({
+        name: name,
+        id: id
+    })
+
+   }
      
 
     return(
@@ -168,7 +179,7 @@ export default function Ticket(){
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <Select mb={5} variant='filled' bg='#232323' color='text.300' defaultValue={communityVenues&&communityVenues[0]}  placeholder='Select venue'>
+                                <Select mb={5}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' placeholder='Select venue'>
                                     {communityVenues&&communityVenues.map((venue:any)=>(
                                         <option key={venue.id} value={[venue.name,venue.id]}>{venue.name}</option>
                                     ))}
