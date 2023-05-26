@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import axios from 'axios'
 import { usePaymentContext } from '../../../../context/PaymentContext'
 import { useToast } from '@chakra-ui/react'
+import useLocalStorage from '../../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
@@ -21,6 +22,9 @@ const useTicket = (data:any)=>{
 
     const router = useRouter()
     const {currentPath} = usePath()
+
+    const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
+    const {setState:setSubTotal} = useLocalStorage('subTotal',0)
 
        
        
@@ -106,6 +110,9 @@ const useTicket = (data:any)=>{
            //@ts-ignore
            targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
+
+         setItemPayload(buyNowCartItem)
+         setSubTotal(subTotal)
 
 
         if(isAuthenticated){
