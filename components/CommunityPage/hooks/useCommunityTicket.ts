@@ -9,6 +9,7 @@ import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import { usePaymentContext } from '../../../context/PaymentContext'
+import useLocalStorage from '../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
@@ -19,15 +20,15 @@ const useCommunityTicket = (data:any)=>{
     
 
 
-    const {isAuthenticated, paseto} = useAuthContext()
-    const toast = useToast()
+  const toast = useToast()
+  const router = useRouter()
+  const {currentPath} = usePath()
+  
+  // Instant buy is the context that holds logic for when a user
+  // clicks on the "buy now" button to expedite checkout process
+  const {setPayload} = usePaymentContext()
+  const {isAuthenticated, paseto} = useAuthContext()
 
-    // Instant buy is the context that holds logic for when a user
-    // clicks on the "buy now" button to expedite checkout process
-    const {setPayload} = usePaymentContext()
-
-    const router = useRouter()
-    const {currentPath} = usePath()
 
        
        
@@ -38,6 +39,8 @@ const useCommunityTicket = (data:any)=>{
        quantity:0
      })
 
+     const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
+     const {setState:setSubTotal} = useLocalStorage('subTotal',0)
 
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
@@ -111,6 +114,12 @@ const useCommunityTicket = (data:any)=>{
            description:data.name,
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
+
+         // set item payload to local storage
+         // this will be used in payment page to get clientsecret incase
+         // user lands on the page after authenticating (ie: client secret and paymentIntent Id were not fetched)
+         setItemPayload(itemPayload)
+         setSubTotal(subTotal)
 
 
         if(isAuthenticated){
