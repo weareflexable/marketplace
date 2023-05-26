@@ -58,8 +58,9 @@ export default function Ticket(){
                 type: 'community'
             },
             ticketId: id, // ticketId
-            ticketSecret: ticketSecret,
-            communityVenueId: selectedVenue.id,
+            ticketSecret: ticketSecret, // venue ticket secrete
+            communityVenueId: selectedVenue.id, 
+
             // validDate: validityEnd,
             quantity: quantity,
             userId: targetUserID,
