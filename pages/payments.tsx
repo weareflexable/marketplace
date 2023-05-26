@@ -44,7 +44,6 @@ const Payments = () => {
           setPayload(stripePayload)
         }
     
-        return res;
   
       }catch(err){
         toast({
@@ -65,6 +64,7 @@ const Payments = () => {
         if(stripePayload.hasOwnProperty('clientSecret')){
           setPayload(stripePayload)
         }else{
+          console.log('no stripe payload')
           // fetch stripe payload here
           // get item payload from local storage
           const itemPayload = localStorage.getItem('itemPayload')
@@ -88,7 +88,7 @@ const Payments = () => {
       <Box w='100%' maxW={'500px'}>
           <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
       </Box>
-        { stripePromise && isHydrated && payload &&
+        { stripePromise && isHydrated && payload.hasOwnProperty('clientSecret') &&
         <Elements stripe={stripePromise} options={{clientSecret: isHydrated && payload.clientSecret,appearance:{theme:'night'}}}>
             <CheckoutForm paymentIntentId={isHydrated && payload.paymentIntentId} />
         </Elements>
