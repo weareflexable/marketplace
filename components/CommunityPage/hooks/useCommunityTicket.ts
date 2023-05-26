@@ -94,8 +94,8 @@ const useCommunityTicket = (data:any)=>{
         // store users last page before starting logging process
         localStorage.setItem('lastVisitedPage',currentPath);
       
-      // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
-      location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      // location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
  

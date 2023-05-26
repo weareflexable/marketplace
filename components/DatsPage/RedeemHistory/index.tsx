@@ -57,7 +57,7 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
             :
             <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
                 <List spacing={3}>
-                    {history && history.map((item:any, index:number)=>(
+                    {history && history.communityTickets.map((item:any, index:number)=>(
                         <ListItem border={'1px solid #2b2b2b'} borderRadius={3} key={index}>
                             <Flex borderBottom={'1px solid #2b2b2b'} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
@@ -65,7 +65,7 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
                                     <HStack mb={1} spacing={0}>
                                     <Text color={'text.300'} mr={1} textStyle={'secondary'}>1 </Text>  
                                     <Text color={'text.300'} textStyle={'secondary'}>Ticket Redeemed •</Text>  
-                                    <Text color={'accent.200'} ml={1} textStyle={'secondary'}>{dayjs(item.date).format('MMM DD, YYYY HH:MM A')}</Text>  
+                                    <Text color={'accent.200'} ml={1} textStyle={'secondary'}>{dayjs(item.createdAt).format('MMM DD, YYYY HH:MM A')}</Text>  
                                     </HStack>
                                     {/* <Text textStyle={'secondary'} color={'text.200'}>{history.name}</Text> */}
                                 </Flex>
