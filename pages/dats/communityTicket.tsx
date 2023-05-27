@@ -28,7 +28,7 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, targetDate, validityStart, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: ''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -58,7 +58,7 @@ export default function Ticket(){
                 type: 'community'
             },
             ticketId: id, // ticketId
-            ticketSecret: ticketSecret, // venue ticket secrete
+            ticketSecret: ticketSecret, // venue ticket secret
             communityVenueId: selectedVenue.id, 
 
             // validDate: validityEnd,

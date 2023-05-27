@@ -1,4 +1,7 @@
 import '../styles/globals.css'
+
+import "@fontsource-variable/figtree"
+
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '../theme'
 import { QueryCache, QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
@@ -8,9 +11,9 @@ import {AuthContextProvider} from '../context/AuthContext'
 import {DatContextProvider} from '../context/DatContext'
 import {PaymentContextProvider} from '../context/PaymentContext'
 
+ 
 
-
-
+ 
 function MyApp({ Component, pageProps }) {
 
 

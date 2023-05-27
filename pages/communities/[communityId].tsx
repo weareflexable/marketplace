@@ -78,14 +78,14 @@ export default function CommunityPage(){
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
          <title>{community && community.name}</title>
          <link rel="icon" href="/favicon.png" />
-      </Head>
-        <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
+      </Head> 
+        <Box position={'relative'}   h='100%' minH={'100vh'} layerStyle={'base'}> 
             {communityQuery.isLoading
-                ?<Skeleton mx='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
+                ?<Skeleton startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
                 :<Header/>
             }  
-            <SimpleGrid mt='2'layerStyle={'base'} minH={'100%'} h={'100%'} columns={8} spacing='2'>
-                <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
+            <SimpleGrid mt='2'  minH={'100%'} h={'100%'} columns={8} spacing='2'>
+                <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column' >
                     
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
                        ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
@@ -99,10 +99,7 @@ export default function CommunityPage(){
                         }  
 
 
-                        <Flex mx={4}  w='100%' mb='2rem' direction={'column'}> 
-                            <Text textStyle={'h3'} mb={3} layerStyle={'highPop'}>What you get</Text>
-                            <Text textStyle={'body'} layerStyle={'mediumPop'}>This key gives you promotions to some to some of the venues that you otherwise wouldn't have access to</Text>
-                        </Flex>
+                        
                        
 
                         {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(

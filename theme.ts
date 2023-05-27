@@ -1,12 +1,11 @@
 
-import "@fontsource/figtree/variable.css";
 
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools'
 
 const config: ThemeConfig ={
     initialColorMode: 'dark',
-    useSystemColorMode: true
+    useSystemColorMode: true 
 }
 
  const theme = extendTheme({
@@ -159,8 +158,9 @@ const config: ThemeConfig ={
   })
   },
   fonts: {
-    heading: `'Figtree', san-serif`,
-    body: `'Figtree', sans-serif`,
+    heading: `'Figtree Variable', san-serif`,
+    body: `'Figtree Variable', sans-serif`,
+   
   },
   textStyles:{
     h1: {
