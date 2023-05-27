@@ -114,7 +114,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
           <PaymentElement id='payment-element' />
           <HStack mt='5' spacing={3}>
             <Button colorScheme={'brand'} onClick={cancelTransaction} variant='ghost'>Cancel</Button>
-            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${numberFormatter.from(Number(localStorage.getItem('subTotal'))/100)}`}</Button>
+            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${numberFormatter.from(Number(localStorage.getItem('subTotal')))}`}</Button>
           </HStack>
           </form>
       </Box>     
