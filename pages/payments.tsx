@@ -17,7 +17,7 @@ const Payments = () => {
    const toast = useToast()
   
 
-    const {stripePayload} = usePaymentContext()
+    const {stripePayload, setPayload:setStripePayload} = usePaymentContext()
     const [isHydrated, setIsHydrated] = useState(false)
     const {paseto} = useAuthContext()
     const [payload, setPayload] = useState<any>({})
@@ -42,6 +42,7 @@ const Payments = () => {
             totalAmount: localStorage.getItem('subTotal')
           }
           setPayload(stripePayload)
+          setStripePayload(stripePayload) // set to context so checkout form can consume the itemTotal
         }
     
   
