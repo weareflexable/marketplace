@@ -82,10 +82,10 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
   onClick={()=>gotoTicketPage(order)}
 >
    
-  <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ order.serviceItemsDetails.logoImageHash}`}/>
+  <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ order.serviceItemDetails.logoImageHash}`}/>
   <Flex  ml={5} width={'100%'} direction={'column'}>
 
-  <HStack>
+  <HStack> 
       <Text textStyle={'caption'} color="text.200">
         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
         {dayjs(order.targetDate).format("MMM D, YYYY")}
@@ -114,14 +114,14 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
       
       <Flex direction={'column'}>
         <Text color="whiteAlpha.900" as="h4" textStyle="body">
-          {order.serviceItemsDetails.name} 
+          {order.serviceItemDetails.name} 
         </Text>
         <HStack mt="1" spacing="1">
           <Text textStyle={'secondary'} color="text.100">
             By
           </Text>
           <Text textStyle={'secondary'} color="text.200">
-            {order.serviceDetails[0].name}
+            {order.serviceDetails.name}
           </Text>
         </HStack>
       </Flex>
@@ -131,7 +131,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
     <HStack mt='5' spacing={5} >
       <HStack spacing="0.9">
         <Text color="text.300" textStyle="secondary">
-          {`$${numberFormatter.from(order.serviceItemsDetails.price/100)}`}
+          {`$${numberFormatter.from(order.serviceItemDetails.price/100)}`}
         </Text>
         <Text color="text.200" textStyle="secondary">
            x{order.quantity}
@@ -139,7 +139,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
       </HStack>
       <Text  textStyle="secondary" color={'text.300'}>
         {/* @ts-ignore */}
-       {` $${order.quantity * numberFormatter.from(order.serviceItemsDetails.price/100)}`}
+       {` $${order.quantity * numberFormatter.from(order.serviceItemDetails.price/100)}`}
       </Text>
     </HStack>
 
