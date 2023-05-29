@@ -35,7 +35,7 @@ export default function Ticket(){
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
-    const communityDats = communityDetails && communityDetails[0]
+    const communityDats = communityDetails && communityDetails 
 
 
     const isTxHash = transactionHash !== ''
@@ -60,8 +60,6 @@ export default function Ticket(){
             ticketId: id, // ticketId
             ticketSecret: ticketSecret, // venue ticket secret
             communityVenueId: selectedVenue.id, 
-
-            // validDate: validityEnd,
             quantity: quantity,
             userId: targetUserID,
           };

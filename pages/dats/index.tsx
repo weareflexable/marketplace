@@ -30,7 +30,7 @@ const fetchWithError = async(url:string, options:any)=>{
 
   if (response.status !== 200) throw new Error('Error in request')
 
-  const result = await response.json()
+  const result = await response.json() 
 
   if (result.status !== 200) throw new Error(result.message)
 
@@ -39,6 +39,8 @@ const fetchWithError = async(url:string, options:any)=>{
 
 const PAGE_SIZE = 10;
 
+const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'}]
+
 export default function MyDats() {
 
   const { push } = useRouter();
@@ -46,6 +48,8 @@ export default function MyDats() {
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isDelaying, setIsDelaying] = useState(false)
+
+  const [currentFilter, setCurrentFilter] = useState(datsFilter[0])
 
   /* 
   * Effect for adding an extra delay before fetching user tickets to give enough
@@ -60,10 +64,10 @@ export default function MyDats() {
   }
   }, [])
 
-  const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=1}) => {
+  const datsQuery = useInfiniteQuery(["dats",currentFilter], async ({pageParam=1}) => {
     const paseto = getPlatformPaseto();
-    const res = await fetchWithError(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`,
+    const res = await fetchWithError( 
+      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
       {
         method: "GET",
         //@ts-ignore
@@ -91,6 +95,10 @@ export default function MyDats() {
   }
   );
 
+
+function changeDatsFilter(filter:{key:string,label:string}){
+  setCurrentFilter(filter)
+}
 
 
 const gotoTicketPage = (dat:any)=>{
@@ -154,11 +162,17 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 >
                   My Digital Access Tokens
                 </Text>
+                <Flex  mb='2rem'>
+                  {datsFilter.map((filter:any)=>(
+                    <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
+                  ))}
+                </Flex>
               </Box>
                 {
                   datsQuery.isLoading || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
+                    currentFilter={currentFilter.key}
                     orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
                     gotoCommunityPage={gotoCommunityTicketPage}

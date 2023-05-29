@@ -25,10 +25,11 @@ interface OrderListProps {
   orders: any;
   gotoTicketPage: (dat:any) => void;
   gotoCommunityPage: (dat:any) => void;
+  currentFilter:string
 }
 
 
-export function OrderList({ orders, gotoTicketPage, gotoCommunityPage }: OrderListProps) {
+export function OrderList({ orders, currentFilter, gotoTicketPage, gotoCommunityPage }: OrderListProps) {
 
   return (
 
@@ -40,8 +41,8 @@ export function OrderList({ orders, gotoTicketPage, gotoCommunityPage }: OrderLi
               page.data && page.data.length === 0
               ?<NoData/>
               : page.data && page.data.map((order:any)=>{
-                const isCommunity = order.communityDetails.length !== 0
-                if(isCommunity){
+                // const isCommunity = order.communityDetails.length !== 0
+                if(currentFilter==='communities'){
                   return <CommunityListItem key={order.id} gotoCommunityPage={gotoCommunityPage} order={order}/>
                 }else{
                   return <VenueListItem key={order.id} order={order} gotoTicketPage={gotoTicketPage}/>
@@ -172,7 +173,7 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
     onClick={()=>gotoCommunityPage(order)}
   >
      
-    <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${order.communityDetails[0].artworkHash}`}/>
+    <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${order.communityDetails.artworkHash}`}/>
     <Flex  ml={5} width={'100%'} direction={'column'}>
 
     <HStack>
@@ -198,7 +199,7 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
         
         <Flex direction={'column'}>
           <Text color="whiteAlpha.900" as="h4" textStyle="body">
-            {order.communityDetails[0].name} 
+            {order.communityDetails.name} 
           </Text>
         </Flex>
       </Flex>
@@ -207,7 +208,7 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
       <HStack mt='5' spacing={5} >
         <HStack spacing="0.9">
           <Text color="text.300" textStyle="secondary">
-            {`$${numberFormatter.from(order.communityDetails[0].price/100)}`}
+            {`$${numberFormatter.from(order.communityDetails.price/100)}`}
           </Text>
           <Text color="text.200" textStyle="secondary">
              x{order.quantity}
@@ -215,7 +216,7 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
         </HStack>
         <Text  textStyle="secondary" color={'text.300'}>
           {/* @ts-ignore */}
-         {` $${order.quantity * numberFormatter.from(order.communityDetails[0].price/100)}`}
+         {` $${order.quantity * numberFormatter.from(order.communityDetails.price/100)}`}
         </Text>
       </HStack>
 
