@@ -179,19 +179,21 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
     <HStack>
       
         
-        { order.isRedeem 
+        { order.ticketStatus === 'active'
         ?
           <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
-            Redeemed
+            Active
           </Tag>
-          :
-          <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='yellow' ml="1">
-            Valid
-          </Tag>
-        }
-        <Tag size={'sm'} borderRadius='3xl'  textTransform={'uppercase'} textStyle={'caption'} ml="1">
-            Community
+          :order.ticketStatus === 'partial'
+          ?<Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='yellow' ml="1">
+          Partially Redeemed
         </Tag>
+        :<Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='yellow' ml="1">
+        Redeemed
+      </Tag>
+          
+        }
+       
     </HStack>
       
       {/* order name */}

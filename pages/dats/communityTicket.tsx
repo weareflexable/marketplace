@@ -29,7 +29,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
-    const [selectedVenue, setSelectedVenue] = useState({name:'', id: ''})
+    const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
@@ -44,7 +44,7 @@ export default function Ticket(){
 
     useEffect(()=>{
         const firstVenue = communityDats.venuesDetails[0]
-        setSelectedVenue({name: firstVenue.name, id: firstVenue.id})
+        setSelectedVenue({name: firstVenue.name, id: firstVenue.id, ticketSecret:firstVenue.ticketSecret})
     },[])
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export default function Ticket(){
                 type: 'community'
             },
             ticketId: id, // ticketId
-            ticketSecret: ticketSecret, // venue ticket secret
+            ticketSecret: selectedVenue.ticketSecret, // venue ticket secret
             communityVenueId: selectedVenue.id, 
             quantity: quantity,
             userId: targetUserID,
@@ -143,10 +143,11 @@ export default function Ticket(){
    const communityVenues = communityDats && communityDats.venuesDetails
 
    function handleVenues(e:any){
-    const [name, id] = e.target.value.split(',')
+    const [name, id, ticketSecret] = e.target.value.split(',')
     setSelectedVenue({
         name: name,
-        id: id
+        id: id,
+        ticketSecret:ticketSecret
     })
 
    }
@@ -185,12 +186,12 @@ export default function Ticket(){
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
                                 <Select mb={5}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
                                     {communityVenues&&communityVenues.map((venue:any)=>(
-                                        <option key={venue.id} value={[venue.name,venue.id]}>{venue.name}</option>
+                                        <option key={venue.id} value={[venue.name,venue.id,venue.ticketSecret]}>{venue.name}</option>
                                     ))}
                                 </Select>
                                 <HStack w='100%' justifyContent={'center'} mb='2'>
                                     <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
-                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
+                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                 </HStack>
                                 <Box bg={'#ffffff'} padding='5'>
                                 <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
