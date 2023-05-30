@@ -131,7 +131,7 @@ export default function CommunityPage(){
 
                                             <Flex direction={'column'}>
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Contact </Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{convertToAmericanFormat(venue.contactNumber)}</Text> 
+                                                <Text textStyle={'body'} color='brand.200' layerStyle={'mediumPop'}> <a href={`tel:${venue.contactNumber}`}>{convertToAmericanFormat(venue.contactNumber)}</a> </Text> 
                                             </Flex>
                                         </VStack>
                                     </AccordionPanel>
