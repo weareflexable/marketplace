@@ -26,7 +26,7 @@ export default function Profile(){
             "Authorization": paseto
           }
         })
-        return res.data.data
+        return res.data.data 
       }
 
      const userQuery = useQuery({
@@ -35,6 +35,8 @@ export default function Profile(){
         enabled:paseto!=='' ,
         staleTime: Infinity
     })
+
+    console.log(userQuery.isLoading) 
       
 
 
@@ -75,10 +77,10 @@ export default function Profile(){
                             </Text>  
                         </Box>
 
-                        <EditableImage selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableName selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableGender selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableEmail isReadOnly selectedRecord={userQuery.data && userQuery.data[0]}/>
+                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>
+                        <EditableName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>
+                        <EditableGender selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
+                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>

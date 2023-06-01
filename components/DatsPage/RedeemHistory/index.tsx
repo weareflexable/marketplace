@@ -5,10 +5,18 @@ import { MdCheckCircle, MdSettings } from "react-icons/md";
 import { useAuthContext } from "../../../context/AuthContext";
 import dayjs from "dayjs";
 
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
+
 
 
 interface Props{
-    ticketId: string,
+    id: string,
     quantity: number,
     type?: string
 }
@@ -20,29 +28,30 @@ const data = [
 
 ]
 
-export default function RedeemHistory({ticketId,quantity,type}:Props){
+export default function RedeemHistory({id,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
 
+    const urlSuffix = type === 'community' ? `communityId=${id}`: `serviceId=${id}`
+
 
     const redeemHistoryQuery = useQuery({
-        queryKey:['redeem-history', ticketId], 
+        queryKey:['redeem-history', id], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?ticketId=${ticketId}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?${urlSuffix}`,{
                 headers:{
                     "Authorization": paseto
                 }
             }) 
             return res.data
         },
-        enabled: ticketId !== undefined,
+        enabled: id !== undefined,
     })
 
     const history = redeemHistoryQuery.data && redeemHistoryQuery.data.data;
     const totalTicketsRedeemed =  history && history.length;
     const redeemableTickets = quantity - totalTicketsRedeemed  
 
-    console.log(history)
 
     
 
@@ -55,19 +64,20 @@ export default function RedeemHistory({ticketId,quantity,type}:Props){
             : history && history.length === 0
             ? <EmptyList isRefreshingHistory={redeemHistoryQuery.isFetching} refresh={redeemHistoryQuery.refetch}/>
             :
-            <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
-                <List spacing={3}>
+            <Box mb={5} style={{maxWidth: '350px', height: '100%',  position: 'relative'}} >
+                <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
                     {history && history.communityTickets.map((item:any, index:number)=>(
-                        <ListItem border={'1px solid #2b2b2b'} borderRadius={3} key={index}>
-                            <Flex borderBottom={'1px solid #2b2b2b'} alignItems={'flex-start'} >
+                        <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
+                            <Flex  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
-                                <Flex ml={2} my={3} direction={'column'} width='100%'>
-                                    <HStack mb={1} spacing={0}>
+                                <Flex ml={2} direction={'column'} width='100%'> 
+                                    <HStack mb={1} spacing={1}>
                                     <Text color={'text.300'} mr={1} textStyle={'secondary'}>1 </Text>  
-                                    <Text color={'text.300'} textStyle={'secondary'}>Ticket Redeemed •</Text>  
-                                    <Text color={'accent.200'} ml={1} textStyle={'secondary'}>{dayjs(item.createdAt).format('MMM DD, YYYY HH:MM A')}</Text>  
+                                    <Text color={'text.300'} textStyle={'secondary'}>Ticket Redeemed on </Text>  
+                                    {/* @ts-ignore */}
+                                    <Text color={'accent.200'} ml={2} textStyle={'secondary'}> {dayjs(item.createdAt).utc().format('MMM DD, YY · hh:mm A')}</Text>  
                                     </HStack>
-                                    {/* <Text textStyle={'secondary'} color={'text.200'}>{history.name}</Text> */}
+                                    <Text textStyle={'secondary'} color={'text.200'}>{item.venueName}</Text> 
                                 </Flex>
                             </Flex>
                          </ListItem>
