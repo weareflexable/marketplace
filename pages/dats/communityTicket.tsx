@@ -27,6 +27,7 @@ export default function Ticket(){
     const router = useRouter()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
+    const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, expirationDate, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
@@ -75,6 +76,8 @@ export default function Ticket(){
 
    async function generateApplePass(){ 
 
+    setIsGenereatingPass(true)
+
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: dayjs(expirationDate).format('MMM DD, YYYY'), // add 30 days
@@ -91,12 +94,14 @@ export default function Ticket(){
         body: JSON.stringify(payload),
         headers:{
             "Content-Type": "application/vnd.apple.pkpass"
-       } 
+       }  
     })
 
 
     const blob = await body.blob()
     const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
+
+    setIsGenereatingPass(false)
 
     const blobUrl = window.URL.createObjectURL(newBlob); 
 
@@ -202,11 +207,11 @@ export default function Ticket(){
                             </Flex>
                         </> 
                         }
-                        {isRedeem?null:<Button mt={4} colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                        {isRedeem?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
-
+ 
                     <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>

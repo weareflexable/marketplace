@@ -27,6 +27,7 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
+    const [isGeneratingPass, setIsGeneratingPass] = useState(false)
     const {ticketSecret,  quantity,  isRedeem, targetUserID, targetDate, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -64,6 +65,8 @@ export default function Ticket(){
 
    async function generateApplePass(){ 
 
+    setIsGeneratingPass(true)
+    
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: validityEnd,
@@ -79,19 +82,20 @@ export default function Ticket(){
             longitude: serviceDetails[0].longitude, 
         },
     }
-
+    
     const body = await fetch('/api/generatePass',{
         method:'POST',
         body: JSON.stringify(payload),
         headers:{
             "Content-Type": "application/vnd.apple.pkpass"
-       } 
+        } 
     })
-
-
+    
+    
     const blob = await body.blob()
     const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
-
+    
+    setIsGeneratingPass(false)
     const blobUrl = window.URL.createObjectURL(newBlob);
 
     const link = document.createElement('a');
@@ -182,7 +186,7 @@ export default function Ticket(){
                             </Flex>
                         </>
                         }
-                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
