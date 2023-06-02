@@ -78,7 +78,7 @@ export default function Ticket(){
     const payload = {
         qrCode: qrCodePayload,
         expiryDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'), // add 30 days
-        ticketSecret: ticketSecret,
+        ticketSecret: selectedVenue.ticketSecret,
         targetDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,

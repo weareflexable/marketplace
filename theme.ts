@@ -61,9 +61,9 @@ const config: ThemeConfig ={
             },
           },
           accentSolid:{
-            bg:'accent.300',
+            bg:'accent.100',
             borderRadius: '50px',
-            color:'white',
+            color:'color.text.300',
             _active:{
               bg:'accent.100',
               color:'black'
