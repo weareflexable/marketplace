@@ -32,13 +32,12 @@ export default function RedeemHistory({id,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
 
-    const urlSuffix = type === 'community' ? `communityId=${id}`: `serviceId=${id}`
 
 
     const redeemHistoryQuery = useQuery({
         queryKey:['redeem-history', id], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?${urlSuffix}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId${id}`,{
                 headers:{
                     "Authorization": paseto
                 }
