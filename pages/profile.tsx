@@ -33,14 +33,14 @@ export default function Profile(){
         queryKey:['user'],  
         queryFn: fetchUserDetails,
         enabled:paseto!=='' ,
-        staleTime: Infinity
+        // staleTime: Infinity
     })
 
-    console.log(userQuery.isLoading) 
-      
+    // console.log(userQuery.data.data)  
+       
 
 
-
+ 
     if(!isAuthenticated){ 
         return(
             <Layout>
@@ -77,10 +77,10 @@ export default function Profile(){
                             </Text>  
                         </Box>
 
-                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>
-                        <EditableName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>
-                        <EditableGender selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
-                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
+                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/> 
+                        <EditableName selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>
+                        <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data.data && userQuery.data.data[0]}/> 
+                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>}
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
