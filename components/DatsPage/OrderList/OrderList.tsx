@@ -177,7 +177,9 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
     <Flex  ml={5} width={'100%'} direction={'column'}>
 
     <HStack>
-      
+      <Text textStyle={'caption'} color="text.200">
+        {dayjs(order.createdAt).format("MMM D, YYYY")}
+      </Text>
         
         { order.ticketStatus === 'active'
         ?

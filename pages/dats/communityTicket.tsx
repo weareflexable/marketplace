@@ -28,7 +28,7 @@ export default function Ticket(){
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, expirationDate, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -77,9 +77,9 @@ export default function Ticket(){
 
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'), // add 30 days
+        expiryDate: dayjs(expirationDate).format('MMM DD, YYYY'), // add 30 days
         ticketSecret: selectedVenue.ticketSecret,
-        targetDate: dayjs(createdAt).add(31,'days').format('MMM DD, YYYY'),
+        targetDate: dayjs(expirationDate).format('MMM DD, YYYY'),
         quantity: quantity,
         price: communityDats.price/100,
         communityVenueName: selectedVenue.name,
@@ -224,6 +224,12 @@ export default function Ticket(){
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Quantity</Text></Flex>
                                 {/* @ts-ignore */}
                                 <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{quantity}</Text></Flex>
+                            </HStack>
+
+                            <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
+                                {/* @ts-ignore */}
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(expirationDate).format('MMM DD, YYYY')}</Text></Flex>
                             </HStack>
 
 
