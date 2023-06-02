@@ -9,7 +9,7 @@ export default async function handler(req:any, res:NextApiResponse){
 
     const body = JSON.parse(req?.body)
 
-    const {qrCode,expiryDate, quantity, ticketSecret, venueName, targetDate, communityName, price,} = body
+    const {qrCode,expiryDate, quantity, ticketSecret, venueName, communityVenueName, targetDate, communityName, price,} = body
 
     const {signerCert, signerKey, wwdr, signerKeyPassphrase} = await getCertificates()
     const pass = await PKPass.from({
@@ -38,21 +38,58 @@ export default async function handler(req:any, res:NextApiResponse){
         altText: "Qr code for community"
     })
 
+    // pass.headerFields.push(
+    //     {
+    //         "key": "communityName",
+    //         "label": "Community", 
+    //         "value": communityName,
+             
+    //     },
+    // )  
+
+    pass.primaryFields.push(
+        {
+            key: "venueName",
+            label: "Venue", 
+            value: communityVenueName,
+            textAlignment: "PKTextAlignmentLeft", 
+            
+        },
+    ) 
+
+    pass.secondaryFields.push(
+        {
+            key: "communityName",
+            label: "Community", 
+            value: communityName,
+            textAlignment: "PKTextAlignmentLeft", 
+             
+        },
+    )
+   
+ 
 
     pass.auxiliaryFields.push(
-        {
+       
+        // {
+        //     "key": "ticketSecret",
+        //     "value": ticketSecret,
+        //     "label":'Ticket Secret',
+        //     "row": 0 
+        // }, 
+        { 
             "key": "quantity",
             "value": `${quantity} Ticket(s)`,
             "label":'Quantity',
             "row": 0
-        },
+        }, 
         {
             "key": "price",
             "value": `$${price}`,
             "label":'Price',
             "row": 0
         },
-        {
+        { 
             "key": "validUntil",
             "value": targetDate, //  convert this to us timezone
             "label":'Valid Until',
@@ -61,12 +98,8 @@ export default async function handler(req:any, res:NextApiResponse){
     )
     
 
-    pass.primaryFields.push({
-        key: "Name",
-        label: "Community Name",
-        value: communityName,
-        textAlignment: "PKTextAlignmentLeft",
-    }) 
+   
+
 
  
     pass.setExpirationDate(new Date(expiryDate))

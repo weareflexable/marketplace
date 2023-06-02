@@ -154,7 +154,6 @@ interface EditableProp{
 
 function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
 
-    console.log(selectedRecord)
 
     // const [state, setState] = useState(selectedRecord)
   
@@ -286,7 +285,6 @@ function EditableGender({selectedRecord}:EditableProp){
 
       function handleSubmit(values:any,actions:any){
         //  preventDefault() 
-        console.log(values,actions)
         const payload = {
             key:'gender',
             value:value,
@@ -296,7 +294,6 @@ function EditableGender({selectedRecord}:EditableProp){
      }
 
      function handleChange(value:any){
-      console.log(value)
       setValue(value)
      }
 

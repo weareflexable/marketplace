@@ -98,11 +98,11 @@ export default function Ticket(){
     const blob = await body.blob()
     const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
 
-    const blobUrl = window.URL.createObjectURL(newBlob);
+    const blobUrl = window.URL.createObjectURL(newBlob); 
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${communityDats.name}.pkpass`);
+    link.setAttribute('download', `${selectedVenue.name}.pkpass`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
