@@ -50,6 +50,8 @@ export default function RedeemHistory({id,quantity,type}:Props){
     const history = redeemHistoryQuery.data && redeemHistoryQuery.data.data;
     const totalTicketsRedeemed =  history && history.length;
     const redeemableTickets = quantity - totalTicketsRedeemed  
+    const redemptionHistory = type === 'services' ? history && history.serviceTickets : history && history.communityTickets
+    console.log(redemptionHistory)
 
 
     
@@ -65,7 +67,7 @@ export default function RedeemHistory({id,quantity,type}:Props){
             :
             <Box mb={5} style={{maxWidth: '350px', height: '100%',  position: 'relative'}} >
                 <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
-                    {history && history.communityTickets.map((item:any, index:number)=>(
+                    {history && redemptionHistory.map((item:any, index:number)=>(
                         <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
                             <Flex  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
@@ -95,7 +97,7 @@ interface EmptyListProps{
 }
 function EmptyList({refresh, isRefreshingHistory}:EmptyListProps){
     return(
-        <Flex justifyContent='center' mb={'3rem'} bg='#121212' alignItems='center' height='100%' width={"100%"}>
+        <Flex justifyContent='center' mb={'3rem'} alignItems='center' height='100%' width={"100%"}>
         <Flex direction='column' mt='1rem' border={'1px solid #333333'} p={'1rem'} borderRadius='4px' maxW={'350px'} alignItems='center'>
             <Text as='h3' mb='5' textStyle={'h3'}>
                 Awaiting Redemption

@@ -238,7 +238,7 @@ export default function Ticket(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    <Text px='1rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='2' color='text.300'>Digital access token</Text>
+                    <Text px='1rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='6' color='text.300'>Digital access token</Text>
                     {isTxHash 
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
@@ -274,11 +274,11 @@ export default function Ticket(){
                             :<NoHash/>
                     }
 
-                        <Text px='1rem' mt='4re'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                        <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
                             <RedeemHistory 
                                 quantity={quantity}    
                                 id={serviceBookingId}
-                                type='service'
+                                type='services'
                             />
         
                         
