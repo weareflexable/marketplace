@@ -71,12 +71,12 @@ export default async function handler(req:any, res:NextApiResponse){
 
     pass.auxiliaryFields.push(
        
-        // {
-        //     "key": "ticketSecret",
-        //     "value": ticketSecret,
-        //     "label":'Ticket Secret',
-        //     "row": 0 
-        // }, 
+        {
+            "key": "ticketSecret",
+            "value": ticketSecret,
+            "label":'Ticket Secret',
+            "row": 0 
+        }, 
         { 
             "key": "quantity",
             "value": `${quantity} Ticket(s)`,
