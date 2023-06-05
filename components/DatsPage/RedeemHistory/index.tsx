@@ -21,18 +21,10 @@ interface Props{
     type?: string
 }
 
-const data = [
-    {id: '1', name:'Benjamins On Franklin', ticketRedeemCount: 1, date: 'March 23, 2025'},
-    {id: '1', name:'Benjamins On Franklin', ticketRedeemCount: 1, date: 'March 23, 2025'},
-    {id: '1', name:'Benjamins On Franklin', ticketRedeemCount: 1, date: 'March 23, 2025'}
-
-]
 
 export default function RedeemHistory({id,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
-
-
 
     const redeemHistoryQuery = useQuery({
         queryKey:['redeem-history', id], 

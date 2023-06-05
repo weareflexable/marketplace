@@ -35,8 +35,6 @@ export default function Ticket(){
 
 
     const isTxHash = transactionHash !== ''
-    // const serviceItemName = serviceItemDetails[0].name
-    // const address = serviceDetails[0].street
 
     useEffect(() => {
 

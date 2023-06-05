@@ -13,6 +13,7 @@ import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
 import Head from 'next/head'
 import RedeemHistory from '../../components/DatsPage/RedeemHistory'
+import { useAuthContext } from '../../context/AuthContext'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -25,6 +26,7 @@ dayjs.extend(advanced)
 export default function Ticket(){
 
     const router = useRouter()
+    const {paseto} = useAuthContext()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
@@ -72,7 +74,37 @@ export default function Ticket(){
 
   
 
+  const redeemHistoryQuery = useQuery({
+    queryKey:['redeem-history', id], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
+            headers:{
+                "Authorization": paseto
+            }
+        }) 
+        return res.data.data
+    },
+    
+    enabled: id !== undefined,
+})
+  const redemptionAggregateQuery = useQuery({
+    queryKey:['redeem-history', id, selectedVenue], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
+            headers:{
+                "Authorization": paseto
+            }
+        }) 
+        return res.data.data
+    },
+    cacheTime:0,
+    enabled: id !== undefined,
+})
+const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
+console.log(redemptionAggregateQuery.data)
 
+
+console.log('from community',redeemHistoryQuery.data)
 
    async function generateApplePass(){ 
 
@@ -156,6 +188,12 @@ export default function Ticket(){
     })
 
    }
+
+   const aggregateDisplay = redemptionAggregateQuery.isLoading
+   ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
+   : redemptionAggregateQuery.isError
+   ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
+   : <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
      
 
     return(
@@ -182,18 +220,21 @@ export default function Ticket(){
             :
             <Flex direction='column'>
                     <Flex direction='column' px='9' mb='5' w='100%'>
-                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
+                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
                         { isRedeem
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                         </Flex>
-                        :<>
+                        :<> 
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <Select mb={5}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
-                                    {communityVenues&&communityVenues.map((venue:any)=>(
-                                        <option key={venue.id} value={[venue.name,venue.id,venue.ticketSecret]}>{venue.name}</option>
-                                    ))}
-                                </Select>
+                                <Flex width={'100%'} direction={'column'} alignItems={'flex-start'}>
+                                    <Select mb={2}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
+                                        {communityVenues&&communityVenues.map((venue:any)=>(
+                                            <option key={venue.id} value={[venue.name,venue.id,venue.ticketSecret]}>{venue.name}</option>
+                                            ))}
+                                    </Select> 
+                                    {aggregateDisplay}
+                                </Flex> 
                                 <HStack w='100%' justifyContent={'center'} mb='2'>
                                     <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
                                     <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
