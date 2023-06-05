@@ -74,19 +74,19 @@ export default function Ticket(){
 
   
 
-  const redeemHistoryQuery = useQuery({
-    queryKey:['redeem-history', id], 
-    queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
-            headers:{
-                "Authorization": paseto
-            }
-        }) 
-        return res.data.data
-    },
+//   const redeemHistoryQuery = useQuery({
+//     queryKey:['redeem-history', id], 
+//     queryFn:async()=>{
+//         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
+//             headers:{
+//                 "Authorization": paseto
+//             }
+//         }) 
+//         return res.data.data
+//     },
     
-    enabled: id !== undefined,
-})
+//     enabled: id !== undefined,
+// })
   const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
@@ -101,10 +101,7 @@ export default function Ticket(){
     enabled: id !== undefined,
 })
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
-console.log(redemptionAggregateQuery.data)
 
-
-console.log('from community',redeemHistoryQuery.data)
 
    async function generateApplePass(){ 
 

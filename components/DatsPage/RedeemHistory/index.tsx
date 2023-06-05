@@ -34,17 +34,17 @@ export default function RedeemHistory({id,quantity,type}:Props){
                     "Authorization": paseto
                 }
             }) 
-            return res.data
+            return res.data.data
         },
         enabled: id !== undefined,
     })
 
-    const history = redeemHistoryQuery.data && redeemHistoryQuery.data.data;
-    const totalTicketsRedeemed =  history && history.length;
-    const redeemableTickets = quantity - totalTicketsRedeemed  
-    const redemptionHistory = type === 'services' ? history && history.serviceTickets : history && history.communityTickets
-    console.log(redemptionHistory)
 
+    const history = redeemHistoryQuery && redeemHistoryQuery.data;
+    const totalTicketsRedeemed =  history && history.length;
+
+    console.log('history from redemption',redeemHistoryQuery)
+ 
 
     
 
@@ -54,12 +54,12 @@ export default function RedeemHistory({id,quantity,type}:Props){
 
         {redeemHistoryQuery.isLoading 
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'10  rem'}/>
-            : history && history.length === 0
+            : redeemHistoryQuery && redeemHistoryQuery.data.length === 0
             ? <EmptyList isRefreshingHistory={redeemHistoryQuery.isFetching} refresh={redeemHistoryQuery.refetch}/>
             :
             <Box mb={5} style={{maxWidth: '350px', height: '100%',  position: 'relative'}} >
                 <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
-                    {history && redemptionHistory.map((item:any, index:number)=>(
+                    {redeemHistoryQuery && redeemHistoryQuery.data.map((item:any, index:number)=>(
                         <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
                             <Flex  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
