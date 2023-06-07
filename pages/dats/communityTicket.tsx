@@ -31,7 +31,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, createdAt, expirationDate, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -191,6 +191,8 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
    : <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
+
+   const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0
      
 
     return(
@@ -218,7 +220,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
             <Flex direction='column'>
                     <Flex direction='column' px='9' mb='5' w='100%'>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
-                        { isRedeem
+                        { ticketStatus === 'complete'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                         </Flex>
@@ -230,22 +232,29 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                             <option key={venue.id} value={[venue.name,venue.id,venue.ticketSecret]}>{venue.name}</option>
                                             ))}
                                     </Select> 
-                                    {aggregateDisplay}
+                                    {aggregateDisplay} 
+
                                 </Flex> 
-                                <HStack w='100%' justifyContent={'center'} mb='2'>
-                                    <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
-                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
-                                </HStack>
-                                <Box bg={'#ffffff'} padding='5'>
-                                <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
-                                </Box>
+                                {venueIsRedeemed
+                                ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
+                                    <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>All tickets of this venue have been redeemed</Text>
+                                </Flex>
+                                :<Flex direction='column'>
+                                    <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
+                                        <Text color='text.200' textStyle={'body'}>Redeem Code:</Text>
+                                        <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
+                                    </HStack>
+                                    <Box bg={'#ffffff'} padding='5'>
+                                    <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                                    </Box>
+                                </Flex>}
                             </Flex>
                             <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                                 <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
                             </Flex>
                         </> 
                         }
-                        {isRedeem?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                        {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
@@ -254,7 +263,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed':'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='complete' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
