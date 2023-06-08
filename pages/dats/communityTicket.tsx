@@ -5,7 +5,7 @@ import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
-import { ChevronLeftIcon } from '@chakra-ui/icons' 
+import { ChevronLeftIcon, RepeatIcon } from '@chakra-ui/icons' 
 import request, { gql } from 'graphql-request'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
@@ -186,11 +186,14 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
 
    }
 
-   const aggregateDisplay = redemptionAggregateQuery.isLoading
+   const aggregateDisplay = redemptionAggregateQuery.isLoading || redemptionAggregateQuery.isRefetching
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
-   : <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
+   : <Flex  width={'100%'} mb={5} justifyContent='space-around'> 
+    <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
+    <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+    </Flex>
 
    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0
      

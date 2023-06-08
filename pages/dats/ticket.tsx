@@ -276,7 +276,7 @@ export default function Ticket(){
                             <RedeemHistory 
                                 quantity={quantity}    
                                 id={serviceBookingId}
-                                type='services'
+                                type='service'
                             />
         
                         

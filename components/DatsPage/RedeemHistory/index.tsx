@@ -29,7 +29,7 @@ export default function RedeemHistory({id,quantity,type}:Props){
     const redeemHistoryQuery = useQuery({
         queryKey:['redeem-history', id], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&pageSize=50&pageNumber=1`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=${type}&pageSize=50&pageNumber=1`,{
                 headers:{
                     "Authorization": paseto
                 }
@@ -64,10 +64,10 @@ export default function RedeemHistory({id,quantity,type}:Props){
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
                                 <Flex ml={2} direction={'column'} width='100%'> 
                                     <HStack mb={1} spacing={1}>
-                                    <Text color={'text.300'} mr={1} textStyle={'secondary'}>{item.redeemCount}</Text>  
-                                    <Text color={'text.200'} textStyle={'secondary'}>out of</Text>  
-                                    <Text color={'text.300'} mr={1} textStyle={'secondary'}>{quantity}</Text>  
-                                    <Text color={'text.200'} textStyle={'secondary'}>redeemed</Text>  
+                                    <Text color={'text.300'} mr={1} textStyle={'body'}>{item.redeemCount}</Text>  
+                                    <Text color={'text.300'} textStyle={'body'}>out of</Text>  
+                                    <Text color={'text.300'} mr={1} textStyle={'body'}>{quantity}</Text>  
+                                    <Text color={'text.300'} textStyle={'body'}>tickets redeemed</Text>  
                                     {/* @ts-ignore */}
                                     {/* <Text color={'accent.200'} ml={2} textStyle={'secondary'}> {dayjs(item.createdAt).utc().format('MMM DD, YY · hh:mm A')}</Text>   */}
                                     </HStack>
