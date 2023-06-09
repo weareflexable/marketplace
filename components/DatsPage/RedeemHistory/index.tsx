@@ -60,7 +60,7 @@ export default function RedeemHistory({id,quantity,type}:Props){
                 <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
                     {redeemHistoryQuery && redeemHistoryQuery.data.map((item:any, index:number)=>(
                         <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
-                            <Flex  my={2} alignItems={'flex-start'} >
+                            <Flex px={3}  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
                                 <Flex ml={2} direction={'column'} width='100%'> 
                                     <HStack mb={1} spacing={1}>

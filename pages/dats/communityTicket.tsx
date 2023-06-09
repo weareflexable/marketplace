@@ -195,7 +195,8 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
     <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
     </Flex>
 
-   const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0
+//    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
+   const venueIsRedeemed = redemptionAggregate && quantity - redemptionAggregate.redeemCount === 0 // determine agg using ticketsLeftToRedeem value
      
 
     return(
@@ -239,8 +240,8 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
 
                                 </Flex> 
                                 {venueIsRedeemed
-                                ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                                    <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>All tickets of this venue have been redeemed</Text>
+                                ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
+                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been redeemed`}</Text>
                                 </Flex>
                                 :<Flex direction='column'>
                                     <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
@@ -250,14 +251,17 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                     <Box bg={'#ffffff'} padding='5'>
                                     <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
                                     </Box>
-                                </Flex>}
+                                    <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
+                                        <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
+                                    </Flex>
+                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                                </Flex>
+                                }
                             </Flex>
-                            <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
-                            </Flex>
+                           
                         </> 
                         }
-                        {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                       
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
