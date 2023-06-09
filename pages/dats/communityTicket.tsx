@@ -191,8 +191,8 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
    : <Flex  width={'100%'} mb={5} justifyContent='space-around'> 
-    <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
-    <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
+        <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
     </Flex>
 
 //    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
@@ -229,7 +229,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                         </Flex>
                         :<> 
-                            <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
+                            <Flex justifyContent={'flex-start'} direction='column' w='100%'>
                                 <Flex width={'100%'} direction={'column'} alignItems={'flex-start'}>
                                     <Select mb={2}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
                                         {communityVenues&&communityVenues.map((venue:any)=>(
@@ -237,20 +237,23 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                             ))}
                                     </Select> 
                                     {aggregateDisplay} 
-
                                 </Flex> 
                                 {venueIsRedeemed
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
                                     <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been redeemed`}</Text>
                                 </Flex>
-                                :<Flex direction='column'>
+                                :redemptionAggregateQuery.isLoading|| redemptionAggregateQuery.isRefetching
+                                ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
+                                    <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
+                                 </Flex>
+                                :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redeem Code:</Text>
                                         <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
-                                    <Box bg={'#ffffff'} padding='5'>
-                                    <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
-                                    </Box>
+                                    <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
+                                      <QRCode height={'25px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                                    </Flex>
                                     <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                                         <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
                                     </Flex>
