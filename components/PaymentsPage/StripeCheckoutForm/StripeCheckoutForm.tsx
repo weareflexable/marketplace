@@ -2,15 +2,13 @@ import React,{useState,useReducer} from 'react';
 import {Flex,Box,Button,Heading,Text, HStack,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
-import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 import { deleteStorage } from '../../../utils/localStorage';
-import { number } from 'yup';
 import {numberFormatter} from '../../../utils/formatter' 
 import { useRouter } from 'next/router';
-import useLastVisitedPage from '../../../hooks/useLastVistedPage';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuthContext } from '../../../context/AuthContext';
+import { usePaymentContext } from '../../../context/PaymentContext';
 
 interface CheckoutProps{
   paymentIntentId: string
@@ -19,7 +17,8 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
 
   const {totalAmount,cartItems}=  useCheckoutContext()
   const {paseto} = useAuthContext()
-  const {buyNowTotal} = useInstantBuyContext()
+  const {stripePayload} = usePaymentContext()
+
   // const history = useLastVisitedPage()
 
   const stripe = useStripe();
@@ -101,7 +100,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
       {
         onSuccess:()=>{ 
           const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-          router.push(`${lastVisitedPage}`)
+          lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
         },
       })
   }
@@ -115,7 +114,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
           <PaymentElement id='payment-element' />
           <HStack mt='5' spacing={3}>
             <Button colorScheme={'brand'} onClick={cancelTransaction} variant='ghost'>Cancel</Button>
-            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${buyNowTotal>0? numberFormatter.from(buyNowTotal):numberFormatter.from(totalAmount/100)}`}</Button>
+            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${numberFormatter.from(Number(localStorage.getItem('subTotal')))}`}</Button>
           </HStack>
           </form>
       </Box>     

@@ -4,13 +4,12 @@ import getCertificates from './getCertificates'
 import path from 'path'
 import { NextApiResponse } from 'next'
 import dayjs from 'dayjs'
-import exp from 'constants'
 
 export default async function handler(req:any, res:NextApiResponse){
 
     const body = JSON.parse(req?.body)
 
-    const {qrCode,expiryDate, quantity, ticketSecret, venueName, targetDate, eventName, price, street, location} = body
+    const {qrCode,expiryDate, quantity, ticketSecret, venueName, communityVenueName, targetDate, communityName, price,} = body
 
     const {signerCert, signerKey, wwdr, signerKeyPassphrase} = await getCertificates()
     const pass = await PKPass.from({
@@ -28,77 +27,79 @@ export default async function handler(req:any, res:NextApiResponse){
     },
     {
         serialNumber: ticketSecret,
-        organizationName: `Flexable —— ${venueName}`
+        organizationName: `Flexable —— ${communityName}`
     }
     )
 
-    // pass.set
-    // pass.headerFields.push(
-    //     {
-    //         key: "header1",
-    //         label: "Event",
-    //         value: "Flexable natural line skips",
-    //         textAlignment: "PKTextAlignmentCenter",
-    //     },
-    //     {
-    //         key: "header2",
-    //         label: "Description",
-    //         value: "Best service in Syracuse",
-    //         textAlignment: "PKTextAlignmentCenter",
-    //     },
-    // );
-
-    pass.setLocations(location)
 
     pass.setBarcodes({
         message: JSON.stringify(qrCode),
         format: "PKBarcodeFormatQR",
-        altText: "Qr code for bars"
+        altText: "Qr code for community"
     })
 
+    // pass.headerFields.push(
+    //     {
+    //         "key": "communityName",
+    //         "label": "Community", 
+    //         "value": communityName,
+             
+    //     },
+    // )  
 
-    pass.secondaryFields.push({
+    pass.primaryFields.push(
+        {
+            key: "venueName",
+            label: "Venue", 
+            value: communityVenueName,
+            textAlignment: "PKTextAlignmentLeft", 
+            
+        },
+    ) 
 
-            "key": "location",
-            "label": "LOCATION",
-            "value": street
-        
-    })
+    pass.secondaryFields.push(
+        {
+            key: "communityName",
+            label: "Community", 
+            value: communityName,
+            textAlignment: "PKTextAlignmentLeft", 
+             
+        },
+    )
+   
+ 
 
     pass.auxiliaryFields.push(
+       
         {
             "key": "ticketSecret",
             "value": ticketSecret,
             "label":'Ticket Secret',
             "row": 0 
         }, 
-        {
+        { 
             "key": "quantity",
             "value": `${quantity} Ticket(s)`,
             "label":'Quantity',
             "row": 0
-        },
+        }, 
         {
             "key": "price",
             "value": `$${price}`,
             "label":'Price',
             "row": 0
         },
-        {
-            "key": "validOn",
-            "value": dayjs(targetDate).format("MMM DD, YYYY"), //  convert this to us timezone
-            "label":'Valid On',
+        { 
+            "key": "validUntil",
+            "value": targetDate, //  convert this to us timezone
+            "label":'Valid Until',
             "row": 0
         },
     )
     
 
-    pass.primaryFields.push({
-        key: "Name",
-        label: "Service Name",
-        value: eventName,
-        textAlignment: "PKTextAlignmentLeft",
-    }) 
+   
+
 
  
     pass.setExpirationDate(new Date(expiryDate))

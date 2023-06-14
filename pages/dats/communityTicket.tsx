@@ -1,11 +1,11 @@
 import {useState, useEffect} from 'react'
-import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem} from '@chakra-ui/react'
+import {Box, Text, Divider, Grid, SkeletonText, IconButton,  HStack, Flex, Skeleton, VStack, Button, SimpleGrid, GridItem, Select} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import QRCode from 'react-qr-code'
 import { useDatContext } from '../../context/DatContext'
 import dayjs from 'dayjs'
 import { getPlatformPaseto } from '../../utils/storage'
-import { ChevronLeftIcon } from '@chakra-ui/icons' 
+import { ChevronLeftIcon, RepeatIcon } from '@chakra-ui/icons' 
 import request, { gql } from 'graphql-request'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
@@ -13,6 +13,7 @@ import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
 import Head from 'next/head'
 import RedeemHistory from '../../components/DatsPage/RedeemHistory'
+import { useAuthContext } from '../../context/AuthContext'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -23,18 +24,31 @@ dayjs.extend(advanced)
 
 
 export default function Ticket(){
+
     const router = useRouter()
+    const {paseto} = useAuthContext()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
+    const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, targetDate, serviceBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
+    const communityDats = communityDetails && communityDetails 
+
+
     const isTxHash = transactionHash !== ''
+    // const serviceItemName = serviceItemDetails[0].name
+    // const address = serviceDetails[0].street
+
+    useEffect(()=>{
+        const firstVenue = communityDats.venuesDetails[0]
+        setSelectedVenue({name: firstVenue.name, id: firstVenue.id, ticketSecret:firstVenue.ticketSecret})
+    },[])
 
     useEffect(() => {
 
@@ -43,12 +57,12 @@ export default function Ticket(){
 
           qrCodePayload = {
             item:{
-                id: serviceItemDetails.id,
-                type: 'venue'
+                id: communityDats.id,
+                type: 'community'
             },
             ticketId: id, // ticketId
-            ticketSecret: ticketSecret,
-            validDate: validityEnd,
+            ticketSecret: selectedVenue.ticketSecret, // venue ticket secret
+            communityVenueId: selectedVenue.id, 
             quantity: quantity,
             userId: targetUserID,
           };
@@ -56,49 +70,73 @@ export default function Ticket(){
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, serviceItemDetails, targetUserID, ticketSecret, validityEnd]) 
+  }, [id, quantity, selectedVenue, serviceItemsDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
+
+//   const redeemHistoryQuery = useQuery({
+//     queryKey:['redeem-history', id], 
+//     queryFn:async()=>{
+//         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
+//             headers:{
+//                 "Authorization": paseto
+//             }
+//         }) 
+//         return res.data.data
+//     },
+    
+//     enabled: id !== undefined,
+// })
+  const redemptionAggregateQuery = useQuery({
+    queryKey:['redeem-history', id, selectedVenue], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
+            headers:{
+                "Authorization": paseto
+            }
+        }) 
+        return res.data.data
+    },
+    cacheTime:0,
+    enabled: id !== undefined,
+})
+const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
 
 
    async function generateApplePass(){ 
 
-    setIsGeneratingPass(true)
-    
+    setIsGenereatingPass(true)
+
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: validityEnd,
-        ticketSecret: ticketSecret,
-        targetDate: targetDate,
+        expiryDate: dayjs(expirationDate).format('MMM DD, YYYY'), // add 30 days
+        ticketSecret: selectedVenue.ticketSecret,
+        targetDate: dayjs(expirationDate).format('MMM DD, YYYY'),
         quantity: quantity,
-        price: serviceItemDetails.price/100,
-        eventName: serviceItemDetails.name,
-        venueName: serviceDetails[0].name,
-        street: serviceDetails[0].street,
-        location: {
-            latitude: serviceDetails[0].latitude,
-            longitude: serviceDetails[0].longitude, 
-        },
+        price: communityDats.price/100,
+        communityVenueName: selectedVenue.name,
+        communityName: communityDats.name,
     }
-    
-    const body = await fetch('/api/generatePass',{
+
+    const body = await fetch('/api/generateCommunityPass',{
         method:'POST',
         body: JSON.stringify(payload),
         headers:{
             "Content-Type": "application/vnd.apple.pkpass"
-        } 
+       }  
     })
-    
-    
+
+
     const blob = await body.blob()
     const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
-    
-    setIsGeneratingPass(false)
-    const blobUrl = window.URL.createObjectURL(newBlob);
+
+    setIsGenereatingPass(false)
+
+    const blobUrl = window.URL.createObjectURL(newBlob); 
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${serviceItemDetails.name}.pkpass`);
+    link.setAttribute('download', `${selectedVenue.name}.pkpass`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
@@ -108,6 +146,7 @@ export default function Ticket(){
     }
 
    }
+
 
    
 
@@ -134,6 +173,30 @@ export default function Ticket(){
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
 
+
+   const communityVenues = communityDats && communityDats.venuesDetails
+
+   function handleVenues(e:any){
+    const [name, id, ticketSecret] = e.target.value.split(',')
+    setSelectedVenue({
+        name: name,
+        id: id,
+        ticketSecret:ticketSecret
+    })
+
+   }
+
+   const aggregateDisplay = redemptionAggregateQuery.isLoading || redemptionAggregateQuery.isRefetching
+   ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
+   : redemptionAggregateQuery.isError
+   ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
+   : <Flex  width={'100%'} mb={5} justifyContent='space-around'> 
+        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
+        <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+    </Flex>
+
+//    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
+   const venueIsRedeemed = redemptionAggregate && quantity - redemptionAggregate.redeemCount === 0 // determine agg using ticketsLeftToRedeem value
      
 
     return(
@@ -150,7 +213,7 @@ export default function Ticket(){
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                     <HStack ml='5' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                        <Text as='h1' textStyle={'h4'} color='text.300' >{serviceItemDetails.name}</Text> 
+                        <Text as='h1' textStyle={'h4'} color='text.300' >{communityDats.name}</Text>
                     </HStack>
                 </Flex> 
                 }
@@ -160,46 +223,63 @@ export default function Ticket(){
             :
             <Flex direction='column'>
                     <Flex direction='column' px='9' mb='5' w='100%'>
-                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
-                        { isRedeem
+                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
+                        { ticketStatus === 'complete'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
                         </Flex>
-                        :dayjs().isAfter(dayjs(validityEnd))
-                        ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
-                        </Flex>
-                        :<>
-                            <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <HStack w='100%' justifyContent={'center'} mb='2'>
-                                    <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
-                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
-                                </HStack>
-                                <Box bg={'#ffffff'} padding='5'>
-                                <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
-                                </Box>
+                        :<> 
+                            <Flex justifyContent={'flex-start'} direction='column' w='100%'>
+                                <Flex width={'100%'} direction={'column'} alignItems={'flex-start'}>
+                                    <Select mb={2}  onChange={handleVenues} defaultValue={selectedVenue.name} variant='filled' bg='#232323' _hover={{bg:'#333333', cursor:'pointer'}} colorScheme='brand' color='text.300' >
+                                        {communityVenues&&communityVenues.map((venue:any)=>(
+                                            <option key={venue.id} value={[venue.name,venue.id,venue.ticketSecret]}>{venue.name}</option>
+                                            ))}
+                                    </Select> 
+                                    {aggregateDisplay} 
+                                </Flex> 
+                                {venueIsRedeemed
+                                ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
+                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been redeemed`}</Text>
+                                </Flex>
+                                :redemptionAggregateQuery.isLoading|| redemptionAggregateQuery.isRefetching
+                                ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
+                                    <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
+                                 </Flex>
+                                :<Flex width={'100%'} direction='column'>
+                                    <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
+                                        <Text color='text.200' textStyle={'body'}>Redeem Code:</Text>
+                                        <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
+                                    </HStack>
+                                    <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
+                                      <QRCode height={'25px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
+                                    </Flex>
+                                    <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
+                                        <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
+                                    </Flex>
+                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                                </Flex>
+                                }
                             </Flex>
-                            <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
-                            </Flex>
-                        </>
+                           
+                        </> 
                         }
-                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                       
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
-
+ 
                     <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='complete' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemDetails.price/100)}`}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(communityDats.price/100)}`}</Text></Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -211,22 +291,23 @@ export default function Ticket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(expirationDate).format('MMM DD, YYYY')}</Text></Flex>
                             </HStack>
 
-                            <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex> 
+
+                            {/* <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex>
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails.latitude},${serviceDetails.longitude}`}>{ctx_currentDat.serviceDetails.street}</a> 
+                                        <a href={`https://www.google.com/maps/place/?q=place_id:${communityDats.address.placeId}`}>{ctx_currentDat.serviceDetails[0].street}</a> 
                                     </Text>
                                 </Flex>
                             </HStack> 
 
                             <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
-                                <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails.contactNumber}`}>{`+1 (${serviceDetails.contactNumber.substring(2,5)}) ${serviceDetails.contactNumber.substring(5,8)}-${serviceDetails.contactNumber.substring(8)}`}</a></Text></Flex>
-                            </HStack>
+                                <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails[0].contactNumber}`}>{`+1 (${serviceDetails[0].contactNumber.substring(2,5)}) ${serviceDetails[0].contactNumber.substring(5,8)}-${serviceDetails[0].contactNumber.substring(8)}`}</a></Text></Flex>
+                            </HStack> */}
 
 
                         </VStack>
@@ -236,14 +317,14 @@ export default function Ticket(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    <Text px='1rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='6' color='text.300'>Digital access token</Text>
-                    {isTxHash 
+                    <Text  as='h3'  px='1rem' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                    {isTxHash
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
-                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemDetails.logoImageHash}`}  alt='An image of the nft token'/>
+                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${communityDats.artworkHash}`}  alt='An image of the nft token'/>
                                  </Box>   
                             }
                         </Flex>
@@ -271,14 +352,12 @@ export default function Ticket(){
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
-
-                        <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
-                            <RedeemHistory 
-                                quantity={quantity}    
-                                id={serviceBookingId}
-                                type='service'
-                            />
-        
+                     <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                    <RedeemHistory 
+                        quantity={quantity}    
+                        id={id}
+                        type='community'
+                     />
                         
             </Flex>
             }

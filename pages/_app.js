@@ -1,46 +1,28 @@
 import '../styles/globals.css'
+
+import "@fontsource-variable/figtree"
+
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '../theme'
 import { QueryCache, QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
-import {InstantBuyContextProvider} from '../context/InstantBuyContext'
 import {DatContextProvider} from '../context/DatContext'
-import {useToast} from '@chakra-ui/react'
+import {PaymentContextProvider} from '../context/PaymentContext'
 
+ 
 
-
-
-
-
+ 
 function MyApp({ Component, pageProps }) {
 
-  const toast = useToast()
 
-  const queryClient = new QueryClient({
-    // queryCache: new QueryCache({
-    //   onError:(error)=>{
-    //     const errorStatus = error.response.status
-    //     if(errorStatus !== 401) return; 
-    //     toast({
-    //       title: `Your token has expiered`,
-    //       position:'top',
-    //       containerStyle:{
-    //         width:'100%'
-    //       },
-    //       description: 'Please login again to continue',
-    //       status: 'error',
-    //       isClosable: true,
-    //     })
-    //   }
-    // })
-  })
+  const queryClient = new QueryClient({})
 
   return (
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <InstantBuyContextProvider>
+        <PaymentContextProvider>
                 <CheckoutContextProvider>
            <DatContextProvider>
                   <ChakraProvider theme={theme}> 
@@ -49,7 +31,7 @@ function MyApp({ Component, pageProps }) {
             </DatContextProvider>
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
-        </InstantBuyContextProvider>
+        </PaymentContextProvider> 
     </QueryClientProvider>
       </AuthContextProvider> 
   ) 

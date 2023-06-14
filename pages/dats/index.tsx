@@ -30,7 +30,7 @@ const fetchWithError = async(url:string, options:any)=>{
 
   if (response.status !== 200) throw new Error('Error in request')
 
-  const result = await response.json()
+  const result = await response.json() 
 
   if (result.status !== 200) throw new Error(result.message)
 
@@ -39,6 +39,8 @@ const fetchWithError = async(url:string, options:any)=>{
 
 const PAGE_SIZE = 10;
 
+const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'}]
+
 export default function MyDats() {
 
   const { push } = useRouter();
@@ -46,6 +48,8 @@ export default function MyDats() {
   const { isAuthenticated } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isDelaying, setIsDelaying] = useState(false)
+
+  const [currentFilter, setCurrentFilter] = useState(datsFilter[0])
 
   /* 
   * Effect for adding an extra delay before fetching user tickets to give enough
@@ -60,10 +64,10 @@ export default function MyDats() {
   }
   }, [])
 
-  const datsQuery = useInfiniteQuery(["dats"], async ({pageParam=1}) => {
+  const datsQuery = useInfiniteQuery(["dats",currentFilter], async ({pageParam=1}) => {
     const paseto = getPlatformPaseto();
-    const res = await fetchWithError(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`,
+    const res = await fetchWithError( 
+      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
       {
         method: "GET",
         //@ts-ignore
@@ -92,6 +96,10 @@ export default function MyDats() {
   );
 
 
+function changeDatsFilter(filter:{key:string,label:string}){
+  setCurrentFilter(filter)
+}
+
 
 const gotoTicketPage = (dat:any)=>{
   // set selected dat in context
@@ -99,6 +107,10 @@ const gotoTicketPage = (dat:any)=>{
   push('/dats/ticket')
 }
 
+const gotoCommunityTicketPage =(dat:any)=>{
+  ctx_setDat(dat)
+  push('/dats/communityTicket')
+}
 // This sorts orders in descending order after it's received from DB
   // const sortedOrders =
   //   datsQuery.data &&
@@ -140,23 +152,30 @@ const gotoTicketPage = (dat:any)=>{
       >
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
-              <Box ml={[0, 6]}>
+              <Box ml={[0]}>
                 <Text
                   as="h1"
                   textStyle='h3'
                   color='text.300'
                   mt="10"
-                  mb="6"
+                  mb="7"
                 >
                   My Digital Access Tokens
                 </Text>
+                <Flex  mb='2rem'>
+                  {datsFilter.map((filter:any)=>(
+                    <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
+                  ))}
+                </Flex>
               </Box>
                 {
                   datsQuery.isLoading || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
+                    currentFilter={currentFilter.key}
                     orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
+                    gotoCommunityPage={gotoCommunityTicketPage}
                    />
             }
 

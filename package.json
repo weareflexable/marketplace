@@ -6,14 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@chakra-ui/icons": "2.0.13",
     "@chakra-ui/react": "2.4.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@fontsource/figtree": "^4.5.2",
+    "@fontsource-variable/figtree": "^5.0.2",
     "@skolacode/calendar-js": "^1.0.2",
     "@stripe/react-stripe-js": "^1.12.0",
     "@stripe/stripe-js": "^1.39.0",
@@ -48,6 +49,7 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.12",
+    "cross-env": "^7.0.3",
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "postcss": "^8.4.18",

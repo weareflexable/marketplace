@@ -1,35 +1,31 @@
 import {useState} from 'react'
 import { useAuthContext } from '../../../../context/AuthContext'
-import { useCheckoutContext } from '../../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
-import { getStorage, setStorage } from '../../../../utils/localStorage'
+import { getStorage } from '../../../../utils/localStorage'
 import usePath from '../../../../hooks/usePath'
-import useLocalStorage from '../../../../hooks/useLocalStorage'
-import useLocalBuy from '../../../../hooks/useLocalBuy'
-import { useInstantBuyContext } from '../../../../context/InstantBuyContext'
 import dayjs from 'dayjs'
-import useLastVisitedPage from '../../../../hooks/useLastVistedPage'
+import axios from 'axios'
+import { usePaymentContext } from '../../../../context/PaymentContext'
+import { useToast } from '@chakra-ui/react'
+import useLocalStorage from '../../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
 // This should accept a Service-item type in data
-const useService = (data:any)=>{
+const useTicket = (data:any)=>{
 
 
-    const {isAuthenticated} = useAuthContext()
+    const {isAuthenticated, paseto} = useAuthContext()
+    const {setPayload} = usePaymentContext()
+    const toast = useToast()
 
-    // Instant buy is the context that holds logic for when a user
-    // clicks on the "buy now" button to expedite checkout process
-    const {setBuyItems,setBuyNowTotal} = useInstantBuyContext()
-    const [isBuyingTicket, setIsBuyingTicket] = useState(false)
 
     const router = useRouter()
     const {currentPath} = usePath()
 
-    //    const {state:ticketData, setState:setTicketData} = useLocalBuy({
-       //       ...data&&data,
-       //       quantity:0
-       //   })
+    const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
+    const {setState:setSubTotal} = useLocalStorage('subTotal',0)
+
        
        
    // Each ticket will maintain it's own state from props because
@@ -76,33 +72,78 @@ const useService = (data:any)=>{
       //   router.push('/landing')
      }
 
-     const buyTicketNow = ()=>{
+     async function fetchSecret(payload:any) {
+          try{
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+            headers:{
+              'Authorization': paseto
+            }
+          });
+      
+          return res;
 
-      setIsBuyingTicket(true)
-      // console.log(ticketData)
+        }catch(err){
+          toast({
+            title: 'Payment Error',
+            description: "Unable to complete your payment. Please try again",
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+            position:'top-right'
+          })
+        }
+    }
+
+     const buyTicketNow = async ()=>{
+
+       const selectedDateFromStorage = getStorage('selectedDate')
+
         const buyNowCartItem = {
-           serviceItemId: ticketData.id,
+           item:{
+            id: ticketData.id,
+            type: 'venue'
+           },
            quantity: String(ticketData.quantity),
            unitPrice: ticketData.price,
            email: 'flexable@yahoo.com',
            description:ticketData.name,
-           targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
+           //@ts-ignore
+           targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
-         setBuyItems([buyNowCartItem]) // passes cart items to checkout context
-         setBuyNowTotal(subTotal)
+         setItemPayload(buyNowCartItem)
+         setSubTotal(subTotal)
+
 
         if(isAuthenticated){
 
-            setBuyItems([buyNowCartItem]) // passes cart items to checkout context
-            setBuyNowTotal(subTotal)
-            // This local storage value is used in payment page to determine if payment is buy now or cart
-            setStorage('shouldBuyInstantly','true')
-            proceedToPayment();
-            setIsBuyingTicket(false)
-            return
+          try{
+            setIsProceedingToPayment(true)
+            // make request to fetch client secret, paymentIntentId
+            const res:any = await fetchSecret(buyNowCartItem)
+            if(res.status == 200){
+              const stripePayload = {
+                clientSecret: res.data.clientSecret,
+                paymentIntentId: res.data.payment_intent_id,
+                totalAmount: subTotal
+              }
+
+              // set stripePayload to payment context
+              setPayload(stripePayload)
+
+              // set current page as last visited page
+              localStorage.setItem('lastVisitedPage',currentPath);
+                
+              // proceed with payment
+              proceedToPayment()
+            }
+          }catch(err){
+            
+            setIsProceedingToPayment(false)
+            console.log('Error while while fetching client secret')
+          }
+          return
         }
-        setIsBuyingTicket(false)
         loginBeforeAction();
      }
  
@@ -125,7 +166,6 @@ const useService = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
-        isBuyingTicket,
         isMaxQuantity,
         subTotal,
         isAuthenticated,
@@ -137,4 +177,4 @@ const useService = (data:any)=>{
  
 }
 
-export default useService
+export default useTicket

@@ -26,19 +26,21 @@ export default function Profile(){
             "Authorization": paseto
           }
         })
-        return res.data.data
+        return res.data.data 
       }
 
      const userQuery = useQuery({
         queryKey:['user'],  
         queryFn: fetchUserDetails,
         enabled:paseto!=='' ,
-        staleTime: Infinity
+        // staleTime: Infinity
     })
-      
+
+    // console.log(userQuery.data.data)  
+       
 
 
-
+ 
     if(!isAuthenticated){ 
         return(
             <Layout>
@@ -75,10 +77,10 @@ export default function Profile(){
                             </Text>  
                         </Box>
 
-                        <EditableImage selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableName selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableGender selectedRecord={userQuery.data && userQuery.data[0]}/>
-                        <EditableEmail isReadOnly selectedRecord={userQuery.data && userQuery.data[0]}/>
+                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/> 
+                        <EditableName selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>
+                        <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data.data && userQuery.data.data[0]}/> 
+                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>}
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
@@ -152,7 +154,6 @@ interface EditableProp{
 
 function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
 
-    console.log(selectedRecord)
 
     // const [state, setState] = useState(selectedRecord)
   
@@ -284,7 +285,6 @@ function EditableGender({selectedRecord}:EditableProp){
 
       function handleSubmit(values:any,actions:any){
         //  preventDefault() 
-        console.log(values,actions)
         const payload = {
             key:'gender',
             value:value,
@@ -294,7 +294,6 @@ function EditableGender({selectedRecord}:EditableProp){
      }
 
      function handleChange(value:any){
-      console.log(value)
       setValue(value)
      }
 

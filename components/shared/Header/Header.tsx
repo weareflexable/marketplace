@@ -7,6 +7,8 @@ import { setStorage } from '../../../utils/localStorage'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
+
+
 export default function Header(){
 
     const {isAuthenticated,setIsAuthenticated, paseto,logout} = useAuthContext()
@@ -18,7 +20,7 @@ export default function Header(){
             "Authorization": paseto
           }
         })
-        return res.data.data
+        return res.data
       }
 
      const userQuery = useQuery({
@@ -30,8 +32,20 @@ export default function Header(){
           if(failureCount >2) return false
           return true  
         },
+        // onSettled:(res)=>{
+        //     console.log(res)
+        // },
+        onSuccess:(res)=>{
+            const statusCode = res.status
+            if(statusCode === 401){
+                //@ts-ignore
+                setIsAuthenticated(false)
+                // clear all caches
+                localStorage.clear()
+            } 
+        },
         onError:(error:any)=>{
-            const statusCode = error.response.status
+            const statusCode = error.status
             if(statusCode === 401){
                 //@ts-ignore
                 setIsAuthenticated(false)
@@ -42,7 +56,8 @@ export default function Header(){
     })
 
 
-    const profilePicHash = userQuery.data && userQuery.data[0].profilePic
+
+    const profilePicHash = userQuery.data && userQuery.data.data && userQuery.data.data[0].profilePic 
 
 
     const login =()=>{
@@ -52,33 +67,32 @@ export default function Header(){
         // location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace"
     }
 
-    function navigate(route:string){
-        console.log(route)
-    }
+ 
 
 
 
     return(
-        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1rem' h='100%' minH='3vh'>
+        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1.2rem' h='100%' minH='2vh'>
             <Link href='/'>
-               <a> <Image src='/new_logo.svg' w={['150','200']} height={'70px'} alt='Logo of flexable app'/></a>
+               <a> <Image src='/new_logo.svg' w={['150','200']} height={'60px'} alt='Logo of flexable app'/></a>
             </Link>
             <Flex as='nav'>
                 {
-                    !isAuthenticated
+                    !isAuthenticated 
                     ? <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
                     :  userQuery.isFetched && !isAuthenticated
                     ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
                     :   <Menu>                            
                             <MenuButton>
-                                <Avatar  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
+                                <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
                              <MenuList zIndex='3' borderColor="#2b2b2b" bg='#121212'>
-                                <MenuItem onClick={()=>push('/profile')} bg='#121212'>
-                                    <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
-                                </MenuItem>
                                 <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
                                     <Text textStyle={'secondary'}  color='text.300'>My DATs</Text>
+                                </MenuItem>
+                                <MenuDivider/>
+                                <MenuItem onClick={()=>push('/profile')} bg='#121212'>
+                                    <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
                                 </MenuItem>
                                 <MenuDivider/>
                                 <MenuItem bg='#121212'>
