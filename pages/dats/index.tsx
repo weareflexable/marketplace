@@ -162,10 +162,12 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 >
                   My Digital Access Tokens
                 </Text>
-                <Flex  mb='2rem'>
+                <Flex  mb='2rem' direction={'column'}>
                   {datsFilter.map((filter:any)=>(
                     <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
                   ))}
+                  {/* @ts-ignore */}
+                 { datsQuery.isLoading? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Showing ${datsQuery.data && datsQuery.data.dataLength}`}</Text>}
                 </Flex>
               </Box>
                 {

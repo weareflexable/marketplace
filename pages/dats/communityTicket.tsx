@@ -240,7 +240,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                 </Flex> 
                                 {venueIsRedeemed
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
-                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been redeemed`}</Text>
+                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been fully redeemed`}</Text>
                                 </Flex>
                                 :redemptionAggregateQuery.isLoading|| redemptionAggregateQuery.isRefetching
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
