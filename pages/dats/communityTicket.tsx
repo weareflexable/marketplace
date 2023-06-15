@@ -257,7 +257,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                     <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                                         <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
                                     </Flex>
-                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                                 </Flex>
                                 }
                             </Flex>
