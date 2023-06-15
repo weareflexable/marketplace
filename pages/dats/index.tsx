@@ -106,13 +106,11 @@ export default function MyDats() {
     return res.data.dataLength
   })
 
-  console.log(totalDatsQuery.data)
 
 function changeDatsFilter(filter:{key:string,label:string}){
   setCurrentFilter(filter)
 }
 
-console.log(datsQuery.data) 
 
 const gotoTicketPage = (dat:any)=>{
   // set selected dat in context
