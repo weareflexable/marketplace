@@ -1,9 +1,10 @@
-import { Flex, Text, Box, Skeleton, Image, List, ListIcon, ListItem, HStack, Button } from "@chakra-ui/react";
+import { Flex, Text, Box, Skeleton, Image, List, ListIcon, ListItem, HStack, Button, IconButton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MdCheckCircle, MdSettings } from "react-icons/md";
 import { useAuthContext } from "../../../context/AuthContext";
 import dayjs from "dayjs";
+import { RepeatIcon } from "@chakra-ui/icons";
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -49,10 +50,13 @@ export default function RedeemHistory({id,quantity,type}:Props){
 
 
     return(
-        <Flex px='1rem' mt='9' flexDirection={'column'}  width={'100%'}>
-
-        {redeemHistoryQuery.isLoading 
-            ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'10  rem'}/>
+        <Flex px='1rem' mt={'4rem'} mb='9'  flexDirection={'column'}  width={'100%'}>
+        <Flex width={'100%'}  mb='2rem' justifyContent={'space-between'}>
+            <Text   as='h3' alignSelf={'flex-start'} m={0}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+            <IconButton onClick={()=>redeemHistoryQuery.refetch()} isLoading={redeemHistoryQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+        </Flex>
+        {redeemHistoryQuery.isLoading || redeemHistoryQuery.isRefetching
+            ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'5rem'}/>
             : redeemHistoryQuery && redeemHistoryQuery.data.length === 0
             ? <EmptyList isRefreshingHistory={redeemHistoryQuery.isFetching} refresh={redeemHistoryQuery.refetch}/>
             :
