@@ -45,7 +45,7 @@ export default function MyDats() {
 
   const { push } = useRouter();
   const {setDat:ctx_setDat} = useDatContext()
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, paseto } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isDelaying, setIsDelaying] = useState(false)
 
@@ -95,11 +95,24 @@ export default function MyDats() {
   }
   );
 
+  const totalDatsQuery = useQuery(['totalDats',currentFilter.key],async()=>{
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=1&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
+    {
+       //@ts-ignore
+      headers: {
+        Authorization: paseto,
+      }
+    })
+    return res.data.dataLength
+  })
+
+  console.log(totalDatsQuery.data)
 
 function changeDatsFilter(filter:{key:string,label:string}){
   setCurrentFilter(filter)
 }
 
+console.log(datsQuery.data) 
 
 const gotoTicketPage = (dat:any)=>{
   // set selected dat in context
@@ -162,14 +175,16 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 >
                   My Digital Access Tokens
                 </Text>
-                <Flex  mb='2rem' direction={'column'}>
+                <Flex mb='2rem' direction={'column'}>
+                <Flex w={'100%'}>
                   {datsFilter.map((filter:any)=>(
                     <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
-                  ))}
+                    ))}
                   {/* @ts-ignore */}
-                 { datsQuery.isLoading? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Showing ${datsQuery.data && datsQuery.data.dataLength}`}</Text>}
                 </Flex>
-              </Box>
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Showing ${totalDatsQuery && totalDatsQuery.data}`} results</Text>} 
+                </Flex>
+              </Box> 
                 {
                   datsQuery.isLoading || !isDelaying
                   ?<OrderListSkeleton/>
