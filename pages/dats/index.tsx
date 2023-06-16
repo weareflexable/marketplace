@@ -58,7 +58,7 @@ export default function MyDats() {
   useEffect(() => {
   const interval =  setInterval(()=>{
     setIsDelaying(true)
-  },4000)
+  },2000)
   return()=>{
     clearInterval(interval)
   }
@@ -180,7 +180,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                     ))}
                   {/* @ts-ignore */}
                 </Flex>
-                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Showing ${totalDatsQuery && totalDatsQuery.data}`} results</Text>} 
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) ticket(s)`} </Text>} 
                 </Flex>
               </Box> 
                 {
