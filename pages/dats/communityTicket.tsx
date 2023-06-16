@@ -74,20 +74,21 @@ export default function Ticket(){
 
   
 
-//   const redeemHistoryQuery = useQuery({
-//     queryKey:['redeem-history', id], 
-//     queryFn:async()=>{
-//         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
-//             headers:{
-//                 "Authorization": paseto
-//             }
-//         }) 
-//         return res.data.data
-//     },
+  const redeemHistoryQuery = useQuery({
+    queryKey:['redeem-history', id], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
+            headers:{
+                "Authorization": paseto
+            }
+        }) 
+        return res.data.data
+    },
     
-//     enabled: id !== undefined,
-// })
-  const redemptionAggregateQuery = useQuery({
+    enabled: id !== undefined,
+})
+
+const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
@@ -100,8 +101,14 @@ export default function Ticket(){
     cacheTime:0,
     enabled: id !== undefined,
 })
+
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
 
+
+function refreshAggregateAndHistory(){  
+    redemptionAggregateQuery.refetch()
+    redeemHistoryQuery.refetch()
+}
 
    async function generateApplePass(){ 
 
@@ -148,9 +155,6 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    }
 
 
-   
-
-
     const userNftQuery = gql`
         query userNftData($txHash:String!){
             ticketCreateds(where: {transactionHash: $txHash}){
@@ -190,9 +194,9 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
-   : <Flex  width={'100%'} mb={5} justifyContent='space-around'> 
-        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
-        <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+   : <Flex  width={'100%'} px={2} mb={5} justifyContent='space-between'> 
+        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount}/{ quantity} redeemed</Text>   
+        <Button  onClick={refreshAggregateAndHistory} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} leftIcon={<RepeatIcon/>} aria-label={'Refresh aggregate'}>Refresh</Button>
     </Flex>
 
 //    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
@@ -222,7 +226,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
             ?<TicketSkeleton/> 
             :
             <Flex direction='column'>
-                    <Flex direction='column' px='9' mb='5' w='100%'>
+                    <Flex direction='column' px='4' mb='5' w='100%'>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
                         { ticketStatus === 'complete'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
@@ -354,6 +358,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                     }
                     
                     <RedeemHistory 
+                        historyQuery={redeemHistoryQuery}
                         quantity={quantity}    
                         id={id}
                         type='community'

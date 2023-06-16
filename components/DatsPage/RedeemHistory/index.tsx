@@ -19,29 +19,30 @@ dayjs.extend(advanced)
 interface Props{
     id: string,
     quantity: number,
-    type?: string
+    type?: string,
+    historyQuery: any
 }
 
 
-export default function RedeemHistory({id,quantity,type}:Props){
+export default function RedeemHistory({id,historyQuery,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
 
-    const redeemHistoryQuery = useQuery({
-        queryKey:['redeem-history', id], 
-        queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=${type}&pageSize=50&pageNumber=1`,{
-                headers:{
-                    "Authorization": paseto
-                }
-            }) 
-            return res.data.data
-        },
-        enabled: id !== undefined,
-    })
+    // const redeemHistoryQuery = useQuery({
+    //     queryKey:['redeem-history', id], 
+    //     queryFn:async()=>{
+    //         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=${type}&pageSize=50&pageNumber=1`,{
+    //             headers:{
+    //                 "Authorization": paseto
+    //             }
+    //         }) 
+    //         return res.data.data
+    //     },
+    //     enabled: id !== undefined,
+    // })
 
 
-    const history = redeemHistoryQuery && redeemHistoryQuery.data;
+    const history = historyQuery && historyQuery.data;
     const totalTicketsRedeemed =  history && history.length;
 
  
@@ -53,16 +54,16 @@ export default function RedeemHistory({id,quantity,type}:Props){
         <Flex px='1rem' mt={'4rem'} mb='9'  flexDirection={'column'}  width={'100%'}>
         <Flex width={'100%'}  mb='2rem' justifyContent={'space-between'}>
             <Text   as='h3' alignSelf={'flex-start'} m={0}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
-            <IconButton onClick={()=>redeemHistoryQuery.refetch()} isLoading={redeemHistoryQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+            {/* <IconButton onClick={()=>histor.refetch()} isLoading={redeemHistoryQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/> */}
         </Flex>
-        {redeemHistoryQuery.isLoading || redeemHistoryQuery.isRefetching
+        {historyQuery.isLoading || historyQuery.isRefetching
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'5rem'}/>
-            : redeemHistoryQuery && redeemHistoryQuery.data.length === 0
-            ? <EmptyList isRefreshingHistory={redeemHistoryQuery.isFetching} refresh={redeemHistoryQuery.refetch}/>
+            : historyQuery.data && historyQuery.data.length === 0
+            ? <EmptyList isRefreshingHistory={historyQuery.isFetching} refresh={historyQuery.refetch}/>
             :
             <Box mb={5} style={{maxWidth: '350px', height: '100%',  position: 'relative'}} >
                 <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
-                    {redeemHistoryQuery && redeemHistoryQuery.data.map((item:any, index:number)=>(
+                    {history && history.data.map((item:any, index:number)=>(
                         <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
                             <Flex px={3}  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
