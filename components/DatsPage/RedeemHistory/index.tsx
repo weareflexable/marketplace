@@ -17,14 +17,13 @@ dayjs.extend(advanced)
 
 
 interface Props{
-    id: string,
     quantity: number,
     type?: string,
     historyQuery: any
 }
 
 
-export default function RedeemHistory({id,historyQuery,quantity,type}:Props){
+export default function RedeemHistory({historyQuery,quantity,type}:Props){
 
     const {paseto} = useAuthContext()
 

@@ -360,7 +360,6 @@ function refreshAggregateAndHistory(){
                     <RedeemHistory 
                         historyQuery={redeemHistoryQuery}
                         quantity={quantity}    
-                        id={id}
                         type='community'
                      />
                         

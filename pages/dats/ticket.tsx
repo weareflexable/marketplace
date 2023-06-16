@@ -13,6 +13,7 @@ import { numberFormatter } from '../../utils/formatter'
 import axios from 'axios'
 import Head from 'next/head'
 import RedeemHistory from '../../components/DatsPage/RedeemHistory'
+import { useAuthContext } from '../../context/AuthContext'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -24,6 +25,7 @@ dayjs.extend(advanced)
 
 export default function Ticket(){
     const router = useRouter()
+    const {paseto} = useAuthContext()
     const {currentDat:ctx_currentDat} = useDatContext()
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
@@ -109,7 +111,20 @@ export default function Ticket(){
 
    }
 
-   
+   const redeemHistoryQuery = useQuery({
+    queryKey:['redeem-history', id], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${serviceBookingId}`,{
+            headers:{
+                "Authorization": paseto
+            }
+        }) 
+        return res.data.data
+    },
+    
+    enabled: id !== undefined,
+})
+
 
 
     const userNftQuery = gql`
@@ -274,8 +289,8 @@ export default function Ticket(){
 
                         <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
                             <RedeemHistory 
+                                historyQuery={redeemHistoryQuery}
                                 quantity={quantity}    
-                                id={serviceBookingId}
                                 type='service'
                             />
         
