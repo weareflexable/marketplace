@@ -287,7 +287,6 @@ export default function Ticket(){
                             :<NoHash/>
                     }
 
-                        <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
                             <RedeemHistory 
                                 historyQuery={redeemHistoryQuery}
                                 quantity={quantity}    
