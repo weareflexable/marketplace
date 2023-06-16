@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box, Flex,Text, Avatar,Image} from '@chakra-ui/react'
+import {Box, Flex,Text, Avatar,HStack, Image} from '@chakra-ui/react'
 // import Image from 'next/image'
 
 import {useRouter} from 'next/router'
@@ -34,9 +34,14 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                     <Text color='gray.300' noOfLines={[1, 2, 3]} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                         {data.description}
                     </Text>
-                    <Text color='gray.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        $&#8201;{data.price/100}
-                    </Text>
+                    <Flex alignItems={'baseline'}  w={'100%'}>
+                        <Text mr='2' color='text.200' textDecoration={'line-through'} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
+                            ${data.totalMarketValue/100}
+                        </Text>
+                        <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
+                            ${data.price/100}
+                        </Text> 
+                    </Flex>
                 </Flex>
             </Flex>
         </Flex>

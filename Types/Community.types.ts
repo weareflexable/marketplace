@@ -4,6 +4,7 @@ export type Community = {
     price: number,
     artworkHash: string,
     logoImageHash: string,
+    totalMarketValue: number,
     status: string,
     description: string,
     createdBy: string
