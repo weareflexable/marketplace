@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
@@ -22,6 +23,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import PopupError from "../../components/shared/PopupError/PopupError";
 import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
 import { useDatContext } from "../../context/DatContext";
+import {RepeatIcon} from '@chakra-ui/icons'
 import Head from "next/head";
 
 
@@ -149,10 +151,10 @@ const gotoCommunityTicketPage =(dat:any)=>{
   return (
     <>
     <Head>
-    {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
-     <title>DATs</title>
-     <link rel="icon" href="/favicon.png" />
-  </Head>
+      {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+      <title>DATs</title>
+      <link rel="icon" href="/favicon.png" />
+    </Head>
     <Layout>
       <Grid
         mx="1em"
@@ -164,15 +166,16 @@ const gotoCommunityTicketPage =(dat:any)=>{
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
               <Box ml={[0]}>
-                <Text
-                  as="h1"
-                  textStyle='h3'
-                  color='text.300'
-                  mt="10"
-                  mb="7"
-                >
-                  My Digital Access Tokens
-                </Text>
+                <Flex  mt="10"mb="7" w={'100%'} justifyContent={'space-between'}>
+                  <Text
+                    as="h1"
+                    textStyle='h3'
+                    color='text.300'
+                    >
+                    My Digital Access Tokens
+                  </Text>
+                  <IconButton onClick={()=>datsQuery.refetch()} colorScheme="brand" color={'brand.200'} isLoading={datsQuery.isRefetching} variant={'ghost'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+                </Flex>
                 <Flex mb='2rem' direction={'column'}>
                 <Flex w={'100%'}>
                   {datsFilter.map((filter:any)=>(
@@ -184,7 +187,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 </Flex>
               </Box> 
                 {
-                  datsQuery.isLoading || !isDelaying
+                  datsQuery.isLoading || datsQuery.isRefetching || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     currentFilter={currentFilter.key}

@@ -53,7 +53,7 @@ export default function RedeemHistory({historyQuery,quantity,type}:Props){
         <Flex px='1rem' mt={'4rem'} mb='9'  flexDirection={'column'}  width={'100%'}>
         <Flex width={'100%'}  mb='2rem' justifyContent={'space-between'}>
             <Text   as='h3' alignSelf={'flex-start'} m={0}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
-            {/* <IconButton onClick={()=>histor.refetch()} isLoading={redeemHistoryQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/> */}
+          
         </Flex>
         {historyQuery.isLoading || historyQuery.isRefetching
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'5rem'}/>
