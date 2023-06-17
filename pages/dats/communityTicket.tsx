@@ -77,9 +77,9 @@ export default function Ticket(){
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
             headers:{
-                "Authorization": paseto
+                "Authorization": paseto 
             }
         }) 
         return res.data.data

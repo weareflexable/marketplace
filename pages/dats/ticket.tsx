@@ -114,7 +114,7 @@ export default function Ticket(){
    const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${serviceBookingId}`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${serviceBookingId}&ticketType=service&pageSize=50&pageNumber=1`,{
             headers:{
                 "Authorization": paseto
             }
@@ -122,7 +122,7 @@ export default function Ticket(){
         return res.data.data
     },
     
-    enabled: id !== undefined,
+    enabled: serviceBookingId !== undefined,
 })
 
 

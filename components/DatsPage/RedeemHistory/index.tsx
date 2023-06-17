@@ -25,7 +25,6 @@ interface Props{
 
 export default function RedeemHistory({historyQuery,quantity,type}:Props){
 
-    const {paseto} = useAuthContext()
 
     // const redeemHistoryQuery = useQuery({
     //     queryKey:['redeem-history', id], 
@@ -42,6 +41,7 @@ export default function RedeemHistory({historyQuery,quantity,type}:Props){
 
 
     const history = historyQuery && historyQuery.data;
+    console.log('history',history)
     const totalTicketsRedeemed =  history && history.length;
 
  
@@ -57,12 +57,12 @@ export default function RedeemHistory({historyQuery,quantity,type}:Props){
         </Flex>
         {historyQuery.isLoading || historyQuery.isRefetching
             ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" mb={6} height={'5rem'}/>
-            : historyQuery.data && historyQuery.data.length === 0
+            : history && history.length === 0
             ? <EmptyList isRefreshingHistory={historyQuery.isFetching} refresh={historyQuery.refetch}/>
             :
             <Box mb={5} style={{maxWidth: '350px', height: '100%',  position: 'relative'}} >
                 <List border={'1px solid #2b2b2b'} borderRadius={3}  spacing={3}>
-                    {history && history.data.map((item:any, index:number)=>(
+                    {history  && history.map((item:any, index:number)=>(
                         <ListItem  _last={{borderBottom: 'none'}} borderBottom={'1px solid #2b2b2b'} key={index}>
                             <Flex px={3}  my={2} alignItems={'flex-start'} >
                                 {/* <ListIcon as={MdCheckCircle} color='accent.100' /> */}
