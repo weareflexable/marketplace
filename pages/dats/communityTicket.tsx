@@ -215,7 +215,7 @@ function refreshAggregateAndHistory(){
                 {/* header */}
                 {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
-                    <HStack ml='5' spacing={'5'}>
+                    <HStack ml='2' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                         <Text as='h1' textStyle={'h4'} color='text.300' >{communityDats.name}</Text>
                     </HStack>
@@ -252,7 +252,7 @@ function refreshAggregateAndHistory(){
                                  </Flex>
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
-                                        <Text color='text.200' textStyle={'body'}>Redeem Code:</Text>
+                                        <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
                                         <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
                                     <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
@@ -276,7 +276,7 @@ function refreshAggregateAndHistory(){
                     <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
                                 <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='complete' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
                             </HStack>
 
@@ -321,7 +321,10 @@ function refreshAggregateAndHistory(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    <Text  as='h3'  px='1rem' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                    <Flex px='1rem' mb='6'  alignItems={'flex-start'} direction={'column'}>
+                        <Text   as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='2' color='text.300'>Digital Access Token</Text>
+                        <Text  alignSelf={'flex-start'}  textStyle={'secondary'} color='text.200'>Fun Fact: Your DAT is also an NFT that you own forever</Text>
+                    </Flex>   
                     {isTxHash
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>

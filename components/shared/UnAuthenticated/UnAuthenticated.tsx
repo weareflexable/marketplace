@@ -16,7 +16,7 @@ export default function UnAuthenticated(){
                     Unauthenticated!
                 </Text>
                 <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
-                    Please login before you try to access contents of this page
+                   Login to access your account
                 </Text>
                 <Button variant='ghost' onClick={login}>
                     Login to continue

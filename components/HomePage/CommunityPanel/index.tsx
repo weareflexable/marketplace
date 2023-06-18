@@ -41,15 +41,16 @@ export default function CommunityPanel(){
 
 if(infiniteCommunityQuery.isError){
     // TODO: create error boundary to catch this error.
-    throw new Error('Error fetching stores')
+    throw new Error('Error fetching services')
   }
 
 
     return(
-        <Flex mt={'3rem'}  direction={"column"}>
+        <Flex mt={'5rem'}  direction={"column"}>
 
-              <Flex mx={'1rem'} mb='3rem'>
-                <Text  as='h4' w='100' textStyle={'h1'}>Communities</Text>
+              <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
+                <Text  as='h4' w={'100%'} mb={3} textStyle={'h1'}>Communities</Text>
+                <Text color={'text.200'} textStyle={'body'}>Curated experiences grouped into one ticket for extended enjoyment</Text>
               </Flex>
 
                 { infiniteCommunityQuery.isLoading 

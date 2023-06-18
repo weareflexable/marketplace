@@ -15,7 +15,7 @@ export default function NoData(){
                 No DATS!
             </Text>
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
-               {` Seems like you don't have any booked service yet`}
+               {` Seems like you haven't booked any DAT yet`}
             </Text>
             <Button variant='ghost' onClick={navigateToMarketPlace}>
                 Go back to marketplace

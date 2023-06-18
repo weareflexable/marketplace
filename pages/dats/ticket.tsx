@@ -163,7 +163,7 @@ export default function Ticket(){
                 {/* header */}
                 {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
-                    <HStack ml='5' spacing={'5'}>
+                    <HStack ml='2' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                         <Text as='h1' textStyle={'h4'} color='text.300' >{serviceItemDetails.name}</Text> 
                     </HStack>
@@ -175,19 +175,19 @@ export default function Ticket(){
             :
             <Flex direction='column'>
                     <Flex direction='column' px='9' mb='5' w='100%'>
-                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Qr Code</Text>
+                        <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>QR Code</Text>
                         { isRedeem
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has been redeemed</Text>
                         </Flex>
                         :dayjs().isAfter(dayjs(validityEnd))
                         ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has expired</Text>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
                                 <HStack w='100%' justifyContent={'center'} mb='2'>
-                                    <Text color='text.200' textStyle={'secondary'}>Redeem Code:</Text>
+                                    <Text color='text.200' textStyle={'secondary'}>Redemption Code:</Text>
                                     <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
                                 </HStack>
                                 <Box bg={'#ffffff'} padding='5'>
@@ -207,7 +207,7 @@ export default function Ticket(){
                     <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
                                 <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
                             </HStack>
 
@@ -239,7 +239,7 @@ export default function Ticket(){
                             </HStack> 
 
                             <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Call</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Phone Number</Text></Flex>
                                 <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails.contactNumber}`}>{`+1 (${serviceDetails.contactNumber.substring(2,5)}) ${serviceDetails.contactNumber.substring(5,8)}-${serviceDetails.contactNumber.substring(8)}`}</a></Text></Flex>
                             </HStack>
 
@@ -251,7 +251,10 @@ export default function Ticket(){
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    <Text px='1rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='6' color='text.300'>Digital access token</Text>
+                     <Flex px='1rem' mb='6'  alignItems={'flex-start'} direction={'column'}>
+                        <Text   as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='1' color='text.300'>Digital Access Token</Text>
+                        <Text  alignSelf={'flex-start'}  textStyle={'secondary'} color='text.200'>Fun Fact: Your DAT is also an NFT that you own forever</Text>
+                    </Flex>   
                     {isTxHash 
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>

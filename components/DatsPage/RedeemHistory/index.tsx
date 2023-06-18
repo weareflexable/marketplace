@@ -52,7 +52,7 @@ export default function RedeemHistory({historyQuery,quantity,type}:Props){
     return(
         <Flex px='1rem' mt={'4rem'} mb='9'  flexDirection={'column'}  width={'100%'}>
         <Flex width={'100%'}  mb='2rem' justifyContent={'space-between'}>
-            <Text   as='h3' alignSelf={'flex-start'} m={0}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+            <Text   as='h3' alignSelf={'flex-start'} m={0}  textStyle={'h3'}  color='text.300'>Redemption History</Text>
           
         </Flex>
         {historyQuery.isLoading || historyQuery.isRefetching
@@ -100,7 +100,7 @@ function EmptyList({refresh, isRefreshingHistory}:EmptyListProps){
                 Awaiting Redemption
             </Text>
             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>
-                You are yet to start redeeming any one of your tickets
+                You have not redeemed your DAT yet
             </Text>
             <Button isLoading={isRefreshingHistory} variant='ghost' colorScheme="brand" onClick={refresh}>
                Refresh

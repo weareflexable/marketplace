@@ -25,7 +25,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToCommunityPage(data.id)}>
             <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`} m='0' objectFit={'cover'} width='100%' height='250' alt={'Thumbnail image for cover'}/>
-            <Flex px='2' mt={[4]} width={'100%'} alignItems={'center'}>
+            <Flex px='0' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
                 <Flex ml={[3,3,4]} direction='column'>
                     <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
@@ -36,7 +36,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                     </Text>
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text mr='2' color='text.200' textDecoration={'line-through'} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                            ${data.totalMarketValue/100}
+                            ${data.totalMarketValue/100} Market Value
                         </Text>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                             ${data.price/100}
