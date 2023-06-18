@@ -30,7 +30,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeem, targetUserID, targetDate, serviceBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, serviceBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
@@ -176,9 +176,9 @@ export default function Ticket(){
             <Flex direction='column'>
                     <Flex direction='column' px='9' mb='5' w='100%'>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>QR Code</Text>
-                        { isRedeem
+                        { isRedeemed
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has been redeemed</Text>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has already been redeemed</Text>
                         </Flex>
                         :dayjs().isAfter(dayjs(validityEnd))
                         ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
@@ -199,7 +199,7 @@ export default function Ticket(){
                             </Flex>
                         </>
                         }
-                        {isRedeem||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
+                        {isRedeemed||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
@@ -208,7 +208,7 @@ export default function Ticket(){
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeem ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
