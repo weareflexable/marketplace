@@ -71,11 +71,11 @@ export default function RedeemHistory({historyQuery,quantity,type}:Props){
                                     <Text color={'text.300'} mr={1} textStyle={'body'}>{item.redeemCount}</Text>  
                                     <Text color={'text.300'} textStyle={'body'}>out of</Text>  
                                     <Text color={'text.300'} mr={1} textStyle={'body'}>{quantity}</Text>  
-                                    <Text color={'text.300'} textStyle={'body'}>tickets redeemed</Text>  
+                                    <Text color={'text.300'} textStyle={'body'}>DATs redeemed</Text>  
                                     {/* @ts-ignore */}
                                     {/* <Text color={'accent.200'} ml={2} textStyle={'secondary'}> {dayjs(item.createdAt).utc().format('MMM DD, YY · hh:mm A')}</Text>   */}
                                     </HStack>
-                                    <Text textStyle={'secondary'} color={'text.200'}>{item.venueName}</Text> 
+                                    <Text textStyle={'secondary'} color={'text.200'}>{type=='service'?item.serviceItemName:item.venueName}</Text> 
                                 </Flex>
                             </Flex>
                          </ListItem>
