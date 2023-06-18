@@ -152,7 +152,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
     <>
     <Head>
       {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
-      <title>DATs</title>
+      <title>My DAT Orders</title>
       <link rel="icon" href="/favicon.png" />
     </Head>
     <Layout>
@@ -183,7 +183,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                     ))}
                   {/* @ts-ignore */}
                 </Flex>
-                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) ticket(s)`} </Text>} 
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT(s)`} </Text>} 
                 </Flex>
               </Box> 
                 {

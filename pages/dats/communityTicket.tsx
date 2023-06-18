@@ -206,7 +206,7 @@ function refreshAggregateAndHistory(){
     return(
         <>
         <Head>
-         <title>Ticket</title>
+         <title>Community DAT</title>
          <link rel="icon" href="/favicon.png" />
       </Head>
         <Grid templateColumns='repeat(5, 1fr)' bg='#171717'>
@@ -230,7 +230,7 @@ function refreshAggregateAndHistory(){
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
                         { ticketStatus === 'complete'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has been redeemed</Text>
                         </Flex>
                         :<> 
                             <Flex justifyContent={'flex-start'} direction='column' w='100%'>

@@ -88,11 +88,11 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                                 <HStack spacing={5}>
                                     <HStack spacing={1}>
                                         <Text textStyle={'secondary'} color='accent.300'>${numberFormatter.from(data.price/100)}</Text>
-                                        <Text textStyle={'secondary'} color='text.200'>/ Ticket</Text>
+                                        <Text textStyle={'secondary'} color='text.200'>/ DAT</Text>
                                     </HStack> 
                                     <HStack spacing={2}>
                                         <Text textStyle={'secondary'} color={'text.300'}>{numberFormatter.from(ticketData.ticketsAvailable)}</Text>
-                                        <Text textStyle={'secondary'} color={'text.200'}>Tickets left</Text>
+                                        <Text textStyle={'secondary'} color={'text.200'}>DATs left</Text>
                                     </HStack>
                                 </HStack>
                                 {subTotal===0?null:<Text color={'white'}>${numberFormatter.from(subTotal)}</Text>}
@@ -112,7 +112,7 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                                 quantity={ticketData.quantity}
                                 decrementQuantity ={decrementQuantity}
                                 incrementQuantity = {incrementQuantity}
-                                label = {'Tickets'}
+                                label = {'DATs'}
                             />
                             <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                             <TicketButtonAction

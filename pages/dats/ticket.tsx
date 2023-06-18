@@ -154,7 +154,7 @@ export default function Ticket(){
     return(
         <>
         <Head>
-         <title>Ticket</title>
+         <title>Services DAT</title>
          <link rel="icon" href="/favicon.png" />
       </Head>
         <Grid templateColumns='repeat(5, 1fr)' bg='#171717'>
