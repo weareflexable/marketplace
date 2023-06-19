@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
@@ -22,6 +23,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import PopupError from "../../components/shared/PopupError/PopupError";
 import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
 import { useDatContext } from "../../context/DatContext";
+import {RepeatIcon} from '@chakra-ui/icons'
 import Head from "next/head";
 
 
@@ -45,7 +47,7 @@ export default function MyDats() {
 
   const { push } = useRouter();
   const {setDat:ctx_setDat} = useDatContext()
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, paseto } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
   const [isDelaying, setIsDelaying] = useState(false)
 
@@ -58,7 +60,7 @@ export default function MyDats() {
   useEffect(() => {
   const interval =  setInterval(()=>{
     setIsDelaying(true)
-  },4000)
+  },2000)
   return()=>{
     clearInterval(interval)
   }
@@ -94,6 +96,17 @@ export default function MyDats() {
     enabled:isAuthenticated && isDelaying
   }
   );
+
+  const totalDatsQuery = useQuery(['totalDats',currentFilter.key],async()=>{
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=1&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
+    {
+       //@ts-ignore
+      headers: {
+        Authorization: paseto,
+      }
+    })
+    return res.data.dataLength
+  })
 
 
 function changeDatsFilter(filter:{key:string,label:string}){
@@ -138,10 +151,10 @@ const gotoCommunityTicketPage =(dat:any)=>{
   return (
     <>
     <Head>
-    {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
-     <title>DATs</title>
-     <link rel="icon" href="/favicon.png" />
-  </Head>
+      {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/> */}
+      <title>My DAT Orders</title>
+      <link rel="icon" href="/favicon.png" />
+    </Head>
     <Layout>
       <Grid
         mx="1em"
@@ -153,23 +166,28 @@ const gotoCommunityTicketPage =(dat:any)=>{
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
               <Box ml={[0]}>
-                <Text
-                  as="h1"
-                  textStyle='h3'
-                  color='text.300'
-                  mt="10"
-                  mb="7"
-                >
-                  My Digital Access Tokens
-                </Text>
-                <Flex  mb='2rem'>
+                <Flex  mt="10"mb="7" w={'100%'} justifyContent={'space-between'}>
+                  <Text
+                    as="h1"
+                    textStyle='h3'
+                    color='text.300'
+                    >
+                    My Digital Access Tokens
+                  </Text>
+                  <IconButton onClick={()=>datsQuery.refetch()} colorScheme="brand" color={'brand.200'} isLoading={datsQuery.isRefetching} variant={'ghost'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+                </Flex>
+                <Flex mb='2rem' direction={'column'}>
+                <Flex w={'100%'}>
                   {datsFilter.map((filter:any)=>(
                     <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
-                  ))}
+                    ))}
+                  {/* @ts-ignore */}
                 </Flex>
-              </Box>
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT(s)`} </Text>} 
+                </Flex>
+              </Box> 
                 {
-                  datsQuery.isLoading || !isDelaying
+                  datsQuery.isLoading || datsQuery.isRefetching || !isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     currentFilter={currentFilter.key}

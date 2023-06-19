@@ -69,8 +69,9 @@ if(infiniteServices.isError){
     return(
         <Flex mt={'3rem'}  direction={"column"}>
 
-              <Flex mx={'1rem'} mb='2rem'>
-                <Text  as='h4' w='100' textStyle={'h1'}>Venues</Text>
+              <Flex mx={'1rem'} mb='2rem' direction={'column'}>  
+                <Text  as='h4' w='100' mb={3} textStyle={'h1'}>Venues</Text>
+                <Text  color={'text.200'} w='100' textStyle={'body'}>Line skips, last minute reservations, events and more near you</Text>
               </Flex>
               <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(

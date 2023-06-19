@@ -91,7 +91,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
         {dayjs(order.targetDate).format("MMM D, YYYY")}
       </Text>
       
-      { order.isRedeem 
+      { order.isRedeemed 
       ?
         <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
           Redeemed

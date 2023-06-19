@@ -27,7 +27,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
   const [transactionError,setTransactionError] = useState<string|undefined>('')
   const [transactionStatus, setTransactionStatus] = useState<string>('')
 
-  // console.log(elements)
+
   const router = useRouter()
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
@@ -51,7 +51,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/dats`, // should have a userID where it can fetch booking for it
+        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/dats?fitler=community`, // should have a userID where it can fetch booking for it
       },
     });
 

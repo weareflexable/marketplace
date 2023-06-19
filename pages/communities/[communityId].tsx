@@ -159,7 +159,7 @@ export default function CommunityPage(){
                             quantity={ticketData.quantity}
                             decrementQuantity ={decrementQuantity}
                             incrementQuantity = {incrementQuantity}
-                            label = {'Tickets'}
+                            label = {'DATs'}
                         />
                         <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                         <TicketButtonAction

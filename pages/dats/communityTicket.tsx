@@ -74,20 +74,21 @@ export default function Ticket(){
 
   
 
-//   const redeemHistoryQuery = useQuery({
-//     queryKey:['redeem-history', id], 
-//     queryFn:async()=>{
-//         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}`,{
-//             headers:{
-//                 "Authorization": paseto
-//             }
-//         }) 
-//         return res.data.data
-//     },
+  const redeemHistoryQuery = useQuery({
+    queryKey:['redeem-history', id], 
+    queryFn:async()=>{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
+            headers:{
+                "Authorization": paseto 
+            }
+        }) 
+        return res.data.data
+    },
     
-//     enabled: id !== undefined,
-// })
-  const redemptionAggregateQuery = useQuery({
+    enabled: id !== undefined,
+})
+
+const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
@@ -100,8 +101,14 @@ export default function Ticket(){
     cacheTime:0,
     enabled: id !== undefined,
 })
+
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
 
+
+function refreshAggregateAndHistory(){  
+    redemptionAggregateQuery.refetch()
+    redeemHistoryQuery.refetch()
+}
 
    async function generateApplePass(){ 
 
@@ -148,9 +155,6 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    }
 
 
-   
-
-
     const userNftQuery = gql`
         query userNftData($txHash:String!){
             ticketCreateds(where: {transactionHash: $txHash}){
@@ -190,9 +194,9 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
-   : <Flex  width={'100%'} mb={5} justifyContent='space-around'> 
-        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount} of { quantity} have been redeemed</Text>   
-        <IconButton onClick={()=>redemptionAggregateQuery.refetch()} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
+   : <Flex  width={'100%'} px={2} mb={5} justifyContent='space-between'> 
+        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount}/{ quantity} redeemed</Text>   
+        <Button  onClick={refreshAggregateAndHistory} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} leftIcon={<RepeatIcon/>} aria-label={'Refresh aggregate'}>Refresh</Button>
     </Flex>
 
 //    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
@@ -202,7 +206,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
     return(
         <>
         <Head>
-         <title>Ticket</title>
+         <title>Community DAT</title>
          <link rel="icon" href="/favicon.png" />
       </Head>
         <Grid templateColumns='repeat(5, 1fr)' bg='#171717'>
@@ -211,7 +215,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                 {/* header */}
                 {isGeneratingCode?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'2rem'}/>:
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
-                    <HStack ml='5' spacing={'5'}>
+                    <HStack ml='2' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                         <Text as='h1' textStyle={'h4'} color='text.300' >{communityDats.name}</Text>
                     </HStack>
@@ -222,11 +226,11 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
             ?<TicketSkeleton/> 
             :
             <Flex direction='column'>
-                    <Flex direction='column' px='9' mb='5' w='100%'>
+                    <Flex direction='column' px='4' mb='5' w='100%'>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
                         { ticketStatus === 'complete'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
-                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>Ticket has been redeemed</Text>
+                            <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has been redeemed</Text>
                         </Flex>
                         :<> 
                             <Flex justifyContent={'flex-start'} direction='column' w='100%'>
@@ -240,7 +244,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                 </Flex> 
                                 {venueIsRedeemed
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
-                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been redeemed`}</Text>
+                                    <Text p='5' textAlign={'center'} textStyle={'body'} color='text.200'>{`All tickets of ${selectedVenue.name} have been fully redeemed`}</Text>
                                 </Flex>
                                 :redemptionAggregateQuery.isLoading|| redemptionAggregateQuery.isRefetching
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
@@ -248,7 +252,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                  </Flex>
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
-                                        <Text color='text.200' textStyle={'body'}>Redeem Code:</Text>
+                                        <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
                                         <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
                                     <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
@@ -257,7 +261,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                                     <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
                                         <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
                                     </Flex>
-                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add to Apple Pass</Button>}
+                                    {ticketStatus === 'complete'?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                                 </Flex>
                                 }
                             </Flex>
@@ -272,7 +276,7 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                     <VStack px={'1rem'} mt='5' spacing='2'>
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Status</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
                                 <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='complete' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
                             </HStack>
 
@@ -317,7 +321,10 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                     </VStack> 
                     <Divider borderColor={'#2b2b2b'} my={'3rem'}/>
                         
-                    <Text  as='h3'  px='1rem' alignSelf={'flex-start'}  textStyle={'h3'} mb='5' color='text.300'>Digital access token</Text>
+                    <Flex px='1rem' mb='6'  alignItems={'flex-start'} direction={'column'}>
+                        <Text   as='h3' alignSelf={'flex-start'}  textStyle={'h3'} mb='2' color='text.300'>Digital Access Token</Text>
+                        <Text  alignSelf={'flex-start'}  textStyle={'secondary'} color='text.200'>Fun Fact: Your DAT is also an NFT that you own forever</Text>
+                    </Flex>   
                     {isTxHash
                             ?<>
                                 <Flex px='1rem' flexDirection={'column'}  width={'100%'}>
@@ -352,10 +359,10 @@ const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery
                             ?<RefreshNFTView refetchNFT={nftQuery.refetch}/>
                             :<NoHash/>
                     }
-                     <Text px='1rem' mt='4rem'  as='h3' alignSelf={'flex-start'}  textStyle={'h3'}  color='text.300'>Redeem History</Text>
+                    
                     <RedeemHistory 
+                        historyQuery={redeemHistoryQuery}
                         quantity={quantity}    
-                        id={id}
                         type='community'
                      />
                         
