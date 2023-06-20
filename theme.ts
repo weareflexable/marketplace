@@ -164,18 +164,19 @@ const config: ThemeConfig ={
   },
   textStyles:{
     h1: {
-      fontSize:['32px','42px'],
+      fontSize:['36px','42px'],
       fontWeight: '700',
       lineHeight: '110%',
       letterSpacing: '0.1px', 
-      color:'#f8f8f8'
+      color:'text.300'
     },
-
+    
     h2:{
       fontWeight: '700',
       fontFamily: 'body',
-      fontSize: '1em',
-      letterSpacing: '-0.1px'
+      fontSize: ['24px','32px'],
+      letterSpacing: '-0.3px',
+      color:'text.300'
     },
 
     h3:{
@@ -230,8 +231,8 @@ const config: ThemeConfig ={
       fontFamily: 'body',
       fontWeight:'450',
       fontSize:'1.2rem',
-      lineHeight: 1.3,
-      letterSpacing: '-.2px'
+      lineHeight: 1.4,
+      letterSpacing: '-.1px'
     },
     secondary:{
       fontFamily: 'body',

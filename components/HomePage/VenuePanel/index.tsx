@@ -67,10 +67,10 @@ if(infiniteServices.isError){
 
 
     return(
-        <Flex mt={'3rem'}  direction={"column"}>
+        <Flex mt={'7rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='2rem' direction={'column'}>  
-                <Text  as='h4' w='100' mb={3} textStyle={'h1'}>Venues</Text>
+                <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Venues</Text>
                 <Text  color={'text.200'} w='100' textStyle={'body'}>Line skips, last minute reservations, events and more near you</Text>
               </Flex>
               <Flex mx={'1rem'} mb='1rem'>
