@@ -75,14 +75,34 @@ export default function MyDats() {
     }
   })
 
+  useEffect(()=>{
+    const isUserComingFromPurchase = localStorage.getItem('comingFromPurchase')
+    // check if user is coming from payment page
+    if(isUserComingFromPurchase === 'false'){
+      return
+    }else{
+
+    }
+    
+  })
+
   /* 
   * Effect for adding an extra delay before fetching user tickets to give enough
   * time to db to update
   */  
   useEffect(() => {
+    let delay;
+    const isUserComingFromPurchase = localStorage.getItem('comingFromPurchase')
+
+    if(isUserComingFromPurchase === null){
+      delay = 0
+    }else{
+      delay = 4000
+    }
+    
   const interval =  setInterval(()=>{
     setIsDelaying(true)
-  },2000)
+  },delay)
   return()=>{
     clearInterval(interval)
   }
