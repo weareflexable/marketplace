@@ -93,6 +93,9 @@ const useCommunityTicket = (data:any)=>{
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
         localStorage.setItem('lastVisitedPage',currentPath);
+
+        // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','communities')
       
       location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       // location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
@@ -102,7 +105,8 @@ const useCommunityTicket = (data:any)=>{
 
      const buyTicketNow = async()=>{
 
-        // console.log(ticketData)
+       // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','communities')
 
         const itemPayload = {
             item:{

@@ -67,6 +67,9 @@ const useTicket = (data:any)=>{
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
         localStorage.setItem('lastVisitedPage',currentPath);
+
+         // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','services')
       
       location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
@@ -95,6 +98,9 @@ const useTicket = (data:any)=>{
     }
 
      const buyTicketNow = async ()=>{
+
+       // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','services')
 
        const selectedDateFromStorage = getStorage('selectedDate')
 
