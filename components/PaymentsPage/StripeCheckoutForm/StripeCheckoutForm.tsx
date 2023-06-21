@@ -46,12 +46,15 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
       return;
     }
 
+    // This will be used in dats page to determine whether or not to delay first load for 4s or not
+    localStorage.setItem('comingFromPurchase','true')
+
     // localStorage.setItem('paymentStatus','complete')
     const result = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/dats?fitler=community`, // should have a userID where it can fetch booking for it
+        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/dats`, // should have a userID where it can fetch booking for it
       },
     });
 
