@@ -66,17 +66,12 @@ export default function Home() {
     }
 )
 
-
-
-  
-
   
 
   if(infiniteServices.isError){
     // TODO: create error boundary to catch this error.
     throw new Error('Error fetching stores')
   }
-
 
 
 
