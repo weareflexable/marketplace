@@ -49,7 +49,7 @@ export default function MyDats() {
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated, paseto } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
-  const [isDelaying, setIsDelaying] = useState(false)
+  const [isDelaying, setIsDelaying] = useState(true)
   const [isLoadingFilters, setIsLoadingFilters] = useState(true)
 
   const [currentFilter, setCurrentFilter] = useState<{key:string,label:string}>(datsFilter[0])
@@ -100,11 +100,17 @@ export default function MyDats() {
       delay = 4000
     }
     
-  const interval =  setInterval(()=>{
-    setIsDelaying(true)
+  const timeout =  setTimeout(()=>{
+
+    setIsDelaying(false)
+
+    // clear comingFromStorage storage value immediately after page first load
+    localStorage.removeItem("comingFromPurchase")
   },delay)
+
   return()=>{
-    clearInterval(interval)
+    clearInterval(timeout)
+    console.log('clear timeout')
   }
   }, [])
 
@@ -135,7 +141,7 @@ export default function MyDats() {
       if(totalDataLength < fetchedDataLength) return undefined
       return pages.length 
     },
-    enabled:isAuthenticated && isDelaying && !isLoadingFilters
+    enabled:isAuthenticated && !isDelaying && !isLoadingFilters
   }
   );
 
@@ -149,7 +155,7 @@ export default function MyDats() {
     })
     return res.data.dataLength
   },{
-    enabled: isAuthenticated && isDelaying
+    enabled: isAuthenticated && !isDelaying
   }
   )
 
@@ -233,7 +239,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 </Flex>
               </Box> 
                 {
-                  datsQuery.isLoading || datsQuery.isRefetching || !isDelaying
+                  datsQuery.isLoading || datsQuery.isRefetching || isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     currentFilter={currentFilter.key}
