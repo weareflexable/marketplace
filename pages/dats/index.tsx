@@ -106,6 +106,7 @@ export default function MyDats() {
 
     // clear comingFromStorage storage value immediately after page first load
     localStorage.removeItem("comingFromPurchase")
+    localStorage.removeItem("filter")
   },delay)
 
   return()=>{
@@ -235,7 +236,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                     }
 
                 </Flex>
-                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT(s)`} </Text>} 
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT`} </Text>} 
                 </Flex>
               </Box> 
                 {
