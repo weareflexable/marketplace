@@ -79,7 +79,7 @@ export default function CommunityPage(){
          <title>{community && community.name}</title>
          <link rel="icon" href="/favicon.png" />
       </Head> 
-        <Box position={'relative'}   h='100%' minH={'100vh'} layerStyle={'base'}> 
+        <Box position={'relative'}  h='100%' minH={'100vh'} layerStyle={'base'}> 
             {communityQuery.isLoading
                 ?<Skeleton startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
                 :<Header/>

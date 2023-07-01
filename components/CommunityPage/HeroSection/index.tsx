@@ -29,7 +29,7 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
                 </Box>
             </Flex>
-            <Flex mx={4}  w='100%' mb='1rem' direction={'column'}> 
+            <Flex mx={4}  w='100' mb='1rem' direction={'column'}> 
                 <Text textStyle={'h3'} mb={3} layerStyle={'highPop'}>What you get</Text>
                 <Text textStyle={'body'} layerStyle={'mediumPop'}>This key gives you promotions to some to some of the venues that you otherwise wouldn't have access to</Text>
             </Flex>
