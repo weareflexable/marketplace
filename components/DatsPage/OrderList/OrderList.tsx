@@ -68,12 +68,11 @@ interface VenueProps{
 function VenueListItem({order, gotoTicketPage}:VenueProps){
   return(
   <Flex
-  // px="1em"
-  pt=".5em"
-  pb="1rem" 
-  // bg="#242424"
+  py="1rem"
+  px="1rem" 
+  bg="#242424"
   mb="3"
-  // borderBottom={'1px solid #444444'}
+  borderBottom={'1px solid #44444'}
   w="100%"
   direction="row"
   borderRadius={'6px'}
@@ -159,12 +158,11 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
 
   return(
     <Flex
-    // px="1em"
-    pt=".5em"
-    pb="1rem" 
-    // bg="#242424"
+    px="1rem"
+    py="1rem"
+    bg="#242424"
     mb="3"
-    // borderBottom={'1px solid #444444'}
+    borderBottom={'1px solid #44444'}
     w="100%"
     direction="row"
     borderRadius={'6px'}

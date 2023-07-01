@@ -209,7 +209,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
     </Head>
     <Layout>
       <Grid
-        mx="1em"
+        // mx="1em"
         minH="inherit"
         h="100%"
         templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
@@ -217,7 +217,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
       >
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
-              <Box ml={[0]}>
+              <Box ml={[0]} mx='1rem'>
                 <Flex  mt="10"mb="7" w={'100%'} justifyContent={'space-between'}>
                   <Text
                     as="h1"
