@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Store } from "../../../Types/Stores.types";
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
 import SkeletonList from "../SkeletonList/SkeletonList";
-import StoreCard from "../StoreCard/StoreCard";
+import StoreCard from "../VenueCard/StoreCard";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

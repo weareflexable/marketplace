@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import StoreCard from '../components/HomePage/StoreCard/StoreCard'
+import StoreCard from '../components/HomePage/VenueCard/StoreCard'
 import {Button, Flex,Skeleton,Text,Wrap,WrapItem} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import {Store} from '../Types/Stores.types'
