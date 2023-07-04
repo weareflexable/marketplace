@@ -48,10 +48,6 @@ const useEventTicket = (data:any)=>{
  
 
  
- 
-   //   const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
-
- 
      const isMinQuantity = ticketData.quantity <= 0
      const isMaxQuantity = ticketData.quantity === MAX_PURCHASABLE_TICKETS
 
@@ -106,12 +102,12 @@ const useEventTicket = (data:any)=>{
      const buyTicketNow = async()=>{
 
        // set filter value in local storage to be used by dats page
-       localStorage.setItem('filter','communities')
+       localStorage.setItem('filter','events')
 
         const itemPayload = {
             item:{
                 id: data.id,
-                type: "community"
+                type: "event"
             },
            quantity: String(ticketData.quantity),
            unitPrice: data.price,
