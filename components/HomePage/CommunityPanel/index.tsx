@@ -49,7 +49,7 @@ if(infiniteCommunityQuery.isError){
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
-                <Text  as='h4' w={'100%'} mb={3} textStyle={'h1'}>Communities</Text>
+                <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Communities</Text>
                 <Text color={'text.200'} textStyle={'body'}>Curated experiences grouped into one ticket for extended enjoyment</Text>
               </Flex>
 

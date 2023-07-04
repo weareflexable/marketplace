@@ -14,8 +14,6 @@ const PAGE_SIZE = 10;
 
 export default function EventPanel(){
 
-  const [page, setPage] = useState(1)
-
 
 
   const infiniteEventQuery = useInfiniteQuery(
@@ -51,7 +49,7 @@ if(infiniteEventQuery.isError){
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
-                <Text  as='h4' w={'100%'} mb={3} textStyle={'h1'}>Events</Text>
+                <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Events</Text>
                 <Text color={'text.200'} textStyle={'body'}>Enjoy event services offered only by flexable</Text>
               </Flex>
 
@@ -69,7 +67,7 @@ if(infiniteEventQuery.isError){
                              <Skeleton w={'100%'} isLoaded={!infiniteEventQuery.isLoading}>
                              <EventCard data={data}/>
                             </Skeleton>
-                        </WrapItem> 
+                          </WrapItem> 
                         ))
                       }
                       </React.Fragment>

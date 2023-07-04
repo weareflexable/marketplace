@@ -21,7 +21,9 @@ export const EventCard = ({data}:EventCardProps) =>{
         router.push(`/events/${eventId}`)
     }
 
+
     const coverImageHash = data?.coverImageHash
+
 
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToEventsPage(data.id)}>
@@ -36,9 +38,11 @@ export const EventCard = ({data}:EventCardProps) =>{
                     <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name} 
                     </Text>
+
                     <Text color='gray.300' noOfLines={[1, 2, 3]} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                         {data.description}
                     </Text>
+                    
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                             ${data.price/100}

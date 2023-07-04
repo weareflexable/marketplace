@@ -12,6 +12,7 @@ import React, { useState } from 'react'
 import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
 import VenuePanel from '../components/HomePage/VenuePanel'
 import CommunityPanel from '../components/HomePage/CommunityPanel'
+import EventPanel from '../components/HomePage/EventPanel'
 
 
 
@@ -90,6 +91,7 @@ export default function Home() {
  
                 <VenuePanel/>
                 <CommunityPanel/>
+                <EventPanel/>
 
          </Layout>
          </>
