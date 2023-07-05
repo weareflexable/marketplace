@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Box,Flex,Text, SkeletonText, SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel} from '@chakra-ui/react'
+import {Box,Flex,Text, SkeletonText, SimpleGrid,Skeleton, DarkMode, IconButton, Center, VStack, useMediaQuery, Button, Divider, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, HStack} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../../components/shared/Header/Header'
 import {useQuery} from '@tanstack/react-query'
@@ -109,9 +109,23 @@ export default function EventPage(){
                                         <VStack alignItems={'flex-start'} mt={2} px={4}  flex={3} spacing={7}>   
 
                                             <Flex direction={'column'} >
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Date and Time</Text>
+                                                <HStack spacing={2}>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{dayjs(event.date).format('MMM DD, YYYY')}</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{dayjs(event.time).format('H A')}</Text>
+                                                </HStack>
+                                            </Flex>
+
+                                            <Flex direction={'column'} >
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Duration</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{''}</Text>
+                                            </Flex>
+
+                                            <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Description</Text>
                                                 <Text textStyle={'body'} layerStyle={'mediumPop'}>{event.description}</Text>
                                             </Flex>
+
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Venue name</Text>
