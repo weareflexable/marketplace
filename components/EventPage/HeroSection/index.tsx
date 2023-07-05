@@ -1,9 +1,7 @@
 import React,{useEffect,useState} from 'react';
-import { Flex, Box, Heading, Avatar, Link, HStack,Text} from '@chakra-ui/react'
-import Image from 'next/image'
-import useIpfsImage from '../../../hooks/useIpfsImage'
-import {MdLocationPin} from 'react-icons/md'
-import { useRouter } from 'next/router';
+import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text} from '@chakra-ui/react'
+// import Image from 'next/image'
+
 
 interface Props{
     name: string,
@@ -20,8 +18,23 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
 
     return(
         <Flex mb={9}  w='100%' position={"relative"} direction='column'>
-            <Box height='400px' border={"1px solid"} position={"relative"} maxW='100%'>
-                <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' />
+            <Box 
+                height='400px'
+                // bgImage='/swamp-boys.jpg'
+                // style={{backgroundImage:"url('/swamp-boys.jpg')", WebkitFilter:'blur(40%)'}}
+                backgroundPosition={'50%'} 
+                backgroundSize={'cover'} 
+                backgroundRepeat={'no-repeat'} 
+                // border={"1px solid"} 
+                filter={'blur(50%)'}
+                // blur={'59%'}
+                width={'100%'}
+                position={"relative"} 
+                maxW='100%'
+             >
+                {/* <Image layout='fill'  src={`/swamp-boys.jpg`} alt='Store header' />  */}
+                <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
+                {/* <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' /> */}
             </Box>
             <Flex alignItems={'center'} mx='4' > 
                 <Box mb={'2rem'}  mt={9}> 

@@ -27,8 +27,8 @@ export const EventCard = ({data}:EventCardProps) =>{
 
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToEventsPage(data.id)}>
-            {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' objectFit={'cover'} width='100%' height='250' alt={'Thumbnail image for cover'}/> */}
-            <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0'  maxW='100%' width='100%' height='250' alt={'Thumbnail image for cover'}/>
+            <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' objectFit={'cover'} width='100%' height='250' alt={'Thumbnail image for cover'}/>
+            {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0'  maxW='100%' width='100%' height='250' alt={'Thumbnail image for cover'}/> */}
             <Flex px='0' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
                 <Flex ml={[3,3,4]} direction='column'>
