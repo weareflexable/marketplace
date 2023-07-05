@@ -41,7 +41,7 @@ const fetchWithError = async(url:string, options:any)=>{
 
 const PAGE_SIZE = 10;
 
-const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'}]
+const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'},{key:'events', label:'Events'}]
 
 export default function MyDats() {
 
@@ -170,6 +170,12 @@ const gotoTicketPage = (dat:any)=>{
   // set selected dat in context
   ctx_setDat(dat)
   push('/dats/ticket')
+}
+
+const gotoEventTicketPage = (dat:any)=>{
+  // set selected dat in context
+  ctx_setDat(dat)
+  push('/dats/eventTicket')
 }
 
 const gotoCommunityTicketPage =(dat:any)=>{
