@@ -25,14 +25,16 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
                 backgroundPosition={'50%'} 
                 backgroundSize={'cover'} 
                 backgroundRepeat={'no-repeat'} 
+                border='1px solid'
+               
                 // border={"1px solid"} 
                 filter={'blur(50%)'}
-                // blur={'59%'}
+                blur={'59%'}
                 width={'100%'}
                 position={"relative"} 
                 maxW='100%'
              >
-                <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
+                <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  objectFit={'contain'} width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
                 {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/>  */}
                 {/* <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' /> */}
             </Box>
