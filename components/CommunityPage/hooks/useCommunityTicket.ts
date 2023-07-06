@@ -116,6 +116,7 @@ const useCommunityTicket = (data:any)=>{
            quantity: String(ticketData.quantity),
            unitPrice: data.price,
            email: 'flexable@yahoo.com',
+           users: [],
            description:data.name,
            targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
          }

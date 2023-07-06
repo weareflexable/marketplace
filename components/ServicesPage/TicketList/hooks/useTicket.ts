@@ -112,6 +112,7 @@ const useTicket = (data:any)=>{
            quantity: String(ticketData.quantity),
            unitPrice: ticketData.price,
            email: 'flexable@yahoo.com',
+           users: [],
            description:ticketData.name,
            //@ts-ignore
            targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
