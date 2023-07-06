@@ -58,10 +58,9 @@ export default function Checkout(){
       const proceedToPayment = ()=>{
         // Timeout in order to show loading state
       
-        setTimeout(() => {
             setIsProceedingToPayment(false)
             router.push('/payments')
-        }, 2000);
+       
      }
 
     async function proceedToCheckout(values:any){
