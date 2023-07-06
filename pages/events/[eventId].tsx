@@ -126,11 +126,6 @@ export default function EventPage(){
                                                 <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.duration/100} Hrs`}</Text>
                                             </Flex>
 
-                                            <Flex direction={'column'} >
-                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Description</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{event.description}</Text>
-                                            </Flex>
-
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Venue name</Text>
