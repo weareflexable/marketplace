@@ -6,13 +6,20 @@ import {useRouter} from 'next/router'
 import dayjs from 'dayjs'
 import { Event } from '../../../Types/Event.types'
 
+var utc = require('dayjs/plugin/utc')
+var timezone = require('dayjs/plugin/timezone')
+var advancedFormat = require('dayjs/plugin/advancedFormat')
 
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advancedFormat)
 
 interface EventCardProps {
     data: Event
 } 
 
 export const EventCard = ({data}:EventCardProps) =>{
+
 
 
     const router = useRouter()
@@ -32,9 +39,15 @@ export const EventCard = ({data}:EventCardProps) =>{
             <Flex px='0' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
                 <Flex ml={[3,3,4]} direction='column'>
+                    <HStack spacing={1}>
+
                     <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
-                        {dayjs(data.date).format('MMM DD, YYYY')} 
+                        {dayjs(data.date).tz(data.timeZone).format('MMM DD, YYYY')} 
                     </Text>
+                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+                        {dayjs(data.startTime).tz(data.timeZone).format('HA z')} 
+                    </Text>
+                    </HStack>
 
                     <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
                         {data.name} 

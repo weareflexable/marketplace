@@ -4,7 +4,8 @@ export type Event = {
     price: number,
     coverImageHash: string,
     date: string,
-    time: string,
+    startTime: string,
+    duration: string,
     timeZone: string
     status: string,
     address: {

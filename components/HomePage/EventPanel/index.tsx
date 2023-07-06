@@ -5,10 +5,9 @@ import EmptyServices from "../../shared/EmptyServices/EmptyServices";
 import SkeletonList from "../SkeletonList/SkeletonList";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import CommunityCard from "../CommunityCard";
-import { Community } from "../../../Types/Community.types";
 import EventCard from "../EventCard";
 import { Event } from "../../../Types/Event.types";
+
 
 const PAGE_SIZE = 10;
 
@@ -20,7 +19,7 @@ export default function EventPanel(){
     ['events'], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&status=1`)
       return res.data
     },
     {
