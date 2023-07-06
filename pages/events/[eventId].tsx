@@ -110,15 +110,20 @@ export default function EventPage(){
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Date and Time</Text>
-                                                <HStack spacing={2}>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{dayjs(event.date).format('MMM DD, YYYY')}</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{dayjs(event.time).format('H A')}</Text>
+                                                <HStack spacing={1}>
+                                                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+                                                        {dayjs(event.date).tz(event.timeZone).format('MMM DD, YYYY')} 
+                                                    </Text>
+                                                    <Text>at</Text>
+                                                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+                                                        {dayjs(event.startTime).tz(event.timeZone).format('HA z')} 
+                                                    </Text>
                                                 </HStack>
                                             </Flex>
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Duration</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{''}</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.duration/100} Hrs`}</Text>
                                             </Flex>
 
                                             <Flex direction={'column'} >

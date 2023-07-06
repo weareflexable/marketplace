@@ -24,12 +24,13 @@ import Image from "next/image";
 interface OrderListProps {
   orders: any;
   gotoTicketPage: (dat:any) => void;
+  gotoEventPage: (dat:any)=>void,
   gotoCommunityPage: (dat:any) => void;
   currentFilter:string
 }
 
 
-export function OrderList({ orders, currentFilter, gotoTicketPage, gotoCommunityPage }: OrderListProps) {
+export function OrderList({ orders, currentFilter, gotoTicketPage, gotoEventPage, gotoCommunityPage }: OrderListProps) {
 
   return (
 
@@ -44,8 +45,10 @@ export function OrderList({ orders, currentFilter, gotoTicketPage, gotoCommunity
                 // const isCommunity = order.communityDetails.length !== 0
                 if(currentFilter==='communities'){
                   return <CommunityListItem key={order.id} gotoCommunityPage={gotoCommunityPage} order={order}/>
-                }else{
+                }else if(currentFilter === 'services'){
                   return <VenueListItem key={order.id} order={order} gotoTicketPage={gotoTicketPage}/>
+                }else{
+                  return <EventListItem key={order.id} order={order} gotoEventPage={gotoEventPage}/>
                 }
                 
                }
@@ -60,12 +63,12 @@ export function OrderList({ orders, currentFilter, gotoTicketPage, gotoCommunity
 }
 
 
-interface VenueProps{
-  gotoTicketPage: (value:any)=>void
+interface EventProps{
+  gotoEventPage: (value:any)=>void
   order: any
 }
 
-function VenueListItem({order, gotoTicketPage}:VenueProps){
+function EventListItem({order, gotoEventPage}:EventProps){
   return(
   <Flex
   py="1rem"
@@ -78,18 +81,21 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
   borderRadius={'6px'}
   key={order.id}
   cursor={'pointer'}
-  onClick={()=>gotoTicketPage(order)}
+  onClick={()=>gotoEventPage(order)}
 >
    
-  <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ order.serviceItemDetails.logoImageHash}`}/>
+  <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ order.eventDetails.coverImageHash}`}/>
   <Flex  ml={5} width={'100%'} direction={'column'}>
 
   <HStack> 
       <Text textStyle={'caption'} color="text.200">
         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
-        {dayjs(order.targetDate).format("MMM D, YYYY")}
+        {dayjs(order.eventDetails.date).format("MMM D, YYYY")}
       </Text>
-      
+      <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+          {dayjs(order.eventDetails.startTime).tz(order.eventDetails.timeZone).format('HA z')} 
+      </Text>
+
       { order.isRedeemed 
       ?
         <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
@@ -113,14 +119,14 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
       
       <Flex direction={'column'}>
         <Text color="whiteAlpha.900" as="h4" textStyle="body">
-          {order.serviceItemDetails.name} 
+          {order.eventDetails.name} 
         </Text>
         <HStack mt="1" spacing="1">
           <Text textStyle={'secondary'} color="text.100">
             By
           </Text>
           <Text textStyle={'secondary'} color="text.200">
-            {order.serviceDetails.name}
+            {order.eventDetails.name}
           </Text>
         </HStack>
       </Flex>
@@ -130,7 +136,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
     <HStack mt='5' spacing={5} >
       <HStack spacing="0.9">
         <Text color="text.300" textStyle="secondary">
-          {`$${numberFormatter.from(order.serviceItemDetails.price/100)}`}
+          {`$${numberFormatter.from(order.eventDetails.price/100)}`}
         </Text>
         <Text color="text.200" textStyle="secondary">
            x{order.quantity}
@@ -138,7 +144,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
       </HStack>
       <Text  textStyle="secondary" color={'text.300'}>
         {/* @ts-ignore */}
-       {` $${order.quantity * numberFormatter.from(order.serviceItemDetails.price/100)}`}
+       {` $${order.quantity * numberFormatter.from(order.eventDetails.price/100)}`}
       </Text>
     </HStack>
 
@@ -225,5 +231,93 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
     </Flex>
 
   </Flex>
+  )
+}
+
+interface VenueProps{
+  gotoTicketPage: (value:any)=>void
+  order: any
+}
+
+function VenueListItem({order, gotoTicketPage}:VenueProps){
+  return(
+  <Flex
+  py="1rem"
+  px="1rem" 
+  bg="#242424"
+  mb="3"
+  borderBottom={'1px solid #44444'}
+  w="100%"
+  direction="row"
+  borderRadius={'6px'}
+  key={order.id}
+  cursor={'pointer'}
+  onClick={()=>gotoTicketPage(order)}
+>
+   
+  <Image  width='170px' height='70px'  objectFit="cover" src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ order.serviceItemDetails.logoImageHash}`}/>
+  <Flex  ml={5} width={'100%'} direction={'column'}>
+
+  <HStack> 
+      <Text textStyle={'caption'} color="text.200">
+        {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
+        {dayjs(order.targetDate).format("MMM D, YYYY")}
+      </Text>
+      
+      { order.isRedeemed 
+      ?
+        <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
+          Redeemed
+        </Tag>
+        :
+        dayjs().isAfter(dayjs(order.validityEnd))
+        ?
+        <Tag size={'sm'} borderRadius='3xl'  variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='orange' ml="1">
+          Expired
+        </Tag>
+      : (
+        <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='yellow' ml="1">
+          Valid
+        </Tag>
+      )}
+  </HStack>
+    
+    {/* order name */}
+    <Flex mt={3} alignItems={'center'}>
+      
+      <Flex direction={'column'}>
+        <Text color="whiteAlpha.900" as="h4" textStyle="body">
+          {order.serviceItemDetails.name} 
+        </Text>
+        <HStack mt="1" spacing="1">
+          <Text textStyle={'secondary'} color="text.100">
+            By
+          </Text>
+          <Text textStyle={'secondary'} color="text.200">
+            {order.serviceDetails.name}
+          </Text>
+        </HStack>
+      </Flex>
+    </Flex>
+
+    {/* pricing */}
+    <HStack mt='5' spacing={5} >
+      <HStack spacing="0.9">
+        <Text color="text.300" textStyle="secondary">
+          {`$${numberFormatter.from(order.serviceItemDetails.price/100)}`}
+        </Text>
+        <Text color="text.200" textStyle="secondary">
+           x{order.quantity}
+        </Text>
+      </HStack>
+      <Text  textStyle="secondary" color={'text.300'}>
+        {/* @ts-ignore */}
+       {` $${order.quantity * numberFormatter.from(order.serviceItemDetails.price/100)}`}
+      </Text>
+    </HStack>
+
+  </Flex>
+
+</Flex>
   )
 }

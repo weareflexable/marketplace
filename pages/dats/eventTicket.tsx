@@ -30,11 +30,9 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, eventBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, eventBookingId, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
 
-    const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
-    const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
-
+    
 
     const isTxHash = transactionHash !== ''
 
@@ -45,7 +43,7 @@ export default function EventTicket(){
 
           qrCodePayload = {
             item:{
-                id: serviceItemDetails.id,
+                id: eventDetails.id,
                 type: 'venue'
             },
             ticketId: id, // ticketId
@@ -58,7 +56,7 @@ export default function EventTicket(){
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, serviceItemDetails, targetUserID, ticketSecret, validityEnd]) 
+  }, [id, quantity, eventDetails, targetUserID, ticketSecret, validityEnd]) 
 
   
 
@@ -73,13 +71,13 @@ export default function EventTicket(){
         ticketSecret: ticketSecret,
         targetDate: targetDate,
         quantity: quantity,
-        price: serviceItemDetails.price/100,
-        eventName: serviceItemDetails.name,
-        venueName: serviceDetails[0].name,
-        street: serviceDetails[0].street,
+        price: eventDetails.price/100,
+        eventName: eventDetails.name,
+        venueName: eventDetails.name,
+        street: eventDetails.address.street,
         location: {
-            latitude: serviceDetails[0].latitude,
-            longitude: serviceDetails[0].longitude, 
+            latitude: eventDetails.address.latitude,
+            longitude: eventDetails.address.longitude, 
         },
     }
     
@@ -100,7 +98,7 @@ export default function EventTicket(){
 
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.setAttribute('download', `${serviceItemDetails.name}.pkpass`);
+    link.setAttribute('download', `${eventDetails.name}.pkpass`);
     document.body.appendChild(link);
     link.click();
     // link.parentNode.removeChild(link);
@@ -165,7 +163,7 @@ export default function EventTicket(){
                 <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5' height={'8vh'} borderBottom={'1px solid #242424'}>
                     <HStack ml='2' spacing={'5'}>
                         <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.push('/dats')} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                        <Text as='h1' textStyle={'h4'} color='text.300' >{serviceItemDetails.name}</Text> 
+                        <Text as='h1' textStyle={'h4'} color='text.300' >{eventDetails.name}</Text> 
                     </HStack>
                 </Flex> 
                 }
@@ -195,7 +193,7 @@ export default function EventTicket(){
                                 </Box>
                             </Flex>
                             <Flex w='100%' direction='column' px='3' justifyContent='center' mt='2'>
-                                <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text>
+                                {/* <Text textAlign={'center'} color='text.200' textStyle={'secondary'}>{redeemInstructions}</Text> */}
                             </Flex>
                         </>
                         }
@@ -214,7 +212,7 @@ export default function EventTicket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Unit Price</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(serviceItemDetails.price/100)}`}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{`$${numberFormatter.from(eventDetails.price/100)}`}</Text></Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -233,14 +231,14 @@ export default function EventTicket(){
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex> 
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://www.google.com/maps/search/?api=1&query=${serviceDetails.latitude},${serviceDetails.longitude}`}>{ctx_currentDat.serviceDetails.street}</a> 
+                                        <a href={`https://www.google.com/maps/search/?api=1&query=${eventDetails.latitude},${eventDetails.longitude}`}>{ctx_currentDat.eventDetails.street}</a> 
                                     </Text>
                                 </Flex>
                             </HStack> 
 
                             <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Phone Number</Text></Flex>
-                                <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${serviceDetails.contactNumber}`}>{`+1 (${serviceDetails.contactNumber.substring(2,5)}) ${serviceDetails.contactNumber.substring(5,8)}-${serviceDetails.contactNumber.substring(8)}`}</a></Text></Flex>
+                                <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${eventDetails.contactNumber}`}>{`+1 (${eventDetails.contactNumber.substring(2,5)}) ${eventDetails.contactNumber.substring(5,8)}-${eventDetails.contactNumber.substring(8)}`}</a></Text></Flex>
                             </HStack>
 
 
@@ -261,7 +259,7 @@ export default function EventTicket(){
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
-                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${serviceItemDetails.logoImageHash}`}  alt='An image of the nft token'/>
+                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${eventDetails.logoImageHash}`}  alt='An image of the nft token'/>
                                  </Box>   
                             }
                         </Flex>

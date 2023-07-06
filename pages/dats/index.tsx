@@ -252,6 +252,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                     currentFilter={currentFilter.key}
                     orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
+                    gotoEventPage={gotoEventTicketPage}
                     gotoCommunityPage={gotoCommunityTicketPage}
                    />
             }
