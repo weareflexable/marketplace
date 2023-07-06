@@ -32,8 +32,8 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
                 position={"relative"} 
                 maxW='100%'
              >
-                {/* <Image layout='fill'  src={`/swamp-boys.jpg`} alt='Store header' />  */}
                 <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
+                {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/>  */}
                 {/* <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' /> */}
             </Box>
             <Flex alignItems={'center'} mx='4' > 

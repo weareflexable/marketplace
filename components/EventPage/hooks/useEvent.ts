@@ -91,7 +91,7 @@ const useEventTicket = (data:any)=>{
         localStorage.setItem('lastVisitedPage',currentPath);
 
         // set filter value in local storage to be used by dats page
-       localStorage.setItem('filter','communities')
+       localStorage.setItem('filter','events')
       
       location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       // location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
@@ -122,42 +122,37 @@ const useEventTicket = (data:any)=>{
          setItemPayload(itemPayload)
          setSubTotal(subTotal)
 
+         // redirect user to checkout page
+         router.push('/payments/checkout')
 
-        if(isAuthenticated){
+        // if(isAuthenticated){
+        //     try{
+        //       setIsProceedingToPayment(true)
+        //       // make request to fetch client secret, paymentIntentId
+        //       const res:any = await fetchSecret(itemPayload)
+        //       if(res.status == 200){
+        //         const stripePayload = {
+        //           clientSecret: res.data.clientSecret,
+        //           paymentIntentId: res.data.payment_intent_id,
+        //           totalAmount: subTotal
+        //         }
 
+        //         // set stripePayload to payment context
+        //         setPayload(stripePayload)
 
-            try{
-              setIsProceedingToPayment(true)
-              // make request to fetch client secret, paymentIntentId
-              const res:any = await fetchSecret(itemPayload)
-              if(res.status == 200){
-                const stripePayload = {
-                  clientSecret: res.data.clientSecret,
-                  paymentIntentId: res.data.payment_intent_id,
-                  totalAmount: subTotal
-                }
+        //         // set current page as last visited page
+        //         localStorage.setItem('lastVisitedPage',currentPath);
 
-                // set stripePayload to payment context
-                setPayload(stripePayload)
-
-                // set current page as last visited page
-                localStorage.setItem('lastVisitedPage',currentPath);
-
-                // proceed with payment
-                proceedToPayment()
-              }
-            }catch(err){
-              console.log(err)
-              setIsProceedingToPayment(false)
-            }
-            // if secret is available then set it to payment context
-            // navigate to payment page
-            // else show error toast message
-            // proceedToPayment();
-
-            return
-        }
-        loginBeforeAction();
+        //         // proceed with payment
+        //         proceedToPayment()
+        //       }
+        //     }catch(err){
+        //       console.log(err)
+        //       setIsProceedingToPayment(false)
+        //     }
+        //     return
+        // }
+        // loginBeforeAction();
      }
  
      const incrementQuantity =()=>{
