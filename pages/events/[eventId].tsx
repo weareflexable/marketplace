@@ -123,7 +123,7 @@ export default function EventPage(){
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Duration</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.duration/100} Hrs`}</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.duration/60} Hrs`}</Text>
                                             </Flex>
 
 
