@@ -20,23 +20,17 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
         <Flex mb={9}  w='100%' position={"relative"} direction='column'>
             <Box 
                 height='400px'
-                // bgImage='/swamp-boys.jpg'
-                // style={{backgroundImage:"url('/swamp-boys.jpg')", WebkitFilter:'blur(40%)'}}
+                bgImage={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`}
                 backgroundPosition={'50%'} 
                 backgroundSize={'cover'} 
                 backgroundRepeat={'no-repeat'} 
-                border='1px solid'
-               
-                // border={"1px solid"} 
-                filter={'blur(50%)'}
-                blur={'59%'}
+                borderRadius={'8px'}
                 width={'100%'}
                 position={"relative"} 
                 maxW='100%'
-             >
-                <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  objectFit={'contain'} width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
-                {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0' maxW='100%'  width='100%' height='400px' alt={'Thumbnail image for cover'}/>  */}
-                {/* <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' /> */}
+             > 
+                <Box h={'100%'} zIndex={0} w={'100%'} bg={'rgba(255, 255, 255, .2)'} backdropFilter={'blur(17px)'} position={'absolute'} top={0} left={0}></Box>
+                <Image zIndex={4} position={'absolute'} border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  objectFit={'contain'} width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
             </Box>
             <Flex alignItems={'center'} mx='4' > 
                 <Box mb={'2rem'}  mt={9}> 
