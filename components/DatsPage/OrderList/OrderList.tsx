@@ -88,12 +88,9 @@ function EventListItem({order, gotoEventPage}:EventProps){
   <Flex  ml={5} width={'100%'} direction={'column'}>
 
   <HStack> 
-      <Text textStyle={'caption'} color="text.200">
+      <Text textStyle={'caption'} color="text.200" noOfLines={1}> 
         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
-        {dayjs(order.eventDetails.date).format("MMM D, YYYY")}
-      </Text>
-      <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
-          {dayjs(order.eventDetails.startTime).tz(order.eventDetails.timeZone).format('HA z')} 
+        {dayjs(order.eventDetails.date).tz("UTC").format("MMM D, YYYY")}  {dayjs(order.eventDetails.startTime).tz("UTC").format('HA z')} {order.eventDetails.timeZone}
       </Text>
 
       { order.isRedeemed 
