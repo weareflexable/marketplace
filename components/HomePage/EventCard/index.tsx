@@ -41,10 +41,10 @@ export const EventCard = ({data}:EventCardProps) =>{
                 <Flex ml={[3,3,4]} direction='column'>
                     <HStack spacing={1}>
 
-                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+                    <Text textStyle={'secondary'} color={'accent.100'} lineHeight='tight' noOfLines={2}>
                         {dayjs(data.date).tz("UTC").format('MMM DD, YYYY')} 
                     </Text>
-                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
+                    <Text textStyle={'secondary'} color={'accent.100'} lineHeight='tight' noOfLines={2}>
                         {dayjs(data.startTime).tz("UTC").format('HA')} {data.timeZone}
                     </Text>
                     </HStack>
@@ -53,8 +53,8 @@ export const EventCard = ({data}:EventCardProps) =>{
                         {data.name} 
                     </Text>
 
-                    <Text color='gray.300' noOfLines={[1, 2, 3]} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        {data.description}
+                    <Text color='gray.300' noOfLines={[2]} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
+                        {data.address.country}, {data.address.state}
                     </Text>
                     
                     <Flex alignItems={'baseline'}  w={'100%'}>
