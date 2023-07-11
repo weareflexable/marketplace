@@ -63,7 +63,7 @@ export default function VenuePanel(){
 
 
 if(infiniteServices.isError){
-  return  toast({
+   toast({
     position:'top-right',
     title: 'Error fetching Services',
     description: "Please refresh your browser",
@@ -91,7 +91,7 @@ if(infiniteServices.isError){
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                   {
-                    infiniteServices.data.pages.map((page:any,index:any)=>(
+                    infiniteServices && infiniteServices.data && infiniteServices.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>

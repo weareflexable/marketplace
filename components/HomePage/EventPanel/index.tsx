@@ -42,7 +42,7 @@ export default function EventPanel(){
 
 if(infiniteEventQuery.isError){
     // TODO: create error boundary to catch this error.
-   return  toast({
+    toast({
       position:'top-right',
       title: 'Error fetching Events',
       description: "Please refresh your browser",
@@ -68,7 +68,7 @@ if(infiniteEventQuery.isError){
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                   {
-                    infiniteEventQuery.data.pages.map((page:any,index:any)=>(
+                    infiniteEventQuery && infiniteEventQuery.data && infiniteEventQuery.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>

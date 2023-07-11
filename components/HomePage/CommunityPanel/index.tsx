@@ -41,7 +41,7 @@ export default function CommunityPanel(){
 
 if(infiniteCommunityQuery.isError){
     // TODO: create error boundary to catch this error.
-    return  toast({
+      toast({
       position:'top-right',
       title: 'Error fetching Communities',
       description: "Please refresh your browser",
@@ -65,7 +65,7 @@ if(infiniteCommunityQuery.isError){
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                   {
-                    infiniteCommunityQuery.data.pages.map((page:any,index:any)=>(
+                    infiniteCommunityQuery && infiniteCommunityQuery.data && infiniteCommunityQuery.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>
