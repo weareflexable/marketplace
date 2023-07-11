@@ -40,7 +40,6 @@ export default function CommunityPanel(){
 
 
 if(infiniteCommunityQuery.isError){
-    // TODO: create error boundary to catch this error.
       toast({
       position:'top-right',
       title: 'Error fetching Communities',

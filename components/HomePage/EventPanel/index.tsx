@@ -41,7 +41,6 @@ export default function EventPanel(){
 
 
 if(infiniteEventQuery.isError){
-    // TODO: create error boundary to catch this error.
     toast({
       position:'top-right',
       title: 'Error fetching Events',
