@@ -7,6 +7,8 @@ import { setStorage } from '../../../utils/localStorage'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
+import { IMAGE_PLACEHOLDER_HASH } from '../../../constants'
+
 
 
 export default function Header(){
@@ -20,7 +22,7 @@ export default function Header(){
             "Authorization": paseto
           }
         })
-        return res.data
+        return res.data.data
       }
 
      const userQuery = useQuery({
@@ -57,7 +59,7 @@ export default function Header(){
 
 
 
-    const profilePicHash = userQuery.data && userQuery.data.data && userQuery.data.data[0].profilePic 
+    const profilePicHash = userQuery.data && userQuery.data.length > 0 ? userQuery.data[0].profilePicHash : IMAGE_PLACEHOLDER_HASH
 
 
     const login =()=>{
