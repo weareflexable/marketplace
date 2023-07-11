@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -13,6 +13,8 @@ const PAGE_SIZE = 10;
 
 export default function EventPanel(){
 
+
+  const toast = useToast()
 
 
   const infiniteEventQuery = useInfiniteQuery(
@@ -40,7 +42,16 @@ export default function EventPanel(){
 
 if(infiniteEventQuery.isError){
     // TODO: create error boundary to catch this error.
-    throw new Error('Error fetching services')
+   return  toast({
+      position:'top-right',
+      title: 'Error fetching Events',
+      description: "Please refresh your browser",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
+
+    // throw new Error('Error fetching services')
   }
 
 

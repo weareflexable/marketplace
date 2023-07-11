@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Store } from "../../../Types/Stores.types";
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -14,6 +14,8 @@ export default function VenuePanel(){
 
   const [serviceFilter, setServiceFilter] = useState('')
   const [page, setPage] = useState(1)
+
+  const toast = useToast()
 
   function changeServiceFilter(filter:string){
     setServiceFilter(filter)
@@ -61,8 +63,14 @@ export default function VenuePanel(){
 
 
 if(infiniteServices.isError){
-    // TODO: create error boundary to catch this error.
-    throw new Error('Error fetching stores')
+  return  toast({
+    position:'top-right',
+    title: 'Error fetching Services',
+    description: "Please refresh your browser",
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+  })
   }
 
 

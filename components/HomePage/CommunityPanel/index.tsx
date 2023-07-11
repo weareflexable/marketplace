@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -14,7 +14,7 @@ export default function CommunityPanel(){
 
   const [page, setPage] = useState(1)
 
-
+  const toast =  useToast()
 
   const infiniteCommunityQuery = useInfiniteQuery(
     ['communities'], 
@@ -41,7 +41,14 @@ export default function CommunityPanel(){
 
 if(infiniteCommunityQuery.isError){
     // TODO: create error boundary to catch this error.
-    throw new Error('Error fetching services')
+    return  toast({
+      position:'top-right',
+      title: 'Error fetching Communities',
+      description: "Please refresh your browser",
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    })
   }
 
 
