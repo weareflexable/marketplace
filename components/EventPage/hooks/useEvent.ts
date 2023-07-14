@@ -73,14 +73,7 @@ const useEventTicket = (data:any)=>{
     }
 
  
-     const proceedToPayment = ()=>{
-        // Timeout in order to show loading state
-      
-        setTimeout(() => {
-            setIsProceedingToPayment(false)
-            router.push('/payments')
-        }, 2000);
-     }
+    
 
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
@@ -99,6 +92,8 @@ const useEventTicket = (data:any)=>{
 
        // set filter value in local storage to be used by dats page
        localStorage.setItem('filter','events')
+
+       if(isAuthenticated){
 
         const itemPayload = {
             item:{
@@ -119,36 +114,11 @@ const useEventTicket = (data:any)=>{
          setSubTotal(subTotal)
 
          // redirect user to checkout page
-         router.push('/payments/checkout')
+         router.push('/payments/checkout');
 
-        // if(isAuthenticated){
-        //     try{
-        //       setIsProceedingToPayment(true)
-        //       // make request to fetch client secret, paymentIntentId
-        //       const res:any = await fetchSecret(itemPayload)
-        //       if(res.status == 200){
-        //         const stripePayload = {
-        //           clientSecret: res.data.clientSecret,
-        //           paymentIntentId: res.data.payment_intent_id,
-        //           totalAmount: subTotal
-        //         }
+        }
 
-        //         // set stripePayload to payment context
-        //         setPayload(stripePayload)
-
-        //         // set current page as last visited page
-        //         localStorage.setItem('lastVisitedPage',currentPath);
-
-        //         // proceed with payment
-        //         proceedToPayment()
-        //       }
-        //     }catch(err){
-        //       console.log(err)
-        //       setIsProceedingToPayment(false)
-        //     }
-        //     return
-        // }
-        // loginBeforeAction();
+        loginBeforeAction();
      }
  
      const incrementQuantity =()=>{

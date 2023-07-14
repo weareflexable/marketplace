@@ -42,10 +42,7 @@ export const EventCard = ({data}:EventCardProps) =>{
                     <HStack spacing={1}>
 
                     <Text textStyle={'secondary'} color={'accent.100'} lineHeight='tight' noOfLines={2}>
-                        {dayjs(data.date).tz("UTC").format('MMM DD, YYYY')} 
-                    </Text>
-                    <Text textStyle={'secondary'} color={'accent.100'} lineHeight='tight' noOfLines={2}>
-                        {dayjs(data.startTime).tz("UTC").format('HA')} {data.timeZone}
+                        {dayjs(data.startTime).tz("UTC").format('MMM DD, YYYY H A')} 
                     </Text>
                     </HStack>
 

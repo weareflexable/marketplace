@@ -110,11 +110,7 @@ export default function EventPage(){
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Date and Time</Text>
                                                 <HStack spacing={1}>
                                                     <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
-                                                        {dayjs(event.startTime).tz("UTC").format('MMM DD, YYYY')} 
-                                                    </Text>
-                                                    <Text>at</Text>
-                                                    <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
-                                                        {dayjs(event.startTime).tz("UTC").format('HA')} {event.timeZone} 
+                                                        {dayjs(event.startTime).tz("UTC").format('MMM DD, YYYY H A')} 
                                                     </Text>
                                                 </HStack>
                                             </Flex>
