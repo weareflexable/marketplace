@@ -30,7 +30,7 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, eventBookingId, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, eventBookingId, duration, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
 
     
 
@@ -178,7 +178,7 @@ export default function EventTicket(){
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has already been redeemed</Text>
                         </Flex>
-                        :dayjs().isAfter(dayjs(validityEnd))
+                        :dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))
                         ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
                         </Flex>
@@ -197,7 +197,7 @@ export default function EventTicket(){
                             </Flex>
                         </>
                         }
-                        {isRedeemed||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
+                        {isRedeemed||dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
@@ -206,7 +206,7 @@ export default function EventTicket(){
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))? 'Expired': 'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -224,7 +224,7 @@ export default function EventTicket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h').format('MMM DD, YYYY H A'))}</Text></Flex> 
                             </HStack>
 
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>

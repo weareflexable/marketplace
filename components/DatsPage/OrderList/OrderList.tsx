@@ -90,7 +90,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
   <HStack> 
       <Text textStyle={'caption'} color="text.200" noOfLines={1}> 
         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
-        {dayjs(order.eventDetails.date).tz("UTC").format("MMM D, YYYY")}  {dayjs(order.eventDetails.startTime).tz("UTC").format('HA z')} {order.eventDetails.timeZone}
+        {dayjs(order.eventDetails.startTime).tz("UTC").format("MMM D, YYYY H A")} {order.eventDetails.timeZone}
       </Text>
 
       { order.isRedeemed 
@@ -99,7 +99,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
           Redeemed
         </Tag>
         :
-        dayjs().isAfter(dayjs(order.validityEnd))
+        dayjs().isAfter(dayjs(order.eventDetails.startTime).add(order.duration/60,'h'))
         ?
         <Tag size={'sm'} borderRadius='3xl'  variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='orange' ml="1">
           Expired
