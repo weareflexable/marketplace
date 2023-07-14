@@ -1,11 +1,9 @@
 import {useState} from 'react'
 import { useAuthContext } from '../../../context/AuthContext'
-import { useCheckoutContext } from '../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
-import { getStorage, setStorage } from '../../../utils/localStorage'
+import { getStorage } from '../../../utils/localStorage'
 import usePath from '../../../hooks/usePath'
 import dayjs from 'dayjs'
-import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import { usePaymentContext } from '../../../context/PaymentContext'
@@ -13,14 +11,12 @@ import useLocalStorage from '../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
-const MAX_PURCHASABLE_TICKETS = 1
+const MAX_PURCHASABLE_TICKETS = 4
 
 // This should accept a Service-item type in data
 const useEventTicket = (data:any)=>{
 
     
-    
-
 
   const toast = useToast()
   const router = useRouter()
