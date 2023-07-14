@@ -11,6 +11,16 @@ import useLocalStorage from '../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
+
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
+
+
 const MAX_PURCHASABLE_TICKETS = 4
 
 // This should accept a Service-item type in data
@@ -104,7 +114,7 @@ const useEventTicket = (data:any)=>{
            unitPrice: data.price,
            email: 'flexable@yahoo.com',
            description:data.name,
-           targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
+           targetDate: getStorage('selectedDate') || dayjs(data.eventDetails.startTime).tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
          // set item payload to local storage

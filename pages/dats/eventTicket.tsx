@@ -231,7 +231,7 @@ export default function EventTicket(){
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex> 
                                 <Flex flex={7}>
                                     <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a href={`https://www.google.com/maps/search/?api=1&query=${eventDetails.latitude},${eventDetails.longitude}`}>{ctx_currentDat.eventDetails.street}</a> 
+                                        <a href={`https://www.google.com/maps/search/?api=1&query=${eventDetails.address.latitude},${eventDetails.address.longitude}`}>{eventDetails.address.street}</a> 
                                     </Text>
                                 </Flex>
                             </HStack> 
