@@ -18,7 +18,7 @@ export default function Checkout(){
     const {setPayload} = usePaymentContext()
     
     // const [quantity, setQuantity] = useState(0)
-    const [userList, setUserList] = useState([{firstName: '', lastName: '', email: ''}])
+    const [userList, setUserList] = useState<{firstName:string, lastName:string, email:string}[]>([])
 
     const [isProceedingToPayment, setIsProceedingToPayment] = useState(false);
 
@@ -26,11 +26,13 @@ export default function Checkout(){
       const item = JSON.parse(localStorage.getItem('itemPayload') || '')
       const quantity = item && item.quantity;
 
-      const list = createUserList(quantity)
-      setUserList(list)
-      console.log(list) 
-      //set local state
-      // setQuantity(quantity)
+      let users: {firstName:string, lastName:string, email:string}[]  = []
+      for(let i=0; i<quantity;i++){
+       users.push({firstName: '', lastName:'', email: ''})
+      }
+      // const list = createUserList(quantity)
+      setUserList(users)
+      console.log(users) 
     },[])
 
 
@@ -155,17 +157,21 @@ export default function Checkout(){
          <title>Events Checkout</title>
          <link rel="icon" href="/favicon.png" />
          </Head>
-         <Grid px={4} minH={'100vh'} height={'100%'} templateColumns='repeat(5, 1fr)' bg='#171717'>
+         <Grid minH={'100vh'} height={'100%'}  templateColumns='repeat(5, 1fr)' bg='#171717'>
             <GridItem colStart={[1,1,2]} colEnd={[6,6,5]}>
-                <Flex direction='column' bg='#171717' minHeight={'100vh'} height='100%' >
-                    <Flex justifyContent={'flex-start'} alignItems='center' p='2' mb='5rem' height={'8vh'} borderBottom={'1px solid #242424'}>
+                <Flex  direction='column' bg='#121212' minHeight={'100vh'} height='100%' >
+                    <Flex  px={4} justifyContent={'flex-start'} alignItems='center' p='2' mb='1rem' height={'8vh'} borderBottom={'1px solid #242424'}>
                         <HStack ml='2' spacing={'5'}>
                             <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.back()} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                             <Text as='h1' textStyle={'h4'} color='text.300'>Checkout</Text> 
                         </HStack>
                     </Flex> 
 
-                    <Formik
+                   { userList.length === 0
+                    ?<Flex height={'30vh'} width={'100%'}>
+                      <Spinner/>
+                    </Flex>  
+                 : <Formik
                         initialValues={{ userList: userList }}
                         onSubmit={ (values) => proceedToCheckout(values) } 
                         
@@ -176,71 +182,73 @@ export default function Checkout(){
                           name="userList"
                         >
                           {({})=>(
-                               <div>
-                               {values.userList && values.userList.length > 0 ? (
+                               <Box w='100%'>
+                               {values.userList && 
                                  values.userList.map((user, index) => ( 
-                                   <div key={index}>
-                                     <Field name={`userList.${index}.firstName`} validate={validateName}>
-                                         {/* @ts-ignore */}
-                                         {({ field, form }) => ( 
-                                             <FormControl  isRequired style={{marginBottom:'.8rem'}} isInvalid={form.errors.firstName && form.touched.firstName}>
-                                             <FormLabel color={'text.300'}>First Name</FormLabel>
-                                             <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#464646'}  variant={'outline'} {...field} placeholder='First Name' />
-                                             <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
-                                             </FormControl> 
-                                         )}
-                                     </Field>
-                                     <Field name='lastName' validate={validateName}>
-                                         {/* @ts-ignore */}
-                                         {({ field, form }) => ( 
-                                             <FormControl defaultValue={user.lastName}  isRequired style={{marginBottom:'.8rem'}} isInvalid={form.errors.lastName && form.touched.lastName}>
-                                             <FormLabel color={'text.300'}>Last Name</FormLabel>
-                                             <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#464646'}  variant={'outline'} {...field} placeholder='Last Name' />
-                                             <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
-                                             </FormControl> 
-                                         )}
-                                     </Field>
- 
-                                     <Field name='email' validate={validateEmail}>
-                                         {/* @ts-ignore */}
-                                         {({ field, form }) => (
-                                             <FormControl isRequired style={{marginBottom:'.8rem'}} isInvalid={form.errors.email && form.touched.email}>
-                                             <FormLabel color={'text.300'}>Email</FormLabel>
-                                             <Input type='email' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#464646'}  variant={'outline'} {...field} placeholder='Email' />
-                                             <FormErrorMessage>{form.errors.email}</FormErrorMessage>
-                                         </FormControl> 
-                                         )} 
-                                     </Field>
-                                     
-                                           
-                                   </div>
+                                  <Flex w='100%' direction={'column'}>
+                                      <Text textStyle={'h4'} px={['1rem','1rem','0']} mt={'4rem'} mb={'2rem'} >Ticket{index+1}</Text>
+                                      <Box w='100%' py={'1.5rem'}  bg='#171617' px={['1rem','1rem','2rem']} borderRadius={'4px'} borderTop={'1px solid #333333'} borderLeft={['0','1px solid #333333']} borderRight={['0','1px solid #333333']} borderBottom={'1px solid #333333'} key={index}>
+                                        <Field name={`userList.${index}.firstName`} validate={validateName}>
+                                            {/* @ts-ignore */}
+                                            {({ field, form }) => ( 
+                                                <FormControl   isRequired style={{marginBottom:'1.5rem'}} isInvalid={form.errors.firstName && form.touched.firstName}>
+                                                <FormLabel ml={'8px'} color={'text.300'}>First Name</FormLabel>
+                                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='First Name' />
+                                                <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                                                </FormControl> 
+                                            )}
+                                        </Field>
+                                        <Field name='lastName' validate={validateName}>
+                                            {/* @ts-ignore */}
+                                            {({ field, form }) => ( 
+                                                <FormControl defaultValue={user.lastName}  isRequired style={{marginBottom:'1.5rem'}} isInvalid={form.errors.lastName && form.touched.lastName}>
+                                                <FormLabel ml={'8px'} color={'text.300'}>Last Name</FormLabel>
+                                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='Last Name' />
+                                                <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
+                                                </FormControl> 
+                                            )}
+                                        </Field>
+    
+                                        <Field name='email' validate={validateEmail}>
+                                            {/* @ts-ignore */}
+                                            {({ field, form }) => (
+                                                <FormControl isRequired style={{marginBottom:'1rem'}} isInvalid={form.errors.email && form.touched.email}>
+                                                <FormLabel ml={'8px'} color={'text.300'}>Email</FormLabel>
+                                                <Input type='email' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='Email' />
+                                                <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                                            </FormControl> 
+                                            )} 
+                                        </Field>
+                                        
+                                              
+                                      </Box>
+                                   </Flex>
                                    
                                  )
                                  )
-                               ) : (
-                                 <Flex height={'30vh'} width={'100%'}>
-                                   <Spinner/>
-                                 </Flex>  
-                               )}
+                               }
 
+                               <Box  mt={'4rem'} mb={'2rem'} mx={'1rem'}>
                                     <Button
-                                       mt={6}
+                                      
                                        // @ts-ignore
+                                       //  mx={['1rem','1rem','0']}
                                        isLoading={isProceedingToPayment}
                                        w={'100%'}
                                        colorScheme='brand'
                                        size='lg'
                                        type="submit"
-                                    > 
+                                       > 
                                        Proceed Checkout
                                    </Button>
+                                </Box>
                            
-                             </div>
+                             </Box>
                           )}
                         </FieldArray>
                       </Form>
                       )}
-                     </Formik>
+                     </Formik>}
 
                     </Flex>
                   

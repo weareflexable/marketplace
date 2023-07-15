@@ -103,7 +103,9 @@ const useEventTicket = (data:any)=>{
        // set filter value in local storage to be used by dats page
        localStorage.setItem('filter','events')
 
-       if(isAuthenticated){
+       console.log(data)
+
+      //  if(isAuthenticated){
 
         const itemPayload = {
             item:{
@@ -114,7 +116,7 @@ const useEventTicket = (data:any)=>{
            unitPrice: data.price,
            email: 'flexable@yahoo.com',
            description:data.name,
-           targetDate: getStorage('selectedDate') || dayjs(data.eventDetails.startTime).tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
+           targetDate: dayjs(data.startTime).add(data.duration/60,'h').tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
          }
 
          // set item payload to local storage
@@ -126,9 +128,9 @@ const useEventTicket = (data:any)=>{
          // redirect user to checkout page
          router.push('/payments/checkout');
 
-        }
+        // }
 
-        loginBeforeAction();
+        // loginBeforeAction();
      }
  
      const incrementQuantity =()=>{
