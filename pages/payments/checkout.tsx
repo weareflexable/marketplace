@@ -8,6 +8,8 @@ import axios from 'axios'
 import { useAuthContext } from '../../context/AuthContext'
 import usePath from '../../hooks/usePath'
 import { usePaymentContext } from '../../context/PaymentContext'
+import { useTimer } from 'react-timer-hook';
+import dayjs from 'dayjs'
 
 
 export default function Checkout(){
@@ -16,11 +18,19 @@ export default function Checkout(){
     const toast = useToast()
     const {currentPath} = usePath()
     const {setPayload} = usePaymentContext()
+    const [priceInfo, setPriceInfo] = useState({quantity:0,unitPrice:0})
     
     // const [quantity, setQuantity] = useState(0)
     const [userList, setUserList] = useState<{firstName:string, lastName:string, email:string}[]>([])
 
     const [isProceedingToPayment, setIsProceedingToPayment] = useState(false);
+
+    const {
+      seconds,
+      minutes,
+      hours,
+    } = useTimer({ expiryTimestamp: dayjs().add(5,'m').toDate(), onExpire: () => router.back() });
+
 
     useEffect(()=>{
       const item = JSON.parse(localStorage.getItem('itemPayload') || '')
@@ -32,6 +42,7 @@ export default function Checkout(){
       }
       // const list = createUserList(quantity)
       setUserList(users)
+      setPriceInfo({quantity:item.quantity, unitPrice:item.unitPrice})
       console.log(users) 
     },[])
 
@@ -163,11 +174,24 @@ export default function Checkout(){
          <Grid minH={'100vh'} height={'100%'}  templateColumns='repeat(5, 1fr)' bg='#121212' >
             <GridItem colStart={[1,1,2]} colEnd={[6,6,5]}>
                 <Flex  direction='column' minHeight={'100vh'} height='100%' >
-                    <Flex  px={4} justifyContent={'flex-start'} alignItems='center' p='2' mb='1rem' height={'8vh'} borderBottom={'1px solid #242424'}>
-                        <HStack ml='2' spacing={'5'}>
-                            <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.back()} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
-                            <Text as='h1' textStyle={'h4'} color='text.300'>Checkout</Text> 
-                        </HStack>
+                    <Flex direction={'row'}  px={4} justifyContent={'flex-start'} alignItems='flex-start' py={'1rem'} mb='1rem' borderBottom={'1px solid #242424'}>
+                        
+                        <Box ml='2' mr={'1rem'}>
+                            <IconButton color={'brand.200'} bg='#242424' onClick={()=>router.back()} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
+                        </Box>
+                        <Flex direction={'column'} alignItems={'flex-start'}>
+                          <Text as='h1' textStyle={'h4'} color='text.300'>Checkout</Text> 
+                          <HStack mt={2}>
+                              <Text textStyle={'body'}  color='text.200'>Time left</Text>
+                              <HStack spacing={1}>
+                                <Flex>
+                                  <Text textStyle={'body'} color={'accent.300'}>{hours}:</Text>
+                                  <Text textStyle={'body'} color={'accent.300'}>{minutes}:</Text>
+                                  <Text textStyle={'body'} color={'accent.300'}>{seconds}</Text>
+                                </Flex>
+                              </HStack>
+                          </HStack>
+                        </Flex>
                     </Flex> 
 
                    { userList.length === 0
@@ -242,7 +266,7 @@ export default function Checkout(){
                                        size='lg'
                                        type="submit"
                                        > 
-                                       Proceed Checkout
+                                      Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}
                                    </Button>
                                 </Box>
                            
