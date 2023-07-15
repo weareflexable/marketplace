@@ -30,7 +30,7 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, eventBookingId, duration, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, startTime, eventBookingId, duration, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
 
     
 
@@ -41,14 +41,16 @@ export default function EventTicket(){
         let qrCodePayload;
     
 
+        console.log( dayjs(startTime).add(duration/60, 'h').tz("UTC").format())
+
           qrCodePayload = {
             item:{
                 id: eventDetails.id,
-                type: 'venue'
+                type: 'event'
             },
             ticketId: id, // ticketId
             ticketSecret: ticketSecret,
-            validDate: validityEnd,
+            validDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
             quantity: quantity,
             userId: targetUserID,
           };
@@ -67,9 +69,9 @@ export default function EventTicket(){
     
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: validityEnd,
+        expiryDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
         ticketSecret: ticketSecret,
-        targetDate: targetDate,
+        targetDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
         quantity: quantity,
         price: eventDetails.price/100,
         eventName: eventDetails.name,
