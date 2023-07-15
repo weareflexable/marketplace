@@ -101,8 +101,10 @@ export default function Checkout(){
         const itemPayload = JSON.parse(localStorage.getItem('itemPayload')||'')
         const payload = {
             ...itemPayload,
-            users:[values]
+            users:values.userList
         }
+
+        console.log(values.userList)
         setIsProceedingToPayment(true)
         // call payment intent here
         try{
@@ -120,6 +122,7 @@ export default function Checkout(){
                          // set current page as last visited page
                 localStorage.setItem('lastVisitedPage',currentPath);
 
+               
                 // proceed with payment
                 proceedToPayment()
               }
@@ -131,7 +134,7 @@ export default function Checkout(){
   
           setIsProceedingToPayment(false)
   
-          console.log(payload)
+        //   console.log(payload)
 
             }
     
@@ -157,9 +160,9 @@ export default function Checkout(){
          <title>Events Checkout</title>
          <link rel="icon" href="/favicon.png" />
          </Head>
-         <Grid minH={'100vh'} height={'100%'}  templateColumns='repeat(5, 1fr)' bg='#171717'>
+         <Grid minH={'100vh'} height={'100%'}  templateColumns='repeat(5, 1fr)' bg='#121212' >
             <GridItem colStart={[1,1,2]} colEnd={[6,6,5]}>
-                <Flex  direction='column' bg='#121212' minHeight={'100vh'} height='100%' >
+                <Flex  direction='column' minHeight={'100vh'} height='100%' >
                     <Flex  px={4} justifyContent={'flex-start'} alignItems='center' p='2' mb='1rem' height={'8vh'} borderBottom={'1px solid #242424'}>
                         <HStack ml='2' spacing={'5'}>
                             <IconButton colorScheme={'#242424'} bg='#242424' onClick={()=>router.back()} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
@@ -185,7 +188,7 @@ export default function Checkout(){
                                <Box w='100%'>
                                {values.userList && 
                                  values.userList.map((user, index) => ( 
-                                  <Flex w='100%' direction={'column'}>
+                                  <Flex w='100%' key={index} direction={'column'}>
                                       <Text textStyle={'h4'} px={['1rem','1rem','0']} mt={'4rem'} mb={'2rem'} >Ticket{index+1}</Text>
                                       <Box w='100%' py={'1.5rem'}  bg='#171617' px={['1rem','1rem','2rem']} borderRadius={'4px'} borderTop={'1px solid #333333'} borderLeft={['0','1px solid #333333']} borderRight={['0','1px solid #333333']} borderBottom={'1px solid #333333'} key={index}>
                                         <Field name={`userList.${index}.firstName`} validate={validateName}>
@@ -198,7 +201,7 @@ export default function Checkout(){
                                                 </FormControl> 
                                             )}
                                         </Field>
-                                        <Field name='lastName' validate={validateName}>
+                                        <Field name={`userList.${index}.lastName`} validate={validateName}>
                                             {/* @ts-ignore */}
                                             {({ field, form }) => ( 
                                                 <FormControl defaultValue={user.lastName}  isRequired style={{marginBottom:'1.5rem'}} isInvalid={form.errors.lastName && form.touched.lastName}>
@@ -209,7 +212,7 @@ export default function Checkout(){
                                             )}
                                         </Field>
     
-                                        <Field name='email' validate={validateEmail}>
+                                        <Field name={`userList.${index}.email`} validate={validateEmail}>
                                             {/* @ts-ignore */}
                                             {({ field, form }) => (
                                                 <FormControl isRequired style={{marginBottom:'1rem'}} isInvalid={form.errors.email && form.touched.email}>
@@ -228,7 +231,7 @@ export default function Checkout(){
                                  )
                                }
 
-                               <Box  mt={'4rem'} mb={'2rem'} mx={'1rem'}>
+                               <Box  mt={'4rem'} mb={'2rem'} mx={['1rem','1rem','0']}>
                                     <Button
                                       
                                        // @ts-ignore
