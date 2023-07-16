@@ -99,7 +99,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
           Redeemed
         </Tag>
         :
-        dayjs().isAfter(dayjs(order.eventDetails.startTime).add(order.duration/60,'h'))
+        dayjs().isAfter(dayjs(order.eventDetails.startTime).add(order.duration/60,'h').tz('UTC'))
         ?
         <Tag size={'sm'} borderRadius='3xl'  variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='orange' ml="1">
           Expired
