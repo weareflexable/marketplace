@@ -92,7 +92,7 @@ const useEventTicket = (data:any)=>{
         // set filter value in local storage to be used by dats page
        localStorage.setItem('filter','events')
       
-      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&checkout=pending" // add another param to indicate payment is pending
       // location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
@@ -105,6 +105,7 @@ const useEventTicket = (data:any)=>{
 
        console.log(data)
 
+       console.log(isAuthenticated)
        if(isAuthenticated){
 
         const itemPayload = {
@@ -128,6 +129,7 @@ const useEventTicket = (data:any)=>{
          // redirect user to checkout page
          router.push('/payments/checkout');
 
+         return
         }
 
         loginBeforeAction();
