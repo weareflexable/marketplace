@@ -105,7 +105,7 @@ const useEventTicket = (data:any)=>{
 
        console.log(data)
 
-      //  if(isAuthenticated){
+       if(isAuthenticated){
 
         const itemPayload = {
             item:{
@@ -128,9 +128,9 @@ const useEventTicket = (data:any)=>{
          // redirect user to checkout page
          router.push('/payments/checkout');
 
-        // }
+        }
 
-        // loginBeforeAction();
+        loginBeforeAction();
      }
  
      const incrementQuantity =()=>{

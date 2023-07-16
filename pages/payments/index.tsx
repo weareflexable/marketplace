@@ -87,7 +87,7 @@ const Payments = () => {
   </Head>
     <Flex bg='gray.900' w='100' h='100vh' p='4' direction={'column'}  justifyContent='center' alignItems='center'>
       <Box w='100%' maxW={'500px'}>
-          <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
+          <Heading mb='8' alignSelf={'flex-start'} letterSpacing='-0.7px' color='whiteAlpha.900'>Complete Payment</Heading>
       </Box>
         { stripePromise && isHydrated && payload.hasOwnProperty('clientSecret') &&
         <Elements stripe={stripePromise} options={{clientSecret: isHydrated && payload.clientSecret,appearance:{theme:'night'}}}>
