@@ -51,7 +51,7 @@ const AuthContextProvider = ({ children }) => {
   // push user to payment if it's pending
   useEffect(() => {
     if(isCheckingOut){
-      router.push('/payments/checkout')
+      router.push('/checkout')
     }
   }, [isPaymentPending])
 

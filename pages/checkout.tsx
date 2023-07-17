@@ -5,9 +5,9 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import router from 'next/router'
 import {Form, Formik, Field, FieldArray} from 'formik'
 import axios from 'axios'
-import { useAuthContext } from '../../context/AuthContext'
-import usePath from '../../hooks/usePath'
-import { usePaymentContext } from '../../context/PaymentContext'
+import { useAuthContext } from '../context/AuthContext'
+import usePath from '../hooks/usePath'
+import { usePaymentContext } from '../context/PaymentContext'
 import { useTimer } from 'react-timer-hook';
 import dayjs from 'dayjs'
 

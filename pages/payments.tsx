@@ -2,13 +2,13 @@ import React,{useState, useEffect} from 'react'
 import { Box, Flex, Heading, HStack, Text, useToast, VStack} from '@chakra-ui/react'
 
 import {Elements} from '@stripe/react-stripe-js';
-import CheckoutForm from '../../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
+import CheckoutForm from '../components/PaymentsPage/StripeCheckoutForm/StripeCheckoutForm'
 
 import {loadStripe} from '@stripe/stripe-js';
 import Head from 'next/head';
-import { usePaymentContext } from '../../context/PaymentContext';
+import { usePaymentContext } from '../context/PaymentContext';
 import axios from 'axios';
-import { useAuthContext } from '../../context/AuthContext';
+import { useAuthContext } from '../context/AuthContext';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 

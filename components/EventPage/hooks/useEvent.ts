@@ -127,7 +127,7 @@ const useEventTicket = (data:any)=>{
          setSubTotal(subTotal)
 
          // redirect user to checkout page
-         router.push('/payments/checkout');
+         router.push('/checkout');
 
          return
         }
