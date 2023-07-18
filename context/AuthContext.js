@@ -53,7 +53,7 @@ const AuthContextProvider = ({ children }) => {
     if(isCheckingOut){
       router.push('/checkout')
     }
-  }, [isPaymentPending])
+  }, [isCheckingOut])
 
   useEffect(()=>{
       if(paseto !== '' && paseto !== null){
