@@ -148,6 +148,11 @@ export default function Checkout(){
         //   console.log(payload)
 
             }
+
+            function navigateToPrevPage(){
+              const lastVisitedPage = localStorage.getItem('lastVisitedPage')
+              lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
+            }
     
 
 
@@ -177,7 +182,7 @@ export default function Checkout(){
                     <Flex direction={'row'}  px={4} justifyContent={'flex-start'} alignItems='flex-start' py={'1rem'} mb='1rem' borderBottom={'1px solid #242424'}>
                         
                         <Box ml='2' mr={'1rem'}>
-                            <IconButton color={'brand.200'} bg='#242424' onClick={()=>router.back()} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
+                            <IconButton color={'brand.200'} bg='#242424' onClick={navigateToPrevPage} isRound icon={<ChevronLeftIcon boxSize={'5'}/>} aria-label='navigateBackToDats'/> 
                         </Box>
                         <Flex direction={'column'} alignItems={'flex-start'}>
                           <Text as='h1' textStyle={'h4'} color='text.300'>Checkout</Text> 
