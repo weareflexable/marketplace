@@ -5,22 +5,23 @@ import EmptyServices from "../../shared/EmptyServices/EmptyServices";
 import SkeletonList from "../SkeletonList/SkeletonList";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import CommunityCard from "../CommunityCard";
-import { Community } from "../../../Types/Community.types";
+import EventCard from "../EventCard";
+import { Event } from "../../../Types/Event.types";
+
 
 const PAGE_SIZE = 10;
 
-export default function CommunityPanel(){
+export default function EventPanel(){
 
-  const [page, setPage] = useState(1)
 
-  const toast =  useToast()
+  const toast = useToast()
 
-  const infiniteCommunityQuery = useInfiniteQuery(
-    ['communities'], 
+
+  const infiniteEventQuery = useInfiniteQuery(
+    ['events'], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/community?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
       return res.data
     },
     {
@@ -39,15 +40,17 @@ export default function CommunityPanel(){
 
 
 
-if(infiniteCommunityQuery.isError){
-      toast({
+if(infiniteEventQuery.isError){
+    toast({
       position:'top-right',
-      title: 'Error fetching Communities',
+      title: 'Error fetching Events',
       description: "Please refresh your browser",
       status: 'error',
       duration: 9000,
       isClosable: true,
     })
+
+    // throw new Error('Error fetching services')
   }
 
 
@@ -55,25 +58,25 @@ if(infiniteCommunityQuery.isError){
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
-                <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Communities</Text>
-                <Text color={'text.200'} textStyle={'body'}>Curated experiences grouped into one ticket for extended enjoyment</Text>
+                <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Events</Text>
+                <Text color={'text.200'} textStyle={'body'}>Enjoy event services offered only by flexable</Text>
               </Flex>
 
-                { infiniteCommunityQuery.isLoading 
+                { infiniteEventQuery.isLoading 
                  ?<SkeletonList/>
                 
                 :<Wrap w='100%' padding={[3,5]} spacing={8} alignItems='center' justifyContent='center'> 
                   {
-                    infiniteCommunityQuery && infiniteCommunityQuery.data && infiniteCommunityQuery.data.pages.map((page:any,index:any)=>(
+                    infiniteEventQuery && infiniteEventQuery.data && infiniteEventQuery.data.pages.map((page:any,index:any)=>(
                       <React.Fragment key={index}>
                       {page.data.length==0
                         ?<EmptyServices/>
-                        :page.data.map((data:Community)=>(
+                        :page.data.map((data:Event)=>(
                           <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
-                             <Skeleton w={'100%'} isLoaded={!infiniteCommunityQuery.isLoading}>
-                             <CommunityCard data={data}/>
+                             <Skeleton w={'100%'} isLoaded={!infiniteEventQuery.isLoading}>
+                             <EventCard data={data}/>
                             </Skeleton>
-                        </WrapItem> 
+                          </WrapItem> 
                         ))
                       }
                       </React.Fragment>
@@ -83,8 +86,8 @@ if(infiniteCommunityQuery.isError){
 
                }
                {
-               infiniteCommunityQuery.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteCommunityQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteCommunityQuery.fetchNextPage()}>Load more communities</Button>
+               infiniteEventQuery.hasNextPage
+               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteEventQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteEventQuery.fetchNextPage()}>Load more events</Button>
                : null
                 }
         </Flex>

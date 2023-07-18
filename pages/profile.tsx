@@ -28,13 +28,15 @@ export default function Profile(){
         })
         return res.data.data 
       }
-
+ 
      const userQuery = useQuery({
         queryKey:['user'],  
         queryFn: fetchUserDetails,
         enabled:paseto!=='' ,
         // staleTime: Infinity
     })
+
+    console.log(userQuery.data)
 
     // console.log(userQuery.data.data)  
        
@@ -75,12 +77,13 @@ export default function Profile(){
                             >
                             My Profile
                             </Text>  
-                        </Box>
+                        </Box> 
 
-                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/> 
-                        <EditableName selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>
-                        <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data.data && userQuery.data.data[0]}/> 
-                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data.data && userQuery.data.data[0]}/>}
+                        <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
+                        <EditableFirstName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
+                        <EditableLastName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
+                        <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data[0]}/> 
+                        {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
                             {/* <form onSubmit={formik.handleSubmit}>
                                 <FormControl mb={'5'}>
                                     <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
@@ -374,7 +377,7 @@ function EditableGender({selectedRecord}:EditableProp){
       </div>
     )
   }
-function EditableName({selectedRecord}:EditableProp){
+function EditableFirstName({selectedRecord}:EditableProp){
 
 
     // const [state, setState] = useState(selectedRecord)
@@ -391,13 +394,13 @@ function EditableName({selectedRecord}:EditableProp){
   
     const formik = useFormik({
         initialValues: {
-          name: selectedRecord && selectedRecord.name
+          firstName: selectedRecord && selectedRecord.firstName
         },
         onSubmit: (values,actions) => {
             // e.preventDefault() 
             const payload = {
-                key:'name',
-                value:values.name,
+                key:'first_name',
+                value:values.firstName,
               }
               mutation.mutate(payload)
         },
@@ -415,7 +418,7 @@ function EditableName({selectedRecord}:EditableProp){
         return data;
     }
     const mutation = useMutation({
-      mutationKey:['name'],
+      mutationKey:['firstName'],
       mutationFn: mutationHandler,
       onSuccess:()=>{
         toggleEdit()
@@ -430,7 +433,7 @@ function EditableName({selectedRecord}:EditableProp){
   
     const readOnly = (
       <Flex style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
-        <Text textStyle={'secondary'} color='text.200'>{selectedRecord && selectedRecord.name}</Text>
+        <Text textStyle={'secondary'} color='text.200'>{selectedRecord && selectedRecord.firstName}</Text>
         <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
       </Flex>
   )
@@ -440,20 +443,20 @@ function EditableName({selectedRecord}:EditableProp){
        style={{ marginTop:'.5rem' }}
        onSubmit={formik.handleSubmit}
        >
-        <FormControl is={formik.errors.name}  mb={'5'}>
+        <FormControl is={formik.errors.firstName}  mb={'5'}>
             {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
             <Input  
                 // id='fullname'
-                defaultValue={selectedRecord && selectedRecord.name}
+                defaultValue={selectedRecord && selectedRecord.firstName}
                 colorScheme={'brand'}
                 borderColor={'#464646'} 
                 color='text.300' 
                 borderWidth='2px' 
                 type='string'
                 bg={'#121212'}
-                {...formik.getFieldProps('name')}
+                {...formik.getFieldProps('firstName')}
             />
-            {formik.touched.name&&formik.errors.name?<FormErrorMessage>{formik.errors.name}</FormErrorMessage>:null}
+            {formik.touched.firstName&&formik.errors.firstName?<FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>:null}
         </FormControl>
         <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
             Cancel
@@ -465,7 +468,103 @@ function EditableName({selectedRecord}:EditableProp){
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
-        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Full Name</Text>
+        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>First Name</Text>
+      {isEditMode?editable:readOnly}
+      </div>
+    )
+  }
+function EditableLastName({selectedRecord}:EditableProp){
+
+
+    // const [state, setState] = useState(selectedRecord)
+  
+    const [isEditMode, setIsEditMode] = useState(false)
+  
+    const {paseto} = useAuthContext()
+
+    const queryClient = useQueryClient()
+  
+    function toggleEdit(){
+      setIsEditMode(!isEditMode)
+    }
+  
+    const formik = useFormik({
+        initialValues: {
+          lastName: selectedRecord && selectedRecord.lastName
+        },
+        onSubmit: (values,actions) => {
+            // e.preventDefault() 
+            const payload = {
+                key:'last_name',
+                value:values.lastName,
+              }
+              mutation.mutate(payload)
+        },
+      });
+
+   
+  
+    const mutationHandler = async(updatedItem:any)=>{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+        headers:{
+            //@ts-ignore
+            "Authorization": paseto
+        }
+      })
+        return data;
+    }
+    const mutation = useMutation({
+      mutationKey:['lastName'],
+      mutationFn: mutationHandler,
+      onSuccess:()=>{
+        toggleEdit()
+      },
+      onSettled:()=>{
+        queryClient.invalidateQueries({queryKey:['user']})
+      }
+    })
+  
+  
+    const {isLoading:isEditing} = mutation ;
+  
+    const readOnly = (
+      <Flex style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
+        <Text textStyle={'secondary'} color='text.200'>{selectedRecord && selectedRecord.lastName}</Text>
+        <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
+      </Flex>
+  )
+  
+    const editable = (
+      <form
+       style={{ marginTop:'.5rem' }}
+       onSubmit={formik.handleSubmit}
+       >
+        <FormControl is={formik.errors.lastName}  mb={'5'}>
+            {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
+            <Input  
+                // id='fullname'
+                defaultValue={selectedRecord && selectedRecord.lastName}
+                colorScheme={'brand'}
+                borderColor={'#464646'} 
+                color='text.300' 
+                borderWidth='2px' 
+                type='string'
+                bg={'#121212'}
+                {...formik.getFieldProps('name')}
+            />
+            {formik.touched.lastName&&formik.errors.lastName?<FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>:null}
+        </FormControl>
+        <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
+            Cancel
+        </Text>
+        <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
+            Apply changes
+        </Button>
+      </form>
+    )
+    return(
+      <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
+        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Last Name</Text>
       {isEditMode?editable:readOnly}
       </div>
     )
@@ -595,7 +694,8 @@ function EditableImage({selectedRecord}:EditableProp){
 
 
   type User = {
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     gender: string,
     country: string,

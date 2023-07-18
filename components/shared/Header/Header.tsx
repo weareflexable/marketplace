@@ -7,6 +7,8 @@ import { setStorage } from '../../../utils/localStorage'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
+import { IMAGE_PLACEHOLDER_HASH } from '../../../constants'
+
 
 
 export default function Header(){
@@ -20,7 +22,7 @@ export default function Header(){
             "Authorization": paseto
           }
         })
-        return res.data
+        return res.data.data
       }
 
      const userQuery = useQuery({
@@ -57,7 +59,7 @@ export default function Header(){
 
 
 
-    const profilePicHash = userQuery.data && userQuery.data.data && userQuery.data.data[0].profilePic 
+    const profilePicHash = userQuery.data && userQuery.data.length > 0 ? userQuery.data[0].profilePicHash : IMAGE_PLACEHOLDER_HASH
 
 
     const login =()=>{
@@ -86,7 +88,7 @@ export default function Header(){
                             <MenuButton>
                                 <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
                             </MenuButton>
-                             <MenuList zIndex='3' borderColor="#2b2b2b" bg='#121212'>
+                             <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
                                     <Text textStyle={'secondary'}  color='text.300'>My DATs</Text>
                                 </MenuItem>

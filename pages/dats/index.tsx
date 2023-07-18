@@ -41,7 +41,7 @@ const fetchWithError = async(url:string, options:any)=>{
 
 const PAGE_SIZE = 10;
 
-const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'}]
+const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'},{key:'events', label:'Events'}]
 
 export default function MyDats() {
 
@@ -49,20 +49,69 @@ export default function MyDats() {
   const {setDat:ctx_setDat} = useDatContext()
   const { isAuthenticated, paseto } = useAuthContext();
   const [isErrorPopup, setIsErrorPopup] = useState(false)
-  const [isDelaying, setIsDelaying] = useState(false)
+  const [isDelaying, setIsDelaying] = useState(true)
+  const [isLoadingFilters, setIsLoadingFilters] = useState(true)
 
-  const [currentFilter, setCurrentFilter] = useState(datsFilter[0])
+  const [currentFilter, setCurrentFilter] = useState<{key:string,label:string}>(datsFilter[0])
+
+
+  // Effect to check localstorage for filter value provided at the time of checkout
+  useEffect(()=>{
+    const filterKeyFromStorage = localStorage.getItem('filter')
+
+    // Check whether or not filter is null
+    if(filterKeyFromStorage == null){
+      setIsLoadingFilters(false)
+      // return function
+      return
+    }else{
+      
+      // Get the filter object
+      const filter:{key:string,label:string} = datsFilter.find(filter=>filterKeyFromStorage === filter.key) || {key:'services',label:'Venues'}
+      
+      // set currentFilter to filter from storage
+      setCurrentFilter(filter)
+      setIsLoadingFilters(false)
+    }
+  })
+
+  useEffect(()=>{
+    const isUserComingFromPurchase = localStorage.getItem('comingFromPurchase')
+    // check if user is coming from payment page
+    if(isUserComingFromPurchase === 'false'){
+      return
+    }else{
+
+    }
+    
+  })
 
   /* 
   * Effect for adding an extra delay before fetching user tickets to give enough
   * time to db to update
   */  
   useEffect(() => {
-  const interval =  setInterval(()=>{
-    setIsDelaying(true)
-  },2000)
+    let delay;
+    const isUserComingFromPurchase = localStorage.getItem('comingFromPurchase')
+
+    if(isUserComingFromPurchase === null){
+      delay = 0
+    }else{
+      delay = 4000
+    }
+    
+  const timeout =  setTimeout(()=>{
+
+    setIsDelaying(false)
+
+    // clear comingFromStorage storage value immediately after page first load
+    localStorage.removeItem("comingFromPurchase")
+    localStorage.removeItem("filter")
+  },delay)
+
   return()=>{
-    clearInterval(interval)
+    clearInterval(timeout)
+    console.log('clear timeout')
   }
   }, [])
 
@@ -93,7 +142,7 @@ export default function MyDats() {
       if(totalDataLength < fetchedDataLength) return undefined
       return pages.length 
     },
-    enabled:isAuthenticated && isDelaying
+    enabled:isAuthenticated && !isDelaying && !isLoadingFilters
   }
   );
 
@@ -106,7 +155,10 @@ export default function MyDats() {
       }
     })
     return res.data.dataLength
-  })
+  },{
+    enabled: isAuthenticated && !isDelaying
+  }
+  )
 
 
 function changeDatsFilter(filter:{key:string,label:string}){
@@ -118,6 +170,12 @@ const gotoTicketPage = (dat:any)=>{
   // set selected dat in context
   ctx_setDat(dat)
   push('/dats/ticket')
+}
+
+const gotoEventTicketPage = (dat:any)=>{
+  // set selected dat in context
+  ctx_setDat(dat)
+  push('/dats/eventTicket')
 }
 
 const gotoCommunityTicketPage =(dat:any)=>{
@@ -157,7 +215,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
     </Head>
     <Layout>
       <Grid
-        mx="1em"
+        // mx="1em"
         minH="inherit"
         h="100%"
         templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
@@ -165,7 +223,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
       >
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
-              <Box ml={[0]}>
+              <Box ml={[0]} mx='1rem'>
                 <Flex  mt="10"mb="7" w={'100%'} justifyContent={'space-between'}>
                   <Text
                     as="h1"
@@ -178,21 +236,23 @@ const gotoCommunityTicketPage =(dat:any)=>{
                 </Flex>
                 <Flex mb='2rem' direction={'column'}>
                 <Flex w={'100%'}>
-                  {datsFilter.map((filter:any)=>(
+                  {isLoadingFilters? <Text textStyle={'body'} color={'text.200'}>Loading filters...</Text>: datsFilter.map((filter:any)=>(
                     <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
-                    ))}
-                  {/* @ts-ignore */}
+                    ))
+                    }
+
                 </Flex>
-                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT(s)`} </Text>} 
+                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT`} </Text>} 
                 </Flex>
               </Box> 
                 {
-                  datsQuery.isLoading || datsQuery.isRefetching || !isDelaying
+                  datsQuery.isLoading || datsQuery.isRefetching || isDelaying
                   ?<OrderListSkeleton/>
                   :<OrderList
                     currentFilter={currentFilter.key}
                     orders={datsQuery.data && datsQuery.data.pages}
                     gotoTicketPage={gotoTicketPage}
+                    gotoEventPage={gotoEventTicketPage}
                     gotoCommunityPage={gotoCommunityTicketPage}
                    />
             }

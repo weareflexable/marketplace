@@ -39,6 +39,7 @@ const AuthContextProvider = ({ children }) => {
   const pasetoFromUrl = router.query.paseto 
   // console.log('urlpaseto',pasetoFromUrl)
   const isPaymentPending = router.query.payment === 'pending' ? true : false
+  const isCheckingOut = router.query.checkout === 'pending' ? true : false
 
   // push user to payment if it's pending
   useEffect(() => {
@@ -46,6 +47,13 @@ const AuthContextProvider = ({ children }) => {
       router.push('/payments')
     }
   }, [isPaymentPending])
+
+  // push user to payment if it's pending
+  useEffect(() => {
+    if(isCheckingOut){
+      router.push('/checkout')
+    }
+  }, [isCheckingOut])
 
   useEffect(()=>{
       if(paseto !== '' && paseto !== null){

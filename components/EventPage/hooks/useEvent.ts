@@ -1,11 +1,9 @@
 import {useState} from 'react'
 import { useAuthContext } from '../../../context/AuthContext'
-import { useCheckoutContext } from '../../../context/CheckoutContext'
 import { useRouter } from 'next/router'
-import { getStorage, setStorage } from '../../../utils/localStorage'
+import { getStorage } from '../../../utils/localStorage'
 import usePath from '../../../hooks/usePath'
 import dayjs from 'dayjs'
-import useLastVisitedPage from '../../../hooks/useLastVistedPage'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import { usePaymentContext } from '../../../context/PaymentContext'
@@ -13,12 +11,22 @@ import useLocalStorage from '../../../hooks/useLocalStorage'
 
 // TODO: Have a separate context for handling cart items
 
+
+var utc = require("dayjs/plugin/utc")
+var timezone = require("dayjs/plugin/timezone")
+var advanced = require("dayjs/plugin/advancedFormat")
+
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(advanced)
+
+
+const MAX_PURCHASABLE_TICKETS = 4
+
 // This should accept a Service-item type in data
-const useCommunityTicket = (data:any)=>{
+const useEventTicket = (data:any)=>{
 
     
-    
-
 
   const toast = useToast()
   const router = useRouter()
@@ -44,16 +52,10 @@ const useCommunityTicket = (data:any)=>{
 
      const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
  
- 
-     // checks to see if there are available tickets for selected date
-     const maxPurchasableTickets =  6
- 
- 
-   //   const ticketDate = isTicketsAvailable && moment(ticketData.tickets[0].date).format('MMM DD, YYYY');
 
  
      const isMinQuantity = ticketData.quantity <= 0
-     const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
+     const isMaxQuantity = ticketData.quantity === MAX_PURCHASABLE_TICKETS
 
      const subTotal =  ticketData.quantity * (data && data.price /100)
 
@@ -81,23 +83,16 @@ const useCommunityTicket = (data:any)=>{
     }
 
  
-     const proceedToPayment = ()=>{
-        // Timeout in order to show loading state
-      
-        setTimeout(() => {
-            setIsProceedingToPayment(false)
-            router.push('/payments')
-        }, 2000);
-     }
+    
 
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
         localStorage.setItem('lastVisitedPage',currentPath);
 
         // set filter value in local storage to be used by dats page
-       localStorage.setItem('filter','communities')
+       localStorage.setItem('filter','events')
       
-      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
+      location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&checkout=pending" // add another param to indicate payment is pending
       // location.href = "http://localhost:3008/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
      }
@@ -106,62 +101,36 @@ const useCommunityTicket = (data:any)=>{
      const buyTicketNow = async()=>{
 
        // set filter value in local storage to be used by dats page
-       localStorage.setItem('filter','communities')
+       localStorage.setItem('filter','events')
 
-        const itemPayload = {
+          const itemPayload = {
             item:{
                 id: data.id,
-                type: "community"
+                type: "event"
             },
-           quantity: String(ticketData.quantity),
-           unitPrice: data.price,
-           email: 'flexable@yahoo.com',
-           users: [],
-           description:data.name,
-           targetDate: getStorage('selectedDate') || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
-         }
-
-         // set item payload to local storage
-         // this will be used in payment page to get clientsecret incase
-         // user lands on the page after authenticating (ie: client secret and paymentIntent Id were not fetched)
-         setItemPayload(itemPayload)
-         setSubTotal(subTotal)
-
-
-        if(isAuthenticated){
-
-
-            try{
-              setIsProceedingToPayment(true)
-              // make request to fetch client secret, paymentIntentId
-              const res:any = await fetchSecret(itemPayload)
-              if(res.status == 200){
-                const stripePayload = {
-                  clientSecret: res.data.clientSecret,
-                  paymentIntentId: res.data.payment_intent_id,
-                  totalAmount: subTotal
-                }
-
-                // set stripePayload to payment context
-                setPayload(stripePayload)
-
-                // set current page as last visited page
-                localStorage.setItem('lastVisitedPage',currentPath);
-
-                // proceed with payment
-                proceedToPayment()
-              }
-            }catch(err){
-              console.log(err)
-              setIsProceedingToPayment(false)
-            }
-            // if secret is available then set it to payment context
-            // navigate to payment page
-            // else show error toast message
-            // proceedToPayment();
-
-            return
+          quantity: String(ticketData.quantity),
+          unitPrice: data.price,
+          email: 'flexable@yahoo.com',
+          description:data.name,
+          targetDate: dayjs(data.startTime).add(data.duration/60,'h').tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
         }
+
+        // set item payload to local storage
+        // this will be used in payment page to get clientsecret incase
+        // user lands on the page after authenticating (ie: client secret and paymentIntent Id were not fetched)
+        setItemPayload(itemPayload)
+        setSubTotal(subTotal)
+
+
+       if(isAuthenticated){
+
+
+         // redirect user to checkout page
+         router.push('/checkout');
+
+         return
+        }
+
         loginBeforeAction();
      }
  
@@ -194,4 +163,4 @@ const useCommunityTicket = (data:any)=>{
  
 }
 
-export default useCommunityTicket
+export default useEventTicket

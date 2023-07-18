@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import { Flex, Box, Heading, Avatar, Link, HStack,Text} from '@chakra-ui/react'
-import Image from 'next/image'
+import { Flex, Box, Heading, Avatar, Link, HStack, Image,Text} from '@chakra-ui/react'
 import useIpfsImage from '../../../hooks/useIpfsImage'
 import {MdLocationPin} from 'react-icons/md'
 import { useRouter } from 'next/router';
@@ -21,13 +20,21 @@ export default function StoreHeader({logoImageHash, street, storeName, city, sta
 
     return(
         <Flex mt='4' w='100%' position='relative' direction='column'>
-            <Box position='absolute' height='100%' w='100%'  bgGradient='linear(to-b, rgba(43, 43, 43, 0.1), rgba(43, 43, 43, 0.1), rgba(0, 0, 0,.9))' zIndex='2'></Box>
-            <Box height='400px' maxW='100%'>
-                <Image layout='fill' objectFit={'contain'} src={`https://nftstorage.link/ipfs/${coverImage}`} alt='Store header' />
-                {/* <Image w='999vw' h='9999vh' maxW='100%' maxH='100%' overflow={'hidden'} objectFit={'cover'}   src={'/test1.png'} alt='Store header' /> */}
-                {/* <Image layout='fill' width={100} height={100} objectFit='cover'  src={'/testx1.png'} alt='Store header' /> */}
+             <Box 
+                height='400px'
+                bgImage={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImage}`}
+                backgroundPosition={'50%'} 
+                backgroundSize={'cover'} 
+                backgroundRepeat={'no-repeat'} 
+                borderRadius={'8px'}
+                width={'100%'}
+                position={"relative"} 
+                maxW='100%'
+             > 
+                <Box h={'100%'} zIndex={0} w={'100%'} bg={'rgba(255, 255, 255, .2)'} backdropFilter={'blur(17px)'} position={'absolute'} top={0} left={0}></Box>
+                <Image zIndex={4} position={'absolute'} border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImage}`} m='0' maxW='100%'  objectFit={'contain'} width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
             </Box>
-            <Flex alignItems={'center'} p='2' zIndex='3' position='absolute' left={['3','5']} bottom='5'>
+            <Flex alignItems={'center'} p='4' w={'100%'} zIndex='6' bg={'rgba(0,0,0, 0.45)'} position='absolute' bottom='0'>
                 {/* <Avatar mr='3' size='md' src={'/benjamins.jpeg'}/> */}
                 <Box>
                 <Text color={'white'} textStyle={'h1'} as='h1' size='lg'>{storeName}</Text>

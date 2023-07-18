@@ -67,6 +67,9 @@ const useTicket = (data:any)=>{
      const loginBeforeAction = ()=>{
         // store users last page before starting logging process
         localStorage.setItem('lastVisitedPage',currentPath);
+
+         // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','services')
       
       location.href = process.env.NEXT_PUBLIC_AUTH+"/login?redirect_to=marketplace&payment=pending" // add another param to indicate payment is pending
       //   router.push('/landing')
@@ -96,6 +99,9 @@ const useTicket = (data:any)=>{
 
      const buyTicketNow = async ()=>{
 
+       // set filter value in local storage to be used by dats page
+       localStorage.setItem('filter','services')
+
        const selectedDateFromStorage = getStorage('selectedDate')
 
         const buyNowCartItem = {
@@ -106,6 +112,7 @@ const useTicket = (data:any)=>{
            quantity: String(ticketData.quantity),
            unitPrice: ticketData.price,
            email: 'flexable@yahoo.com',
+           users: [],
            description:ticketData.name,
            //@ts-ignore
            targetDate: JSON.parse(selectedDateFromStorage) || dayjs().format('MMM DD, YYYY') // TODO: Get current selected date
