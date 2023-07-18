@@ -149,6 +149,7 @@ export default function Checkout(){
 
             }
 
+            
             function navigateToPrevPage(){
               const lastVisitedPage = localStorage.getItem('lastVisitedPage')
               lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()

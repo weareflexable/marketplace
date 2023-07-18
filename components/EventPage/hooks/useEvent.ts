@@ -103,28 +103,27 @@ const useEventTicket = (data:any)=>{
        // set filter value in local storage to be used by dats page
        localStorage.setItem('filter','events')
 
-       console.log(data)
-
-       console.log(isAuthenticated)
-       if(isAuthenticated){
-
-        const itemPayload = {
+          const itemPayload = {
             item:{
                 id: data.id,
                 type: "event"
             },
-           quantity: String(ticketData.quantity),
-           unitPrice: data.price,
-           email: 'flexable@yahoo.com',
-           description:data.name,
-           targetDate: dayjs(data.startTime).add(data.duration/60,'h').tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
-         }
+          quantity: String(ticketData.quantity),
+          unitPrice: data.price,
+          email: 'flexable@yahoo.com',
+          description:data.name,
+          targetDate: dayjs(data.startTime).add(data.duration/60,'h').tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
+        }
 
-         // set item payload to local storage
-         // this will be used in payment page to get clientsecret incase
-         // user lands on the page after authenticating (ie: client secret and paymentIntent Id were not fetched)
-         setItemPayload(itemPayload)
-         setSubTotal(subTotal)
+        // set item payload to local storage
+        // this will be used in payment page to get clientsecret incase
+        // user lands on the page after authenticating (ie: client secret and paymentIntent Id were not fetched)
+        setItemPayload(itemPayload)
+        setSubTotal(subTotal)
+
+
+       if(isAuthenticated){
+
 
          // redirect user to checkout page
          router.push('/checkout');
