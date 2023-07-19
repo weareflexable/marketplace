@@ -59,28 +59,6 @@ const useEventTicket = (data:any)=>{
 
      const subTotal =  ticketData.quantity * (data && data.price /100)
 
-     async function fetchSecret(payload:any) {
-      try{
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
-        headers:{
-          'Authorization': paseto
-        }
-      });
-  
-      return res;
-
-    }catch(err){
-      toast({
-        title: 'Payment Error',
-        description: "Unable to complete your payment. Please try again",
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-        position:'top-right'
-      })
-      return err
-    }
-    }
 
  
     
@@ -102,6 +80,11 @@ const useEventTicket = (data:any)=>{
 
        // set filter value in local storage to be used by dats page
        localStorage.setItem('filter','events')
+
+
+        // set current page as last visited page
+        localStorage.setItem('lastVisitedPage',currentPath);
+
 
           const itemPayload = {
             item:{

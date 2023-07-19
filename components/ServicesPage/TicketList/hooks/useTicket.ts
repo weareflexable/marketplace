@@ -104,6 +104,10 @@ const useTicket = (data:any)=>{
 
        const selectedDateFromStorage = getStorage('selectedDate')
 
+
+        // set current page as last visited page
+        localStorage.setItem('lastVisitedPage',currentPath);
+
         const buyNowCartItem = {
            item:{
             id: ticketData.id,
@@ -138,8 +142,6 @@ const useTicket = (data:any)=>{
               // set stripePayload to payment context
               setPayload(stripePayload)
 
-              // set current page as last visited page
-              localStorage.setItem('lastVisitedPage',currentPath);
                 
               // proceed with payment
               proceedToPayment()
