@@ -108,10 +108,10 @@ jobs:
             pwd
             cd ~
             echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
-            podman pull ghcr.io/weareflexable/marketplace:staging
-            podman stop marketplace
-            podman rm marketplace
-            podman run --name="marketplace" -p 9081:3000 -d ghcr.io/weareflexable/marketplace:staging
+            sudo podman pull ghcr.io/weareflexable/marketplace:staging
+            sudo podman stop marketplace
+            sudo podman rm marketplace
+            sudo podman run --name="marketplace" -p 9081:3000 -d ghcr.io/weareflexable/marketplace:staging
 
       - name: Deploy on Prod server 
         if: github.ref == 'refs/heads/prod'
