@@ -149,7 +149,7 @@ export default function Checkout(){
 
             }
 
-            
+
             function navigateToPrevPage(){
               const lastVisitedPage = localStorage.getItem('lastVisitedPage')
               lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
@@ -274,6 +274,9 @@ export default function Checkout(){
                                        > 
                                       Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}
                                    </Button>
+                                   <Text mt={3} textAlign={'center'} textStyle={'secondary'} color={'text.200'}>
+                                    If you are buying a ticket for someone else, the DAT will not show up in your account but rather in the account of the person you are buying the ticket for
+                                   </Text>
                                 </Box>
                            
                              </Box>
