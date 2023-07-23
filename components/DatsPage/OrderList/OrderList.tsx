@@ -93,7 +93,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
         {dayjs(order.eventDetails.startTime).tz("UTC").format("MMM D, YYYY H A")} {order.eventDetails.timeZone}
       </Text>
 
-      { order.isRedeemed 
+      { order.ticketStatus === 'redeemed' 
       ?
         <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
           Redeemed
@@ -261,7 +261,7 @@ function VenueListItem({order, gotoTicketPage}:VenueProps){
         {dayjs(order.targetDate).format("MMM D, YYYY")}
       </Text>
       
-      { order.isRedeemed 
+      { order.ticketStatus === 'redeemed' 
       ?
         <Tag size={'sm'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme={"green"} ml="1">
           Redeemed
