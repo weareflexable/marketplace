@@ -90,7 +90,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
   <HStack> 
       <Text textStyle={'caption'} color="text.200" noOfLines={1}> 
         {/* {dayjs(order.validityEnd).tz('America/New_York').format("MMM D, YYYY HA z")} */}
-        {dayjs(order.eventDetails.startTime).tz("UTC").format("MMM D, YYYY H A")} {order.eventDetails.timeZone}
+        {dayjs(order.eventDetails.startTime).tz("UTC").format("MMM D, YYYY h A")} {order.eventDetails.timeZone}
       </Text>
 
       { order.ticketStatus === 'redeemed' 

@@ -226,7 +226,7 @@ export default function EventTicket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h').tz("UTC").format('MMM DD, YYYY H A'))}</Text></Flex> 
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h').tz("UTC").format('MMM DD, YYYY h A'))}</Text></Flex> 
                             </HStack>
 
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
