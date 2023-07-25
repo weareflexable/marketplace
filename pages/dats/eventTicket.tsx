@@ -30,9 +30,10 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, startTime, eventBookingId, duration, validityStart, validityEnd,  eventDetails, transactionHash,  orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity, ticketStatus, targetUserID,  startTime, eventBookingId, duration,   eventDetails, transactionHash,  id} = ctx_currentDat;
 
     
+    const isRedeemed = ticketStatus === 'redeemed'
 
     const isTxHash = transactionHash !== ''
 
@@ -58,7 +59,7 @@ export default function EventTicket(){
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, eventDetails, targetUserID, ticketSecret, validityEnd]) 
+  }, [id, quantity, eventDetails, targetUserID, ticketSecret]) 
 
   
 

@@ -30,8 +30,10 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity,  isRedeemed, targetUserID, targetDate, serviceBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
+    const {ticketSecret,  quantity,  targetUserID, ticketStatus, targetDate, serviceBookingId, validityStart, validityEnd,  serviceDetails, transactionHash, serviceItemDetails, orgServiceItemId, id} = ctx_currentDat;
 
+    const isRedeemed = ticketStatus === 'redeemed'
+    
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
