@@ -131,7 +131,7 @@ export default function Checkout(){
                 setPayload(stripePayload)
 
                          // set current page as last visited page
-                localStorage.setItem('lastVisitedPage',currentPath);
+                // localStorage.setItem('lastVisitedPage',currentPath);
 
                
                 // proceed with payment
