@@ -228,7 +228,7 @@ function refreshAggregateAndHistory(){
             <Flex direction='column'>
                     <Flex direction='column' px='4' mb='5' w='100%'>
                         <Text  as='h3' textStyle={'h3'} mb='5' color='text.300'>Select Venue</Text>
-                        { ticketStatus === 'complete'
+                        { ticketStatus === 'redeemed'
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has been redeemed</Text>
                         </Flex>
@@ -277,7 +277,7 @@ function refreshAggregateAndHistory(){
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='complete' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{ticketStatus==='redeemed' ? 'Completely Redeemed':ticketStatus==='partial'?'Partially Redeemed':'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
