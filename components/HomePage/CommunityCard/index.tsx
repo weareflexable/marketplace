@@ -4,6 +4,7 @@ import {Box, Flex,Text, Avatar,HStack, Image} from '@chakra-ui/react'
 
 import {useRouter} from 'next/router'
 import { Community } from '../../../Types/Community.types'
+import { numberFormatter } from '../../../utils/formatter'
 
 
 
@@ -39,7 +40,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                             ${data.totalMarketValue/100} Market Value
                         </Text>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                            ${data.price/100}
+                            {`$${numberFormatter.from(data.price/100)}`}
                         </Text> 
                     </Flex>
                 </Flex>

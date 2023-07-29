@@ -221,7 +221,7 @@ function CommunityListItem({order, gotoCommunityPage}:CommunityListItemProp){
         </HStack>
         <Text  textStyle="secondary" color={'text.300'}>
           {/* @ts-ignore */}
-         {` $${order.quantity * numberFormatter.from(order.communityDetails.price/100)}`}
+         {` $${numberFormatter.from(order.quantity * order.communityDetails.price/100)}`}
         </Text>
       </HStack>
 

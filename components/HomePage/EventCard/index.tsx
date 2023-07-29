@@ -5,6 +5,7 @@ import {Box, Flex,Text, Avatar,HStack, Image} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import dayjs from 'dayjs'
 import { Event } from '../../../Types/Event.types'
+import { numberFormatter } from '../../../utils/formatter'
 
 var utc = require('dayjs/plugin/utc')
 var timezone = require('dayjs/plugin/timezone')
@@ -56,7 +57,7 @@ export const EventCard = ({data}:EventCardProps) =>{
                     
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                            ${data.price/100}
+                        {`$${numberFormatter.from(data.price/100)}`}
                         </Text> 
                     </Flex>
                 </Flex>
