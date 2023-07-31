@@ -38,27 +38,27 @@ const useEventTicket = (data:any)=>{
   const {isAuthenticated, paseto} = useAuthContext()
 
 
-       
-       
-   // Each ticket will maintain it's own state from props because
-   // properties in ticket object undergo changes with the ticket component
-     const [ticketData, setTicketData] = useState({
-      ...data,
-       quantity:0
-     })
-
-     const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
-     const {setState:setSubTotal} = useLocalStorage('subTotal',0)
-
-     const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
- 
+  
+  // Each ticket will maintain it's own state from props because
+  // properties in ticket object undergo changes with the ticket component
+  const [ticketData, setTicketData] = useState({
+    ...data,
+    quantity:0
+  })
+  
+  const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
+  const {setState:setSubTotal} = useLocalStorage('subTotal',0)
+  
+  const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
+  
+  const maxPurchasableTickets = ticketData.totalTickets < MAX_PURCHASABLE_TICKETS ? ticketData.totalTickets : MAX_PURCHASABLE_TICKETS
 
  
      const isMinQuantity = ticketData.quantity <= 0
-     const isMaxQuantity = ticketData.quantity === MAX_PURCHASABLE_TICKETS
+     const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
 
      const subTotal =  ticketData.quantity * (data && data.price /100)
-
+ 
 
  
     

@@ -107,6 +107,11 @@ export default function EventPage(){
                                         <VStack alignItems={'flex-start'} mt={2} px={4}  flex={3} spacing={7}>   
 
                                             <Flex direction={'column'} >
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Tickets Left</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.totalTickets}`}</Text>
+                                            </Flex>
+
+                                            <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Date and Time</Text>
                                                 <HStack spacing={1}>
                                                     <Text textStyle={'secondary'} layerStyle={'mediumPop'} lineHeight='tight' noOfLines={2}>
