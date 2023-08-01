@@ -51,7 +51,7 @@ const useEventTicket = (data:any)=>{
   
   const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
   
-  const maxPurchasableTickets = ticketData.totalTickets < MAX_PURCHASABLE_TICKETS ? ticketData.totalTickets : MAX_PURCHASABLE_TICKETS
+  const maxPurchasableTickets = ticketData.ticketsAvailable < MAX_PURCHASABLE_TICKETS ? ticketData.ticketsAvailable : MAX_PURCHASABLE_TICKETS
 
  
      const isMinQuantity = ticketData.quantity <= 0

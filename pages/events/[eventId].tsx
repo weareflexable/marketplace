@@ -108,7 +108,7 @@ export default function EventPage(){
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Tickets Left</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.totalTickets}`}</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.ticketsAvailable}`}</Text>
                                             </Flex>
 
                                             <Flex direction={'column'} >
