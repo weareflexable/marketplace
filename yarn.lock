@@ -3710,18 +3710,6 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libsodium-sumo@^0.7.0:
-  version "0.7.11"
-  resolved "https://registry.npmjs.org/libsodium-sumo/-/libsodium-sumo-0.7.11.tgz"
-  integrity sha512-bY+7ph7xpk51Ez2GbE10lXAQ5sJma6NghcIDaSPbM/G9elfrjLa0COHl/7P6Wb/JizQzl5UQontOOP1z0VwbLA==
-
-libsodium-wrappers-sumo@0.7.9:
-  version "0.7.9"
-  resolved "https://registry.npmjs.org/libsodium-wrappers-sumo/-/libsodium-wrappers-sumo-0.7.9.tgz"
-  integrity sha512-XLgLkqY973PngrRElbjOH0y7bJKYEfMWVpWPmW5iuhBjO6zXvHYQWtN52MVEeie/h98ZXN1Aw9BE+GzxQVAfLg==
-  dependencies:
-    libsodium-sumo "^0.7.0"
-
 lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/lilconfig/-/lilconfig-2.0.6.tgz"
@@ -3942,11 +3930,6 @@ mz@^2.7.0:
     any-promise "^1.0.0"
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
-
-nan@^2.14.0:
-  version "2.17.0"
-  resolved "https://registry.npmjs.org/nan/-/nan-2.17.0.tgz"
-  integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
 
 nanoclone@^0.2.1:
   version "0.2.1"
@@ -4231,14 +4214,6 @@ parse-json@^5.0.0:
     error-ex "^1.3.1"
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
-
-paseto.js@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/paseto.js/-/paseto.js-0.1.7.tgz"
-  integrity sha512-WKExhDdcUmpEv9S2ufSuvjRcFQD1RPa5WL94euCmcQ7p/o0hcJuidRTKVx/YQ4f5VqAdz6Eyx7qs77QS8cA/+Q==
-  dependencies:
-    libsodium-wrappers-sumo "0.7.9"
-    nan "^2.14.0"
 
 passkit-generator@^3.1.7:
   version "3.1.9"
