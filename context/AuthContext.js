@@ -9,17 +9,12 @@ import React, {
 
 import { deleteStorage, getStorage, setStorage } from "../utils/localStorage";
 
+
+
+
+const PUBLIC_KEY = '1eb9dbbbbc047c03fd70604e0071f0987e16b28b757225c11f00415d0e20b1a2'
+
 const AuthContext = createContext(undefined);
-
-// type Values = {
-//     isAuthenticated: boolean,
-//     setIsAuthenticated: (isAuthenticate:boolean)=>void
-//     logout: ()=>void
-// }
-
-// interface AuthContextProviderProps{
-//     children: ReactNode
-// }
 
 const AuthContextProvider = ({ children }) => {
   
@@ -28,12 +23,14 @@ const AuthContextProvider = ({ children }) => {
   const router = useRouter();
 
   const [paseto, setPaseto] =useState(()=>{
-    const storedPaseto = getStorage('PLATFORM_PASETO')
+    const storedPaseto = getStorage('PLATFORM_PASETO') 
     if(storedPaseto){ 
         return storedPaseto
     }
     return ''
 })
+
+
 
 
   const pasetoFromUrl = router.query.paseto 
@@ -60,6 +57,23 @@ const AuthContextProvider = ({ children }) => {
           setIsAuthenticated(true)
       }
   },[paseto])
+
+
+  useEffect(()=>{
+
+    async function decodePaseto(){
+      const paseto = localStorage.getItem('PLATFORM_PASETO')
+      if(!paseto) return
+
+      // const res = await PASETO.V4.verify(paseto,PUBLIC_KEY)
+      // console.log(res)
+    }
+
+
+    decodePaseto()
+
+
+  },[])
 
   useEffect(() => {
     // set state if url paseto exist
