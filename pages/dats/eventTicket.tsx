@@ -262,7 +262,7 @@ export default function EventTicket(){
                             {nftQuery.isLoading
                                 ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'3rem'}/>
                                 : <Box style={{maxWidth: '350px', height: '350px', position: 'relative'}} >
-                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${eventDetails.logoImageHash}`}  alt='An image of the nft token'/>
+                                    <Image objectFit='contain'  layout='fill' loading='lazy' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${eventDetails.artworkHash}`}  alt='An image of the nft token'/>
                                  </Box>   
                             }
                         </Flex>
