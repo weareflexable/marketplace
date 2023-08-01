@@ -1,16 +1,25 @@
 import React,{useState,useReducer} from 'react';
-import {Flex,Box,Button,Heading,useToast} from '@chakra-ui/react'
+import {Flex,Box,Button,Heading,Text, HStack,useToast} from '@chakra-ui/react'
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
-import { useInstantBuyContext } from '../../../context/InstantBuyContext';
 import { deleteStorage } from '../../../utils/localStorage';
+import {numberFormatter} from '../../../utils/formatter' 
+import { useRouter } from 'next/router';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { useAuthContext } from '../../../context/AuthContext';
+import { usePaymentContext } from '../../../context/PaymentContext';
 
-
-
-const CheckoutForm = () => {
+interface CheckoutProps{
+  paymentIntentId: string
+}
+const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
 
   const {totalAmount,cartItems}=  useCheckoutContext()
-  const {buyNowTotal} = useInstantBuyContext()
+  const {paseto} = useAuthContext()
+  const {stripePayload} = usePaymentContext()
+
+  // const history = useLastVisitedPage()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -18,7 +27,8 @@ const CheckoutForm = () => {
   const [transactionError,setTransactionError] = useState<string|undefined>('')
   const [transactionStatus, setTransactionStatus] = useState<string>('')
 
-  console.log(elements)
+
+  const router = useRouter()
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     // We don't want to let default form submission happen here,
@@ -36,12 +46,15 @@ const CheckoutForm = () => {
       return;
     }
 
+    // This will be used in dats page to determine whether or not to delay first load for 4s or not
+    localStorage.setItem('comingFromPurchase','true')
+
     // localStorage.setItem('paymentStatus','complete')
     const result = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/bookings`, // should have a userID where it can fetch booking for it
+        return_url: `${process.env.NEXT_PUBLIC_ORIGIN}/dats`, // should have a userID where it can fetch booking for it
       },
     });
 
@@ -71,16 +84,44 @@ const CheckoutForm = () => {
     }
   };
 
+  const mutatePayment = useMutation(async(payload:any)=>{
+    const data = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/cancel-payment`,payload,{
+      headers:{
+        'Authorization': paseto
+      }
+    })
+    return data
+  })
+
+  const paymentMutation = mutatePayment
+
+  function cancelTransaction(){
+    const payload = {
+      paymentIntentID: paymentIntentId
+    }
+    paymentMutation.mutate(payload,
+      {
+        onSuccess:()=>{ 
+          const lastVisitedPage = localStorage.getItem('lastVisitedPage')
+          lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
+        },
+      })
+  }
+
+
   return (
-  <Flex w='100' h='100vh'  justifyContent='center' alignItems='center'>
-      <Box w='100%' maxW='400px'>
-          <Heading mb='8' letterSpacing='-0.7px' color='whiteAlpha.900'>Complete payment</Heading>
+  // <Flex w='100' h='100%' minHeight={'500px'}  justifyContent='center' alignItems='center'>
+      <Box w='100%' mt='9' maxW='500px'>
+        {!elements?<Text>Loading form...</Text>:null} 
           <form id='payment-form' onSubmit={handleSubmit}>
           <PaymentElement id='payment-element' />
-          <Button mt='5' type='submit' isLoading={transactionStatus==='processing'} disabled={!stripe}>Complete Payment of ${buyNowTotal>0?buyNowTotal:(totalAmount/100)}</Button>
+          <HStack mt='5' spacing={3}>
+            <Button colorScheme={'brand'} onClick={cancelTransaction} variant='ghost'>Cancel</Button>
+            <Button colorScheme={'brand'}  type='submit' loadingText='Processing payment ...' isLoading={transactionStatus==='processing'} disabled={!stripe}>{`Pay $${numberFormatter.from(Number(localStorage.getItem('subTotal')))}`}</Button>
+          </HStack>
           </form>
       </Box>     
-  </Flex>
+  // </Flex>
   )
 };
 

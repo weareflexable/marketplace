@@ -9,13 +9,10 @@ interface LayoutProps{
 }
 export default function Layout({children}:LayoutProps){
 
-    const router = useRouter()
-    console.log(router.pathname)
-
     return(
-        <Flex bg='gray.900' direction='column' w='100%' minH='100vh' h='100%'>
+        <Flex bg='#121212' direction='column' w='100%'>
             <Header/>
-            <Box as='main' h='100%' minH='100vh' w='100%'>
+            <Box as='main' h='100%' minH='95vh' w='100%'>
                 {children}
             </Box>
         </Flex>

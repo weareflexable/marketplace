@@ -8,6 +8,7 @@ export type Store = {
     state: string,
     city: string,
     imageHash:string,
+    logoImageHash?:string,
     coverImageHash: string
   }
   

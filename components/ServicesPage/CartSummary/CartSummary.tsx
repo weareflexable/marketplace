@@ -13,11 +13,10 @@ import {
     HStack,
   } from '@chakra-ui/react'
 
-
+import dayjs from 'dayjs'
 import { Service } from '../../../data/services';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../context/CheckoutContext';
-import moment from 'moment';
 import { deleteStorage } from '../../../utils/localStorage';
 
 
@@ -74,7 +73,7 @@ interface CartSummaryProps{
 
                   <HStack mb='1' spacing='4'>
                     <Text color="whiteAlpha.400" textStyle={'caption'}>Valid on</Text>
-                    <Text color="whiteAlpha.700" textStyle={'caption'}>{moment(item.tickets[0].date).add(5,'hours').tz('America/New_York').format('MMM DD, YYYY')}</Text>
+                    <Text color="whiteAlpha.700" textStyle={'caption'}>{dayjs(item.tickets[0].date).add(5,'hours').tz('America/New_York').format('MMM DD, YYYY')}</Text>
                   </HStack>
                 </Flex>
               ))}

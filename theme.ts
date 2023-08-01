@@ -1,16 +1,77 @@
 
-import "@fontsource/figtree/variable.css";
 
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools'
 
 const config: ThemeConfig ={
     initialColorMode: 'dark',
-    useSystemColorMode: true
+    useSystemColorMode: true 
 }
 
  const theme = extendTheme({
     ...config,
+    shadows:{
+      outline:'brand.200',
+
+    },
+    components:{
+      Input:{
+        defaultProps:{
+          focusBorderColor:'brand.200'
+        }
+      },
+      Select:{
+         defaultProps:{
+          focusBorderColor:'brand.200'
+        }
+      },
+      Button:{
+        baseStyle:{
+          
+        },
+        variants:{
+          'flexable-combo':{
+            color:'white',
+            fontWeight: 650,
+            backgroundColor:'transparent'
+          },
+          ghost:{
+            fontWeight:650,
+            color:'text.200',
+            backgroundColor:'#464646',
+            borderRadius: '50px'
+          },
+          activeGhost:{
+            fontWeight:650,
+            color:'brand.200',
+            backgroundColor:'#464646',
+            borderRadius: '50px'
+          },
+          link:{
+            fontWeight:650,
+            color: 'brand.200'
+          },
+          solid:{
+            bg:'brand.300',
+            borderRadius: '50px',
+            color:'white',
+            _active:{
+              bg:'brand.100',
+              color:'black'
+            },
+          },
+          accentSolid:{
+            bg:'accent.100',
+            borderRadius: '50px',
+            color:'color.text.300',
+            _active:{
+              bg:'accent.100',
+              color:'black'
+            },
+          }
+        }
+      }
+    },
     colors:{
       brand:{
         100:'#DAB1FB',
@@ -26,6 +87,12 @@ const config: ThemeConfig ={
         300:'#FFAF4D',
         400:'#FF8F05',
         500:'#B25900'
+      },
+      state:{
+        success: '#17FFA6',
+        danger: '#F16161',
+        warning: '',
+        valid: ''
       },
       text:{
         100:'rgba(255, 255, 255, 0.3)',
@@ -91,23 +158,25 @@ const config: ThemeConfig ={
   })
   },
   fonts: {
-    heading: `'Figtree', san-serif`,
-    body: `'Figtree', sans-serif`,
+    heading: `'Figtree Variable', san-serif`,
+    body: `'Figtree Variable', sans-serif`,
+   
   },
   textStyles:{
     h1: {
-      fontSize:['32px','42px'],
+      fontSize:['36px','42px'],
       fontWeight: '700',
       lineHeight: '110%',
       letterSpacing: '0.1px', 
-      color:'#f8f8f8'
+      color:'text.300'
     },
-
+    
     h2:{
       fontWeight: '700',
       fontFamily: 'body',
-      fontSize: '1em',
-      letterSpacing: '-0.1px'
+      fontSize: ['24px','32px'],
+      letterSpacing: '-0.3px',
+      color:'text.300'
     },
 
     h3:{
@@ -124,8 +193,8 @@ const config: ThemeConfig ={
       fontFamily:'body',
       marginBottom:'0',
       lineHeight:1,
-      fontSize:'1.2rem',
-      fontWeight: '700'
+      fontSize:'1.4rem',
+      fontWeight: '650'
     },
     h5:{
       fontSize:'1rem',
@@ -134,7 +203,7 @@ const config: ThemeConfig ={
       fontFamily:'body'
     },
     links:{
-      fontWeight: '700',
+      fontWeight: '650',
       lineHeight: '110%', 
       cursor:'pointer'
     },
@@ -162,12 +231,12 @@ const config: ThemeConfig ={
       fontFamily: 'body',
       fontWeight:'450',
       fontSize:'1.2rem',
-      lineHeight: 1.3,
-      letterSpacing: '-.2px'
+      lineHeight: 1.4,
+      letterSpacing: '-.1px'
     },
     secondary:{
       fontFamily: 'body',
-      fontWeight:'430',
+      fontWeight:'450',
       fontSize: '1rem',
       lineHeight: '1.3em',
       letterSpacing: '-.02px'

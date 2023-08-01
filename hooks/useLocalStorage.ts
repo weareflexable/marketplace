@@ -3,12 +3,12 @@ import { getStorage, setStorage } from '../utils/localStorage';
 
 // create type for cart items
 
-type Value = Array<any>
+// type Value = Array<any>
 
-const useLocalStorage = (defaultValue:Value)=>{
-    const [state, setState] = useState<Value>(()=>{
+const useLocalStorage = (key:string, defaultValue:any)=>{
+    const [state, setState] = useState(()=>{
         // check in local to see if it exist
-        const valueFromStorage = getStorage('cart')
+        const valueFromStorage = getStorage(key)
 
         const valueExist = valueFromStorage === null || valueFromStorage === undefined ? false : true
             if(valueExist){
@@ -22,9 +22,9 @@ const useLocalStorage = (defaultValue:Value)=>{
     // whenever state changes, update localstorage
     const stringifiedValue = JSON.stringify(state)
     // localStorage.setItem('cart', stringifiedValue)
-    setStorage('cart', stringifiedValue)
+    setStorage(key, stringifiedValue)
 
-    }, [state])
+    }, [key, state])
 
     return {state, setState}
 

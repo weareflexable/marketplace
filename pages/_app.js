@@ -1,32 +1,40 @@
 import '../styles/globals.css'
+
+import "@fontsource-variable/figtree"
+
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '../theme'
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
+import { QueryCache, QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
-import {InstantBuyContextProvider} from '../context/InstantBuyContext'
-import "antd/dist/antd.css";
+import {DatContextProvider} from '../context/DatContext'
+import {PaymentContextProvider} from '../context/PaymentContext'
 
-const queryClient = new QueryClient()
+ 
 
-
+ 
 function MyApp({ Component, pageProps }) {
+
+
+  const queryClient = new QueryClient({})
 
   return (
     <AuthContextProvider>
-        <InstantBuyContextProvider>
-          <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <PaymentContextProvider>
                 <CheckoutContextProvider>
+           <DatContextProvider>
                   <ChakraProvider theme={theme}> 
                       <Component {...pageProps} />
                   </ChakraProvider>
+            </DatContextProvider>
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </InstantBuyContextProvider>
-      </AuthContextProvider>
-  )
+        </PaymentContextProvider> 
+    </QueryClientProvider>
+      </AuthContextProvider> 
+  ) 
 }
 
 export default MyApp

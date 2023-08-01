@@ -28,7 +28,6 @@ import { Service } from '../../../../data/services';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from '../../../../context/CheckoutContext';
 import dayjs from 'dayjs';
-import moment from 'moment-timezone'
 import { deleteStorage, setStorage } from '../../../../utils/localStorage';
 
 
@@ -92,7 +91,7 @@ interface MobileCartSummaryProps{
 
                   <Flex w='100%'  justifyContent='space-between' mb='1' >
                     <Text color="whiteAlpha.500" textStyle={'secondary'}>Valid on</Text>
-                    <Text color="whiteAlpha.800" textStyle={'secondary'}>{moment(item.tickets[0].date).add(5,'hours').tz('America/New_York').format('MMM DD, YYYY')}</Text>
+                    {/* <Text color="whiteAlpha.800" textStyle={'secondary'}>{moment(item.tickets[0].date).add(5,'hours').tz('America/New_York').format('MMM DD, YYYY')}</Text> */}
                   </Flex>
                 </Flex>
               ))}
