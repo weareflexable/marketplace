@@ -8,11 +8,13 @@ import React, {
 } from "react";
 
 import { deleteStorage, getStorage, setStorage } from "../utils/localStorage";
+import axios from 'axios'
+import dayjs from "dayjs";
 
 
 
 
-const PUBLIC_KEY = '1eb9dbbbbc047c03fd70604e0071f0987e16b28b757225c11f00415d0e20b1a2'
+// const PUBLIC_KEY = '1eb9dbbbbc047c03fd70604e0071f0987e16b28b757225c11f00415d0e20b1a2'
 
 const AuthContext = createContext(undefined);
 
@@ -30,6 +32,30 @@ const AuthContextProvider = ({ children }) => {
     return ''
 })
 
+
+  // const pasetoMutation = useMutation({
+  //   mutationFn: async()=>{
+  //     const paseto = localStorage.getItem('PLATFORM_PASETO')
+  //    const res =  await axios.post(`https://platform.dev.flexabledats.com/decodePaseto`, {token: paseto },
+  //     {
+  //       headers:{
+  //       'Authorization': paseto
+  //       }
+  //     })
+
+  //     return res
+
+  //   },
+    
+  // })
+
+  function logout(){
+    setIsAuthenticated(false)
+    // clear all caches
+    localStorage.clear()
+    router.replace('/')
+    // redirect user to login page
+}
 
 
 
@@ -63,17 +89,52 @@ const AuthContextProvider = ({ children }) => {
 
     async function decodePaseto(){
       const paseto = localStorage.getItem('PLATFORM_PASETO')
+      const tokenExpiry = localStorage.getItem('tokenExpiry')
+
       if(!paseto) return
 
-      // const res = await PASETO.V4.verify(paseto,PUBLIC_KEY)
-      // console.log(res)
+      // if token already exist just check storage without having to call API
+      if(tokenExpiry){
+        const isExpired = dayjs().isAfter(tokenExpiry)
+        if(isExpired){
+          logout()
+        }
+        return
+      }
+
+
+      try{
+
+        const res =  await axios.post(`https://platform.dev.flexabledats.com/decodePaseto`, {token: paseto },
+        {
+          headers:{
+          'Authorization': paseto
+          }
+        }
+        )
+
+        if(res.status < 201){
+          const expiryDate = res.data.data.exp
+          localStorage.setItem('tokenExpiry',expiryDate)
+          const isExpired = dayjs().isAfter(expiryDate)
+          if(isExpired){
+            logout()
+          }
+        }
+
+      }catch(err){
+
+        console.log(err)
+
+      }
+    
+
+
+      
+      
     }
-
-
     decodePaseto()
-
-
-  },[])
+},[router])
 
   useEffect(() => {
     // set state if url paseto exist
@@ -89,14 +150,7 @@ const AuthContextProvider = ({ children }) => {
 }, [pasetoFromUrl])
 
 
-    function logout(){
-        setIsAuthenticated(false)
-        // clear all caches
-        localStorage.clear()
-        router.replace('/')
-        // redirect user to login page
-    }
-
+  
 
 
   const values = {
