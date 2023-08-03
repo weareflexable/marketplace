@@ -679,7 +679,7 @@ function EditableImage({selectedRecord}:EditableProp){
          <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
              Cancel
          </Text>
-         <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
+         <Button type='submit' isLoading={isEditing || isHashingImage} variant={'link'} colorScheme={'brand'}>
              Apply changes
          </Button>
        </form>
