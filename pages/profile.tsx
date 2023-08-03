@@ -36,7 +36,6 @@ export default function Profile(){
         // staleTime: Infinity
     })
 
-    console.log(userQuery.data)
 
     // console.log(userQuery.data.data)  
        

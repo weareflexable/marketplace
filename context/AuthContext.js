@@ -33,22 +33,6 @@ const AuthContextProvider = ({ children }) => {
 })
 
 
-  // const pasetoMutation = useMutation({
-  //   mutationFn: async()=>{
-  //     const paseto = localStorage.getItem('PLATFORM_PASETO')
-  //    const res =  await axios.post(`https://platform.dev.flexabledats.com/decodePaseto`, {token: paseto },
-  //     {
-  //       headers:{
-  //       'Authorization': paseto
-  //       }
-  //     })
-
-  //     return res
-
-  //   },
-    
-  // })
-
   function logout(){
     setIsAuthenticated(false)
     // clear all caches

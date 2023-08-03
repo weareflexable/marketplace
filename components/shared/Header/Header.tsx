@@ -28,6 +28,8 @@ export default function Header(){
      const userQuery = useQuery({
         queryKey:['user'],  
         queryFn: fetchUserDetails,
+        cacheTime: Infinity,
+        staleTime:Infinity,
         enabled:paseto!=='' ,
         retry: (failureCount, error) =>{
           if(failureCount >2) return false
