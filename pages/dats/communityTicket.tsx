@@ -168,7 +168,7 @@ function refreshAggregateAndHistory(){
       const nftQuery = useQuery({
         queryKey:['nft'],
         queryFn: async()=> request(
-            'https://api.thegraph.com/subgraphs/name/weareflexable/flexablenft-mumbai',
+            `${process.env.NEXT_PUBLIC_THEGRAPH_URL}`,
             userNftQuery,
             {txHash: transactionHash}
         ),
@@ -343,7 +343,7 @@ function refreshAggregateAndHistory(){
                                     <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Link</Text></Flex>
                                     <Flex flex={7}>
                                         <Text color='brand.200' textStyle={'secondary'}> 
-                                        <a target='_blank' href={`https://testnets.opensea.io/assets/mumbai/0xdc34c09270bfe7316854e6b58647d63616defd6d/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
+                                        <a target='_blank' href={`${process.env.NEXT_PUBLIC_OPENSEA_URL}/${process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}/${nftData && nftData.tokenID}`}>View DAT on opensea</a> 
                                         </Text>
                                     </Flex>
                                 </HStack>

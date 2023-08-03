@@ -36,7 +36,6 @@ export default function Profile(){
         // staleTime: Infinity
     })
 
-    console.log(userQuery.data)
 
     // console.log(userQuery.data.data)  
        
@@ -550,7 +549,7 @@ function EditableLastName({selectedRecord}:EditableProp){
                 borderWidth='2px' 
                 type='string'
                 bg={'#121212'}
-                {...formik.getFieldProps('name')}
+                {...formik.getFieldProps('lastName')}
             />
             {formik.touched.lastName&&formik.errors.lastName?<FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>:null}
         </FormControl>
@@ -679,7 +678,7 @@ function EditableImage({selectedRecord}:EditableProp){
          <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
              Cancel
          </Text>
-         <Button type='submit' isLoading={isEditing} variant={'link'} colorScheme={'brand'}>
+         <Button type='submit' isLoading={isEditing || isHashingImage} variant={'link'} colorScheme={'brand'}>
              Apply changes
          </Button>
        </form>

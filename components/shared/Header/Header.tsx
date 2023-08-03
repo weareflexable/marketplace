@@ -28,8 +28,9 @@ export default function Header(){
      const userQuery = useQuery({
         queryKey:['user'],  
         queryFn: fetchUserDetails,
+        cacheTime: Infinity,
+        staleTime:Infinity,
         enabled:paseto!=='' ,
-        refetchInterval: 30000,
         retry: (failureCount, error) =>{
           if(failureCount >2) return false
           return true  
@@ -59,7 +60,7 @@ export default function Header(){
 
 
 
-    const profilePicHash = userQuery.data && userQuery.data.length > 0 ? userQuery.data[0].profilePicHash : IMAGE_PLACEHOLDER_HASH
+    const profilePicHash = userQuery.data && userQuery.data.length > 0 ? userQuery.data[0].profilePic: IMAGE_PLACEHOLDER_HASH
 
 
     const login =()=>{
@@ -86,7 +87,7 @@ export default function Header(){
                     ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
                     :   <Menu>                            
                             <MenuButton>
-                                <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash}`}/>
+                                <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash?profilePicHash:IMAGE_PLACEHOLDER_HASH}`}/>
                             </MenuButton>
                              <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
                                 <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
