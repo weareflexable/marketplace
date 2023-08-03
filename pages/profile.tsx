@@ -550,7 +550,7 @@ function EditableLastName({selectedRecord}:EditableProp){
                 borderWidth='2px' 
                 type='string'
                 bg={'#121212'}
-                {...formik.getFieldProps('name')}
+                {...formik.getFieldProps('lastName')}
             />
             {formik.touched.lastName&&formik.errors.lastName?<FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>:null}
         </FormControl>
