@@ -113,4 +113,19 @@ jobs:
             sudo podman rm marketplace
             sudo podman run --name="marketplace" -p 9081:3000 -d ghcr.io/weareflexable/marketplace:staging
 
-     
+      - name: Deploy on Prod server 
+        if: github.ref == 'refs/heads/prod'
+        uses: appleboy/ssh-action@v0.1.7
+        with:         
+          host: ${{ secrets.DEV_REMOTE_SERVER_ADDRESS }}
+          username: ${{ secrets.DEV_SERVER_USERNAME }}
+          key:  ${{ secrets.DEV_REMOTE_SERVER_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            pwd
+            cd ~
+            echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
+            sudo podman pull ghcr.io/weareflexable/marketplace:prod
+            sudo podman stop marketplace
+            sudo podman rm marketplace
+            sudo podman run --name="marketplace" -p 9082:3000 -d ghcr.io/weareflexable/marketplace:prod
