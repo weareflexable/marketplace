@@ -6,7 +6,7 @@ import { MdRemove, MdAdd } from "react-icons/md"
 
 interface TicketButtonProps{
     isTicketsAvailable: boolean,
-    isTicketExpired: boolean,
+    isTicketExpired?: boolean,
     children: ReactNode
 }
 
