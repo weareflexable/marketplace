@@ -30,7 +30,7 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity, ticketStatus, userId,  eventBookingId,   eventDetails, transactionHash,  id} = ctx_currentDat;
+    const {ticketSecret,  quantity, ticketStatus, targetUserId,  eventBookingId,   eventDetails, transactionHash,  id} = ctx_currentDat;
 
     
     const isRedeemed = ticketStatus === 'redeemed'
@@ -53,13 +53,13 @@ export default function EventTicket(){
             ticketSecret: ticketSecret,
             validDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60, 'h').tz("UTC").format(),
             quantity: quantity,
-            userId: userId,
+            userId: targetUserId,
           };
      
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, eventDetails, userId, ticketSecret]) 
+  }, [id, quantity, eventDetails, targetUserId, ticketSecret]) 
 
   
 console.log(ctx_currentDat)
