@@ -51,13 +51,19 @@ const useEventTicket = (data:any)=>{
   
   const [isProceedingToPayment, setIsProceedingToPayment] = useState(false)
   
-  const maxPurchasableTickets = ticketData.ticketsAvailable < MAX_PURCHASABLE_TICKETS ? ticketData.ticketsAvailable : MAX_PURCHASABLE_TICKETS
+  const maxPurchasableTickets = data?.ticketsAvailable < MAX_PURCHASABLE_TICKETS ? data.ticketsAvailable : MAX_PURCHASABLE_TICKETS
 
+// console.log(data) 
+  const isTicketAvailable =  data?.ticketsAvailable > 1
+
+
+  const isTicketExpired = dayjs().isAfter(dayjs(data?.startTime).add(data?.duration/60,'h').tz("UTC"))
+ 
  
      const isMinQuantity = ticketData.quantity <= 0
      const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
 
-     const subTotal =  ticketData.quantity * (data && data.price /100)
+     const subTotal =  ticketData.quantity * (data?.price /100)
  
 
  
@@ -135,9 +141,11 @@ const useEventTicket = (data:any)=>{
         // isTicketsSoldOut, 
         isMinQuantity,
       //   ticketDate,
+        isTicketAvailable,
         isMaxQuantity,
         subTotal,
         isAuthenticated,
+        isTicketExpired,
         isProceedingToPayment,
         incrementQuantity,
         decrementQuantity,
