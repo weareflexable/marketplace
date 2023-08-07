@@ -30,7 +30,7 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity, ticketStatus, targetUserID,  startTime, eventBookingId, duration,   eventDetails, transactionHash,  id} = ctx_currentDat;
+    const {ticketSecret,  quantity, ticketStatus, userId,  eventBookingId,   eventDetails, transactionHash,  id} = ctx_currentDat;
 
     
     const isRedeemed = ticketStatus === 'redeemed'
@@ -42,7 +42,7 @@ export default function EventTicket(){
         let qrCodePayload;
     
 
-        console.log( dayjs(startTime).add(duration/60, 'h').tz("UTC").format())
+        console.log( dayjs(eventDetails.startTime).add(eventDetails.duration/60, 'h').tz("UTC").format())
 
           qrCodePayload = {
             item:{
@@ -51,18 +51,18 @@ export default function EventTicket(){
             },
             ticketId: id, // ticketId
             ticketSecret: ticketSecret,
-            validDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
+            validDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60, 'h').tz("UTC").format(),
             quantity: quantity,
-            userId: targetUserID,
+            userId: userId,
           };
-    
+     
           setQrCodePayload(qrCodePayload);
           setIsGeneratingCode(false)
 
-  }, [id, quantity, eventDetails, targetUserID, ticketSecret]) 
+  }, [id, quantity, eventDetails, userId, ticketSecret]) 
 
   
-
+console.log(ctx_currentDat)
 
    async function generateApplePass(){ 
 
@@ -70,9 +70,9 @@ export default function EventTicket(){
     
     const payload = {
         qrCode: qrCodePayload,
-        expiryDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
+        expiryDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format(),
         ticketSecret: ticketSecret,
-        targetDate: dayjs(startTime).add(duration/60, 'h').tz("UTC").format(),
+        targetDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format(),
         quantity: quantity,
         price: eventDetails.price/100,
         eventName: eventDetails.name,
@@ -83,32 +83,34 @@ export default function EventTicket(){
             longitude: eventDetails.address.longitude, 
         },
     }
-    
-    const body = await fetch('/api/generatePass',{
-        method:'POST',
-        body: JSON.stringify(payload),
-        headers:{
-            "Content-Type": "application/vnd.apple.pkpass"
-        } 
-    })
-    
-    
-    const blob = await body.blob()
-    const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
-    
-    setIsGeneratingPass(false)
-    const blobUrl = window.URL.createObjectURL(newBlob);
 
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.setAttribute('download', `${eventDetails.name}.pkpass`);
-    document.body.appendChild(link);
-    link.click();
-    // link.parentNode.removeChild(link);
+    console.log(payload)
+    
+    // const body = await fetch('/api/generatePass',{
+    //     method:'POST',
+    //     body: JSON.stringify(payload),
+    //     headers:{
+    //         "Content-Type": "application/vnd.apple.pkpass"
+    //     } 
+    // })
+    
+    
+    // const blob = await body.blob()
+    // const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
+    
+    // setIsGeneratingPass(false)
+    // const blobUrl = window.URL.createObjectURL(newBlob);
 
-    return()=>{
-        window.URL.revokeObjectURL(blobUrl);
-    }
+    // const link = document.createElement('a');
+    // link.href = blobUrl;
+    // link.setAttribute('download', `${eventDetails.name}.pkpass`);
+    // document.body.appendChild(link);
+    // link.click();
+    // // link.parentNode.removeChild(link);
+
+    // return()=>{
+    //     window.URL.revokeObjectURL(blobUrl);
+    // }
 
    }
 
@@ -181,7 +183,7 @@ export default function EventTicket(){
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has already been redeemed</Text>
                         </Flex>
-                        :dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))
+                        :dayjs().isAfter(dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h'))
                         ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
                         </Flex>
@@ -200,7 +202,7 @@ export default function EventTicket(){
                             </Flex>
                         </>
                         }
-                        {isRedeemed||dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
+                        {isRedeemed||dayjs().isAfter(dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h'))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
@@ -209,7 +211,7 @@ export default function EventTicket(){
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h'))? 'Expired': 'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h'))? 'Expired': 'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -227,7 +229,7 @@ export default function EventTicket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(duration/60,'h').tz("UTC").format('MMM DD, YYYY h A'))}</Text></Flex> 
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format('MMM DD, YYYY h A'))}</Text></Flex> 
                             </HStack>
 
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>

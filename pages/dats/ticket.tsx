@@ -34,7 +34,7 @@ export default function Ticket(){
 
     const isRedeemed = ticketStatus === 'redeemed'
     
-    const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
+    const serviceTypeName = serviceDetails && serviceDetails?.serviceType[0]?.name;
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
@@ -64,6 +64,8 @@ export default function Ticket(){
 
   
 
+  console.log(ctx_currentDat)
+
 
    async function generateApplePass(){ 
 
@@ -77,11 +79,11 @@ export default function Ticket(){
         quantity: quantity,
         price: serviceItemDetails.price/100,
         eventName: serviceItemDetails.name,
-        venueName: serviceDetails[0].name,
-        street: serviceDetails[0].street,
+        venueName: serviceDetails.name,
+        street: serviceDetails.street,
         location: {
-            latitude: serviceDetails[0].latitude,
-            longitude: serviceDetails[0].longitude, 
+            latitude: serviceDetails.latitude,
+            longitude: serviceDetails.longitude, 
         },
     }
     
