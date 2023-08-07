@@ -69,6 +69,7 @@ interface EventProps{
 }
 
 function EventListItem({order, gotoEventPage}:EventProps){
+  console.log('roder',order)
   return(
   <Flex
   py="1rem"
@@ -99,7 +100,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
           Redeemed
         </Tag>
         :
-        dayjs().isAfter(dayjs(order.eventDetails.startTime).add(order.duration/60,'h').tz('UTC'))
+        dayjs().isAfter(dayjs(order.eventDetails.startTime).add(order.eventDetails.duration/60,'h').tz('UTC'))
         ?
         <Tag size={'sm'} borderRadius='3xl'  variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'} colorScheme='orange' ml="1">
           Expired
