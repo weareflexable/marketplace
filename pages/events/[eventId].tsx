@@ -59,6 +59,8 @@ export default function EventPage(){
         incrementQuantity,
         ticketData,
         isProceedingToPayment,
+        isTicketExpired,
+        isTicketAvailable,
         buyTicketNow
     } = useEventTicket(event && event) 
 
@@ -159,7 +161,8 @@ export default function EventPage(){
                 <Text textStyle={"body"} display={['none','block']}  layerStyle={"highPop"}>{event && event.name}</Text>
                 <Flex px='1em' py='.5em' width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
                     <TicketButton
-                        isTicketsAvailable = {true} 
+                        isTicketExpired = {isTicketExpired}
+                        isTicketsAvailable = {isTicketAvailable} 
                     > 
                         <TicketButtonStepper 
                             isMinQuantity={isMinQuantity}
