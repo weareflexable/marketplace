@@ -4,7 +4,6 @@ import getCertificates from './getCertificates'
 import path from 'path'
 import { NextApiResponse } from 'next'
 import dayjs from 'dayjs'
-import exp from 'constants'
 
 export default async function handler(req:any, res:NextApiResponse){
 
@@ -31,22 +30,6 @@ export default async function handler(req:any, res:NextApiResponse){
         organizationName: `Flexable —— ${venueName}`
     }
     )
-
-    // pass.set
-    // pass.headerFields.push(
-    //     {
-    //         key: "header1",
-    //         label: "Event",
-    //         value: "Flexable natural line skips",
-    //         textAlignment: "PKTextAlignmentCenter",
-    //     },
-    //     {
-    //         key: "header2",
-    //         label: "Description",
-    //         value: "Best service in Syracuse",
-    //         textAlignment: "PKTextAlignmentCenter",
-    //     },
-    // );
 
     pass.setLocations(location)
 
