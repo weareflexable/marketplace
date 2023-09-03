@@ -88,7 +88,6 @@ const AuthContextProvider = ({ children }) => {
 
 
       try{
-
         const res =  await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/decodePaseto`, {token: paseto },
         {
           headers:{
