@@ -225,9 +225,9 @@ export default function Checkout(){
                                             {/* @ts-ignore */}
                                             {({ field, form }) => ( 
                                                 <FormControl   isRequired style={{marginBottom:'1.5rem'}} isInvalid={form.errors.firstName && form.touched.firstName}>
-                                                <FormLabel ml={'8px'} color={'text.300'}>First Name</FormLabel>
-                                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='First Name' />
-                                                <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                                                  <FormLabel ml={'8px'} color={'text.300'}>First Name</FormLabel>
+                                                  <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='First Name' />
+                                                  <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
                                                 </FormControl> 
                                             )}
                                         </Field>

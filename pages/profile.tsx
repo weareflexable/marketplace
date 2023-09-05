@@ -666,3 +666,6 @@ function EditableImage({selectedRecord}:EditableProp){
     country: string,
     profilePic: string | any[] | any
   }
+
+
+  

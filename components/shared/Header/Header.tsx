@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
 import { IMAGE_PLACEHOLDER_HASH } from '../../../constants'
+import { AddIcon } from '@chakra-ui/icons'
 
 
 
@@ -75,7 +76,7 @@ export default function Header(){
 
 
     return(
-        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1.2rem' h='100%' minH='2vh'>
+        <Flex bg='#121212' w='100%'  boxShadow='0px 1px 1px 0px #2b2b2b' alignItems='center' justifyContent='space-between' py='.2rem'  px='1.2rem'>
             <Link href='/'>
                <a> <Image src='/new_logo.svg' w={['150','200']} height={'60px'} alt='Logo of flexable app'/></a>
             </Link>
@@ -85,24 +86,29 @@ export default function Header(){
                     ? <Button colorScheme={'brand'} variant={'solid'} onClick={login}>Login</Button>
                     :  userQuery.isFetched && !isAuthenticated
                     ? <Skeleton mx='1rem'  startColor='#2b2b2b' endColor="#464646" width={'3rem'} height={'1.5rem'}/>
-                    :   <Menu>                            
-                            <MenuButton>
-                                <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash?profilePicHash:IMAGE_PLACEHOLDER_HASH}`}/>
-                            </MenuButton>
-                             <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
-                                <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
-                                    <Text textStyle={'secondary'}  color='text.300'>My DATs</Text>
-                                </MenuItem>
-                                <MenuDivider/>
-                                <MenuItem onClick={()=>push('/profile')} bg='#121212'>
-                                    <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
-                                </MenuItem>
-                                <MenuDivider/>
-                                <MenuItem bg='#121212'>
-                                    <Text textStyle={'secondary'} color='state.danger' onClick={logout}>Logout</Text>
-                                </MenuItem>
-                             </MenuList>
-                        </Menu>
+                    :
+                    <HStack spacing={3}>   
+                    <CreateOptions/> 
+                    <Menu>                            
+                        <MenuButton>
+                            <Avatar size={'sm'}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${profilePicHash?profilePicHash:IMAGE_PLACEHOLDER_HASH}`}/>
+                        </MenuButton>
+                            <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
+                            <MenuItem onClick={()=>push('/dats')}  bg='#121212'>
+                                <Text textStyle={'secondary'}  color='text.300'>My DATs</Text>
+                            </MenuItem>
+                            <MenuDivider/>
+                            <MenuItem onClick={()=>push('/profile')} bg='#121212'>
+                                <Text textStyle={'secondary'}  color='text.300'>My Profile</Text>
+                            </MenuItem>
+                            <MenuDivider/>
+                            <MenuItem bg='#121212'>
+                                <Text textStyle={'secondary'} color='state.danger' onClick={logout}>Logout</Text>
+                            </MenuItem>
+                            </MenuList>
+                    </Menu>
+                    
+                    </HStack>
                     
                 }
                 
@@ -119,5 +125,28 @@ function LoadingHeader(){
             <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" width={'3re'} height={'1rem'}/>
             <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1rem'}/>
         </Flex>
+    )
+}
+
+
+function CreateOptions(){
+    const router = useRouter()
+    return(
+        <Menu>                            
+        <MenuButton>
+            <Button size={'sm'} variant={'outline'} colorScheme='brand' leftIcon={<AddIcon/>}>Create</Button> 
+        </MenuButton>
+            <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
+            <MenuItem onClick={()=>router.push('/create/exclusiveAccess')}  bg='#121212'>
+                <Text textStyle={'secondary'}  color='text.300'>New Exclusive Access</Text>
+            </MenuItem>
+            <MenuItem onClick={()=>router.push('/create/event')} bg='#121212'>
+                <Text textStyle={'secondary'}  color='text.300'>New Event</Text>
+            </MenuItem>
+            <MenuItem onClick={()=>router.push('/create/community')} bg='#121212'>
+                <Text textStyle={'secondary'}  color='text.300'>New Community</Text>
+            </MenuItem>
+            </MenuList>
+    </Menu>
     )
 }
