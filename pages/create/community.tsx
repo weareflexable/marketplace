@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -83,16 +83,13 @@ export default function Community(){
                     </StepIndicator>
 
                     <Box flexShrink='0'>
-                        <StepTitle>{step.title}</StepTitle>
-                        {/* <StepDescription>{step.description}</StepDescription> */}
+                        <StepTitle><Text color={'text.300'}>{step.title}</Text></StepTitle>
                     </Box>
-
                     <StepSeparator />
                     </Step>
                 ))}
                 </Stepper>
-                   {/* <BasicForm/> */}
-                   <VenueForm/>
+                   {steps[activeStep].component}
                 </GridItem>
             </FormProvider>
         </Grid>
@@ -196,7 +193,7 @@ function BasicForm({prev,next}:StepProps){
     }
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
-            <Stack w={'100%'} spacing={8}>
+            <Stack w={'100%'} mt={'4rem'} spacing={8}>
                 <FormControl mb={'1rem'} w={'50%'}>
                     <FormLabel color={'text.300'}>Select your organaization</FormLabel>
                     <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
@@ -289,7 +286,7 @@ function VenueForm(){
     return(
         <form onSubmit={handleSubmit(submitForm)}>
             {fields.map((field:any, index:number) => (
-            <Stack key={field.id} mb={'1rem'} p={['1.5rem']} spacing={5} borderRadius={[0,0,8]} w={'100%'} border={'1px solid #333333'}>
+            <Stack key={field.id} mb={'1rem'} mt={'4rem'} p={['1.5rem']} spacing={5} borderRadius={[0,0,8]} w={'100%'} border={'1px solid #333333'}>
                 <FormControl>
                     <FormLabel color={'text.300'}>Name</FormLabel>
                     <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...register(`venues.${index}.name`)} />
