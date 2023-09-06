@@ -8,20 +8,10 @@ const config: ThemeConfig ={
     useSystemColorMode: true 
 }
  
-const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
-  inputAnatomy.keys,
-)
 
-const inputTheme = defineMultiStyleConfig({
-  defaultProps: {
-    size: 'md',
-    variant: 'pill',
-  },
-})
 
  const theme = extendTheme({
     ...config,
-    ...inputTheme,
     shadows:{ 
       outline:'brand.200',
 
@@ -30,7 +20,15 @@ const inputTheme = defineMultiStyleConfig({
       Input:{
         defaultProps:{
           focusBorderColor:'brand.200',
-          outline: 'red'
+        }
+      },
+      Textarea:{
+        baseStyle:{
+          
+        },
+        defaultProps:{
+          focusBorderColor:'brand.200',
+          
         }
       },
       Select:{

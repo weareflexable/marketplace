@@ -89,9 +89,6 @@ export default function ExclusiveAccess(){
                                 <Input type='number' maxLength={3} textStyle={'secondary'} color='text.300' mr={'.5rem'}  size='lg' borderColor={'#2c2c2c'} borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')}/>
                                 <Input type='number' maxLength={4} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('contactNumber')}/>
                                 </InputGroup>
-                                <FormHelperText>
-                                    Select the type of exclusive access you want to create
-                                </FormHelperText>
                             </FormControl>
 
                             <Stack mt={'1rem'} >
