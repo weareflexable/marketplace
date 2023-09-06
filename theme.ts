@@ -5,7 +5,7 @@ import { mode } from '@chakra-ui/theme-tools'
 
 const config: ThemeConfig ={
     initialColorMode: 'dark',
-    useSystemColorMode: true 
+    useSystemColorMode: false
 }
  
 
@@ -24,12 +24,13 @@ const config: ThemeConfig ={
       },
       Textarea:{
         baseStyle:{
-          
+          colorScheme:'red',
+          focusBorderColor: ''
         },
-        defaultProps:{
-          focusBorderColor:'brand.200',
+        // defaultProps:{
+        //   focusBorderColor:'brand.200',
           
-        }
+        // }
       },
       Select:{
          defaultProps:{

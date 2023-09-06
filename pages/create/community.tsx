@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, FormHelperText, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast } from "@chakra-ui/react";
+import { Box, Flex, FormControl, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -36,6 +36,27 @@ export default function Community(){
 
     const watchSelectedOrg = methods.watch('organizationId')
     
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleNext = () => {
+        setActiveStep((prevStep) => prevStep + 1);
+      };
+
+      const handlePrevious = () => {
+        setActiveStep((prevStep) => prevStep - 1);
+      };
+
+      const steps = [
+        { title: 'Basic Info',
+        //  description: 'Contact Info',
+         component: <BasicForm prev={handlePrevious} next={handleNext}/>
+        },
+        { title: 'Add Venues', 
+        // description: 'Date & Time',
+        component: <VenueForm/>
+    }
+      ]
+
     
 
     return(
@@ -49,6 +70,27 @@ export default function Community(){
             </GridItem>
             <FormProvider {...methods}>
                 <GridItem px={['0','1rem','1rem',0,0]} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
+
+                <Stepper size={'sm'}  mx={['1rem']} index={activeStep}>
+                {steps.map((step, index) => (
+                    <Step key={index}> 
+                    <StepIndicator>
+                        <StepStatus
+                            complete={<StepIcon />}
+                            incomplete={<StepNumber />}
+                            active={<StepNumber />}
+                        />
+                    </StepIndicator>
+
+                    <Box flexShrink='0'>
+                        <StepTitle>{step.title}</StepTitle>
+                        {/* <StepDescription>{step.description}</StepDescription> */}
+                    </Box>
+
+                    <StepSeparator />
+                    </Step>
+                ))}
+                </Stepper>
                    {/* <BasicForm/> */}
                    <VenueForm/>
                 </GridItem>
@@ -107,7 +149,11 @@ function ImageUploader({name}:{name: string}){
     )
   }
 
-function BasicForm(){
+  interface StepProps{
+    prev: ()=>void,
+    next: ()=>void
+  }
+function BasicForm({prev,next}:StepProps){
 
     const methods = useForm<Community>({
     })
@@ -146,76 +192,77 @@ function BasicForm(){
 
     function submitForm(values: any){
         console.log(values)
+        next()
     }
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
-                        <Stack w={'100%'} spacing={8}>
-                            <FormControl mb={'1rem'} w={'50%'}>
-                                <FormLabel color={'text.300'}>Select your organaization</FormLabel>
-                                <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                                    <option value="flexable">Flexable organization</option>
-                                    <option value="principle">Principle organization</option>
-                                    <option value="Magerine">Magerine organization</option>
-                                </Select>
-                                <FormHelperText>
-                                    Your exclusive access will be created under this organization
-                                </FormHelperText>
-                            </FormControl>
+            <Stack w={'100%'} spacing={8}>
+                <FormControl mb={'1rem'} w={'50%'}>
+                    <FormLabel color={'text.300'}>Select your organaization</FormLabel>
+                    <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                        <option value="flexable">Flexable organization</option>
+                        <option value="principle">Principle organization</option>
+                        <option value="Magerine">Magerine organization</option>
+                    </Select>
+                    <FormHelperText>
+                        Your exclusive access will be created under this organization
+                    </FormHelperText>
+                </FormControl>
 
-                            <Box>
-                                <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
-                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
-                                    <FormControl>
-                                        <FormLabel color={'text.300'}>Name</FormLabel>
-                                        <InputGroup size={'lg'}>
-                                            <InputLeftAddon border={'inherit'} bg={'#222222'} color={'text.200'}>
-                                                Key to:
-                                            </InputLeftAddon>
-                                            <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('title')}/>
-                                        </InputGroup>
-                                    </FormControl>
+                <Box>
+                    <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
+                    <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
+                        <FormControl>
+                            <FormLabel color={'text.300'}>Name</FormLabel>
+                            <InputGroup size={'lg'}>
+                                <InputLeftAddon border={'inherit'} bg={'#222222'} color={'text.200'}>
+                                    Key to:
+                                </InputLeftAddon>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('title')}/>
+                            </InputGroup>
+                        </FormControl>
 
-                                    <FormControl>
-                                        <FormLabel color={'text.300'}>Description</FormLabel>
-                                        <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('description')}/>
-                                    </FormControl>
+                        <FormControl>
+                            <FormLabel color={'text.300'}>Description</FormLabel>
+                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('description')}/>
+                        </FormControl>
 
-                                    <FormControl w={'50%'}>
-                                        <FormLabel color={'text.300'}>Price</FormLabel>
-                                        <InputGroup size={'lg'}>
-                                        <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price')}/>
-                                        </InputGroup> 
-                                    </FormControl>
-                                
-                                </Stack>
-                            </Box>
-                            
+                        <FormControl w={'50%'}>
+                            <FormLabel color={'text.300'}>Price</FormLabel>
+                            <InputGroup size={'lg'}>
+                            <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price')}/>
+                            </InputGroup> 
+                        </FormControl>
+                    
+                    </Stack>
+                </Box>
+                
 
 
-                            <Box  >
-                                <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
-                                {/* <Box border={'1px solid #333333'}> */}
-                                <ImageUploader name='artworkImage'/>
-                                {/* </Box> */} 
-                            </Box>
+                <Box  >
+                    <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
+                    {/* <Box border={'1px solid #333333'}> */}
+                    <ImageUploader name='artworkImage'/>
+                    {/* </Box> */} 
+                </Box>
 
-                            <Box >
-                                <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
-                                {/* <Box border={'1px solid #333333'}> */}
-                                <ImageUploader name="logoImageHash"/>
-                                {/* </Box> */} 
-                            </Box>
+                <Box >
+                    <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
+                    {/* <Box border={'1px solid #333333'}> */}
+                    <ImageUploader name="logoImageHash"/>
+                    {/* </Box> */} 
+                </Box>
 
-                        <Box>
-                        <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
-                            <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                            <Button colorScheme="brand" type="submit">Create Community</Button>
-                        </ButtonGroup>
-                        </Box>
+            <Box>
+            <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
+                <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
+                <Button colorScheme="brand" type="submit">Create Community</Button>
+            </ButtonGroup>
+            </Box>
 
-                        </Stack>
-                    </form>
+            </Stack>
+        </form>
     )
 }
 

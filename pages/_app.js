@@ -19,16 +19,16 @@ function MyApp({ Component, pageProps }) {
 
   const queryClient = new QueryClient({})
 
-  return (
+  return ( 
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <PaymentContextProvider>
+        <PaymentContextProvider> 
                 <CheckoutContextProvider>
            <DatContextProvider>
-                  <ChakraProvider theme={theme}> 
-                      <Component {...pageProps} />
-                  </ChakraProvider>
-            </DatContextProvider>
+                  <ChakraProvider theme={theme}>      
+                      <Component {...pageProps} />    
+                  </ChakraProvider> 
+            </DatContextProvider>   
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
         </PaymentContextProvider> 
