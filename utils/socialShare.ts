@@ -18,6 +18,7 @@ const handleShareTwitter = () => {
     window.open(shareLink, "_blank");
   };
 
+  
 
   const handleShareWhatsapp = () => {
     const url = encodeURIComponent(window.location.href);

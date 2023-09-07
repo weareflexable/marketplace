@@ -1,10 +1,11 @@
 import React,{useEffect,useState} from 'react';
-import { Flex, Box, Heading, Avatar, Link, HStack, Image,Text, Button, IconButton} from '@chakra-ui/react'
+import { Flex, Box, Heading, Avatar, Link, HStack, Image,Text, Button, IconButton, useClipboard} from '@chakra-ui/react'
 import useIpfsImage from '../../../hooks/useIpfsImage'
 import {MdLocationPin} from 'react-icons/md'
 import { useRouter } from 'next/router';
 import { handleShareFacebook, handleShareLinkedIn, handleShareTwitter, handleShareWhatsapp } from '../../../utils/socialShare';
 import { TwitterIcon, LinkedinIcon, WhatsappIcon, FacebookIcon } from '../../../customIcons';
+import { CopyIcon } from '@chakra-ui/icons';
 
 interface StoreHeaderProps{
     storeName: string,
@@ -18,6 +19,14 @@ interface StoreHeaderProps{
 export default function StoreHeader({logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
 
     const coverImage = logoImageHash && logoImageHash 
+    
+    const {value, setValue, onCopy, hasCopied} = useClipboard('')
+
+    function handleCopyLink(){
+        onCopy()
+        console.log(window.location.href)
+        setValue(window.location.href)
+    }
     
 
     return(
@@ -49,6 +58,7 @@ export default function StoreHeader({logoImageHash, street, storeName, city, sta
                     <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
+                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
                 </HStack>
             </Flex>
         </Flex>

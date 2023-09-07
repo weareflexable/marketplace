@@ -1,7 +1,8 @@
 import React,{useEffect,useState} from 'react';
-import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text, Button, IconButton} from '@chakra-ui/react'
+import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text, Button, IconButton, useClipboard} from '@chakra-ui/react'
 import { handleShareFacebook, handleShareLinkedIn, handleShareTwitter, handleShareWhatsapp } from '../../../utils/socialShare';
 import { TwitterIcon, LinkedinIcon, WhatsappIcon, FacebookIcon } from '../../../customIcons';
+import { CopyIcon } from '@chakra-ui/icons';
 // import Image from 'next/image'
 
 
@@ -16,6 +17,15 @@ interface Props{
 export default function HeroSection({logoImageHash, coverImageHash, description, artworkHash, price, name}:Props){
 
     const coverImage = coverImageHash && coverImageHash 
+    
+
+    const {value, setValue, onCopy, hasCopied} = useClipboard('')
+
+    function handleCopyLink(){
+        onCopy()
+        console.log(window.location.href)
+        setValue(window.location.href)
+    }
     
 
     return(
@@ -45,6 +55,7 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
                     <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
+                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
                 </HStack>
             </Flex>
             {/* <Flex mx={4}  w='100' mb='1rem' direction={'column'}> 
