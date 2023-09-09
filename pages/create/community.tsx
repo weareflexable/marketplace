@@ -1,11 +1,15 @@
-import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { usePlacesWidget } from "react-google-autocomplete";
+import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import useOnclickOutside from "react-cool-onclickoutside";
 
 
 type Community = {
@@ -314,10 +318,12 @@ function VenueForm(){
                     </FormHelperText>
                 </FormControl>
 
-                <FormControl>
+                <Address index={index}/>
+
+                {/* <FormControl>
                     <FormLabel>Address</FormLabel>
                     <Input textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="North Bridge Carolina, USA" {...register(`venues.${index}.address`)}/>
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl>
                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
@@ -348,4 +354,91 @@ function VenueForm(){
         </form>
     )
 }
+
+
+
+function Address({index}:{index:number}){
+    const {register,formState} = useFormContext()
+
+    const {
+        ready,
+        value,
+        suggestions: { status, data },
+        setValue,
+        clearSuggestions,
+      } = usePlacesAutocomplete({
+        callbackName: "mapCallback",
+        requestOptions: {
+          /* Define search scope here */
+        },
+        debounce: 300,
+      });
+      const ref = useOnclickOutside(() => {
+        // When the user clicks outside of the component, we can dismiss
+        // the searched suggestions by calling this method
+        clearSuggestions();
+      });
+    
+      const handleInput = (e:any) => {
+        // Update the keyword of the input element
+        setValue(e.target.value);
+      };
+    
+      const handleSelect =
+        ({ description }:{description:any}) =>
+        () => {
+          // When the user selects a place, we can replace the keyword without request data from API
+          // by setting the second parameter to "false"
+          setValue(description, false);
+          clearSuggestions();
+    
+          // Get latitude and longitude via utility functions
+          getGeocode({ address: description }).then((results) => {
+            const { lat, lng } = getLatLng(results[0]);
+            console.log("📍 Coordinates: ", { lat, lng });
+          });
+        };
+    
+      const renderSuggestions = () =>
+        data.map((suggestion) => {
+          const {
+            place_id,
+            structured_formatting: { main_text, secondary_text },
+          } = suggestion;
+    
+          return (
+            <ListItem borderBottom={'1px solid #333333'} _last={{borderBottom:'0'}} _first={{mt:'.5rem'}} mb={'.5rem'} px='1rem' py={'.5rem'} key={place_id} listStyleType={'none'} onClick={handleSelect(suggestion)}>
+              <strong>{main_text}</strong> <small>{secondary_text}</small>
+            </ListItem>
+          );
+        });
+
+        const initRef = useRef()
+
+    
+      
+    return(
+    <FormControl ref={ref}>
+        <FormLabel>Address</FormLabel>
+        
+        <Input 
+            textStyle={'secondary'}
+            color='text.300'  
+            size='lg' 
+            borderColor={'#2c2c2c'}  
+            variant={'outline'} 
+            placeholder="North Bridge Carolina, USA" 
+            {...register(`venues.${index}.address`,{
+                onChange: handleInput
+            })}
+            />
+            {status == 'OK' && 
+
+                    <UnorderedList border={'1px solid #333333'} borderRadius={8}  m='0' mt={'1rem'} color={'text.300'}>
+                        {renderSuggestions()}
+                    </UnorderedList>
+            }
+    </FormControl>
+    )
+} 
 
