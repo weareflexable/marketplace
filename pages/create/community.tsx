@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { usePlacesWidget } from "react-google-autocomplete";
-import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
 
@@ -367,9 +367,14 @@ function Address({index}:{index:number}){
         setValue,
         clearSuggestions,
       } = usePlacesAutocomplete({
-        callbackName: "mapCallback",
+        callbackName: "initMap",
         requestOptions: {
           /* Define search scope here */
+          componentRestrictions:{
+            country: 'us'
+          },
+          
+        //   types: ['bakery','bar','restaraunt']
         },
         debounce: 300,
       });
@@ -381,22 +386,36 @@ function Address({index}:{index:number}){
     
       const handleInput = (e:any) => {
         // Update the keyword of the input element
+        console.log(e.target.value)
         setValue(e.target.value);
       };
     
       const handleSelect =
-        ({ description }:{description:any}) =>
+        (suggestion:any) =>
         () => {
+
+            console.log(suggestion)
+            const {description,place_id} = suggestion
+
           // When the user selects a place, we can replace the keyword without request data from API
           // by setting the second parameter to "false"
           setValue(description, false);
           clearSuggestions();
-    
-          // Get latitude and longitude via utility functions
-          getGeocode({ address: description }).then((results) => {
-            const { lat, lng } = getLatLng(results[0]);
-            console.log("📍 Coordinates: ", { lat, lng });
-          });
+
+          const parameter = {
+            // Use the "place_id" of suggestion from the dropdown (object), here just taking the first suggestion for brevity
+            placeId: place_id,
+            // Specify the return data that you want (optional)
+            fields: ["name", "rating","formatted_address"], 
+          };
+ 
+          getDetails(parameter)
+            .then((details:any) => {
+                console.log("Details: ", details);
+            })
+            .catch((error:any) => {
+                console.log("Error: ", error);
+            });
         };
     
       const renderSuggestions = () =>
@@ -407,36 +426,36 @@ function Address({index}:{index:number}){
           } = suggestion;
     
           return (
-            <ListItem borderBottom={'1px solid #333333'} _last={{borderBottom:'0'}} _first={{mt:'.5rem'}} mb={'.5rem'} px='1rem' py={'.5rem'} key={place_id} listStyleType={'none'} onClick={handleSelect(suggestion)}>
-              <strong>{main_text}</strong> <small>{secondary_text}</small>
+            <ListItem cursor={'pointer'} borderBottom={'1px solid #333333'} _last={{borderBottom:'0'}} _first={{mt:'.5rem'}} mb={'.5rem'} px='1rem' py={'.5rem'} key={place_id} listStyleType={'none'} onClick={handleSelect(suggestion)}>
+             <HStack> <strong>{main_text}</strong> <Text color={'text.200'}>{secondary_text}</Text> </HStack>
             </ListItem>
           );
         });
 
-        const initRef = useRef()
 
     
       
     return(
     <FormControl ref={ref}>
-        <FormLabel>Address</FormLabel>
+        <FormLabel color={'text.300'}>Address</FormLabel>
         
         <Input 
             textStyle={'secondary'}
             color='text.300'  
-            size='lg' 
+            size='lg'  
             borderColor={'#2c2c2c'}  
             variant={'outline'} 
-            placeholder="North Bridge Carolina, USA" 
+            value={value}
+            placeholder="Enter your address" 
             {...register(`venues.${index}.address`,{
                 onChange: handleInput
             })}
             />
             {status == 'OK' && 
 
-                    <UnorderedList border={'1px solid #333333'} borderRadius={8}  m='0' mt={'1rem'} color={'text.300'}>
-                        {renderSuggestions()}
-                    </UnorderedList>
+                <UnorderedList border={'1px solid #333333'} borderRadius={8}  m='0' mt={'1rem'} color={'text.300'}>
+                    {renderSuggestions()}
+                </UnorderedList>
             }
     </FormControl>
     )
