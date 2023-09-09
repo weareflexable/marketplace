@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -10,6 +10,7 @@ import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocomplet
 import { usePlacesWidget } from "react-google-autocomplete";
 import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { ArrowUpIcon } from "@chakra-ui/icons";
 
 
 type Community = {
@@ -94,7 +95,7 @@ export default function Community(){
                 ))}
                 </Stepper>
                    {steps[activeStep].component}
-                </GridItem>
+                </GridItem> 
             </FormProvider>
         </Grid>
      </Layout>
@@ -105,56 +106,15 @@ Community
 
 
 
-function ImageUploader({name}:{name: string}){
 
-    const {register,setValue} = useFormContext()
-      
-  
-    const extractImage = async(e: any) => {
-      //upload data here
-      const file = e.target.files && e.target.files[0];
-      console.log(file)
-      setValue(name,file)
-
-      
-  };
-  
-    return (
-      <FormControl > 
-      <Stack spacing={4}> 
-      <FormLabel htmlFor={name}>
-      <Box cursor={'pointer'}>
-        <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/>
-      </Box>
-      </FormLabel>
-      <Box                    
-         borderColor={'#464646'}  
-         {...register(name,{
-            onChange: e=>extractImage(e)
-         })}
-         id={name}
-         as="input" 
-         accept="image/x-png,image/gif,image/jpeg"
-         display={'none'}
-         color='text.300' 
-         borderWidth='2px' 
-         type='file'
-         width={'100px'}
-     />
-     <FormHelperText color={'text.200'}>
-        Please upload a PNG or JPEG that is 2400px x 1200px
-     </FormHelperText>
-     {/* { isUploading?<Spinner/>:null} */}
-    </Stack>
-     </FormControl>
-    )
-  }
 
   interface StepProps{
     prev: ()=>void,
     next: ()=>void
   }
 function BasicForm({prev,next}:StepProps){
+
+    const [selectedLogoImage, setSelectedLogoImage] = useState<string|undefined>()
 
     const methods = useForm<Community>({
     })
@@ -195,6 +155,14 @@ function BasicForm({prev,next}:StepProps){
         console.log(values)
         next()
     }
+
+    function handleImageSelect(imageHash:string){
+        // set image state
+        setSelectedLogoImage(imageHash)
+        // set value in form
+        // methods.setValue('logoImageHash',imageHash)
+    }
+
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
@@ -244,7 +212,8 @@ function BasicForm({prev,next}:StepProps){
                 <Box  >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
                     {/* <Box border={'1px solid #333333'}> */}
-                    <ImageUploader name='artworkImage'/>
+                    {/* <ImageUploader name='artworkImage'/> */}
+                    <AssetUploader onSelectImage={handleImageSelect}/>
                     {/* </Box> */} 
                 </Box>
 
@@ -461,3 +430,174 @@ function Address({index}:{index:number}){
     )
 } 
 
+
+function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void}){
+
+    const {isOpen,onClose,onOpen,onToggle} = useDisclosure()
+    const [imageSrc, setImageSrc] = useState('')
+
+    function uploadToIpfs(){
+        
+    }
+
+    function handleSelectImage(imageHash:string){
+
+        console.log(imageHash)
+        // set local state
+        setImageSrc(imageHash)
+
+        // pass imagehash to parent comp
+        onSelectImage(imageHash)
+
+        // close modal
+        onClose()
+    }
+
+    return(
+        <Flex mt={6}> 
+            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
+                {/* <Button textDecoration={'none'} onClick={onOpen} variant={'link'} colorScheme="brand">Upload a asset for your NFT</Button> */}
+                <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${imageHashList[0]}`}/>
+                <IconButton position={'absolute'} onClick={onOpen} bottom={'-2'} right={'-3'} aria-label="upload button" isRound variant={'ghost'} colorScheme="brand" size={'md'} icon={<ArrowUpIcon/>}/>
+            </Flex>
+            <Modal isCentered size={'xl'} isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent bg={'#252626'}>
+                <ModalHeader color={'text.300'}>Choose Image</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody p={'1rem'} >
+                    <ImageUploader name="logoImageHash"/> 
+                    <ArtworkPicker onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
+                </ModalBody>
+                </ModalContent>
+            </Modal>
+        </Flex>
+    )
+}
+
+
+
+function ImageUploader({name}:{name: string}){
+
+    const {register,setValue} = useFormContext()
+      
+  
+    const extractImage = async(e: any) => {
+      //upload data here
+      const file = e.target.files && e.target.files[0];
+      console.log(file)
+      setValue(name,file)
+
+      
+  };
+  
+    return (
+      <FormControl > 
+      <Stack spacing={4}> 
+      <FormLabel htmlFor={name}>
+      <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
+        {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
+        <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
+        <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+      </Flex>
+      </FormLabel>
+      <Box                    
+         borderColor={'#464646'}  
+         {...register(name,{
+            onChange: e=>extractImage(e)
+         })}
+         id={name}
+         as="input" 
+         accept="image/x-png,image/gif,image/jpeg"
+         display={'none'}
+         color='text.300' 
+         borderWidth='2px' 
+         type='file'
+         width={'100px'}
+     />
+     {/* { isUploading?<Spinner/>:null} */}
+    </Stack>
+     </FormControl>
+    )
+  }
+
+function DirectImageUploader({name}:{name: string}){
+
+    const {register,setValue} = useFormContext()
+      
+  
+    const extractImage = async(e: any) => {
+      //upload data here
+      const file = e.target.files && e.target.files[0];
+      console.log(file)
+      setValue(name,file)
+
+      
+  };
+  
+    return (
+      <FormControl > 
+      <Stack spacing={4}> 
+      <FormLabel htmlFor={name}>
+      <Flex bg={'#252525'} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
+        {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
+        <Text mb={'.8rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
+        <Text width={'60%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+      </Flex>
+      </FormLabel>
+      <Box                    
+         borderColor={'#464646'}  
+         {...register(name,{
+            onChange: e=>extractImage(e)
+         })}
+         id={name}
+         as="input" 
+         accept="image/x-png,image/gif,image/jpeg"
+         display={'none'}
+         color='text.300' 
+         borderWidth='2px' 
+         type='file'
+         width={'100px'}
+     />
+     {/* { isUploading?<Spinner/>:null} */}
+    </Stack>
+     </FormControl>
+    )
+  }
+
+function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelection:(imageHash:string)=>void, onClose:()=>void}){
+
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number>()
+
+
+
+    function selectImage(imageHash:string){
+        onHandleArtworkSelection(imageHash)
+        onClose()
+        // setSelectedImageIndex(index)
+    }
+    return(
+        <Box>
+        <Heading color={'text.300'} my={'1rem'} size={'md'}>Midjourney Artworks</Heading>
+        <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
+            {imageHashList.map((imageHash:string, index:number)=>(
+                <Box cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
+                    <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'150px'} alt="Image"/>
+                </Box>
+            )
+            )}
+        </Box>
+        </Box>
+    )
+}
+
+
+const imageHashList= [
+    'bafkreih5kmywbykilkwduqdx7lttuuzin2puselw6swwnhi3hrnztuv6r4',
+    'bafkreignk6ctyc3ngrklrmnpqnrbovij3e5x23ups5ynbwghe6rwwpnq4y',
+    'bafkreibzyvawcyr3zjnvob6rfr7edzct7a63radq6ec5k5woa2v7belvs4',
+    'bafkreidrgnhgak5zurcyud73kzgm347fkvruoy5mjm4stosetpfocyhem4',
+    'bafkreigbbf73imovkwrsjrcvys6cggwff2jwb6ixi5weovlxftb73t54qe',
+    'bafkreifll4nla7zdudxrlei3widcqtiz6phaa5zlbzyo5fdd76byytytgy',
+    'bafkreiffhginn626rfdqsrn4lqpzhpsdfqbdeqxmofr3offdl6akp5qixy'
+]
