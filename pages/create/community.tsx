@@ -11,6 +11,7 @@ import { usePlacesWidget } from "react-google-autocomplete";
 import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { ArrowUpIcon } from "@chakra-ui/icons";
+import { asyncStore } from "../../utils/nftStorage";
 
 
 type Community = {
@@ -220,7 +221,7 @@ function BasicForm({prev,next}:StepProps){
                 <Box >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
                     {/* <Box border={'1px solid #333333'}> */}
-                    <ImageUploader name="logoImageHash"/>
+                    <DirectImageUploader name="logoImageHash"/>
                     {/* </Box> */} 
                 </Box>
 
@@ -437,7 +438,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
     const [imageSrc, setImageSrc] = useState('')
 
     function uploadToIpfs(){
-        
+
     }
 
     function handleSelectImage(imageHash:string){
@@ -453,6 +454,21 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
         onClose()
     }
 
+    function handleUploadedImage(imageHash:string){
+
+        console.log(imageHash)
+        // set local state
+        setImageSrc(imageHash)
+
+        // pass imagehash to parent comp
+        onSelectImage(imageHash)
+
+        // close modal
+        onClose()
+    }
+
+
+
     return(
         <Flex mt={6}> 
             <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
@@ -466,7 +482,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
                 <ModalHeader color={'text.300'}>Choose Image</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody p={'1rem'} >
-                    <ImageUploader name="logoImageHash"/> 
+                    <ImageUploader onUploadImage={handleUploadedImage} name="logoImageHash"/> 
                     <ArtworkPicker onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
                 </ModalBody>
                 </ModalContent>
@@ -477,16 +493,30 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 
 
 
-function ImageUploader({name}:{name: string}){
+function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageHash:string)=>void}){
 
     const {register,setValue} = useFormContext()
+
+    const toast = useToast()
       
   
     const extractImage = async(e: any) => {
       //upload data here
       const file = e.target.files && e.target.files[0];
-      console.log(file)
-      setValue(name,file)
+      try{
+        const res  = await asyncStore(file)
+        onUploadImage(res)
+        console.log(res)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to IPFS',
+            status:'error',
+            duration:4000,
+            isClosable: true,
+            position:'top-right'
+        })
+      }
+    //   setValue(name,file)
 
       
   };
@@ -581,7 +611,7 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
         <Heading color={'text.300'} my={'1rem'} size={'md'}>Midjourney Artworks</Heading>
         <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
             {imageHashList.map((imageHash:string, index:number)=>(
-                <Box cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
+                <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
                     <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'150px'} alt="Image"/>
                 </Box>
             )
