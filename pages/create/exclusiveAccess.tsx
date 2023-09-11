@@ -1,146 +1,476 @@
-import { Box, Flex, FormControl, FormHelperText, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup } from "@chakra-ui/react";
-import  {useForm, FormProvider, useFormContext} from 'react-hook-form'
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
+import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { usePlacesWidget } from "react-google-autocomplete";
+import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
+import useOnclickOutside from "react-cool-onclickoutside";
+import { AddIcon, ArrowUpIcon, MinusIcon } from "@chakra-ui/icons";
+import { asyncStore } from "../../utils/nftStorage";
 
 
-type ExclusiveAccess = {
+type IExclusiveAccess = {
     organizationId: string,
-    name: string,
+    title: string,
     price: number,
+    totalTickets: number,
     serviceType: string,
-    ticketsPerDay: number,
-    description:string,
     orgServiceId: string,
+    location: string,
     address: string,
+    duration: number,
+    venueName: string,
+    startTime: string,
+    endTime: string,
     contactNumber: string,
     logoImageHash?: string | null | any,
-    validityStartDate: string,
-    validityEndDate: string,
+    description: string,
     // serviceItemId: string
     serviceItemTypeId?: string | undefined | string[]
 }
 
 
 export default function ExclusiveAccess(){
-    const methods = useForm<ExclusiveAccess>({
-       
+    const methods = useForm<IExclusiveAccess>({
     })
+
+    const router = useRouter()
+    const toast = useToast()
+
+    
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleNext = () => {
+        setActiveStep((prevStep) => prevStep + 1);
+      };
+
+      const handlePrevious = () => {
+        setActiveStep((prevStep) => prevStep - 1);
+      };
+
+      const steps = [
+        { title: 'Basic Info',
+        //  description: 'Contact Info',
+         component: <BasicForm prev={handlePrevious} next={handleNext}/>
+        },
+        { title: 'Custom Availability', 
+        // description: 'Date & Time',
+        component: <CustomAvailability/>
+    }
+      ]
+    
+
     return(
         <Layout>
-        <Grid h='100%'  layerStyle={'base'} templateColumns={'repeat(5,1fr)'} mt={'1rem'}>
+        <Grid h='100%'  layerStyle={'base'} templateColumns={'repeat(6,1fr)'} mt={'1rem'}>
             {/* <GridItem colSpan={6}>
 
             </GridItem> */}
-            <GridItem px={['1rem','1rem',0,0]} mb='2rem' mt={'3rem'} colStart={[1,1,2,2]} colEnd={[6,6,5,4]}>
-              <Heading color={'text.300'}>Create new Exclusive Access</Heading>
+            <GridItem px={['1rem','1rem',0,0]} mb='2rem' mt={'3rem'} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
+              <Heading mx={'1rem'} color={'text.300'}>Create Exclusive Access</Heading>
             </GridItem>
             <FormProvider {...methods}>
-                <GridItem px={['1rem','1rem',0,0]} colStart={[1,1,2,2]} colEnd={[6,6,5,4]}>
-                    <form>
-                        <Stack w={'100%'} spacing={8}>
-                            <FormControl mb={'1rem'} w={'50%'}>
-                                <FormLabel color={'text.300'}>Select your organaization</FormLabel>
-                                <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                                    <option value="flexable">Flexable organization</option>
-                                    <option value="principle">Principle organization</option>
-                                    <option value="Magerine">Magerine organization</option>
-                                </Select>
-                                <FormHelperText>
-                                    Your exclusive access will be created under this organization
-                                </FormHelperText>
-                            </FormControl>
+                <GridItem px={['0','1rem','1rem',0,0]} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
 
-                            <Stack mt={'1rem'} mb={'2rem'}>
-                                <Heading color={'text.200'}  size={'md'}>Select exclusive access type</Heading>
-                                {/* <Box border={'1px solid #333333'}> */}
-                                <FormControl >
-                                    <FormLabel color={'text.300'}>Select your organaization</FormLabel>
-                                    <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
-                                        <option value="bar">Bar</option>
-                                        <option value="restaurant">Restaurant</option>
-                                    </Select>
-                                    <FormHelperText>
-                                        Select the type of exclusive access you want to create
-                                    </FormHelperText>
-                                </FormControl>
-                                {/* </Box> */}
-                            </Stack>
+                <Stepper size={'sm'}  mx={['1rem']} index={activeStep}>
+                {steps.map((step, index) => (
+                    <Step key={index}> 
+                    <StepIndicator>
+                        <StepStatus
+                            complete={<StepIcon />}
+                            incomplete={<StepNumber />}
+                            active={<StepNumber />}
+                        />
+                    </StepIndicator>
 
-                            <FormControl>
-                                <FormLabel color={'text.300'}>Name</FormLabel>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('name')}/>
-                            </FormControl>
-
-                            <FormControl>
-                                <FormLabel color={'text.300'}>Address</FormLabel>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('address')}/>
-                                <FormHelperText color={'text.200'}>
-                                Please refresh the page if the address you selected is not being displayed in the field
-                                </FormHelperText>
-                            </FormControl>
-
-                            <FormControl>
-                                <FormLabel color={'text.300'}>Contact Number</FormLabel>
-                                <InputGroup size={'lg'}> 
-                                <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
-                                <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')}/>
-                                <Input type='number' maxLength={3} textStyle={'secondary'} color='text.300' mr={'.5rem'}  size='lg' borderColor={'#2c2c2c'} borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')}/>
-                                <Input type='number' maxLength={4} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('contactNumber')}/>
-                                </InputGroup>
-                            </FormControl>
-
-                            <Stack mt={'1rem'} >
-                                <Heading color={'text.200'}  size={'md'}>Upload cover image</Heading>
-                                {/* <Box border={'1px solid #333333'}> */}
-                                <ImageUploader/>
-                                {/* </Box> */} 
-                            </Stack>
-                        </Stack>
-                    </form>
-                </GridItem>
+                    <Box flexShrink='0'>
+                        <StepTitle><Text color={'text.300'}>{step.title}</Text></StepTitle>
+                    </Box>
+                    <StepSeparator />
+                    </Step>
+                ))}
+                </Stepper>
+                   {steps[activeStep].component}
+                </GridItem> 
             </FormProvider>
         </Grid>
      </Layout>
     )
 }
 
-ExclusiveAccess
 
 
 
-function ImageUploader(){
-    // const {isUploading,uploadFile, secureUrl} = useCloudinary()
+  interface StepProps{
+    prev: ()=>void,
+    next: ()=>void
+  }
+function BasicForm({prev,next}:StepProps){
+
+    const [selectedLogoImage, setSelectedLogoImage] = useState<string|undefined>()
+
+    const methods = useForm<IExclusiveAccess>({
+    })
+
+    const watchOrgId = methods.watch('organizationId')
+    const watchServiceType = methods.watch('serviceType')
+
+
+    const router = useRouter()
+
+    const toast = useToast()
+
+    const communityMutation = useMutation({
+        mutationFn: async()=>{
+            const res = await axios.post('')
+            return res
+        },
+        onSuccess:()=>{
+
+        },
+        onError:(err)=>{
+            toast({
+                title: 'Error creating Communitys',
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+                position:'top-right'
+            })
+        }
+    })
+
+    const communityQuery = useQuery({
+        queryFn:async()=>{
+            const res = await axios.get('')
+            return res.data
+        },
+        enabled: false
+    })
+
+
+    function submitForm(values: any){
+        console.log(values)
+        next()
+    }
+
+    function handleImageSelect(imageHash:string){
+        // set image state
+        setSelectedLogoImage(imageHash)
+        // set value in form
+        // methods.setValue('logoImageHash',imageHash)
+    }
+
+    return(
+        <form onSubmit={methods.handleSubmit(submitForm)}>
+            <Stack w={'100%'} mt={'4rem'} spacing={8}>
+                <Box>
+                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
+                        <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
+                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                            <option value="flexable">Flexable organization</option>
+                            <option value="principle">Principle organization</option>
+                            <option value="Magerine">Magerine organization</option>
+                        </Select>
+                        <FormHelperText color={'text.200'}> 
+                            Your exclusive access will be created under this organization
+                        </FormHelperText>
+                    </FormControl>
+                </Box>
+
+                {watchOrgId !== undefined
+                ?<Box>
+                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
+                        <FormLabel ml={'.8rem'} color={'text.300'}>Select service type</FormLabel>
+                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
+                            <option value="benjaminOnFranklin">Benjamins On Franklin - Bar</option>
+                            <option value="mullys">Mullys Restaurant - Restaurant</option>
+                        </Select>
+                        <FormHelperText color={'text.200'}> 
+                            Your exclusive access will be created under this organization
+                        </FormHelperText>
+                    </FormControl>
+                </Box>:
+                null
+                }
+
+                {watchServiceType !== undefined ?
+                <>
+                <Box>
+                    {/* <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading> */}
+                    <Stack spacing={8} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
+                        <FormControl>
+                            <FormLabel color={'text.300'}>Title</FormLabel>
+                            <InputGroup size={'lg'}>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('title')}/>
+                            </InputGroup> 
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel color={'text.300'}>Description</FormLabel>
+                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description')}/>
+                        </FormControl>
+
+                        {/* price and tickets per day */}
+                        <HStack>
+                            <FormControl w={'50%'}>
+                                <FormLabel color={'text.300'}>Price</FormLabel>
+                                <InputGroup size={'lg'}>
+                                <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
+                                <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price')}/>
+                                </InputGroup> 
+                            </FormControl>
+
+                            <FormControl w={'50%'}>
+                                <FormLabel color={'text.300'}>Tickets Per Day</FormLabel>
+                                <InputGroup size={'lg'}>
+                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price')}/>
+                                    <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
+                                </InputGroup> 
+                            </FormControl>
+
+                        </HStack>
+
+                        {/* date and time */}
+                        <HStack>
+
+                            <FormControl w={'50%'}>
+                                <FormLabel color={'text.300'}>Validity Period</FormLabel>
+                                <InputGroup size={'lg'}>
+                                {/* <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon> */}
+                                    <Input type="time" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('startTime')}/>
+                                    <Input type="time" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('endTime')}/>
+                                </InputGroup> 
+                            </FormControl>
+
+                        </HStack>
+                    
+                    </Stack>
+                </Box>
+
+                <Box  >
+                    <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
+                    {/* <Box border={'1px solid #333333'}> */}
+                    {/* <ImageUploader name='artworkImage'/> */}
+                    <AssetUploader onSelectImage={handleImageSelect}/>
+                    {/* </Box> */} 
+                </Box>
+
+                <Box >
+                    <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
+                    {/* <Box border={'1px solid #333333'}> */}
+                    <DirectImageUploader name="logoImageHash"/>
+                    {/* </Box> */} 
+                </Box>
+
+                <Box>
+                <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
+                    <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
+                    <Button colorScheme="brand" type="submit">Create Reservation</Button>
+                </ButtonGroup>
+                </Box>
+                </>: null}
+            </Stack>
+        </form>
+    )
+}
+
+function CustomAvailability(){
+
+    const { control, register, handleSubmit } = useForm();
+    const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+      control, // control props comes from useForm (optional: if you are using FormContext)
+      name: "availability", // unique name for your Field Array
+    });
+
+    const router = useRouter()
+
+    function submitForm(values:any){
+        console.log(values)
+    }
+
+    const newCustomDate = {
+        name: '',
+        ticketPerDay: '',
+        price: '',
+        date: ''
+    }
+
+    return(
+        <form onSubmit={handleSubmit(submitForm)}>
+            {fields.map((field:any, index:number) => (
+            <Stack key={field.id} mb={'1rem'} mt={'2rem'} p={['1.5rem']} spacing={5} borderRadius={[0,0,8]} w={'100%'} border={'1px solid #333333'}>
+                <FormControl>
+                    {/* <FormLabel color={'text.300'}>Name</FormLabel> */}
+                    <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'} placeholder="Chiristman eve"  variant={'outline'} {...register(`availability.${index}.name`)} />
+                </FormControl>
+
+                <HStack>
+                    <FormControl w={'50%'}>
+                        {/* <FormLabel color={'text.300'}>Price</FormLabel> */}
+                        <InputGroup size={'lg'}>
+                        <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
+                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('price')}/>
+                        </InputGroup> 
+                    </FormControl>
+
+                    <FormControl w={'50%'}>
+                        {/* <FormLabel color={'text.300'}>Tickets Per Day</FormLabel> */}
+                        <InputGroup size={'lg'}>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('tickesPerDay')}/>
+                            <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
+                        </InputGroup> 
+                    </FormControl>
+
+                 </HStack>
+
+                 <FormControl w={'50%'}>
+                        {/* <FormLabel color={'text.300'}>Tickets Per Day</FormLabel> */}
+                        <InputGroup size={'lg'}>
+                            <Input  textStyle={'secondary'} type='date' color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('date')}/>
+                        </InputGroup> 
+                    </FormControl>
+
+                <Button borderRadius={'50px'} w={'fit-content'} leftIcon={<MinusIcon/>} colorScheme="brand" variant={'outline'} onClick={()=>remove(index)}>Remove</Button>
+            </Stack>
+            ))}
+            <Box px={['1.5rem',0,0,0]}>
+                <Button
+                borderRadius={'50px'} 
+                onClick={() => append(newCustomDate)}
+                variant={'outline'} 
+                leftIcon={<AddIcon/>}
+                colorScheme="brand"
+                mt={8}>Add Custom Date
+                </Button>
+                
+                <HStack spacing={3} my={'3rem'}>
+                    <Button onClick={()=>router.back()} colorScheme="brand"  variant={"ghost"}>Skip for now</Button>
+                    <Button  type="submit">Create Custom Dates</Button>
+                </HStack>
+            </Box>
+        </form>
+    )
+}
+
+
+
+
+    
+      
+
+
+function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void}){
+
+    const {isOpen,onClose,onOpen,onToggle} = useDisclosure()
+    const [imageSrc, setImageSrc] = useState('')
+
+    function uploadToIpfs(){
+
+    }
+
+    function handleSelectImage(imageHash:string){
+
+        console.log(imageHash)
+        // set local state
+        setImageSrc(imageHash)
+
+        // pass imagehash to parent comp
+        onSelectImage(imageHash)
+
+        // close modal
+        onClose()
+    }
+
+    function handleUploadedImage(imageHash:string){
+
+        console.log(imageHash)
+        // set local state
+        setImageSrc(imageHash)
+
+        // pass imagehash to parent comp
+        onSelectImage(imageHash)
+
+        // close modal
+        onClose()
+    }
+
+
+
+    return(
+        <Flex mt={6}> 
+            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
+                {/* <Button textDecoration={'none'} onClick={onOpen} variant={'link'} colorScheme="brand">Upload a asset for your NFT</Button> */}
+                <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${imageHashList[0]}`}/>
+                <IconButton position={'absolute'} onClick={onOpen} bottom={'-2'} right={'-3'} aria-label="upload button" isRound variant={'ghost'} colorScheme="brand" size={'md'} icon={<ArrowUpIcon/>}/>
+            </Flex>
+            <Modal isCentered size={'xl'} isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent bg={'#252626'}>
+                <ModalHeader color={'text.300'}>Choose Image</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody p={'1rem'} >
+                    <ImageUploader onUploadImage={handleUploadedImage} name="logoImageHash"/> 
+                    <ArtworkPicker onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
+                </ModalBody>
+                </ModalContent>
+            </Modal>
+        </Flex>
+    )
+}
+
+
+
+function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageHash:string)=>void}){
 
     const {register,setValue} = useFormContext()
 
-    const [image, setImage] = useState('')
+    const toast = useToast()
       
   
     const extractImage = async(e: any) => {
       //upload data here
       const file = e.target.files && e.target.files[0];
-      console.log(file)
-      setValue(`logoImageHash`,file)
+      try{
+        const res  = await asyncStore(file)
+        onUploadImage(res)
+        console.log(res)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to IPFS',
+            status:'error',
+            duration:4000,
+            isClosable: true,
+            position:'top-right'
+        })
+      }
+    //   setValue(name,file)
 
       
   };
   
     return (
-      <FormControl mb={'4rem'}> 
+      <FormControl > 
       <Stack spacing={4}> 
-      <FormLabel htmlFor="logoImageHash">
-      <Box cursor={'pointer'}>
-        <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/>
-      </Box>
+      <FormLabel htmlFor={name}>
+      <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
+        {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
+        <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
+        <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+      </Flex>
       </FormLabel>
       <Box                    
          borderColor={'#464646'}  
-         {...register(`logoImageHash`,{
+         {...register(name,{
             onChange: e=>extractImage(e)
          })}
-         id="logoImageHash"
+         id={name}
          as="input" 
          accept="image/x-png,image/gif,image/jpeg"
          display={'none'}
@@ -149,11 +479,109 @@ function ImageUploader(){
          type='file'
          width={'100px'}
      />
-     <FormHelperText>
-        Please upload a PNG or JPEG that is 2400px x 1200px
-     </FormHelperText>
      {/* { isUploading?<Spinner/>:null} */}
     </Stack>
      </FormControl>
     )
   }
+
+function DirectImageUploader({name}:{name: string}){
+
+    const {register,setValue} = useFormContext()
+
+    const [image, setImage] = useState('')
+    const [isUploading, setIsUploading] = useState(false)
+
+    console.log()
+
+    const toast = useToast()
+      
+  
+    const extractImage = async(e: any) => {
+      //upload data here
+      const file = e.target.files && e.target.files[0];
+      setIsUploading(true)
+      try{
+        const res = await asyncStore(file)
+        setImage(res)
+        setIsUploading(false)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to storage',
+            status: 'error',
+            position:'top-right',
+            isClosable: true
+        })
+        setIsUploading(false)
+      }
+      
+      setValue(name,file)
+
+      
+  };
+  
+    return (
+      <FormControl > 
+      <Stack spacing={4}> 
+      <FormLabel htmlFor={name}>
+        <Flex >
+            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
+            {isUploading?<Spinner/>:null}
+        </Flex>
+      </FormLabel>
+      <Box                    
+         borderColor={'#464646'}  
+         {...register(name,{
+            onChange: e=>extractImage(e)
+         })}
+         id={name}
+         as="input" 
+         accept="image/x-png,image/gif,image/jpeg"
+         display={'none'}
+         color='text.300' 
+         borderWidth='2px' 
+         type='file'
+         width={'100px'}
+     />
+     {/* { isUploading?<Spinner/>:null} */}
+    </Stack>
+     </FormControl>
+    )
+  }
+
+function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelection:(imageHash:string)=>void, onClose:()=>void}){
+
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number>()
+
+
+
+    function selectImage(imageHash:string){
+        onHandleArtworkSelection(imageHash)
+        onClose()
+        // setSelectedImageIndex(index)
+    }
+    return(
+        <Box>
+        <Heading color={'text.300'} my={'1rem'} size={'md'}>Midjourney Artworks</Heading>
+        <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
+            {imageHashList.map((imageHash:string, index:number)=>(
+                <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
+                    <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'150px'} alt="Image"/>
+                </Box>
+            )
+            )}
+        </Box>
+        </Box>
+    )
+}
+
+
+const imageHashList= [
+    'bafkreih5kmywbykilkwduqdx7lttuuzin2puselw6swwnhi3hrnztuv6r4',
+    'bafkreignk6ctyc3ngrklrmnpqnrbovij3e5x23ups5ynbwghe6rwwpnq4y',
+    'bafkreibzyvawcyr3zjnvob6rfr7edzct7a63radq6ec5k5woa2v7belvs4',
+    'bafkreidrgnhgak5zurcyud73kzgm347fkvruoy5mjm4stosetpfocyhem4',
+    'bafkreigbbf73imovkwrsjrcvys6cggwff2jwb6ixi5weovlxftb73t54qe',
+    'bafkreifll4nla7zdudxrlei3widcqtiz6phaa5zlbzyo5fdd76byytytgy',
+    'bafkreiffhginn626rfdqsrn4lqpzhpsdfqbdeqxmofr3offdl6akp5qixy'
+]

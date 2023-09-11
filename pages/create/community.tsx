@@ -40,7 +40,6 @@ export default function Community(){
     const router = useRouter()
     const toast = useToast()
 
-    const watchSelectedOrg = methods.watch('organizationId')
     
     const [activeStep, setActiveStep] = useState(0);
 
@@ -62,7 +61,6 @@ export default function Community(){
         component: <VenueForm/>
     }
       ]
-
     
 
     return(
@@ -72,7 +70,7 @@ export default function Community(){
 
             </GridItem> */}
             <GridItem px={['1rem','1rem',0,0]} mb='2rem' mt={'3rem'} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
-              <Heading color={'text.300'}>Create New Community</Heading>
+              <Heading mx={'1rem'} color={'text.300'}>Create Community</Heading>
             </GridItem>
             <FormProvider {...methods}>
                 <GridItem px={['0','1rem','1rem',0,0]} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
@@ -119,6 +117,10 @@ function BasicForm({prev,next}:StepProps){
 
     const methods = useForm<Community>({
     })
+
+    const watchOrgId = methods.watch('organizationId')
+
+    console.log('watch org', watchOrgId)
 
     const router = useRouter()
 
@@ -167,18 +169,22 @@ function BasicForm({prev,next}:StepProps){
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
-                <FormControl mb={'1rem'} w={'50%'}>
-                    <FormLabel color={'text.300'}>Select your organaization</FormLabel>
-                    <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                        <option value="flexable">Flexable organization</option>
-                        <option value="principle">Principle organization</option>
-                        <option value="Magerine">Magerine organization</option>
-                    </Select>
-                    <FormHelperText>
-                        Your exclusive access will be created under this organization
-                    </FormHelperText>
-                </FormControl>
-
+                <Box>
+                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
+                        <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
+                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                            <option value="flexable">Flexable organization</option>
+                            <option value="principle">Principle organization</option>
+                            <option value="Magerine">Magerine organization</option>
+                        </Select>
+                        <FormHelperText color={'text.200'}> 
+                            Your exclusive access will be created under this organization
+                        </FormHelperText>
+                    </FormControl>
+                </Box>
+                {watchOrgId !== undefined ?
+                <>
                 <Box>
                     <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
                     <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
@@ -207,8 +213,6 @@ function BasicForm({prev,next}:StepProps){
                     
                     </Stack>
                 </Box>
-                
-
 
                 <Box  >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
@@ -225,13 +229,13 @@ function BasicForm({prev,next}:StepProps){
                     {/* </Box> */} 
                 </Box>
 
-            <Box>
-            <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
-                <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                <Button colorScheme="brand" type="submit">Create Community</Button>
-            </ButtonGroup>
-            </Box>
-
+                <Box>
+                <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
+                    <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
+                    <Button colorScheme="brand" type="submit">Create Community</Button>
+                </ButtonGroup>
+                </Box>
+                </>: null}
             </Stack>
         </form>
     )
@@ -554,12 +558,33 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
 function DirectImageUploader({name}:{name: string}){
 
     const {register,setValue} = useFormContext()
+
+    const [image, setImage] = useState('')
+    const [isUploading, setIsUploading] = useState(false)
+
+    console.log()
+
+    const toast = useToast()
       
   
     const extractImage = async(e: any) => {
       //upload data here
       const file = e.target.files && e.target.files[0];
-      console.log(file)
+      setIsUploading(true)
+      try{
+        const res = await asyncStore(file)
+        setImage(res)
+        setIsUploading(false)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to storage',
+            status: 'error',
+            position:'top-right',
+            isClosable: true
+        })
+        setIsUploading(false)
+      }
+      
       setValue(name,file)
 
       
@@ -569,11 +594,10 @@ function DirectImageUploader({name}:{name: string}){
       <FormControl > 
       <Stack spacing={4}> 
       <FormLabel htmlFor={name}>
-      <Flex bg={'#252525'} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
-        {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
-        <Text mb={'.8rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
-        <Text width={'60%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
-      </Flex>
+        <Flex >
+            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
+            {isUploading?<Spinner/>:null}
+        </Flex>
       </FormLabel>
       <Box                    
          borderColor={'#464646'}  
