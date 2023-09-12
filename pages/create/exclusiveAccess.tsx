@@ -20,6 +20,7 @@ type IExclusiveAccess = {
     title: string,
     price: number,
     totalTickets: number,
+    ticketsPerDay: number,
     serviceType: string,
     orgServiceId: string,
     location: string,
@@ -30,6 +31,7 @@ type IExclusiveAccess = {
     endTime: string,
     contactNumber: string,
     logoImageHash?: string | null | any,
+    artworkHash?:string,
     description: string,
     // serviceItemId: string
     serviceItemTypeId?: string | undefined | string[]
@@ -44,7 +46,7 @@ export default function ExclusiveAccess(){
     const toast = useToast()
 
     
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(1);
 
     const handleNext = () => {
         setActiveStep((prevStep) => prevStep + 1);
@@ -123,8 +125,6 @@ function BasicForm({prev,next}:StepProps){
     const watchOrgId = methods.watch('organizationId')
     const watchServiceType = methods.watch('serviceType')
 
-    console.log('orgID',watchOrgId)
-    console.log('servictType',watchServiceType)
 
     const userOrgsQuery = useQuery({
         queryKey:['user-organizations',paseto],
@@ -152,7 +152,6 @@ function BasicForm({prev,next}:StepProps){
         enabled: watchOrgId !== undefined || paseto !== null 
     })
 
-    console.log(orgServicesQuery) 
 
     
 
@@ -180,25 +179,25 @@ function BasicForm({prev,next}:StepProps){
         }
     })
 
-    const communityQuery = useQuery({
-        queryFn:async()=>{
-            const res = await axios.get('')
-            return res.data
-        },
-        enabled: false
-    })
-
+  
 
     function submitForm(values: any){
         console.log(values)
-        next()
+        // next()
     }
 
     function handleImageSelect(imageHash:string){
         // set image state
         setSelectedLogoImage(imageHash)
         // set value in form
-        // methods.setValue('logoImageHash',imageHash)
+        methods.setValue('artworkHash',imageHash) 
+    }
+
+    function handleLogoImage(imageHash:string){
+        // set image state
+        setSelectedLogoImage(imageHash) 
+        // set value in form
+        methods.setValue('logoImageHash',imageHash) 
     }
 
     return(
@@ -285,9 +284,11 @@ function BasicForm({prev,next}:StepProps){
 
                             <FormControl w={'50%'}>
                                 <FormLabel color={'text.300'}>Tickets Per Day</FormLabel>
-                                <InputGroup size={'lg'}>
-                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price')}/>
-                                    <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
+                                <InputGroup  size={'lg'}>
+                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('ticketsPerDay')}/>
+                                   <Box hideBelow={'md'}>
+                                    <InputRightAddon  border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
+                                    </Box> 
                                 </InputGroup> 
                             </FormControl>
 
@@ -296,9 +297,9 @@ function BasicForm({prev,next}:StepProps){
                         {/* date and time */}
                         <HStack>
 
-                            <FormControl w={'50%'}>
+                            <FormControl w={['100%','70%','70%','50%']}>
                                 <FormLabel color={'text.300'}>Validity Period</FormLabel>
-                                <InputGroup size={'lg'}>
+                                <InputGroup  size={'lg'}> 
                                 {/* <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon> */}
                                     <Input type="time" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('startTime')}/>
                                     <Input type="time" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('endTime')}/>
@@ -321,7 +322,7 @@ function BasicForm({prev,next}:StepProps){
                 <Box >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
                     {/* <Box border={'1px solid #333333'}> */}
-                    <DirectImageUploader name="logoImageHash"/>
+                    <DirectImageUploader onSelectLogoImage={handleLogoImage} name="logoImageHash"/>
                     {/* </Box> */} 
                 </Box>
 
@@ -353,7 +354,7 @@ function CustomAvailability(){
 
     const newCustomDate = {
         name: '',
-        ticketPerDay: '',
+        ticketsPerDay: '',
         price: '',
         date: ''
     }
@@ -372,14 +373,14 @@ function CustomAvailability(){
                         {/* <FormLabel color={'text.300'}>Price</FormLabel> */}
                         <InputGroup size={'lg'}>
                         <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('price')}/>
+                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.price`)}/>
                         </InputGroup> 
                     </FormControl>
 
                     <FormControl w={'50%'}>
                         {/* <FormLabel color={'text.300'}>Tickets Per Day</FormLabel> */}
                         <InputGroup size={'lg'}>
-                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('tickesPerDay')}/>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.ticketsPerDay`)}/>
                             <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
                         </InputGroup> 
                     </FormControl>
@@ -389,7 +390,7 @@ function CustomAvailability(){
                  <FormControl w={'50%'}>
                         {/* <FormLabel color={'text.300'}>Tickets Per Day</FormLabel> */}
                         <InputGroup size={'lg'}>
-                            <Input  textStyle={'secondary'} type='date' color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register('date')}/>
+                            <Input  textStyle={'secondary'} type='date' color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.date`)}/>
                         </InputGroup> 
                     </FormControl>
 
@@ -418,8 +419,69 @@ function CustomAvailability(){
 
 
 
-    
+function DirectImageUploader({name, onSelectLogoImage}:{name: string, onSelectLogoImage:(imageHash:string)=>void}){
+
+    const {register,setValue} = useFormContext()
+
+    const [image, setImage] = useState('')
+    const [isUploading, setIsUploading] = useState(false)
+
+
+    const toast = useToast()
       
+  
+    const extractImage = async(e: any) => {
+      //upload data here
+      const file = e.target.files && e.target.files[0];
+      setIsUploading(true)
+      try{
+        const res = await asyncStore(file)
+        setImage(res)
+        onSelectLogoImage(res)
+        setIsUploading(false)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to storage',
+            status: 'error',
+            position:'top-right',
+            isClosable: true
+        })
+        setIsUploading(false)
+      }
+      
+      setValue(name,file)
+
+      
+  };
+  
+    return (
+      <FormControl > 
+      <Stack spacing={4}> 
+      <FormLabel htmlFor={name}>
+        <Flex >
+            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
+            {isUploading?<Spinner/>:null}
+        </Flex>
+      </FormLabel>
+      <Box                    
+         borderColor={'#464646'}  
+         {...register(name,{
+            onChange: e=>extractImage(e)
+         })}
+         id={name}
+         as="input" 
+         accept="image/x-png,image/gif,image/jpeg"
+         display={'none'}
+         color='text.300' 
+         borderWidth='2px' 
+         type='file'
+         width={'100px'}
+     />
+     {/* { isUploading?<Spinner/>:null} */}
+    </Stack>
+     </FormControl>
+    )
+  }
 
 
 function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void}){
@@ -433,7 +495,6 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 
     function handleSelectImage(imageHash:string){
 
-        console.log(imageHash)
         // set local state
         setImageSrc(imageHash)
 
@@ -446,7 +507,6 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 
     function handleUploadedImage(imageHash:string){
 
-        console.log(imageHash)
         // set local state
         setImageSrc(imageHash)
 
@@ -541,69 +601,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
     )
   }
 
-function DirectImageUploader({name}:{name: string}){
 
-    const {register,setValue} = useFormContext()
-
-    const [image, setImage] = useState('')
-    const [isUploading, setIsUploading] = useState(false)
-
-    console.log()
-
-    const toast = useToast()
-      
-  
-    const extractImage = async(e: any) => {
-      //upload data here
-      const file = e.target.files && e.target.files[0];
-      setIsUploading(true)
-      try{
-        const res = await asyncStore(file)
-        setImage(res)
-        setIsUploading(false)
-      }catch(err){
-        toast({
-            title: 'Error uploading image to storage',
-            status: 'error',
-            position:'top-right',
-            isClosable: true
-        })
-        setIsUploading(false)
-      }
-      
-      setValue(name,file)
-
-      
-  };
-  
-    return (
-      <FormControl > 
-      <Stack spacing={4}> 
-      <FormLabel htmlFor={name}>
-        <Flex >
-            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
-            {isUploading?<Spinner/>:null}
-        </Flex>
-      </FormLabel>
-      <Box                    
-         borderColor={'#464646'}  
-         {...register(name,{
-            onChange: e=>extractImage(e)
-         })}
-         id={name}
-         as="input" 
-         accept="image/x-png,image/gif,image/jpeg"
-         display={'none'}
-         color='text.300' 
-         borderWidth='2px' 
-         type='file'
-         width={'100px'}
-     />
-     {/* { isUploading?<Spinner/>:null} */}
-    </Stack>
-     </FormControl>
-    )
-  }
 
 function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelection:(imageHash:string)=>void, onClose:()=>void}){
 

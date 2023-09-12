@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, FormHelperText, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast } from "@chakra-ui/react";
+import { Box, Flex, FormControl, FormHelperText, Text, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, UnorderedList, ListItem } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -6,6 +6,10 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useAuthContext } from "../../context/AuthContext";
+import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
+import useOnclickOutside from "react-cool-onclickoutside";
+import { asyncStore } from "../../utils/nftStorage";
 
 
 type Event = {
@@ -31,8 +35,22 @@ export default function Event(){
     const methods = useForm<Event>({
     })
 
+    const {paseto} = useAuthContext()
     const router = useRouter()
     const toast = useToast()
+
+    const userOrgsQuery = useQuery({
+        queryKey:['user-organizations',paseto],
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+                headers:{
+                    'Authorization': paseto 
+                }
+            }) 
+            return res.data.data
+        },
+        enabled: paseto !== undefined || paseto !== null 
+    })
 
     const watchSelectedOrg = methods.watch('organizationId')
     
@@ -55,17 +73,22 @@ export default function Event(){
         }
     })
 
-    const eventQuery = useQuery({
-        queryFn:async()=>{
-            const res = await axios.get('')
-            return res.data
-        },
-        enabled: false
-    })
+    // const eventQuery = useQuery({
+    //     queryFn:async()=>{
+    //         const res = await axios.get('')
+    //         return res.data
+    //     },
+    //     enabled: false
+    // })
 
+    const watchOrgId = methods.watch('organizationId')
 
     function submitForm(values: any){
         console.log(values)
+    }
+
+    function handleCoverImage(imageHash:string){
+
     }
 
     return(
@@ -81,18 +104,30 @@ export default function Event(){
                 <GridItem px={['1rem','1rem',0,0]} colStart={[1,1,2,2]} colEnd={[7,7,6,5]}>
                     <form onSubmit={methods.handleSubmit(submitForm)}>
                         <Stack w={'100%'} spacing={8}>
-                            <FormControl mb={'1rem'} w={'50%'}>
-                                <FormLabel color={'text.300'}>Select your organaization</FormLabel>
-                                <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                                    <option value="flexable">Flexable organization</option>
-                                    <option value="principle">Principle organization</option>
-                                    <option value="Magerine">Magerine organization</option>
-                                </Select>
-                                <FormHelperText>
-                                    Your exclusive access will be created under this organization
-                                </FormHelperText>
-                            </FormControl>
 
+                              { userOrgsQuery.isLoading
+                                ? <Spinner/>
+                                : userOrgsQuery?.data.length < 1
+                                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+                                :<Box>
+                                        <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                                            <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
+                                            <Select textStyle={'secondary'} color='text.300'  size='lg' placeholder="Select organization" borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                                                {userOrgsQuery?.data.map((userOrg:any)=>(
+                                                    <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                                                ))}
+                                                {/* <option value="principle">Principle organization</option>
+                                                <option value="Magerine">Magerine organization</option> */}
+                                            </Select>
+                                            <FormHelperText color={'text.200'}> 
+                                                Your exclusive access will be created under this organization
+                                            </FormHelperText>
+                                        </FormControl>
+                                    </Box>}
+
+                           { watchOrgId !== undefined 
+                           ? <>
+                            
                             <Box>
                                 <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
                                 <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
@@ -133,10 +168,7 @@ export default function Event(){
                                     <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('venueName')}/>
                                 </FormControl>
 
-                                <FormControl>
-                                    <FormLabel color={'text.300'}>Location</FormLabel>
-                                    <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('location')}/>
-                                </FormControl>
+                                <Address/>
 
                                 <FormControl>
                                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
@@ -160,15 +192,15 @@ export default function Event(){
 
                             <Box mb={'5rem'} >
                                 <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Upload cover image</Heading>
-                                {/* <Box border={'1px solid #333333'}> */}
-                                <ImageUploader/>
-                                {/* </Box> */} 
+                                <DirectImageUploader name="coverImageHash" onSelectLogoImage={handleCoverImage}/>
                             </Box>
+                            <ButtonGroup mb={'3rem'} spacing={2}>
+                                <Button variant={'ghost'} onClick={()=>router.back()}>Cancel</Button>
+                                <Button type="submit">Create Event</Button>
+                            </ButtonGroup>
+                            </>
+                            :null}
                         </Stack>
-                        <ButtonGroup spacing={2}>
-                            <Button onClick={()=>router.back()}>Cancel</Button>
-                            <Button type="submit">Create Event</Button>
-                        </ButtonGroup>
                     </form>
                 </GridItem>
             </FormProvider>
@@ -223,6 +255,177 @@ function ImageUploader(){
      <FormHelperText color={'text.200'}>
         Please upload a PNG or JPEG that is 2400px x 1200px
      </FormHelperText>
+     {/* { isUploading?<Spinner/>:null} */}
+    </Stack>
+     </FormControl>
+    )
+  }
+
+
+  function Address(){
+    const {register,formState,setValue:setFormState} = useFormContext()
+
+    const {
+        ready,
+        value,
+        suggestions: { status, data },
+        setValue,
+        clearSuggestions,
+      } = usePlacesAutocomplete({
+        callbackName: "initMap",
+        requestOptions: {
+          /* Define search scope here */
+          componentRestrictions:{
+            country: 'us'
+          },
+          
+        //   types: ['bakery','bar','restaraunt']
+        },
+        debounce: 300,
+      });
+      const ref = useOnclickOutside(() => {
+        // When the user clicks outside of the component, we can dismiss
+        // the searched suggestions by calling this method
+        clearSuggestions();
+      });
+    
+      const handleInput = (e:any) => {
+        // Update the keyword of the input element
+        console.log(e.target.value)
+        setValue(e.target.value);
+      };
+    
+      const handleSelect =
+        (suggestion:any) =>
+        () => {
+
+            console.log(suggestion)
+            const {description,place_id} = suggestion
+
+          // When the user selects a place, we can replace the keyword without request data from API
+          // by setting the second parameter to "false"
+          setValue(description, false);
+          clearSuggestions();
+
+          const parameter = {
+            // Use the "place_id" of suggestion from the dropdown (object), here just taking the first suggestion for brevity
+            placeId: place_id,
+            // Specify the return data that you want (optional)
+            fields: ["name", "rating","formatted_address"], 
+          };
+ 
+          getDetails(parameter)
+            .then((details:any) => {
+                setFormState('address',details)
+                console.log("Details: ", details);
+            })
+            .catch((error:any) => {
+                console.log("Error: ", error);
+            });
+        };
+    
+      const renderSuggestions = () =>
+        data.map((suggestion) => {
+          const {
+            place_id,
+            structured_formatting: { main_text, secondary_text },
+          } = suggestion;
+    
+          return (
+            <ListItem cursor={'pointer'} borderBottom={'1px solid #333333'} _last={{borderBottom:'0'}} _first={{mt:'.5rem'}} mb={'.5rem'} px='1rem' py={'.5rem'} key={place_id} listStyleType={'none'} onClick={handleSelect(suggestion)}>
+             <HStack> <strong>{main_text}</strong> <Text color={'text.200'}>{secondary_text}</Text> </HStack>
+            </ListItem>
+          );
+        });
+
+
+    
+      
+    return(
+    <FormControl ref={ref}>
+        <FormLabel color={'text.300'}>Address</FormLabel>
+        
+        <Input 
+            textStyle={'secondary'}
+            color='text.300'  
+            size='lg'  
+            borderColor={'#2c2c2c'}  
+            variant={'outline'} 
+            value={value}
+            placeholder="Enter your address" 
+            {...register(`location`,{
+                onChange: handleInput
+            })}
+            />
+            {status == 'OK' && 
+
+                <UnorderedList border={'1px solid #333333'} borderRadius={8}  m='0' mt={'1rem'} color={'text.300'}>
+                    {renderSuggestions()}
+                </UnorderedList>
+            }
+    </FormControl>
+    )
+} 
+
+
+
+function DirectImageUploader({name, onSelectLogoImage}:{name: string, onSelectLogoImage:(imageHash:string)=>void}){
+
+    const {register,setValue} = useFormContext()
+
+    const [image, setImage] = useState('')
+    const [isUploading, setIsUploading] = useState(false)
+
+
+    const toast = useToast()
+      
+    const extractImage = async(e: any) => {
+      //upload data here
+      const file = e.target.files && e.target.files[0];
+      setIsUploading(true)
+      try{
+        const res = await asyncStore(file)
+        setImage(res)
+        onSelectLogoImage(res)
+        setIsUploading(false)
+      }catch(err){
+        toast({
+            title: 'Error uploading image to storage',
+            status: 'error',
+            position:'top-right',
+            isClosable: true
+        })
+        setIsUploading(false)
+      }
+      
+      setValue(name,file)
+
+      
+  };
+  
+    return (
+      <FormControl > 
+      <Stack spacing={4}> 
+      <FormLabel htmlFor={name}>
+        <Flex >
+            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
+            {isUploading?<Spinner/>:null}
+        </Flex>
+      </FormLabel>
+      <Box                    
+         borderColor={'#464646'}  
+         {...register(name,{
+            onChange: e=>extractImage(e)
+         })}
+         id={name}
+         as="input" 
+         accept="image/x-png,image/gif,image/jpeg"
+         display={'none'}
+         color='text.300' 
+         borderWidth='2px' 
+         type='file'
+         width={'100px'}
+     />
      {/* { isUploading?<Spinner/>:null} */}
     </Stack>
      </FormControl>
