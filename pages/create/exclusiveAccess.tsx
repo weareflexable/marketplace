@@ -12,6 +12,7 @@ import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-pl
 import useOnclickOutside from "react-cool-onclickoutside";
 import { AddIcon, ArrowUpIcon, MinusIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
+import { useAuthContext } from "../../context/AuthContext";
 
 
 type IExclusiveAccess = {
@@ -117,8 +118,43 @@ function BasicForm({prev,next}:StepProps){
     const methods = useForm<IExclusiveAccess>({
     })
 
+    const {paseto} = useAuthContext()
+
     const watchOrgId = methods.watch('organizationId')
     const watchServiceType = methods.watch('serviceType')
+
+    console.log('orgID',watchOrgId)
+    console.log('servictType',watchServiceType)
+
+    const userOrgsQuery = useQuery({
+        queryKey:['user-organizations',paseto],
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+                headers:{
+                    'Authorization': paseto 
+                }
+            }) 
+            return res.data.data
+        },
+        enabled: paseto !== undefined || paseto !== null 
+    })
+
+    const orgServicesQuery = useQuery({
+        queryKey:['orgs-service',paseto,watchOrgId],
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/services?pageNumber=1&pageSize=10&orgId=${watchOrgId}`,{
+                headers:{
+                    'Authorization': paseto
+                }
+            }) 
+            return res.data.data
+        },
+        enabled: watchOrgId !== undefined || paseto !== null 
+    })
+
+    console.log(orgServicesQuery) 
+
+    
 
 
     const router = useRouter()
@@ -168,39 +204,59 @@ function BasicForm({prev,next}:StepProps){
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
-                <Box>
-                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
-                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
+ 
+               { userOrgsQuery.isLoading
+               ? <Spinner/>
+               : userOrgsQuery?.data.length < 1
+               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+               :<Box>
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
                         <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                            <option value="flexable">Flexable organization</option>
-                            <option value="principle">Principle organization</option>
-                            <option value="Magerine">Magerine organization</option>
+                            {userOrgsQuery?.data.map((userOrg:any)=>(
+                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                            ))}
+                            {/* <option value="principle">Principle organization</option>
+                            <option value="Magerine">Magerine organization</option> */}
                         </Select>
                         <FormHelperText color={'text.200'}> 
                             Your exclusive access will be created under this organization
                         </FormHelperText>
                     </FormControl>
-                </Box>
+                </Box>}
 
-                {watchOrgId !== undefined
-                ?<Box>
-                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
-                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
-                        <FormLabel ml={'.8rem'} color={'text.300'}>Select service type</FormLabel>
-                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
-                            <option value="benjaminOnFranklin">Benjamins On Franklin - Bar</option>
-                            <option value="mullys">Mullys Restaurant - Restaurant</option>
-                        </Select>
-                        <FormHelperText color={'text.200'}> 
-                            Your exclusive access will be created under this organization
-                        </FormHelperText>
-                    </FormControl>
-                </Box>:
+                {watchOrgId !== undefined 
+                ?
+                <>
+                 {orgServicesQuery.isLoading
+                 ?<Spinner/>
+                 : orgServicesQuery?.data.length < 1 
+                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
+                 : <Box>
+                        {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
+                        <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                            <FormLabel ml={'.8rem'} color={'text.300'}>Select service type</FormLabel>
+                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
+                                {
+                                    orgServicesQuery?.data.map((service:any)=>(
+                                        <option value={service.id}>{service.name}</option>
+                                        ))
+                                    }
+
+                            </Select>
+                            {/* <FormHelperText color={'text.200'}> 
+                                Your exclusive access will be created under this organization
+                            </FormHelperText> */}
+                        </FormControl>
+                    </Box>
+                 }
+                    
+                 </>
+                :
                 null
                 }
 
-                {watchServiceType !== undefined ?
+                {watchServiceType !== undefined && watchServiceType !== '' && orgServicesQuery?.data?.length > 0 ?   
                 <>
                 <Box>
                     {/* <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading> */}
@@ -574,6 +630,7 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
         </Box>
     )
 }
+
 
 
 const imageHashList= [
