@@ -13,6 +13,7 @@ import useOnclickOutside from "react-cool-onclickoutside";
 import { AddIcon, ArrowUpIcon, MinusIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
+import dayjs from "dayjs";
 
 
 type IExclusiveAccess = {
@@ -27,8 +28,8 @@ type IExclusiveAccess = {
     address: string,
     duration: number,
     venueName: string,
-    startTime: string,
-    endTime: string,
+    validityStartDate: string,
+    validityEndDate: string,
     contactNumber: string,
     logoImageHash?: string | null | any,
     artworkHash?:string,
@@ -42,11 +43,11 @@ export default function ExclusiveAccess(){
     const methods = useForm<IExclusiveAccess>({
     })
 
-    const router = useRouter()
+    const router = useRouter() 
     const toast = useToast()
 
     
-    const [activeStep, setActiveStep] = useState(1);
+    const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
         setActiveStep((prevStep) => prevStep + 1);
@@ -122,8 +123,13 @@ function BasicForm({prev,next}:StepProps){
 
     const {paseto} = useAuthContext()
 
+    const router = useRouter()
+
+    const toast = useToast()
+
     const watchOrgId = methods.watch('organizationId')
     const watchServiceType = methods.watch('serviceType')
+    const watchServiceItemTypeId = methods.watch('serviceItemTypeId')
 
 
     const userOrgsQuery = useQuery({
@@ -152,17 +158,36 @@ function BasicForm({prev,next}:StepProps){
         enabled: watchOrgId !== undefined || paseto !== null 
     })
 
-
+    const serviceTypeId = orgServicesQuery?.data?.find((service:any)=>service.id === watchServiceType)?.serviceTypeId
     
 
+    const serviceItemTypesQuery = useQuery({
+        queryKey:['service-item-types',paseto,serviceTypeId],
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/service-item-types?pageNumber=1&pageSize=10&serviceTypeId=${serviceTypeId}`,{
+                headers:{
+                    'Authorization': paseto 
+                }
+            }) 
+            return res.data.data 
+        },
+        enabled: serviceTypeId !== undefined && paseto !== null 
+    })
 
-    const router = useRouter()
 
-    const toast = useToast()
+   
 
-    const communityMutation = useMutation({
-        mutationFn: async()=>{
-            const res = await axios.post('')
+    console.log('types query', serviceItemTypesQuery.data)
+
+  
+
+    const exclusiveAccessMutation = useMutation({
+        mutationFn: async(payload:any)=>{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/service-items`,payload,{
+                headers:{
+                    'Authorization': paseto
+                }
+            })
             return res
         },
         onSuccess:()=>{
@@ -182,7 +207,15 @@ function BasicForm({prev,next}:StepProps){
   
 
     function submitForm(values: any){
-        console.log(values)
+        const payload = {
+            ...values, 
+            validityStartDate: dayjs(values.validityStartDate).format(),
+            validityEndDate: dayjs(values.validityEndDate).format(),
+            orgServiceId: values.serviceType,
+        }
+        delete payload.organizationId
+        delete payload.serviceType
+        console.log(payload)
         // next()
     }
 
@@ -190,15 +223,15 @@ function BasicForm({prev,next}:StepProps){
         // set image state
         setSelectedLogoImage(imageHash)
         // set value in form
-        methods.setValue('artworkHash',imageHash) 
-    }
-
-    function handleLogoImage(imageHash:string){
-        // set image state
-        setSelectedLogoImage(imageHash) 
-        // set value in form
         methods.setValue('logoImageHash',imageHash) 
     }
+
+    // function handleLogoImage(imageHash:string){
+    //     // set image state
+    //     setSelectedLogoImage(imageHash) 
+    //     // set value in form
+    //     methods.setValue('logoImageHash',imageHash) 
+    // }
 
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
@@ -210,8 +243,8 @@ function BasicForm({prev,next}:StepProps){
                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
-                        <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
-                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                        <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
+                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
                             {userOrgsQuery?.data.map((userOrg:any)=>(
                                 <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
                             ))}
@@ -222,14 +255,16 @@ function BasicForm({prev,next}:StepProps){
                             Your exclusive access will be created under this organization
                         </FormHelperText>
                     </FormControl>
-                </Box>}
+                </Box>
+                }
 
-                {watchOrgId !== undefined 
+                {
+                watchOrgId !== undefined 
                 ?
                 <>
                  {orgServicesQuery.isLoading
-                 ?<Spinner/>
-                 : orgServicesQuery?.data.length < 1 
+                 ?<Spinner/> 
+                 : orgServicesQuery?.data.length < 1  
                  ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
                  : <Box>
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
@@ -238,7 +273,9 @@ function BasicForm({prev,next}:StepProps){
                             <Select textStyle={'secondary'} color='text.300' placeholder="Select service"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
                                 {
                                     orgServicesQuery?.data.map((service:any)=>(
-                                        <option value={service.id}>{service.name}</option>
+                                         <option key={service.id} value={service.id}>
+                                           {service.name}
+                                         </option>
                                         ))
                                     }
 
@@ -255,7 +292,41 @@ function BasicForm({prev,next}:StepProps){
                 null
                 }
 
-                {watchServiceType !== undefined && watchServiceType !== '' && orgServicesQuery?.data?.length > 0 ?   
+                {
+                serviceTypeId !== undefined 
+                ?
+                <>
+                 {serviceItemTypesQuery.isLoading
+                 ?<Spinner/> 
+                 : serviceItemTypesQuery?.data.length < 1  
+                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
+                 : <Box>
+                        {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
+                        <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                            <FormLabel ml={'.8rem'} color={'text.300'}>Select service item type</FormLabel>
+                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service item type"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceItemTypeId')}>
+                                {
+                                    serviceItemTypesQuery?.data.map((type:any)=>(
+                                         <option key={type.id} value={type.id}>
+                                          {type.name}
+                                         </option>
+                                        ))
+                                }
+
+                            </Select>
+                            {/* <FormHelperText color={'text.200'}> 
+                                Your exclusive access will be created under this organization
+                            </FormHelperText> */}
+                        </FormControl>
+                    </Box>
+                 }
+                    
+                 </>
+                :
+                null
+                }
+
+                {watchServiceItemTypeId !== undefined && watchServiceType !== undefined && orgServicesQuery?.data?.length > 0 ? 
                 <>
                 <Box>
                     {/* <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading> */}
@@ -278,14 +349,14 @@ function BasicForm({prev,next}:StepProps){
                                 <FormLabel color={'text.300'}>Price</FormLabel>
                                 <InputGroup size={'lg'}>
                                 <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                                <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price')}/>
+                                <Input type="number"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price',{valueAsNumber:true})}/>
                                 </InputGroup> 
                             </FormControl>
 
                             <FormControl w={'50%'}>
                                 <FormLabel color={'text.300'}>Tickets Per Day</FormLabel>
                                 <InputGroup  size={'lg'}>
-                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('ticketsPerDay')}/>
+                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('ticketsPerDay',{valueAsNumber:true})}/>
                                    <Box hideBelow={'md'}>
                                     <InputRightAddon  border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
                                     </Box> 
@@ -301,8 +372,8 @@ function BasicForm({prev,next}:StepProps){
                                 <FormLabel color={'text.300'}>Validity Period</FormLabel>
                                 <InputGroup  size={'lg'}> 
                                 {/* <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon> */}
-                                    <Input type="time" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('startTime')}/>
-                                    <Input type="time" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('endTime')}/>
+                                    <Input type="date" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('validityStartDate',{valueAsDate:false})}/>
+                                    <Input type="date" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('validityEndDate',{valueAsDate:false})}/>
                                 </InputGroup> 
                             </FormControl>
 
@@ -319,12 +390,12 @@ function BasicForm({prev,next}:StepProps){
                     {/* </Box> */} 
                 </Box>
 
-                <Box >
+                {/* <Box >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
-                    {/* <Box border={'1px solid #333333'}> */}
+                    <Box border={'1px solid #333333'}>
                     <DirectImageUploader onSelectLogoImage={handleLogoImage} name="logoImageHash"/>
-                    {/* </Box> */} 
-                </Box>
+                    </Box> 
+                </Box> */}
 
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
