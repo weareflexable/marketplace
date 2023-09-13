@@ -46,10 +46,12 @@ export default function ExclusiveAccess(){
     const router = useRouter() 
     const toast = useToast()
 
+    const [createdItemId, setCreatedItemId] = useState('')
     
     const [activeStep, setActiveStep] = useState(0);
 
-    const handleNext = () => {
+    const handleNext = (data:any) => {
+        setCreatedItemId(data.id)
         setActiveStep((prevStep) => prevStep + 1);
       };
 
@@ -64,7 +66,7 @@ export default function ExclusiveAccess(){
         },
         { title: 'Custom Availability', 
         // description: 'Date & Time',
-        component: <CustomAvailability/>
+        component: <CustomAvailability serviceItemId = {createdItemId} />
     }
       ]
     
@@ -112,11 +114,12 @@ export default function ExclusiveAccess(){
 
   interface StepProps{
     prev: ()=>void,
-    next: ()=>void
+    next: (data:any)=>void
   }
 function BasicForm({prev,next}:StepProps){
 
     const [selectedLogoImage, setSelectedLogoImage] = useState<string|undefined>()
+
 
     const methods = useForm<IExclusiveAccess>({
     })
@@ -188,10 +191,18 @@ function BasicForm({prev,next}:StepProps){
                     'Authorization': paseto
                 }
             })
-            return res
+            return res.data
         },
-        onSuccess:()=>{
-
+        onSuccess:(data)=>{
+            console.log('results',data.data)
+            toast({
+                title: 'Successfully created service item',
+                duration: 3000,
+                isClosable: true,
+                position:'top-right',
+                status:'success'
+            })
+            next(data.data)
         },
         onError:(err)=>{
             toast({
@@ -216,7 +227,7 @@ function BasicForm({prev,next}:StepProps){
         delete payload.organizationId
         delete payload.serviceType
         console.log(payload)
-        // next()
+        exclusiveAccessMutation.mutate(payload)
     }
 
     function handleImageSelect(imageHash:string){
@@ -321,12 +332,12 @@ function BasicForm({prev,next}:StepProps){
                     </Box>
                  }
                     
-                 </>
+                 </> 
                 :
                 null
-                }
-
-                {watchServiceItemTypeId !== undefined && watchServiceType !== undefined && orgServicesQuery?.data?.length > 0 ? 
+                } 
+ 
+                {watchServiceItemTypeId !== undefined && watchServiceType !== undefined && watchServiceType !== '' && watchServiceItemTypeId !== '' &&  orgServicesQuery?.data?.length > 0 ? 
                 <>
                 <Box>
                     {/* <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading> */}
@@ -360,7 +371,7 @@ function BasicForm({prev,next}:StepProps){
                                    <Box hideBelow={'md'}>
                                     <InputRightAddon  border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
                                     </Box> 
-                                </InputGroup> 
+                                </InputGroup>  
                             </FormControl>
 
                         </HStack>
@@ -399,17 +410,20 @@ function BasicForm({prev,next}:StepProps){
 
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
-                    <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand" type="submit">Create Reservation</Button>
+                    <Button variant={'outline'} isDisabled={exclusiveAccessMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
+                    <Button colorScheme="brand"  isLoading={exclusiveAccessMutation.isLoading} type="submit">Create Reservation</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}
             </Stack>
         </form>
-    )
+    ) 
 }
 
-function CustomAvailability(){
+
+function CustomAvailability({serviceItemId}:{serviceItemId:string}){
+
+    console.log('E don reach sha', serviceItemId)
 
     const { control, register, handleSubmit } = useForm();
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
