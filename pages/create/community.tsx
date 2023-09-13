@@ -12,6 +12,7 @@ import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-pl
 import useOnclickOutside from "react-cool-onclickoutside";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
+import { useAuthContext } from "../../context/AuthContext";
 
 
 type Community = {
@@ -20,7 +21,9 @@ type Community = {
     price: number,
     serviceType: string,
     totalTickets: number,
+    name: string,
     orgServiceId: string,
+    artworkHash: string,
     location: string,
     address: string,
     duration: number,
@@ -120,19 +123,47 @@ function BasicForm({prev,next}:StepProps){
 
     const watchOrgId = methods.watch('organizationId')
 
+    const {paseto} = useAuthContext()
+
     console.log('watch org', watchOrgId)
 
     const router = useRouter()
 
     const toast = useToast()
 
+    const userOrgsQuery = useQuery({
+        queryKey:['user-organizations',paseto],
+        queryFn:async()=>{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+                headers:{
+                    'Authorization': paseto 
+                }
+            }) 
+            return res.data.data
+        },
+        enabled: paseto !== undefined || paseto !== null 
+    })  
+
     const communityMutation = useMutation({
-        mutationFn: async()=>{
-            const res = await axios.post('')
+        mutationFn: async(payload:any)=>{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community`,payload,{
+                headers:{
+                    'Authorization': paseto
+                }
+            })
             return res
         },
-        onSuccess:()=>{
-
+        onSuccess:(data)=>{
+            const res = data.data[0]
+            console.log(res)
+            toast({
+                title: 'Successfully created community',
+                status: 'success',
+                duration: 6000,
+                isClosable: true,
+                position:'top-right'
+            })
+            // next(res)
         },
         onError:(err)=>{
             toast({
@@ -155,34 +186,60 @@ function BasicForm({prev,next}:StepProps){
 
 
     function submitForm(values: any){
+
+        const payload = {
+            ...values,
+            orgId: values.organizationId,
+            price: String(values.price * 100), // convert to cents.
+            name: `Key to: ${values.title}`,
+            currency: 'USD'
+        }
+
+        delete payload.organizationId
+
+        communityMutation.mutate(payload)
+
         console.log(values)
-        next()
+        // next()
     }
 
-    function handleImageSelect(imageHash:string){
+    function handleCoverImage(imageHash:string){
         // set image state
         setSelectedLogoImage(imageHash)
         // set value in form
-        // methods.setValue('logoImageHash',imageHash)
+        methods.setValue('logoImageHash',imageHash)
+    }
+
+    function handleImageSelect(imageHash:string){
+        // set value in form
+        methods.setValue('artworkHash',imageHash)
     }
 
     return(
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
-                <Box>
-                    {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
-                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','50%']}>
-                        <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
-                        <Select textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                            <option value="flexable">Flexable organization</option>
-                            <option value="principle">Principle organization</option>
-                            <option value="Magerine">Magerine organization</option>
+
+            { userOrgsQuery.isLoading
+               ? <Spinner/>
+               : userOrgsQuery?.data?.length < 1
+               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+               :<Box>
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                        <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
+                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                            {userOrgsQuery?.data?.map((userOrg:any)=>(
+                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                            ))}
+                            {/* <option value="principle">Principle organization</option>
+                            <option value="Magerine">Magerine organization</option> */}
                         </Select>
                         <FormHelperText color={'text.200'}> 
                             Your exclusive access will be created under this organization
                         </FormHelperText>
                     </FormControl>
                 </Box>
+                }
+
                 {watchOrgId !== undefined ?
                 <>
                 <Box>
@@ -194,20 +251,20 @@ function BasicForm({prev,next}:StepProps){
                                 <InputLeftAddon border={'inherit'} bg={'#222222'} color={'text.200'}>
                                     Key to:
                                 </InputLeftAddon>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('title')}/>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name')}/>
                             </InputGroup>
                         </FormControl>
 
                         <FormControl>
                             <FormLabel color={'text.300'}>Description</FormLabel>
-                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Eg. Line skip service" {...methods.register('description')}/>
+                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description')}/>
                         </FormControl>
 
                         <FormControl w={'50%'}>
                             <FormLabel color={'text.300'}>Price</FormLabel>
                             <InputGroup size={'lg'}>
                             <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price')}/>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true})}/>
                             </InputGroup> 
                         </FormControl>
                     
@@ -224,15 +281,13 @@ function BasicForm({prev,next}:StepProps){
 
                 <Box >
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Image Upload</Heading>
-                    {/* <Box border={'1px solid #333333'}> */}
-                    <DirectImageUploader name="logoImageHash"/>
-                    {/* </Box> */} 
+                    <DirectImageUploader onHandleImage={handleCoverImage} name="logoImageHash"/>
                 </Box>
 
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
-                    <Button variant={'outline'} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand" type="submit">Create Community</Button>
+                    <Button variant={'outline'} isDisabled={communityMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
+                    <Button colorScheme="brand" isLoading={communityMutation.isLoading} type="submit">Create Community</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}
@@ -301,12 +356,15 @@ function VenueForm(){
 
                 <FormControl>
                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
-                    <InputGroup size={'lg'}> 
-                    <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
+                    <InputGroup>
+                        <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
+                        <Input type="tel" borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.contactNumber`)}/>
+                    </InputGroup>
+                    {/* <InputGroup size={'lg'}> 
                     <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...register(`venues.${index}.contactNumber.areaCode`)}/>
                     <Input type='number' maxLength={3} textStyle={'secondary'} color='text.300' mr={'.5rem'}  size='lg' borderColor={'#2c2c2c'} borderRadius={'0'}  variant={'outline'}  {...register(`venues.${index}.contactNumber.midCode`)}/>
                     <Input type='number' maxLength={4} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...register(`venues.${index}.contactNumber.tailCode`)}/>
-                    </InputGroup>
+                    </InputGroup> */}
                 </FormControl>
 
                 <Button borderRadius={'50px'} w={'fit-content'} colorScheme="brand" variant={'outline'} onClick={()=>remove(index)}>Remove</Button>
@@ -476,7 +534,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
     return(
         <Flex mt={6}> 
             <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
-                {/* <Button textDecoration={'none'} onClick={onOpen} variant={'link'} colorScheme="brand">Upload a asset for your NFT</Button> */}
+
                 <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${imageHashList[0]}`}/>
                 <IconButton position={'absolute'} onClick={onOpen} bottom={'-2'} right={'-3'} aria-label="upload button" isRound variant={'ghost'} colorScheme="brand" size={'md'} icon={<ArrowUpIcon/>}/>
             </Flex>
@@ -486,7 +544,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
                 <ModalHeader color={'text.300'}>Choose Image</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody p={'1rem'} >
-                    <ImageUploader onUploadImage={handleUploadedImage} name="logoImageHash"/> 
+                    <ImageUploader onUploadImage={handleUploadedImage} name="artworkImageHash"/> 
                     <ArtworkPicker onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
                 </ModalBody>
                 </ModalContent>
@@ -502,14 +560,18 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
     const {register,setValue} = useFormContext()
 
     const toast = useToast()
+
+    const [isUploading, setIsUploading] = useState(false)
       
   
     const extractImage = async(e: any) => {
       //upload data here
       const file = e.target.files && e.target.files[0];
+      setIsUploading(true)
       try{
         const res  = await asyncStore(file)
         onUploadImage(res)
+        setIsUploading(false)
         console.log(res)
       }catch(err){
         toast({
@@ -519,6 +581,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
             isClosable: true,
             position:'top-right'
         })
+        setIsUploading(false)
       }
     //   setValue(name,file)
 
@@ -530,9 +593,13 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
       <Stack spacing={4}> 
       <FormLabel htmlFor={name}>
       <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
-        {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
-        <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
-        <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+        {isUploading
+        ?<Spinner/>
+        :<>
+            <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
+            <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+        </>
+        }
       </Flex>
       </FormLabel>
       <Box                    
@@ -555,14 +622,13 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
     )
   }
 
-function DirectImageUploader({name}:{name: string}){
+function DirectImageUploader({name, onHandleImage}:{name: string, onHandleImage:(imageHash:string)=>void}){
 
     const {register,setValue} = useFormContext()
 
     const [image, setImage] = useState('')
     const [isUploading, setIsUploading] = useState(false)
 
-    console.log()
 
     const toast = useToast()
       
@@ -574,6 +640,7 @@ function DirectImageUploader({name}:{name: string}){
       try{
         const res = await asyncStore(file)
         setImage(res)
+        onHandleImage(res)
         setIsUploading(false)
       }catch(err){
         toast({
@@ -585,8 +652,6 @@ function DirectImageUploader({name}:{name: string}){
         setIsUploading(false)
       }
       
-      setValue(name,file)
-
       
   };
   
@@ -601,7 +666,7 @@ function DirectImageUploader({name}:{name: string}){
       </FormLabel>
       <Box                    
          borderColor={'#464646'}  
-         {...register(name,{
+         {...register('logoImageHash',{
             onChange: e=>extractImage(e)
          })}
          id={name}
@@ -646,12 +711,16 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
 }
 
 
-const imageHashList= [
-    'bafkreih5kmywbykilkwduqdx7lttuuzin2puselw6swwnhi3hrnztuv6r4',
-    'bafkreignk6ctyc3ngrklrmnpqnrbovij3e5x23ups5ynbwghe6rwwpnq4y',
-    'bafkreibzyvawcyr3zjnvob6rfr7edzct7a63radq6ec5k5woa2v7belvs4',
-    'bafkreidrgnhgak5zurcyud73kzgm347fkvruoy5mjm4stosetpfocyhem4',
-    'bafkreigbbf73imovkwrsjrcvys6cggwff2jwb6ixi5weovlxftb73t54qe',
-    'bafkreifll4nla7zdudxrlei3widcqtiz6phaa5zlbzyo5fdd76byytytgy',
-    'bafkreiffhginn626rfdqsrn4lqpzhpsdfqbdeqxmofr3offdl6akp5qixy'
-]
+
+const imageHashList = [
+    'bafybeigsd6qwrclttmfq6zh72rldkcfyjc3xqmyuucu4rzavwfa3o3ndmm',
+    'bafybeidz65dnck3frd76dhvgcrznirf6sxbfentxi5lm3mz7ch6hifgr3a',
+    'bafybeicyq4jqhkvo6i7luzcnav5dazwo6xysfhxdqgmqat2wy46s2xdloe',
+    'bafybeif67t7snc6umd5twrzqicq7jugtqo3dofnvncjvhtccuo7d34iy3q',
+    'bafybeicq6jhmuf2g5cqp6tmv72h2rvc6nwds3nez4wpj6ysppv455lmazi',
+    'bafybeiff2bdvjr2p2q2uimgfaoebik3yuu23bhdredz52j3ctrmbrabese',
+    'bafybeigsghat6a2sbhyjmmchk6onztdstxjx45cxwzrdiub5hmiyf5kwqa',
+    'bafybeihkfzmeegpiz67fxn2i3rmohdddjcoyk5y45rmvaqvv5sotrdxypm',
+    'bafybeif66cmurjviz35rid5morzsnp277cs3qhjdgquvpe6n54ntuolnnu',
+    'bafybeibbyfj22f3wdrgu4dzsnpfixtn7zfmrxn7i3efavfdhnczz2sqala'
+    ]

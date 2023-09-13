@@ -253,13 +253,13 @@ function BasicForm({prev,next}:StepProps){
  
                { userOrgsQuery.isLoading
                ? <Spinner/>
-               : userOrgsQuery?.data.length < 1
+               : userOrgsQuery?.data?.length < 1
                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
                         <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                            {userOrgsQuery?.data.map((userOrg:any)=>(
+                            {userOrgsQuery?.data?.map((userOrg:any)=>(
                                 <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
                             ))}
                             {/* <option value="principle">Principle organization</option>
