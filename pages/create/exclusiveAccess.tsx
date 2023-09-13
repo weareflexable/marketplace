@@ -20,6 +20,7 @@ type IExclusiveAccess = {
     organizationId: string,
     title: string,
     price: number,
+    name: string,
     totalTickets: number,
     ticketsPerDay: number,
     serviceType: string,
@@ -51,6 +52,7 @@ export default function ExclusiveAccess(){
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = (data:any) => {
+        console.log('getting from next fun',data)
         setCreatedItemId(data.id)
         setActiveStep((prevStep) => prevStep + 1);
       };
@@ -202,7 +204,7 @@ function BasicForm({prev,next}:StepProps){
                 position:'top-right',
                 status:'success'
             })
-            next(data.data)
+            next(data.data[0])
         },
         onError:(err)=>{
             toast({
@@ -223,6 +225,7 @@ function BasicForm({prev,next}:StepProps){
             validityStartDate: dayjs(values.validityStartDate).format(),
             validityEndDate: dayjs(values.validityEndDate).format(),
             orgServiceId: values.serviceType,
+            price: values.price * 100 // convert price to cents before sending to backend
         }
         delete payload.organizationId
         delete payload.serviceType
@@ -345,7 +348,7 @@ function BasicForm({prev,next}:StepProps){
                         <FormControl>
                             <FormLabel color={'text.300'}>Title</FormLabel>
                             <InputGroup size={'lg'}>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('title')}/>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name')}/>
                             </InputGroup> 
                         </FormControl>
 
@@ -425,6 +428,8 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
 
     console.log('E don reach sha', serviceItemId)
 
+    const {paseto} = useAuthContext()
+
     const { control, register, handleSubmit } = useForm();
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
       control, // control props comes from useForm (optional: if you are using FormContext)
@@ -432,8 +437,53 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
     });
 
     const router = useRouter()
+    const toast = useToast()
+
+    const availabilityMutation = useMutation({
+        mutationFn: async(payload:any)=>{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/service-items/availability`,payload,{
+                headers:{
+                    'Authorization': paseto
+                }
+            })
+            return res.data
+        },
+        onSuccess:()=>{
+            toast({
+                title: 'Successfully create custom dates',
+                duration: 3000,
+                isClosable:true,
+                position: 'top-right',
+                status:'success'
+            })
+            router.replace('/')
+        },
+        onError:()=>{
+            toast({
+                title: 'Error creating custom dates',
+                duration: 3000,
+                isClosable:true,
+                position: 'top-right',
+                status:'error'
+            })
+        }  
+    })
 
     function submitForm(values:any){
+        const transformedAvailability = values.availability.map((availability:any)=>{
+            return {
+                ...availability,
+                price: availability.price * 100,
+                date: dayjs(availability.date).format()
+            }
+        })
+        const payload = {
+            serviceItemId: serviceItemId,
+            availability: transformedAvailability
+        }
+
+        availabilityMutation.mutate(payload)
+
         console.log(values)
     }
 
@@ -458,14 +508,14 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
                         {/* <FormLabel color={'text.300'}>Price</FormLabel> */}
                         <InputGroup size={'lg'}>
                         <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.price`)}/>
+                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.price`,{valueAsNumber:true})}/>
                         </InputGroup> 
                     </FormControl>
 
                     <FormControl w={'50%'}>
                         {/* <FormLabel color={'text.300'}>Tickets Per Day</FormLabel> */}
                         <InputGroup size={'lg'}>
-                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.ticketsPerDay`)}/>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`availability.${index}.ticketsPerDay`,{valueAsNumber:true})}/>
                             <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
                         </InputGroup> 
                     </FormControl>
@@ -493,8 +543,8 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
                 </Button>
                 
                 <HStack spacing={3} my={'3rem'}>
-                    <Button onClick={()=>router.replace('/')} colorScheme="brand"  variant={"ghost"}>Skip for now</Button>
-                    <Button  type="submit">Create Custom Dates</Button>
+                    <Button disabled={availabilityMutation.isLoading} onClick={()=>router.replace('/')} colorScheme="brand"  variant={"ghost"}>Skip for now</Button>
+                    <Button isLoading={availabilityMutation.isLoading}  type="submit">Create Custom Dates</Button>
                 </HStack>
             </Box>
         </form>
