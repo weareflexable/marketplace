@@ -194,7 +194,7 @@ function BasicForm({prev,next}:StepProps){
             return res.data
         },
         onSuccess:(data)=>{
-            console.log('results',data.data)
+            console.log('results',data.data[0])
             toast({
                 title: 'Successfully created service item',
                 duration: 3000,
@@ -493,7 +493,7 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
                 </Button>
                 
                 <HStack spacing={3} my={'3rem'}>
-                    <Button onClick={()=>router.back()} colorScheme="brand"  variant={"ghost"}>Skip for now</Button>
+                    <Button onClick={()=>router.replace('/')} colorScheme="brand"  variant={"ghost"}>Skip for now</Button>
                     <Button  type="submit">Create Custom Dates</Button>
                 </HStack>
             </Box>
