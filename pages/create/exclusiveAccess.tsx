@@ -681,6 +681,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageHash:string)=>void}){
 
     const {register,setValue} = useFormContext()
+    const [isUploadingImage, setIsUploadingImage] = useState(false)
 
     const toast = useToast()
       
@@ -688,10 +689,11 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
     const extractImage = async(e: any) => {
       //upload data here
       const file = e.target.files && e.target.files[0];
+      setIsUploadingImage(true)
       try{
         const res  = await asyncStore(file)
         onUploadImage(res)
-        console.log(res)
+        setIsUploadingImage(false)
       }catch(err){
         toast({
             title: 'Error uploading image to IPFS',
@@ -700,6 +702,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
             isClosable: true,
             position:'top-right'
         })
+        setIsUploadingImage(false)
       }
     //   setValue(name,file)
 
@@ -712,8 +715,12 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
       <FormLabel htmlFor={name}>
       <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
         {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
-        <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
-        <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+       { isUploadingImage
+       ? <Spinner/>
+       : <>
+            <Text mb={'.6rem'} color={'text.300'} textStyle={'buttonLabel'}>Click here to upload</Text>
+            <Text width={'70%'} textAlign={'center'} color={'text.200'}>Or choose an image below.  Please upload a PNG or JPEG that is 2400px x 1200px</Text>
+        </>}
       </Flex>
       </FormLabel>
       <Box                    
