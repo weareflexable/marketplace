@@ -12,6 +12,7 @@ import useOnclickOutside from "react-cool-onclickoutside";
 import { asyncStore } from "../../utils/nftStorage";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
+import { PLACEHOLDER_HASH } from "../../constants";
 
 
 type Event = {
@@ -412,7 +413,7 @@ function DirectImageUploader({name, onSelectLogoImage}:{name: string, onSelectLo
       <Stack spacing={4}> 
       <FormLabel htmlFor={name}>
         <Flex >
-            <Image cursor={'pointer'} height={'200px'} borderRadius={'60px'} width={'200px'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:'/swamp-boys.jpg'} alt="judge photo-icon"/>
+            <Image cursor={'pointer'} height={'350px'} borderRadius={'10px'} width={'100%'} border={'1px dashed #333333'} objectFit={'cover'}  src={image.length>10?`https://nftstorage.link/ipfs/${image}`:`https://nftstorage.link/ipfs/${PLACEHOLDER_HASH}`} alt="judge photo-icon"/>
             {isUploading?<Spinner/>:null}
         </Flex>
       </FormLabel>
@@ -474,9 +475,9 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 
     return(
         <Flex mt={6}> 
-            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
+            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'350px'} border={'1px solid #333333'}>
                 {/* <Button textDecoration={'none'} onClick={onOpen} variant={'link'} colorScheme="brand">Upload a asset for your NFT</Button> */}
-                <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${imageHashList[0]}`}/>
+                <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${PLACEHOLDER_HASH}`}/>
                 <IconButton position={'absolute'} onClick={onOpen} bottom={'-2'} right={'-3'} aria-label="upload button" isRound variant={'ghost'} colorScheme="brand" size={'md'} icon={<ArrowUpIcon/>}/>
             </Flex>
             <Modal isCentered size={'xl'} isOpen={isOpen} onClose={onClose}>
