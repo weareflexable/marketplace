@@ -1,13 +1,10 @@
 import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
-import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import { usePlacesWidget } from "react-google-autocomplete";
 import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { ArrowUpIcon } from "@chakra-ui/icons";
@@ -43,10 +40,12 @@ export default function Community(){
     const router = useRouter()
     const toast = useToast()
 
+    const [createdCommunityId, setCreatedCommunityId] = useState('')
     
     const [activeStep, setActiveStep] = useState(0);
 
-    const handleNext = () => {
+    const handleNext = (data:any) => {
+        setCreatedCommunityId(data.id)
         setActiveStep((prevStep) => prevStep + 1);
       };
 
@@ -55,13 +54,12 @@ export default function Community(){
       };
 
       const steps = [
-        { title: 'Basic Info',
-        //  description: 'Contact Info',
+        { 
+         title: 'Basic Info',
          component: <BasicForm prev={handlePrevious} next={handleNext}/>
         },
         { title: 'Add Venues', 
-        // description: 'Date & Time',
-        component: <VenueForm/>
+        component: <VenueForm communityId={createdCommunityId}/>
     }
       ]
     
@@ -112,7 +110,7 @@ Community
 
   interface StepProps{
     prev: ()=>void,
-    next: ()=>void
+    next: (data:any)=>void
   }
 function BasicForm({prev,next}:StepProps){
 
@@ -151,11 +149,11 @@ function BasicForm({prev,next}:StepProps){
                     'Authorization': paseto
                 }
             })
-            return res
+            return res.data.data
         },
         onSuccess:(data)=>{
-            const res = data.data[0]
-            console.log(res)
+            const res = data[0] 
+            console.log('res',res)
             toast({
                 title: 'Successfully created community',
                 status: 'success',
@@ -163,11 +161,11 @@ function BasicForm({prev,next}:StepProps){
                 isClosable: true,
                 position:'top-right'
             })
-            // next(res)
+            next(res)
         },
-        onError:(err)=>{
+        onError:(err)=>{ 
             toast({
-                title: 'Error creating Communitys',
+                title: 'Error creating Community',
                 status: 'error',
                 duration: 6000,
                 isClosable: true,
@@ -191,7 +189,7 @@ function BasicForm({prev,next}:StepProps){
             ...values,
             orgId: values.organizationId,
             price: String(values.price * 100), // convert to cents.
-            name: `Key to: ${values.title}`,
+            name: `Key to: ${values.name}`,
             currency: 'USD'
         }
 
@@ -296,25 +294,84 @@ function BasicForm({prev,next}:StepProps){
     )
 }
 
-function VenueForm(){
+function VenueForm({communityId}:{communityId:string}){
 
-    const { control, register, handleSubmit } = useForm();
+    console.log(communityId)
+
+    const { control, register, handleSubmit, setValue } = useForm();
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
       control, // control props comes from useForm (optional: if you are using FormContext)
       name: "venues", // unique name for your Field Array
     });
 
+    const {paseto} = useAuthContext()
+    const router = useRouter()
+    const toast = useToast()
+
+    const venuesMutation = useMutation({
+        mutationFn: async(payload:any)=>{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community-venues`,payload,{
+                headers: {
+                    'Authorization': paseto
+                }
+            })
+            return res;
+        },
+        onSuccess:()=>{
+            toast({
+                title: 'Successfully created venues',
+                status:'success',
+                duration:4000,
+                isClosable: true,
+                position:'top-right'
+            })
+            router.replace('/')
+        },
+        onError:()=>{
+            toast({
+                title: 'Error creating venues',
+                status:'error',
+                duration:4000,
+                isClosable: true,
+                position:'top-right'
+            })
+        }
+    })
+
     function submitForm(values:any){
-        console.log(values)
+
+        const transformedVenues = values.venues.map((venue:any)=>{
+            const addressObj = {
+                ...venue,
+                marketValue: venue.marketValue * 100, // convert to cents
+                contactNumber: `+1${venue.contactNumber}`,
+                address: {...venue.address}
+            }
+            delete addressObj.location
+            return addressObj
+        })
+
+        const payload = {
+            communityId: communityId,
+            venues: transformedVenues
+        }
+
+        venuesMutation.mutate(payload)
+
     }
 
     const newVenue = {
         name: '',
         promotion: '',
         marketValue: '',
-        address: '',
+        location: '',
         contactNumber: ''
     }
+
+    function handleAddress(index:number,address:any){
+        setValue(`venues.${index}.address`,address)   
+    }
+ 
 
     return(
         <form onSubmit={handleSubmit(submitForm)}>
@@ -334,31 +391,33 @@ function VenueForm(){
                          // important to include key with field's id
                         {...register(`venues.${index}.promotion`)} 
                         />
-                </FormControl>
+                </FormControl> 
 
                 <FormControl >
                     <FormLabel color={'text.300'}>MarketValue</FormLabel>
                     <InputGroup w={'300px'} size={'lg'}>
                         <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                        <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.marketValue`)}/>
+                        <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.marketValue`,{valueAsNumber:true})}/>
                     </InputGroup> 
                     <FormHelperText color={'text.200'}>
                         Market Value of the promotion is required so that the Community DAT can be properly priced on the Marketplace
                     </FormHelperText>
                 </FormControl>
 
-                <Address index={index}/>
+                <Address onHandleAddress={handleAddress} index={index}/>
 
-                {/* <FormControl>
-                    <FormLabel>Address</FormLabel>
-                    <Input textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="North Bridge Carolina, USA" {...register(`venues.${index}.address`)}/>
-                </FormControl> */}
+                 <FormControl hidden >
+                    
+                    <Input 
+                        {...register(`venues.${index}.address`)}
+                        />
+                </FormControl>
 
                 <FormControl>
                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
                     <InputGroup>
                         <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
-                        <Input type="tel" borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.contactNumber`)}/>
+                        <Input type="tel" borderColor={'#2c2c2c'} color={'text.300'} variant={'outline'} placeholder="0" {...register(`venues.${index}.contactNumber`)}/>
                     </InputGroup>
                     {/* <InputGroup size={'lg'}> 
                     <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...register(`venues.${index}.contactNumber.areaCode`)}/>
@@ -380,7 +439,7 @@ function VenueForm(){
                 </Button>
                 
                 <Box my={'2rem'}>
-                    <Button  type="submit">Create Venues</Button>
+                    <Button isLoading={venuesMutation.isLoading} colorScheme="brand" type="submit">Create Venues</Button>
                 </Box>
             </Box>
         </form>
@@ -389,8 +448,10 @@ function VenueForm(){
 
 
 
-function Address({index}:{index:number}){
-    const {register,formState} = useFormContext()
+function Address({index, onHandleAddress}:{index:number, onHandleAddress:(index:number,address:any)=>void}){
+    const {register,formState, setValue:setFormState} = useFormContext()
+
+    
 
     const {
         ready,
@@ -438,12 +499,23 @@ function Address({index}:{index:number}){
             // Use the "place_id" of suggestion from the dropdown (object), here just taking the first suggestion for brevity
             placeId: place_id,
             // Specify the return data that you want (optional)
-            fields: ["name", "rating","formatted_address"], 
+            fields: ['address_components','geometry','formatted_address','place_id'], 
           };
  
           getDetails(parameter)
             .then((details:any) => {
                 console.log("Details: ", details);
+                
+                const fullAddress = extractFullAddress(details)
+                
+                const addressWithStreet={
+                    ...fullAddress,
+                    fullAddress: details?.formatted_address,
+                    placeId: details?.place_id 
+                }
+                console.log(addressWithStreet)
+                onHandleAddress(index,addressWithStreet)
+                // setFormState(`venues.${index}.address`,addressWithStreet)
             })
             .catch((error:any) => {
                 console.log("Error: ", error);
@@ -479,12 +551,11 @@ function Address({index}:{index:number}){
             variant={'outline'} 
             value={value}
             placeholder="Enter your address" 
-            {...register(`venues.${index}.address`,{
+            {...register(`venues.${index}.location`,{
                 onChange: handleInput
             })}
             />
             {status == 'OK' && 
-
                 <UnorderedList border={'1px solid #333333'} borderRadius={8}  m='0' mt={'1rem'} color={'text.300'}>
                     {renderSuggestions()}
                 </UnorderedList>
@@ -693,7 +764,6 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
     function selectImage(imageHash:string){
         onHandleArtworkSelection(imageHash)
         onClose()
-        // setSelectedImageIndex(index)
     }
     return(
         <Box>
@@ -724,3 +794,28 @@ const imageHashList = [
     'bafybeif66cmurjviz35rid5morzsnp277cs3qhjdgquvpe6n54ntuolnnu',
     'bafybeibbyfj22f3wdrgu4dzsnpfixtn7zfmrxn7i3efavfdhnczz2sqala'
     ]
+
+
+    const extractFullAddress = (place:any)=>{
+        const addressComponents = place.address_components 
+            let addressObj = {
+                state:'',
+                country:'',
+                city:'',
+                street:'',
+                placeId:'',
+                fullAddress:'',
+                latitude:String(place.geometry.location.lat()),
+                longitude:String(place.geometry.location.lng())
+            };
+    
+            addressComponents.forEach((address:any)=>{
+                const type = address.types[0]
+                if(type==='country') addressObj.country = address.long_name
+                if(type==='route') addressObj.street = address.long_name
+                if(type === 'locality') addressObj.state = address.short_name
+                if(type === 'administrative_area_level_1') addressObj.city = address.short_name
+            })
+    
+            return addressObj
+    }
