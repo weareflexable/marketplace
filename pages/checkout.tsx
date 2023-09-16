@@ -110,6 +110,7 @@ export default function Checkout(){
     async function proceedToCheckout(values:any){
 
         const itemPayload = JSON.parse(localStorage.getItem('itemPayload')||'')
+
         const payload = {
             ...itemPayload,
             users:values.userList
@@ -121,6 +122,9 @@ export default function Checkout(){
         try{
         const res:any = await fetchSecret(payload)
               if(res.status == 200){
+
+                console.log('price in checkout', itemPayload.price)
+
                 const stripePayload = {
                   clientSecret: res.data.clientSecret,
                   paymentIntentId: res.data.payment_intent_id,
@@ -130,7 +134,7 @@ export default function Checkout(){
                 // set stripePayload to payment context
                 setPayload(stripePayload)
 
-                         // set current page as last visited page
+                // set current page as last visited page
                 // localStorage.setItem('lastVisitedPage',currentPath);
 
                
@@ -157,7 +161,6 @@ export default function Checkout(){
     
 
 
-          // const userList =   [{firstName: '', lastName:'', email: ''},{firstName: '', lastName:'', email: ''}]
 
  
     function validateName(value:string){
