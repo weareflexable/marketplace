@@ -174,9 +174,9 @@ export default function Ticket(){
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <HStack w='100%' justifyContent={'center'} mb='2'>
+                                <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
                                     <Text color='text.200' textStyle={'secondary'}>Redemption Code:</Text>
-                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
+                                    <Text color='accent.200'  textStyle={'body'}>{ticketSecret}</Text>
                                 </HStack>
                                 <Box bg={'#ffffff'} padding='5'>
                                 <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>

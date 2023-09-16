@@ -241,7 +241,7 @@ async function generateApplePass(){
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3}  justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
-                                        <Text color='accent.200'   textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
+                                        <Text color='accent.200'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
                                     <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
                                       <QRCode height={'25px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
