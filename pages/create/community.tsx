@@ -768,7 +768,7 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
     }
     return(
         <Box>
-        <Heading color={'text.300'} my={'1rem'} size={'md'}>Midjourney Artworks</Heading>
+        <Heading color={'text.300'} my={'1rem'} size={'md'}>Select Artwork</Heading>
         <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
             {imageHashList.map((imageHash:string, index:number)=>(
                 <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>

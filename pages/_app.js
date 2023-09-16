@@ -10,6 +10,7 @@ import {CheckoutContextProvider} from '../context/CheckoutContext'
 import {AuthContextProvider} from '../context/AuthContext'
 import {DatContextProvider} from '../context/DatContext'
 import {PaymentContextProvider} from '../context/PaymentContext'
+import { useEffect } from 'react'
 
  
 
@@ -18,6 +19,10 @@ function MyApp({ Component, pageProps }) {
 
 
   const queryClient = new QueryClient({})
+
+  useEffect(()=>{
+    localStorage.setItem('chakra-ui-color-mode','dark')
+  })
 
   return ( 
     <AuthContextProvider>

@@ -162,19 +162,19 @@ export default function Event(){
                                 <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Title</FormLabel>
-                                        <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('name')}/>
+                                        <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('name',{required:true})}/>
                                     </FormControl>
 
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Description</FormLabel>
-                                        <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('description')}/>
+                                        <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('description',{required:true})}/>
                                     </FormControl>
 
                                     <FormControl w={['100%','70%','50%']}>
                                         <FormLabel color={'text.300'}>Price</FormLabel>
                                         <InputGroup size={'lg'}>
                                         <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true})}/>
+                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
                                         </InputGroup> 
                                     </FormControl>
                                 
@@ -182,14 +182,14 @@ export default function Event(){
                                     <FormControl w={['100%','70%','50%']}>
                                         <FormLabel color={'text.300'}>Available DATs</FormLabel>
                                         <InputGroup size={'lg'}>
-                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('totalTickets',{valueAsNumber:true})}/>
+                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('totalTickets',{valueAsNumber:true,required:true})}/>
                                         </InputGroup> 
                                     </FormControl>
                                     
                                     <FormControl w={['100%','70%','50%']}>
                                         <FormLabel color={'text.300'}>Start Time</FormLabel>
                                         <InputGroup size={'lg'}>
-                                        <Input type="datetime-local"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{valueAsDate:false})}/>
+                                        <Input type="datetime-local"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
                                         </InputGroup>  
                                     </FormControl>
                                 </Stack>
@@ -201,7 +201,7 @@ export default function Event(){
                                 <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
                                 <FormControl>
                                     <FormLabel color={'text.300'}>Venue Name</FormLabel>
-                                    <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName')}/>
+                                    <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName',{required:true})}/>
                                 </FormControl>
 
                                 <Address/>
@@ -210,7 +210,7 @@ export default function Event(){
                                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
                                     <InputGroup>
                                         <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
-                                        <Input type="tel" borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')} />
+                                        <Input type="tel" borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber',{required:true})} />
                                     </InputGroup>
                                     {/* <InputGroup size={'lg'}> 
                                         <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')}/>
@@ -222,8 +222,8 @@ export default function Event(){
                                 <FormControl w={'50%'}>
                                     <FormLabel color={'text.300'}>Duration</FormLabel>
                                     <InputGroup size={'lg'}>
-                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{valueAsNumber:true})}/>
-                                    <InputRightAddon border={'inherit'} bg={'#222222'}>Hrs</InputRightAddon>
+                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{valueAsNumber:true,required:true})}/>
+                                    <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Hrs</InputRightAddon>
                                     </InputGroup> 
                                 </FormControl>
                                 </Stack>
@@ -240,7 +240,7 @@ export default function Event(){
                             </Box>
                             <ButtonGroup mb={'3rem'} spacing={2}>
                                 <Button disabled={eventMutation.isLoading} variant={'ghost'} onClick={()=>router.back()}>Cancel</Button>
-                                <Button isLoading={eventMutation.isLoading} colorScheme="brand" type="submit">Create Event</Button>
+                                <Button isLoading={eventMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
                             </ButtonGroup>
                             </>
                             :null}
