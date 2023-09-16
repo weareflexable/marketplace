@@ -178,7 +178,7 @@ function BasicForm({prev,next}:StepProps){
 
    
 
-    console.log('types query', serviceItemTypesQuery.data)
+    console.log('form valid', methods.formState.isValid)
 
   
 
@@ -244,6 +244,7 @@ function BasicForm({prev,next}:StepProps){
     // }
 
     return(
+        <FormProvider {...methods}>    
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
  
@@ -254,7 +255,7 @@ function BasicForm({prev,next}:StepProps){
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
-                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                             {userOrgsQuery?.data?.map((userOrg:any)=>(
                                 <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
                             ))}
@@ -274,15 +275,15 @@ function BasicForm({prev,next}:StepProps){
                 <>
                  {orgServicesQuery.isLoading
                  ?<Spinner/> 
-                 : orgServicesQuery?.data.length < 1  
+                 : orgServicesQuery?.data?.length < 1  
                  ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
                  : <Box>
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
                         <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                             <FormLabel ml={'.8rem'} color={'text.300'}>Select service type</FormLabel>
-                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType')}>
+                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceType',{required:true})}>
                                 {
-                                    orgServicesQuery?.data.map((service:any)=>(
+                                    orgServicesQuery?.data?.map((service:any)=>(
                                          <option key={service.id} value={service.id}>
                                            {service.name}
                                          </option>
@@ -314,7 +315,7 @@ function BasicForm({prev,next}:StepProps){
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
                         <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                             <FormLabel ml={'.8rem'} color={'text.300'}>Select service item type</FormLabel>
-                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service item type"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceItemTypeId')}>
+                            <Select textStyle={'secondary'} color='text.300' placeholder="Select service item type"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceItemTypeId',{required:true})}>
                                 {
                                     serviceItemTypesQuery?.data.map((type:any)=>(
                                          <option key={type.id} value={type.id}>
@@ -344,13 +345,13 @@ function BasicForm({prev,next}:StepProps){
                         <FormControl>
                             <FormLabel color={'text.300'}>Title</FormLabel>
                             <InputGroup size={'lg'}>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name')}/>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name',{required:true})}/>
                             </InputGroup> 
                         </FormControl>
 
                         <FormControl>
                             <FormLabel color={'text.300'}>Description</FormLabel>
-                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description')}/>
+                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description',{required:true})}/>
                         </FormControl>
 
                         {/* price and tickets per day */}
@@ -359,14 +360,14 @@ function BasicForm({prev,next}:StepProps){
                                 <FormLabel color={'text.300'}>Price</FormLabel>
                                 <InputGroup size={'lg'}>
                                 <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                                <Input type="number"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price',{valueAsNumber:true})}/>
+                                <Input type="number"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('price',{valueAsNumber:true, required:true})}/>
                                 </InputGroup> 
                             </FormControl>
 
                             <FormControl w={'50%'}>
                                 <FormLabel color={'text.300'}>Tickets Per Day</FormLabel>
                                 <InputGroup  size={'lg'}>
-                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('ticketsPerDay',{valueAsNumber:true})}/>
+                                    <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('ticketsPerDay',{valueAsNumber:true, required:true})}/>
                                    <Box hideBelow={'md'}>
                                     <InputRightAddon  border={'inherit'} color={'text.200'} bg={'#222222'}>Tickets per day</InputRightAddon>
                                     </Box> 
@@ -382,8 +383,8 @@ function BasicForm({prev,next}:StepProps){
                                 <FormLabel color={'text.300'}>Validity Period</FormLabel>
                                 <InputGroup  size={'lg'}> 
                                 {/* <InputLeftAddon color={'text.200'} border={'inherit'} bg={'#222222'}>$</InputLeftAddon> */}
-                                    <Input type="date" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('validityStartDate',{valueAsDate:false})}/>
-                                    <Input type="date" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('validityEndDate',{valueAsDate:false})}/>
+                                    <Input type="date" mr={'.2rem'} style={{borderTopLeftRadius:'6px', borderBottomLeftRadius:'6px'}} borderRadius={'0'} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('validityStartDate',{required:true})}/>
+                                    <Input type="date" borderRadius={'0'}style={{borderTopRightRadius:'6px', borderBottomRightRadius:'6px'}} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('validityEndDate',{required:true})}/>
                                 </InputGroup> 
                             </FormControl>
 
@@ -410,12 +411,13 @@ function BasicForm({prev,next}:StepProps){
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
                     <Button variant={'outline'} isDisabled={exclusiveAccessMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand"  isLoading={exclusiveAccessMutation.isLoading} type="submit">Create Reservation</Button>
+                    <Button colorScheme="brand"  isDisabled={!methods.formState.isValid}  isLoading={exclusiveAccessMutation.isLoading} type="submit">Create Reservation</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}
             </Stack>
         </form>
+        </FormProvider>
     ) 
 }
 
@@ -652,7 +654,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
 
     return(
         <Flex mt={6}> 
-            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'200px'} border={'1px solid #333333'}>
+            <Flex justifyContent={'center'} objectFit={'contain'} position={'relative'} alignItems={'center'} borderRadius={6} width={'100%'} height={'350px'} border={'1px solid #333333'}>
                 {/* <Button textDecoration={'none'} onClick={onOpen} variant={'link'} colorScheme="brand">Upload a asset for your NFT</Button> */}
                 <Image height={'100%'} w={'100%'} src={imageSrc.length>10?`https://nftstorage.link/ipfs/${imageSrc}`:`https://nftstorage.link/ipfs/${imageHashList[0]}`}/>
                 <IconButton position={'absolute'} onClick={onOpen} bottom={'-2'} right={'-3'} aria-label="upload button" isRound variant={'ghost'} colorScheme="brand" size={'md'} icon={<ArrowUpIcon/>}/>
@@ -709,7 +711,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
       <FormControl > 
       <Stack spacing={4}> 
       <FormLabel htmlFor={name}>
-      <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
+      <Flex bg={'#121212'} border={'1px dashed #666666'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
         {/* <Image width={'100%'} border={'1px dashed #333333'} height={'300px'}  borderRadius={'10px'}  src={'/swamp-boys.jpg'} alt="judge photo-icon"/> */}
        { isUploadingImage
        ? <Spinner/>
@@ -754,11 +756,11 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
     }
     return(
         <Box>
-        <Heading color={'text.300'} my={'1rem'} size={'md'}>Midjourney Artworks</Heading>
+        <Heading color={'text.300'} my={'1rem'} size={'md'}>Select Artwork</Heading>
         <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
             {imageHashList.map((imageHash:string, index:number)=>(
                 <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
-                    <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'150px'} alt="Image"/>
+                    <Image  onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'350px'} alt="Image"/>
                 </Box>
             )
             )}
