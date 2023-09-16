@@ -68,49 +68,32 @@ console.log(ctx_currentDat)
 
     setIsGeneratingPass(true)
     
-    const payload = {
-        qrCode: qrCodePayload,
-        expiryDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format(),
-        ticketSecret: ticketSecret,
-        targetDate: dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format(),
-        quantity: quantity,
-        price: eventDetails.price/100,
-        eventName: eventDetails.name,
-        venueName: eventDetails.name,
-        street: eventDetails.address.street,
-        location: {
-            latitude: eventDetails.address.latitude,
-            longitude: eventDetails.address.longitude, 
-        },
+
+
+    const body = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apple-pass?ticketId=${id}&ticketType=event`,{
+        method:'GET',
+        headers:{
+            "Content-Type": "application/vnd.apple.pkpass"
+        } 
+    })
+    
+    
+    const blob = await body.blob()
+    const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
+    
+    setIsGeneratingPass(false)
+    const blobUrl = window.URL.createObjectURL(newBlob);
+
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.setAttribute('download', `${eventDetails.name}.pkpass`);
+    document.body.appendChild(link);
+    link.click();
+    // link.parentNode.removeChild(link);
+
+    return()=>{
+        window.URL.revokeObjectURL(blobUrl);
     }
-
-    console.log(payload)
-    
-    // const body = await fetch('/api/generatePass',{
-    //     method:'POST',
-    //     body: JSON.stringify(payload),
-    //     headers:{
-    //         "Content-Type": "application/vnd.apple.pkpass"
-    //     } 
-    // })
-    
-    
-    // const blob = await body.blob()
-    // const newBlob = new Blob([blob],{type:'application/vnd.apple.pkpass'})
-    
-    // setIsGeneratingPass(false)
-    // const blobUrl = window.URL.createObjectURL(newBlob);
-
-    // const link = document.createElement('a');
-    // link.href = blobUrl;
-    // link.setAttribute('download', `${eventDetails.name}.pkpass`);
-    // document.body.appendChild(link);
-    // link.click();
-    // // link.parentNode.removeChild(link);
-
-    // return()=>{
-    //     window.URL.revokeObjectURL(blobUrl);
-    // }
 
    }
 
