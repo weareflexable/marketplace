@@ -75,13 +75,13 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                     <Image alt='Artwork for ticket' loading='lazy' layout='fill'  objectFit={'cover'} src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${ticketData.logoImageHash}`}/>
                 </Box>
                 <Flex direction={['column']}>
-                    <Flex py='1em'>
-                        <Flex px='1em' flex={4} direction='column'>
+                    <Flex  py='1em'>
+                        <Flex w={'100%'} px='1em' flex={4} direction='column'>
                             <Text textStyle={'secondary'} color='accent.200'>{dayjs(selectedDate).format('MMM DD, YYYY')}</Text>
-                            <Text as='h4' mb='0' textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={1}>
-                                {data.name}
+                            <Text as='h4' mb='0'  width={'100%'} textTransform={'capitalize'} textStyle={'h4'} layerStyle={'highPop'} lineHeight='tight' noOfLines={2}>
+                                {data.name} 
                             </Text>    
-                            <Text textStyle={'secondary'} layerStyle={'mediumPop'}>
+                            <Text textStyle={'secondary'} noOfLines={3} width={['100%']} maxW={'400px'} layerStyle={'mediumPop'}>
                                 {data.description}
                             </Text>
                             <Flex mt='2' justifyContent={'space-between'} alignItems='center'>

@@ -271,7 +271,7 @@ export default function ServicesPage(){
 
                     {isLoadingDates
                     ? <Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'1.5rem'}/>
-                    :<Box w='93%' margin={'0 auto'}  p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
+                    :<Box w={['93%','100%']} borderRadius={4} margin={'0 auto'}  p={4} whiteSpace={'nowrap'} bg='#242424' overflowY={'hidden'} overflow='hidden' overflowX={'scroll'}>
                         {dates.map((date:any)=>(
                             <React.Fragment key={date.iso}>
                             {dayjs().isBefore(dayjs(date.iso)) || dayjs().isSame(dayjs(date.iso),'date')
