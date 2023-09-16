@@ -29,6 +29,7 @@ export const EventCard = ({data}:EventCardProps) =>{
         router.push(`/events/${eventId}`)
     }
 
+    const isFree = data?.price === 0
 
     const coverImageHash = data?.coverImageHash
 
@@ -71,7 +72,7 @@ export const EventCard = ({data}:EventCardProps) =>{
                     
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        {`$${numberFormatter.from(data.price/100)}`}
+                        {isFree?'Free':`$${numberFormatter.from(data.price/100)}`}
                         </Text> 
                     </Flex>
                 </Flex>
