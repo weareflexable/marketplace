@@ -225,7 +225,7 @@ function BasicForm({prev,next}:StepProps){
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
-                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
+                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                             {userOrgsQuery?.data?.map((userOrg:any)=>(
                                 <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
                             ))}
@@ -250,20 +250,20 @@ function BasicForm({prev,next}:StepProps){
                                 <InputLeftAddon border={'inherit'} bg={'#222222'} color={'text.200'}>
                                     Key to:
                                 </InputLeftAddon>
-                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name')}/>
+                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name',{required:true})}/>
                             </InputGroup>
                         </FormControl>
 
                         <FormControl>
                             <FormLabel color={'text.300'}>Description</FormLabel>
-                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description')}/>
+                            <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('description',{required:true})}/>
                         </FormControl>
 
                         <FormControl w={'50%'}>
                             <FormLabel color={'text.300'}>Price</FormLabel>
                             <InputGroup size={'lg'}>
                             <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true})}/>
+                            <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
                             </InputGroup> 
                         </FormControl>
                     
@@ -286,7 +286,7 @@ function BasicForm({prev,next}:StepProps){
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
                     <Button variant={'outline'} isDisabled={communityMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand" isLoading={communityMutation.isLoading} type="submit">Create Community</Button>
+                    <Button colorScheme="brand" isDisabled={!methods.formState.isValid} isLoading={communityMutation.isLoading} type="submit">Create Community</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}
@@ -380,7 +380,7 @@ function VenueForm({communityId}:{communityId:string}){
             <Stack key={field.id} mb={'1rem'} mt={'4rem'} p={['1.5rem']} spacing={5} borderRadius={[0,0,8]} w={'100%'} border={'1px solid #333333'}>
                 <FormControl>
                     <FormLabel color={'text.300'}>Name</FormLabel>
-                    <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...register(`venues.${index}.name`)} />
+                    <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...register(`venues.${index}.name`,{required:true})} />
                 </FormControl>
 
                 <FormControl>
@@ -398,7 +398,7 @@ function VenueForm({communityId}:{communityId:string}){
                     <FormLabel color={'text.300'}>MarketValue</FormLabel>
                     <InputGroup w={'300px'} size={'lg'}>
                         <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                        <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.marketValue`,{valueAsNumber:true})}/>
+                        <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...register(`venues.${index}.marketValue`,{valueAsNumber:true,required:true})}/>
                     </InputGroup> 
                     <FormHelperText color={'text.200'}>
                         Market Value of the promotion is required so that the Community DAT can be properly priced on the Marketplace
@@ -410,7 +410,7 @@ function VenueForm({communityId}:{communityId:string}){
                  <FormControl hidden >
                     
                     <Input 
-                        {...register(`venues.${index}.address`)}
+                        {...register(`venues.${index}.address`,{required:true})}
                         />
                 </FormControl>
 
@@ -418,7 +418,7 @@ function VenueForm({communityId}:{communityId:string}){
                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
                     <InputGroup>
                         <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
-                        <Input type="tel" borderColor={'#2c2c2c'} color={'text.300'} variant={'outline'} placeholder="0" {...register(`venues.${index}.contactNumber`)}/>
+                        <Input type="tel" borderColor={'#2c2c2c'} color={'text.300'} variant={'outline'} placeholder="0" {...register(`venues.${index}.contactNumber`,{required:true})}/>
                     </InputGroup>
                     {/* <InputGroup size={'lg'}> 
                     <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...register(`venues.${index}.contactNumber.areaCode`)}/>
@@ -664,7 +664,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
       <FormControl > 
       <Stack spacing={4}> 
       <FormLabel htmlFor={name}>
-      <Flex bg={'#121212'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
+      <Flex bg={'#121212'} border={'1px dashed #666666'} borderRadius={8} direction={'column'} justifyContent={'center'} height={'150px'} alignItems={'center'} cursor={'pointer'}>
         {isUploading
         ?<Spinner/>
         :<>
@@ -677,7 +677,7 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
       <Box                    
          borderColor={'#464646'}  
          {...register(name,{
-            onChange: e=>extractImage(e)
+            onChange: e=>extractImage(e) 
          })}
          id={name}
          as="input" 
@@ -772,7 +772,7 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
         <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
             {imageHashList.map((imageHash:string, index:number)=>(
                 <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
-                    <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'150px'} alt="Image"/>
+                    <Image objectFit={'cover'} onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'350px'} alt="Image"/>
                 </Box>
             )
             )}
