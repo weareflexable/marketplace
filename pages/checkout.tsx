@@ -106,6 +106,7 @@ export default function Checkout(){
             router.push('/payments')
        
      }
+    
 
     async function proceedToCheckout(values:any){
 
@@ -116,14 +117,17 @@ export default function Checkout(){
             users:values.userList
         }
 
-        console.log(values.userList)
         setIsProceedingToPayment(true)
         // call payment intent here
         try{
         const res:any = await fetchSecret(payload)
               if(res.status == 200){
 
-                console.log('price in checkout', itemPayload.price)
+                if (itemPayload.unitPrice === 0) {
+                  // push to DATs page
+                  router.push('/dats')
+                }
+
 
                 const stripePayload = {
                   clientSecret: res.data.clientSecret,
@@ -151,13 +155,13 @@ export default function Checkout(){
   
         //   console.log(payload)
 
-            }
+      }
 
 
-            function navigateToPrevPage(){
-              const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-              lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
-            }
+    function navigateToPrevPage(){
+      const lastVisitedPage = localStorage.getItem('lastVisitedPage')
+      lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
+    }
     
 
 
@@ -275,7 +279,7 @@ export default function Checkout(){
                                        size='lg'
                                        type="submit"
                                        > 
-                                      Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}
+                                      {priceInfo.unitPrice === 0 ? 'Get Free Tickets' :`Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}`}
                                    </Button>
                                    <Text mt={3} textAlign={'center'} textStyle={'secondary'} color={'text.200'}>
                                     If you are buying a ticket for someone else, the DAT will not show up in your account but rather in the account of the person you are buying the ticket for

@@ -38,7 +38,7 @@ const useEventTicket = (data:any)=>{
   const {isAuthenticated, paseto} = useAuthContext()
 
 
-  // const isEventFree = data.price === 0 ? true: false
+  const isEventFree = data?.price === 0 ? true: false
 
   
   // Each ticket will maintain it's own state from props because
@@ -48,6 +48,8 @@ const useEventTicket = (data:any)=>{
     quantity:0
   })
   
+  console.log('is free',isEventFree)
+
   const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
   const {setState:setSubTotal} = useLocalStorage('subTotal',0)
   
@@ -100,7 +102,7 @@ const useEventTicket = (data:any)=>{
                 type: "event"
             },
           quantity: String(ticketData.quantity),
-          unitPrice: data.price,
+          unitPrice: data?.price,
           email: 'flexable@yahoo.com',
           description:data.name,
           targetDate: dayjs(data.startTime).add(data.duration/60,'h').tz('UTC').format('MMM DD, YYYY') // TODO: Get current selected date
@@ -141,6 +143,7 @@ const useEventTicket = (data:any)=>{
      return {
         ticketData,
         // isTicketsSoldOut, 
+        isEventFree,
         isMinQuantity,
       //   ticketDate,
         isTicketAvailable,

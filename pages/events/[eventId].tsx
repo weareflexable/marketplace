@@ -57,6 +57,7 @@ export default function EventPage(){
         isMaxQuantity,
         decrementQuantity,
         incrementQuantity,
+        isEventFree,
         ticketData,
         isProceedingToPayment,
         isTicketExpired,
@@ -171,6 +172,7 @@ export default function EventPage(){
                         />
                         <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                         <TicketButtonAction
+                            isEventFree = {isEventFree}
                             isAuthenticated = {isAuthenticated}
                             isMinQuantity = {isMinQuantity}
                             isBuyingTicket = {isProceedingToPayment}
