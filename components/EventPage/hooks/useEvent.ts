@@ -37,7 +37,8 @@ const useEventTicket = (data:any)=>{
   const {setPayload} = usePaymentContext()
   const {isAuthenticated, paseto} = useAuthContext()
 
-  const isEventFree = data.price === 0 ? true: false
+
+  // const isEventFree = data.price === 0 ? true: false
 
   
   // Each ticket will maintain it's own state from props because
