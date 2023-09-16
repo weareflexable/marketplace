@@ -2,7 +2,7 @@ import { Box, Button } from "@chakra-ui/react"
 
 interface BuyNowButton{
     isMinQuantity:boolean
-    isEventFree: boolean,
+    isEventFree?: boolean,
     buyTicketNow:()=>void
     isAuthenticated: boolean
     isBuyingTicket: boolean

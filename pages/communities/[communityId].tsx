@@ -162,6 +162,7 @@ export default function CommunityPage(){
                         />
                         <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                         <TicketButtonAction
+                            quantity={ticketData.quantity}
                             isAuthenticated = {isAuthenticated}
                             isMinQuantity = {isMinQuantity}
                             isBuyingTicket = {isProceedingToPayment}
