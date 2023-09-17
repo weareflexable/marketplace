@@ -133,7 +133,7 @@ function CreateOptions(){
     const router = useRouter()
     return(
         <Menu>                            
-        <MenuButton>
+        <MenuButton as={'div'} color={'text.300'} >
             <Button size={'sm'} variant={'outline'} colorScheme='brand' leftIcon={<AddIcon/>}>Create</Button> 
         </MenuButton>
             <MenuList zIndex='6' borderColor="#2b2b2b" bg='#121212'>
