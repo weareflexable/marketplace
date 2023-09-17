@@ -223,7 +223,7 @@ function BasicForm({prev,next}:StepProps){
                : userOrgsQuery?.data?.length < 1
                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
                :<Box>
-                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
                         <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                             {userOrgsQuery?.data?.map((userOrg:any)=>(
@@ -262,7 +262,7 @@ function BasicForm({prev,next}:StepProps){
                         <FormControl w={'50%'}>
                             <FormLabel color={'text.300'}>Price</FormLabel>
                             <InputGroup size={'lg'}>
-                            <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
+                            <InputLeftAddon color={'text.300'} border={'inherit'} bg={'#121212'}>$</InputLeftAddon>
                             <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
                             </InputGroup> 
                         </FormControl>

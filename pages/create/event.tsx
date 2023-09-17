@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, FormHelperText, Text, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, UnorderedList, ListItem, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, FormControl, FormHelperText, Text, Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, UnorderedList, ListItem, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, Checkbox, Radio, RadioGroup } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -13,11 +13,13 @@ import { asyncStore } from "../../utils/nftStorage";
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import { PLACEHOLDER_HASH } from "../../constants";
+import { timezones } from "../../data/timezones";
 
 
 type Event = {
     organizationId: string,
     name: string,
+    timezone: string,
     price: number,
     serviceType: string, 
     totalTickets: number,
@@ -25,6 +27,7 @@ type Event = {
     location: string,
     address: string,
     startTime: string,
+    type: string,
     duration: number,
     locationName: string,
     contactNumber: string,
@@ -40,6 +43,8 @@ type Event = {
 export default function Event(){
     const methods = useForm<Event>({
     })
+
+    const [isEventFree, setIsEventFree] = useState(false)
 
     const {paseto} = useAuthContext()
     const router = useRouter()
@@ -101,6 +106,7 @@ export default function Event(){
             ...values,
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
+            arworkImageHash: values.logoImageHash, 
             duration: values.duration * 60,
             startTime: dayjs(values.startTime).format(),
             price: values.price * 100 // convert to cents
@@ -108,6 +114,7 @@ export default function Event(){
         delete payload.organizationId
         delete payload.location
 
+        console.log(payload)
         eventMutation.mutate(payload)
         // console.log(payload)
     } 
@@ -118,6 +125,11 @@ export default function Event(){
 
     function handleArtworkImage(imageHash:string){
         methods.setValue('artworkImageHash',imageHash)
+    }
+
+    function makeEventFree(){
+        methods.setValue('price',0)
+        setIsEventFree(!isEventFree) 
     }
 
     return(
@@ -135,11 +147,11 @@ export default function Event(){
                         <Stack w={'100%'} spacing={8}>
 
                               { userOrgsQuery.isLoading
-                                ? <Spinner/>
+                                ? <Spinner/> 
                                 : userOrgsQuery?.data?.length < 1
                                 ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
                                 :<Box>
-                                        <FormControl mb={'1rem'} px={['1rem']} w={['100%','100%','70%']}>
+                                        <FormControl mb={'1rem'} px={['1rem']} w={['100%','100%','100%','70%']}>
                                             <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
                                             <Select textStyle={'secondary'} color='text.300'  size='lg' placeholder="Select organization" borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
                                                 {userOrgsQuery?.data?.map((userOrg:any)=>(
@@ -154,12 +166,12 @@ export default function Event(){
                                         </FormControl>
                                     </Box>}
 
-                           { watchOrgId !== undefined 
+                           { watchOrgId !== undefined && watchOrgId !== '' 
                            ? <>
                             
-                            <Box>
+                            <Box> 
                                 <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
-                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
+                                <Stack spacing={8} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Title</FormLabel>
                                         <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('name',{required:true})}/>
@@ -167,34 +179,64 @@ export default function Event(){
 
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Description</FormLabel>
-                                        <Textarea rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('description',{required:true})}/>
+                                        <Textarea focusBorderColor="brand.200" rows={2}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('description',{required:true})}/>
                                     </FormControl>
 
-                                    <FormControl w={['100%','70%','50%']}>
+                                    <FormControl w={['100%','50%','50%']}> 
                                         <FormLabel color={'text.300'}>Price</FormLabel>
                                         <InputGroup size={'lg'}>
-                                        <InputLeftAddon border={'inherit'} bg={'#222222'}>$</InputLeftAddon>
-                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
+                                        <InputLeftAddon color={'text.300'}  borderColor={'#2c2c2c'} bg={'#121212'}>$</InputLeftAddon>
+                                        <Input isDisabled={isEventFree} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
+                                        <Checkbox color={'text.300'} onChange={makeEventFree} colorScheme="brand" ml={'2rem'}>Free</Checkbox>
                                         </InputGroup> 
                                     </FormControl>
                                 
 
-                                    <FormControl w={['100%','70%','50%']}>
+                                    <FormControl >
                                         <FormLabel color={'text.300'}>Available DATs</FormLabel>
-                                        <InputGroup size={'lg'}>
+                                        <InputGroup w={['70%','40%','40%']} size={'lg'}>
                                         <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('totalTickets',{valueAsNumber:true,required:true})}/>
                                         </InputGroup> 
+                                        <FormHelperText color={'text.200'}>
+                                            This specifies the total number of DATs available for sale
+                                        </FormHelperText>
                                     </FormControl>
                                     
-                                    <FormControl w={['100%','70%','50%']}>
+                                    <FormControl w={['100%','70%','70%']}>
                                         <FormLabel color={'text.300'}>Start Time</FormLabel>
                                         <InputGroup size={'lg'}>
-                                        <Input type="datetime-local"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
+                                        <Input type="datetime-local" borderTopRightRadius={0} borderBottomRightRadius={0}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
+                                        <Select width={'50%'} color={'text.200'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone')}>
+                                            {
+                                                timezones.map((timezone:string)=>(
+                                                    <option key={timezone} value={timezone}>{timezone}</option>
+                                                ))
+                                            }
+                                        </Select>
                                         </InputGroup>  
                                     </FormControl>
+ 
+                                   
                                 </Stack>
                             </Box>
                             
+                            <Box>
+                                <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Privacy</Heading>
+                                <Box  p={'1rem'} border={'1px solid #333333'} >
+                                <FormControl> 
+                                    {/* <FormLabel color={'text.300'}>Privacy</FormLabel> */}
+                                    <RadioGroup defaultValue="public"  size={'lg'} colorScheme="brand">
+                                        <HStack color={'text.300'} spacing={6}> 
+                                            <Radio {...methods.register('type')} value='public'>Public</Radio>
+                                            <Radio {...methods.register('type')} value='private'>Private</Radio> 
+                                        </HStack>
+                                    </RadioGroup>
+                                    <FormHelperText color={'text.200'}>
+                                    Determine whether or not your event gets displayed on marketplace or shared privately
+                                    </FormHelperText>
+                                </FormControl>
+                                </Box>
+                            </Box>
 
                             <Box >
                                  <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Location Info</Heading>
@@ -208,9 +250,9 @@ export default function Event(){
 
                                 <FormControl>
                                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
-                                    <InputGroup>
-                                        <InputLeftAddon border={'inherit'} bg={'#222222'}>+1</InputLeftAddon>
-                                        <Input type="tel" borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber',{required:true})} />
+                                    <InputGroup width={['100%','80%','50%','50%']} size={'lg'}> 
+                                        <InputLeftAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>+1</InputLeftAddon>
+                                        <Input color={'text.300'} type="tel" borderColor={'#2c2c2c'}  borderRadius={'0'} borderTopRightRadius={8} borderBottomRadius={8}  variant={'outline'}  {...methods.register('contactNumber',{required:true})} />
                                     </InputGroup>
                                     {/* <InputGroup size={'lg'}> 
                                         <Input type='number' maxLength={3} textStyle={'secondary'} mr={'.5rem'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  borderRadius={'0'}  variant={'outline'}  {...methods.register('contactNumber')}/>
@@ -219,28 +261,28 @@ export default function Event(){
                                     </InputGroup> */}
                                 </FormControl>
 
-                                <FormControl w={'50%'}>
+                                <FormControl w={['70%','30%','20%']}>
                                     <FormLabel color={'text.300'}>Duration</FormLabel>
                                     <InputGroup size={'lg'}>
                                     <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{valueAsNumber:true,required:true})}/>
-                                    <InputRightAddon border={'inherit'} color={'text.200'} bg={'#222222'}>Hrs</InputRightAddon>
+                                    <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
                                     </InputGroup> 
                                 </FormControl>
                                 </Stack>
                             </Box>
 
                             <Box >
-                                <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Upload Cover Image</Heading>
+                                <Heading color={'text.300'} mb={'2rem'} mt={'2rem'}  size={'md'}>Upload Cover Image</Heading>
                                 <DirectImageUploader name="coverImageHash" onSelectLogoImage={handleCoverImage}/>
                             </Box>
 
-                            <Box mb={'5rem'} >
+                            {/* <Box mb={'5rem'} >
                                 <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Upload Artwork Image</Heading>
                                 <AssetUploader onSelectImage={handleArtworkImage}/>
-                            </Box>
-                            <ButtonGroup mb={'3rem'} spacing={2}>
-                                <Button disabled={eventMutation.isLoading} variant={'ghost'} onClick={()=>router.back()}>Cancel</Button>
-                                <Button isLoading={eventMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
+                            </Box> */} 
+                            <ButtonGroup mb={'3rem'} mt={'2rem'} spacing={2}>
+                                <Button size={'lg'} disabled={eventMutation.isLoading} variant={'outline'} onClick={()=>router.back()}>Cancel</Button>
+                                <Button size={'lg'} isLoading={eventMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
                             </ButtonGroup>
                             </>
                             :null}
