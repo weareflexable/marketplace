@@ -117,11 +117,11 @@ function TicketListItem ({data,selectedDate}:TicketProps){
                             />
                             <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                             <TicketButtonAction
-                                isAuthenticated = {isAuthenticated}
-                                isMinQuantity = {isMinQuantity}
-                                isBuyingTicket = {isProceedingToPayment}
-                                buyTicketNow={buyTicketNow}
-                            />
+                                quantity={ticketData.quantity}
+                                isAuthenticated={isAuthenticated}
+                                isMinQuantity={isMinQuantity}
+                                isBuyingTicket={isProceedingToPayment}
+                                buyTicketNow={buyTicketNow}                             />
                         </TicketButton>
                     </Flex>
                 </Flex>

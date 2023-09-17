@@ -87,7 +87,7 @@ if(infiniteEventQuery.isError){
                }
                {
                infiniteEventQuery.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteEventQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteEventQuery.fetchNextPage()}>Load more events</Button>
+               ?<Button my='6' ml={'6'} w='fit-content' colorScheme={'brand'} variant='ghost' isLoading={infiniteEventQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteEventQuery.fetchNextPage()}>Load more events</Button>
                : null
                 }
         </Flex>

@@ -1,0 +1,1 @@
+export const timezones =['EST','EDT','PST','PDT','CST','CDT','MST','AST','HST','AKST']

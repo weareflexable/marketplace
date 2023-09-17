@@ -31,7 +31,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -91,7 +91,7 @@ export default function Ticket(){
 const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${communityBookingId}&venueId=${selectedVenue.id}`,{
             headers:{
                 "Authorization": paseto
             }
@@ -241,7 +241,7 @@ async function generateApplePass(){
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3}  justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
-                                        <Text color='accent.200'   textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
+                                        <Text color='accent.200'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
                                     <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
                                       <QRCode height={'25px'} width='100%' value={JSON.stringify(qrCodePayload)}/>
