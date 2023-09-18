@@ -41,7 +41,7 @@ const fetchWithError = async(url:string, options:any)=>{
 
 const PAGE_SIZE = 10;
 
-const datsFilter = [{key:'services',label:'Venues'},{key:'communities', label:'Communities'},{key:'events', label:'Events'}]
+const datsFilter = [{key:'services',label:'Exclusive Access'},{key:'communities', label:'Communities'},{key:'events', label:'Events'}]
 
 export default function MyDats() {
 
