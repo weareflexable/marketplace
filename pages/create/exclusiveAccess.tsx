@@ -162,6 +162,8 @@ function BasicForm({prev,next}:StepProps){
     })
 
     const serviceTypeId = orgServicesQuery?.data?.find((service:any)=>service.id === watchServiceType)?.serviceTypeId
+
+
     
 
     const serviceItemTypesQuery = useQuery({
@@ -178,9 +180,10 @@ function BasicForm({prev,next}:StepProps){
     })
 
 
-   
+    const serviceItemTypeName  =   serviceItemTypesQuery?.data?.find((serviceType:any)=>serviceType.id === watchServiceItemTypeId)?.name
 
-    console.log('form valid', methods.formState.isValid)
+
+    console.log(serviceItemTypeName)
 
   
 
@@ -399,7 +402,7 @@ function BasicForm({prev,next}:StepProps){
                     <Heading color={'text.300'} mb={'1rem'} mt={'2rem'}  size={'md'}>Artwork Image</Heading>
                     {/* <Box border={'1px solid #333333'}> */}
                     {/* <ImageUploader name='artworkImage'/> */}
-                    <AssetUploader onSelectImage={handleImageSelect}/>
+                    <AssetUploader serviceItemTypeName = {serviceItemTypeName} onSelectImage={handleImageSelect}/>
                     {/* </Box> */} 
                 </Box>
 
@@ -619,7 +622,7 @@ function DirectImageUploader({name, onSelectLogoImage}:{name: string, onSelectLo
   }
 
 
-function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void}){
+function AssetUploader({onSelectImage, serviceItemTypeName}:{onSelectImage:(imageHash:string)=>void, serviceItemTypeName: string}){
 
     const {isOpen,onClose,onOpen,onToggle} = useDisclosure()
     const [imageSrc, setImageSrc] = useState('')
@@ -668,7 +671,7 @@ function AssetUploader({onSelectImage}:{onSelectImage:(imageHash:string)=>void})
                 <ModalCloseButton />
                 <ModalBody p={'1rem'} >
                     <ImageUploader onUploadImage={handleUploadedImage} name="logoImageHash"/> 
-                    <ArtworkPicker onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
+                    <ArtworkPicker name = {serviceItemTypeName} onClose={onClose} onHandleArtworkSelection={handleSelectImage}/>
                 </ModalBody>
                 </ModalContent>
             </Modal>
@@ -745,25 +748,24 @@ function ImageUploader({name,onUploadImage}:{name: string, onUploadImage:(imageH
 
 
 
-function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelection:(imageHash:string)=>void, onClose:()=>void}){
+function ArtworkPicker({onHandleArtworkSelection, name, onClose}:{onHandleArtworkSelection:(imageHash:string)=>void, name: string, onClose:()=>void}){
 
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>()
 
-
+    const hashes = name === 'Reservation'? reservation: name === 'Line skip' ? lineSkip : bottleService
 
     function selectImage(imageHash:string){
         onHandleArtworkSelection(imageHash)
         onClose()
-        // setSelectedImageIndex(index)
     }
     return(
         <Box>
         <Heading color={'text.300'} my={'1rem'} size={'md'}>Select Artwork</Heading>
         <Box overflowX={'hidden'} overflowY={'auto'} height={'400px'}>
-            {imageHashList.map((imageHash:string, index:number)=>(
+            {hashes.map((imageHash:string, index:number)=>(
                 <Box key={index} cursor={'pointer'}  mb={'1rem'} borderRadius={8}>
                     <Image  onClick={()=>selectImage(imageHash)} borderColor={selectedImageIndex == index?'brand.200':'none'} src={`https://nftstorage.link/ipfs/${imageHash}`} width={'100%'} height={'350px'} alt="Image"/>
-                </Box>
+                </Box> 
             )
             )}
         </Box>
@@ -774,6 +776,46 @@ function ArtworkPicker({onHandleArtworkSelection, onClose}:{onHandleArtworkSelec
 
 
 const imageHashList= [
+    'bafkreicl6mxs4xifx6vef3lacxrfozbqzw2h7ccekkr2qsxe552jo3zzbm',
+    'bafkreifuv3jjwm2tltcgpe36br3q4qrwyrd4aqj7dv4apqqi64kwc7ma6q',
+    'bafkreicxz3njmsqovgifgdjwngoghbmaeieywgw5j2gzoy26dtecdqfc7e',
+    'bafkreig4h3dhawjzqiieegze7ksbzj5i3no4duexaxzezgm5d272yp7gpq',
+    'bafkreidm6lrgassu63uald57ocsbn2xkmzexq3n3c5mbkf23vhxcl4jxzm'
+]
+
+
+ const bottleService=[
+    'bafkreih5kmywbykilkwduqdx7lttuuzin2puselw6swwnhi3hrnztuv6r4',
+    'bafkreignk6ctyc3ngrklrmnpqnrbovij3e5x23ups5ynbwghe6rwwpnq4y',
+    'bafkreibzyvawcyr3zjnvob6rfr7edzct7a63radq6ec5k5woa2v7belvs4',
+    'bafkreidrgnhgak5zurcyud73kzgm347fkvruoy5mjm4stosetpfocyhem4',
+    'bafkreigbbf73imovkwrsjrcvys6cggwff2jwb6ixi5weovlxftb73t54qe',
+    'bafkreifll4nla7zdudxrlei3widcqtiz6phaa5zlbzyo5fdd76byytytgy',
+    'bafkreiffhginn626rfdqsrn4lqpzhpsdfqbdeqxmofr3offdl6akp5qixy'
+]
+
+const reservation = [
+    'bafkreidftkdvxbfqyot4a4ye6cmybkbuj4pqvrzp6o2uzr27264ba2zjgm',
+    'bafkreiajyd5ogq4q6ledndv4fyd2tkxovxtc6xf73326i262lg4aio5dba',
+    'bafkreiewtngckptrzm457vubintmg4nq2dpmentkkha7g4jwmhljmhbzya',
+    'bafkreib43d4lfkf2g44bmjfke7nhccmfvto45ye6onnwznfuarh4b7vl3i',
+    'bafkreigg636y3fh5robhm57fokgxnbnhclzjlw5lujzqw6b5lddper3xuu',
+    'bafkreih5jcke4ymriq6apvm25xoyvtxrv44ouqn7sfh2je2zbkbxpanlsy',
+    'bafkreiaz3477vw4dg6j355xqofjhrmjrwreha6jhyacjlznv5oaygupyni',
+    'bafkreih734aianxaolqai32r7cqrbivue2226d4hgqc73kfo2hvppicomi',
+    'bafkreid32byuipzwp6sam43nmbpickr6b2jejsuhxwqiv4mxrg547uok54',
+    'bafkreibgzw5opyl7g6mhskmgjyjdqagavoyh53xe6r4x6ieeopkjysteoi',
+    'bafkreid2wrsgpjfwzk3wagtodz55dmmukp2cw6wfcemsuo6smggwijcoyy',
+    'bafkreihbecuafbkgdzogx3ihzivefvnol4iwvzfnd6piyzltzo4mes2tcm',
+    'bafkreibr5dsleh6jqzp2eul24dom4ir5pvap3j37rupbrmfttsmqcwolme',
+    'bafkreihuw2obzpj4qtmthpy7frky5e5r7autjtbkc4vse2gufpt4xua37q',
+    'bafkreigsagycab37kiuv5ohywerw3ks3e5mkbpfzb4atdv3rfpfxtngwq4',
+    'bafybeieagreig3jmjzcakenmdo3ekhbyhf42pkcsmwdc6wonhcorof4evi',
+    'bafybeidjw44qhp44ahzhi2dyma6ln4tsaefay6etlyggbfed7lzcg54jou'
+]
+
+
+ const lineSkip = [
     'bafkreicl6mxs4xifx6vef3lacxrfozbqzw2h7ccekkr2qsxe552jo3zzbm',
     'bafkreifuv3jjwm2tltcgpe36br3q4qrwyrd4aqj7dv4apqqi64kwc7ma6q',
     'bafkreicxz3njmsqovgifgdjwngoghbmaeieywgw5j2gzoy26dtecdqfc7e',
