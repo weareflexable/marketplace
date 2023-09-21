@@ -37,13 +37,14 @@ export default function Checkout(){
       const quantity = item && item.quantity;
 
       let users: {firstName:string, lastName:string, email:string}[]  = []
+
       for(let i=0; i<quantity;i++){
        users.push({firstName: '', lastName:'', email: ''})
       }
       // const list = createUserList(quantity)
       setUserList(users)
       setPriceInfo({quantity:item.quantity, unitPrice:item.unitPrice})
-      console.log(users) 
+
     },[])
 
 
@@ -126,6 +127,7 @@ export default function Checkout(){
                 if (itemPayload.unitPrice === 0) {
                   // push to DATs page
                   router.push('/dats')
+                  return
                 }
 
 
@@ -163,8 +165,6 @@ export default function Checkout(){
       lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
     }
     
-
-
 
  
     function validateName(value:string){

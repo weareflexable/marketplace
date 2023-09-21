@@ -40,7 +40,7 @@ export default function EventPage(){
     const eventQuery = useQuery({
         queryKey:['single-event',eventId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=1&pageSize=10&id=${eventId}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=1&pageSize=10&id=${eventId}&type=all`) 
             return res.data
         },
         enabled: eventId !== undefined,

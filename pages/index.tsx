@@ -21,59 +21,6 @@ const PAGE_SIZE = 10;
 export default function Home() {
 
 
-  const [serviceFilter, setServiceFilter] = useState('')
-  const [page, setPage] = useState(1)
-
-  function changeServiceFilter(filter:string){
-    setServiceFilter(filter)
-  }
-
-
-  const serviceTypesQuery = useQuery({
-    queryKey:['seviceTypes']
-  , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=1`)
-    return res.data.data
-  },
-  onSuccess:(data)=>{
-    if(data.length !==0){
-      const barId = data[0].id;
-      setServiceFilter(barId) 
-    }
-  }
-  
- })
-
-
-  const infiniteServices = useInfiniteQuery(
-    ['services',serviceFilter], 
-    //@ts-ignore
-    async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&itemStatus=active`)
-      return res.data
-    },
-    {
-      getNextPageParam:(lastPage, pages)=>{
-
-        // fetchedDataLength: pageSize and multiply by pages.length+1
-        // if dataLength > fetchedDataLength, hasNextPage is true, else false
-        const fetchedDataLength = PAGE_SIZE * pages.length
-        const totalDataLength = lastPage.dataLength;
-      
-        if(totalDataLength < fetchedDataLength) return undefined
-        return pages.length 
-      },
-      enabled: serviceTypesQuery.data !== undefined && serviceFilter !== ''
-    }
-)
-
-  
-
-  // if(infiniteServices.isError){
-  //   // TODO: create error boundary to catch this error.
-  //   throw new Error('Error fetching stores')
-  // }
-
 
  
   return (

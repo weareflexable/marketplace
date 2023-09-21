@@ -77,7 +77,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
   bg="#242424"
   mb="3"
   borderBottom={'1px solid #44444'}
-  w="100%"
+  w="100p%"
   direction="row"
   borderRadius={'6px'}
   key={order.id}

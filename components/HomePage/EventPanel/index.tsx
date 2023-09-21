@@ -21,7 +21,7 @@ export default function EventPanel(){
     ['events'], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&type=public`)
       return res.data
     },
     {

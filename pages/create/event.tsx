@@ -226,13 +226,13 @@ export default function Event(){
                                 <FormControl> 
                                     {/* <FormLabel color={'text.300'}>Privacy</FormLabel> */}
                                     <RadioGroup defaultValue="public"  size={'lg'} colorScheme="brand">
-                                        <HStack color={'text.300'} spacing={6}> 
+                                        <HStack mb={'.5rem'} color={'text.300'} spacing={6}> 
                                             <Radio {...methods.register('type')} value='public'>Public</Radio>
                                             <Radio {...methods.register('type')} value='private'>Private</Radio> 
                                         </HStack>
                                     </RadioGroup>
                                     <FormHelperText color={'text.200'}>
-                                    Determine whether or not your event gets displayed on marketplace or shared privately
+                                        Determine whether or not your event gets listed on marketplace or shared privately from the portal
                                     </FormHelperText>
                                 </FormControl>
                                 </Box>
