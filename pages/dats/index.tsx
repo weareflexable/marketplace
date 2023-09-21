@@ -225,26 +225,28 @@ const gotoCommunityTicketPage =(dat:any)=>{
       >
         <GridItem colStart={[1, 1, 1, 2]} colEnd={[2, 2, 2, 4]}>
         <Flex width={"100%"} direction="column">
-              <Box ml={[0]} mx='1rem'>
-                <Flex  mt="10"mb="7" w={'100%'} justifyContent={'space-between'}>
+              <Box ml={[0]} >
+                <Flex px={'1rem'}  mt="10" mb="7" w={'100%'} justifyContent={'space-between'}>
                   <Text
                     as="h1"
                     textStyle='h3'
                     color='text.300'
                     >
-                    My Digital Access Tokens
+                    My Digital Access Tokens 
                   </Text>
                   <IconButton onClick={()=>datsQuery.refetch()} colorScheme="brand" color={'brand.200'} isLoading={datsQuery.isRefetching} variant={'ghost'} aria-label={'Refresh aggregate'} icon={<RepeatIcon/>}/>
                 </Flex>
-                <Flex mb='2rem' direction={'column'}>
-                <Flex w={'100%'}>
-                  {isLoadingFilters? <Text textStyle={'body'} color={'text.200'}>Loading filters...</Text>: datsFilter.map((filter:any)=>(
-                    <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
-                    ))
-                    }
-
-                </Flex>
-                 { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT`} </Text>} 
+                <Flex mb='2rem' w={'100%'} direction={'column'}> 
+                  <Box maxWidth={'100vw'} px={'1rem'} w={'100%'}  pb={'1rem'} style={{whiteSpace:'nowrap', overflow:'auto'}} position='relative' >
+                    {isLoadingFilters? <Text textStyle={'body'} color={'text.200'}>Loading filters...</Text>: datsFilter.map((filter:any)=>(
+                      <Box display={'inline-block'} ml='.3rem'> 
+                       <Button variant={filter.key === currentFilter.key?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeDatsFilter(filter)}  textStyle={'body'} layerStyle={'highPop'} key={filter.key}>{filter.label}</Button>
+                      </Box>
+                      )) 
+                      } 
+ 
+                  </Box>
+                  { datsQuery.isLoading || totalDatsQuery.isLoading ? null :  <Text px={'1rem'} mt={4} textStyle={'secondary'} color='text.200'>{`Total of (${totalDatsQuery && totalDatsQuery.data}) DAT`} </Text>} 
                 </Flex>
               </Box> 
                 {
