@@ -160,6 +160,8 @@ export default function MyDats() {
   }
   )
 
+  console.log('total dats query',totalDatsQuery)
+
 
 function changeDatsFilter(filter:{key:string,label:string}){
   setCurrentFilter(filter)
@@ -256,7 +258,7 @@ const gotoCommunityTicketPage =(dat:any)=>{
                     gotoCommunityPage={gotoCommunityTicketPage}
                    />
             }
-
+ 
             {
                datsQuery.hasNextPage
                ?<Button my='4' colorScheme={'brand'} variant='ghost' isLoading={datsQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>datsQuery.fetchNextPage()}>Load more DATs</Button>
