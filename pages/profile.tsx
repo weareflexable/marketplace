@@ -654,7 +654,7 @@ function EditableImage({selectedRecord}:EditableProp){
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
         <Text textStyle="secondary" color='text.300' style={{ marginRight: '2rem',}}>Profile Picture</Text>
-        {isEditMode?editable:readOnly}
+        {isEditMode?editable:readOnly} 
       </div>
     )
   }
