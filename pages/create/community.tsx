@@ -226,7 +226,7 @@ function BasicForm({prev,next}:StepProps){
                     <Button mt={3} variant={'link'} onClick={()=>userOrgsQuery.refetch()}>Try again</Button> 
                 </Flex>
                : userOrgsQuery?.data?.length < 1
-               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one</Text>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
