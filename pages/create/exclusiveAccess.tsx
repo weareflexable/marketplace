@@ -284,8 +284,8 @@ function BasicForm({prev,next}:StepProps){
                 watchOrgId !== undefined 
                 ?
                 <>
-                 {orgServicesQuery.isLoading || orgServicesQuery.isRefetching
-                 ?<Spinner/> 
+                 { orgServicesQuery.isLoading || orgServicesQuery.isRefetching
+                 ? <Spinner/> 
                  : orgServicesQuery.isError 
                  ?   <Flex p={8} justifyContent={'center'} direction={'column'} alignItems={'center'} border={'1px solid'}>
                         <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It appears we had a problem fetching your services, please try it again</Text>

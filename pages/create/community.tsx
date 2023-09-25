@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton, Link } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Layout from "../../components/shared/Layout/Layout";
 import { useEffect, useRef, useState } from "react";
@@ -226,7 +226,9 @@ function BasicForm({prev,next}:StepProps){
                     <Button mt={3} variant={'link'} onClick={()=>userOrgsQuery.refetch()}>Try again</Button> 
                 </Flex>
                : userOrgsQuery?.data?.length < 1
-               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+               ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>flexable portal</Link></Text> 
+                </Flex>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
