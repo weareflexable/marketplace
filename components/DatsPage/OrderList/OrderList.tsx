@@ -77,7 +77,7 @@ function EventListItem({order, gotoEventPage}:EventProps){
   bg="#242424"
   mb="3"
   borderBottom={'1px solid #44444'}
-  w="100%"
+  w="100p%"
   direction="row"
   borderRadius={'6px'}
   key={order.id}
@@ -131,20 +131,25 @@ function EventListItem({order, gotoEventPage}:EventProps){
     </Flex>
 
     {/* pricing */}
-    <HStack mt='5' spacing={5} >
-      <HStack spacing="0.9">
-        <Text color="text.300" textStyle="secondary">
-          {`$${numberFormatter.from(order.eventDetails.price/100)}`}
-        </Text>
-        <Text color="text.200" textStyle="secondary">
-           x{order.quantity}
-        </Text>
-      </HStack>
-      <Text  textStyle="secondary" color={'text.300'}>
-        {/* @ts-ignore */}
-       {` $${order.quantity * numberFormatter.from(order.eventDetails.price/100)}`}
-      </Text>
-    </HStack>
+    {
+      order?.eventDetails?.price === 0
+      ? <Text color={'text.300'} mt={2}>Free</Text>
+      : <HStack mt='5' spacing={5} > 
+          <HStack spacing="0.9">
+            <Text color="text.300" textStyle="secondary">
+              {`$${numberFormatter.from(order.eventDetails.price/100)}`}
+            </Text>
+            <Text color="text.200" textStyle="secondary">
+              x{order.quantity}
+            </Text>
+          </HStack>
+          <Text  textStyle="secondary" color={'text.300'}>
+            {/* @ts-ignore */}
+          {` $${order.quantity * numberFormatter.from(order.eventDetails.price/100)}`}
+          </Text>
+       </HStack>
+    }
+    
 
   </Flex>
 

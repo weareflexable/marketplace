@@ -1,5 +1,8 @@
 import React,{useEffect,useState} from 'react';
-import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text} from '@chakra-ui/react'
+import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text, Button, IconButton, useClipboard} from '@chakra-ui/react'
+import { handleShareFacebook, handleShareLinkedIn, handleShareTwitter, handleShareWhatsapp } from '../../../utils/socialShare';
+import { TwitterIcon, LinkedinIcon, WhatsappIcon, FacebookIcon } from '../../../customIcons';
+import { CopyIcon } from '@chakra-ui/icons';
 // import Image from 'next/image'
 
 
@@ -14,6 +17,16 @@ interface Props{
 export default function HeroSection({logoImageHash, coverImageHash, description, artworkHash, price, name}:Props){
 
     const coverImage = coverImageHash && coverImageHash 
+    
+    const isFree = price === 0;
+
+    const {value, setValue, onCopy, hasCopied} = useClipboard('')
+
+    function handleCopyLink(){
+        onCopy()
+        console.log(window.location.href)
+        setValue(window.location.href)
+    }
     
 
     return(
@@ -32,12 +45,19 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
                 <Box h={'100%'} zIndex={0} w={'100%'} bg={'rgba(255, 255, 255, .2)'} backdropFilter={'blur(17px)'} position={'absolute'} top={0} left={0}></Box>
                 <Image zIndex={4} position={'absolute'} border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' maxW='100%'  objectFit={'contain'} width='100%' height='400px' alt={'Thumbnail image for cover'}/> 
             </Box>
-            <Flex alignItems={'center'} mx='4' > 
-                <Box mb={'2rem'}  mt={9}> 
-                    <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${price/100}</Text>
+            <Flex mb={'2rem'} alignItems={['flex-start','flex-start','center','center']} direction={['column','column','row','row']} justifyContent={'space-between'} mx='4' > 
+                <Box mt={9}> 
+                    <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>{isFree ? 'Free':`${price/100}`}</Text>
                     <Text color={'white'} mt={3} textStyle={'h1'} as='h2' size='lg'>{name}</Text>
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
                 </Box>
+                <HStack mb={['1rem']} spacing={3}>
+                    <IconButton variant={'ghost'}  onClick={handleShareTwitter} colorScheme='brand' aria-label='twitter-share' icon={<TwitterIcon color={'brand.200'}/>}/>
+                    <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
+                    <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
+                    <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
+                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
+                </HStack>
             </Flex>
             {/* <Flex mx={4}  w='100' mb='1rem' direction={'column'}> 
                 <Text textStyle={'h3'} mb={3} layerStyle={'highPop'}>What you get</Text>

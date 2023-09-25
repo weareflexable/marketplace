@@ -7,10 +7,14 @@ import theme from '../theme'
 export default class Document extends NextDocument {
   render() {
     return (
-      <Html lang='en'>
-        <Head />
+      <Html lang='en'> 
+        <Head>
+        <script
+          defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxBDdnJsmCX-zQa-cO9iy-v5pn53vXEFA&libraries=places&callback=initMap"
+        ></script>
+        </Head>
         <body>
-          {/* 👇 Here's the script */}
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />

@@ -40,7 +40,7 @@ export default function EventPage(){
     const eventQuery = useQuery({
         queryKey:['single-event',eventId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=1&pageSize=10&id=${eventId}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=1&pageSize=10&id=${eventId}&type=all`) 
             return res.data
         },
         enabled: eventId !== undefined,
@@ -57,6 +57,7 @@ export default function EventPage(){
         isMaxQuantity,
         decrementQuantity,
         incrementQuantity,
+        isEventFree,
         ticketData,
         isProceedingToPayment,
         isTicketExpired,
@@ -66,9 +67,6 @@ export default function EventPage(){
 
     const {isAuthenticated} = useAuthContext()
 
-
-
-     
 
 
         return( 
@@ -174,6 +172,8 @@ export default function EventPage(){
                         />
                         <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                         <TicketButtonAction
+                            quantity = {ticketData.quantity}
+                            isEventFree = {isEventFree}
                             isAuthenticated = {isAuthenticated}
                             isMinQuantity = {isMinQuantity}
                             isBuyingTicket = {isProceedingToPayment}

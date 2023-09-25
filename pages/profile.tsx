@@ -1,4 +1,4 @@
-import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, Box, Text, FormControl, FormLabel, Input, FormHelperText, RadioGroup, Stack, Radio} from '@chakra-ui/react'
+import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, Box, Text, FormControl, FormLabel, Input, FormHelperText, RadioGroup, Stack, Radio, IconButton, useClipboard, Tooltip} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
 import { useAuthContext } from '../context/AuthContext'
@@ -13,11 +13,18 @@ import { useState } from 'react'
 import { getPlatformPaseto } from '../utils/storage'
 import { asyncStore } from '../utils/nftStorage'
 import Head from 'next/head'
+import { CopyIcon } from '@chakra-ui/icons'
+import { PLACEHOLDER_HASH } from '../constants'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
 
-    // const paseto = getPlatformPaseto()
+    const { onCopy, value, setValue, hasCopied } = useClipboard("");
+
+    console.log('wallet',value)
+    console.log('has value',hasCopied)
+
+  
 
 
       async function fetchUserDetails(){
@@ -40,6 +47,10 @@ export default function Profile(){
     // console.log(userQuery.data.data)  
        
 
+    function copyAddress(){
+      onCopy()
+      setValue(userQuery?.data?.[0].walletaddress)
+    }
 
  
     if(!isAuthenticated){ 
@@ -58,9 +69,10 @@ export default function Profile(){
     </Head>
     <Layout>
             <Grid
-                mx="1em"
+                px="1em"
                 minH="inherit"
                 h="100%"
+                width={"100%"} 
                 templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
                 gap={6}
                 >
@@ -78,65 +90,21 @@ export default function Profile(){
                             </Text>  
                         </Box> 
 
+
                         <EditableImage selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
                         <EditableFirstName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
                         <EditableLastName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
                         <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data[0]}/> 
                         {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
-                            {/* <form onSubmit={formik.handleSubmit}>
-                                <FormControl mb={'5'}>
-                                    <FormLabel textStyle={'secondary'} color='text.300'>Profile picture</FormLabel>
-                                    <Avatar size='2xl' src='/avatar.png'/>
-                                </FormControl> */}
-
-
-                                {/* <FormControl is={formik.errors.fullname}  mb={'5'}>
-                                    <FormLabel htmlFor='fullname' textStyle={'secondary'} color='text.300'>Full name</FormLabel>
-                                    <Input  
-                                        // id='fullname'
-                                        colorScheme={'brand'}
-                                        borderColor={'#464646'} 
-                                        color='text.300' 
-                                        borderWidth='2px' 
-                                        type='string'
-                                        bg={'#121212'}
-                                        {...formik.getFieldProps('fullname')}
-                                    />
-                                    {formik.touched.fullname&&formik.errors.fullname?<FormErrorMessage>{formik.errors.fullname}</FormErrorMessage>:null}
-                                </FormControl>
-                        
-
-                                <FormControl  mb={'5'}>
-                                    <FormLabel textStyle={'secondary'} color='text.300'>Email address</FormLabel>
-                                    <Input 
-                                        borderColor={'#464646'} 
-                                        type='email'
-                                        color='text.300'  
-                                        borderWidth='2px' 
-                                        {...formik.getFieldProps('email')}
-                                    />
-                                    <FormHelperText textStyle={'secondary'} color='text.200'>We&apos;ll never share your email.</FormHelperText>
-                                </FormControl> 
-
-                                <FormControl mb={'9'}>
-                                    <FormLabel htmlFor='country' textStyle={'secondary'} color='text.300'>Country</FormLabel>
-                                    <Select 
-                                        color='text.300' 
-                                        borderColor={'#464646'} 
-                                        borderWidth='2px' 
-                                        placeholder='Select country'
-                                        {...formik.getFieldProps('country')}
-                                    >
-                                        {countryList.getData().map((country:any)=>(
-                                            <option key={country.code} value={country.code}>{country.name}</option>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-
-                                    <Button type='submit' colorScheme={'brand'}>
-                                        Apply changes
-                                    </Button>
-                            </form> */}
+                        <Flex my={6} width={'100%'}  direction={'column'}>  
+                        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Wallet Address</Text>
+                        <Flex  style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
+                          <Text width={'80%'}  textStyle={'secondary'} color='text.200'>{userQuery?.data?.[0].walletaddress}</Text>
+                          <Tooltip  isOpen={hasCopied} label='Copied!'>
+                            <IconButton onClick={copyAddress} size={'sm'} colorScheme='brand' variant={'ghost'} icon={<CopyIcon />} aria-label={'copy address button'}/>
+                          </Tooltip> 
+                        </Flex> 
+                        </Flex> 
       
                             
                     </Flex>
@@ -538,7 +506,7 @@ function EditableLastName({selectedRecord}:EditableProp){
        style={{ marginTop:'.5rem' }}
        onSubmit={formik.handleSubmit}
        >
-        <FormControl is={formik.errors.lastName}  mb={'5'}>
+        <FormControl is={formik.errors.lastName}   mb={'5'}>
             {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
             <Input  
                 // id='fullname'
@@ -563,7 +531,7 @@ function EditableLastName({selectedRecord}:EditableProp){
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
-        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Last Name</Text>
+        <Text color='text.300' textStyle={'secondary'}  style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Last Name</Text>
       {isEditMode?editable:readOnly}
       </div>
     )
@@ -648,9 +616,9 @@ function EditableImage({selectedRecord}:EditableProp){
   
   const readOnly = (
       <div style={{width:'100%', marginTop:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord && selectedRecord.profilePic}`}/>
+        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={selectedRecord?.profilePic.length < 10?`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${PLACEHOLDER_HASH}`:`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord?.profilePic}`}/>
         <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
-      </div>
+      </div> 
   )
   
   
@@ -686,7 +654,7 @@ function EditableImage({selectedRecord}:EditableProp){
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
         <Text textStyle="secondary" color='text.300' style={{ marginRight: '2rem',}}>Profile Picture</Text>
-        {isEditMode?editable:readOnly}
+        {isEditMode?editable:readOnly} 
       </div>
     )
   }
@@ -700,3 +668,6 @@ function EditableImage({selectedRecord}:EditableProp){
     country: string,
     profilePic: string | any[] | any
   }
+
+
+  

@@ -71,25 +71,8 @@ export default function Ticket(){
 
     setIsGeneratingPass(true)
     
-    const payload = {
-        qrCode: qrCodePayload,
-        expiryDate: validityEnd,
-        ticketSecret: ticketSecret,
-        targetDate: targetDate,
-        quantity: quantity,
-        price: serviceItemDetails.price/100,
-        eventName: serviceItemDetails.name,
-        venueName: serviceDetails.name,
-        street: serviceDetails.street,
-        location: {
-            latitude: serviceDetails.latitude,
-            longitude: serviceDetails.longitude, 
-        },
-    }
-    
-    const body = await fetch('/api/generatePass',{
-        method:'POST',
-        body: JSON.stringify(payload),
+    const body = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apple-pass?ticketId=${id}&ticketType=service`,{
+        method:'GET',
         headers:{
             "Content-Type": "application/vnd.apple.pkpass"
         } 
@@ -153,7 +136,8 @@ export default function Ticket(){
 
     const nftData = nftQuery.data && nftQuery.data.ticketCreateds[0]
 
-     
+
+   
 
     return(
         <>
@@ -190,9 +174,9 @@ export default function Ticket(){
                         </Flex>
                         :<>
                             <Flex justifyContent={'flex-start'} direction='column' alignItems='center' w='100%'>
-                                <HStack w='100%' justifyContent={'center'} mb='2'>
+                                <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
                                     <Text color='text.200' textStyle={'secondary'}>Redemption Code:</Text>
-                                    <Text color='accent.200' mt='3'  textStyle={'body'}>{ticketSecret}</Text>
+                                    <Text color='accent.200'  textStyle={'body'}>{ticketSecret}</Text>
                                 </HStack>
                                 <Box bg={'#ffffff'} padding='5'>
                                 <QRCode height={'23px'} width='100%' value={JSON.stringify(qrCodePayload)}/>

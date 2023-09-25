@@ -29,13 +29,28 @@ export const EventCard = ({data}:EventCardProps) =>{
         router.push(`/events/${eventId}`)
     }
 
+    const isFree = data?.price === 0
 
     const coverImageHash = data?.coverImageHash
 
 
     return(
-        <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToEventsPage(data.id)}>
-            <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' objectFit={'cover'}  height='250' alt={'Thumbnail image for cover'}/>
+        <Flex width={'100%'}  direction={'column'} position={'relative'}  cursor='pointer' onClick={()=>navigateToEventsPage(data.id)}>
+              <Box 
+                height='250px'
+                bgImage={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`}
+                backgroundPosition={'50%'} 
+                backgroundSize={'cover'} 
+                backgroundRepeat={'no-repeat'} 
+                borderRadius={'8px'}
+                width={'100%'}
+                position={"relative"} 
+                maxW='100%'
+             > 
+                <Box h={'100%'} zIndex={0} w={'100%'} bg={'rgba(255, 255, 255, .2)'} backdropFilter={'blur(17px)'} position={'absolute'} top={0} left={0}></Box>
+            <Image border={'1px solid #333333'} width='100%'  zIndex={4} position={'absolute'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${coverImageHash}`} m='0' objectFit={'contain'}  height='250px' alt={'Thumbnail image for cover'}/>
+            </Box>
+
             {/* <Image border={'1px solid #333333'} borderRadius='6px'  src={`/swamp-boys.jpg`} m='0'  maxW='100%' width='100%' height='250' alt={'Thumbnail image for cover'}/> */}
             <Flex px='0' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
@@ -57,7 +72,7 @@ export const EventCard = ({data}:EventCardProps) =>{
                     
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        {`$${numberFormatter.from(data.price/100)}`}
+                        {isFree?'Free':`$${numberFormatter.from(data.price/100)}`}
                         </Text> 
                     </Flex>
                 </Flex>

@@ -21,7 +21,7 @@ export default function EventPanel(){
     ['events'], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/events?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&type=public`)
       return res.data
     },
     {
@@ -87,7 +87,7 @@ if(infiniteEventQuery.isError){
                }
                {
                infiniteEventQuery.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteEventQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteEventQuery.fetchNextPage()}>Load more events</Button>
+               ?<Button my='6' ml={'6'} w='fit-content' colorScheme={'brand'} variant='ghost' isLoading={infiniteEventQuery.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteEventQuery.fetchNextPage()}>Load more events</Button>
                : null
                 }
         </Flex>

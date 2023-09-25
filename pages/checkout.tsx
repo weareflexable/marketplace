@@ -37,13 +37,14 @@ export default function Checkout(){
       const quantity = item && item.quantity;
 
       let users: {firstName:string, lastName:string, email:string}[]  = []
+
       for(let i=0; i<quantity;i++){
        users.push({firstName: '', lastName:'', email: ''})
       }
       // const list = createUserList(quantity)
       setUserList(users)
       setPriceInfo({quantity:item.quantity, unitPrice:item.unitPrice})
-      console.log(users) 
+
     },[])
 
 
@@ -106,21 +107,30 @@ export default function Checkout(){
             router.push('/payments')
        
      }
+    
 
     async function proceedToCheckout(values:any){
 
         const itemPayload = JSON.parse(localStorage.getItem('itemPayload')||'')
+
         const payload = {
             ...itemPayload,
             users:values.userList
         }
 
-        console.log(values.userList)
         setIsProceedingToPayment(true)
         // call payment intent here
         try{
         const res:any = await fetchSecret(payload)
               if(res.status == 200){
+
+                if (itemPayload.unitPrice === 0) {
+                  // push to DATs page
+                  router.push('/dats')
+                  return
+                }
+
+
                 const stripePayload = {
                   clientSecret: res.data.clientSecret,
                   paymentIntentId: res.data.payment_intent_id,
@@ -130,7 +140,7 @@ export default function Checkout(){
                 // set stripePayload to payment context
                 setPayload(stripePayload)
 
-                         // set current page as last visited page
+                // set current page as last visited page
                 // localStorage.setItem('lastVisitedPage',currentPath);
 
                
@@ -147,17 +157,14 @@ export default function Checkout(){
   
         //   console.log(payload)
 
-            }
+      }
 
 
-            function navigateToPrevPage(){
-              const lastVisitedPage = localStorage.getItem('lastVisitedPage')
-              lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
-            }
+    function navigateToPrevPage(){
+      const lastVisitedPage = localStorage.getItem('lastVisitedPage')
+      lastVisitedPage?router.push(`${lastVisitedPage}`): router.back()
+    }
     
-
-
-          // const userList =   [{firstName: '', lastName:'', email: ''},{firstName: '', lastName:'', email: ''}]
 
  
     function validateName(value:string){
@@ -225,9 +232,9 @@ export default function Checkout(){
                                             {/* @ts-ignore */}
                                             {({ field, form }) => ( 
                                                 <FormControl   isRequired style={{marginBottom:'1.5rem'}} isInvalid={form.errors.firstName && form.touched.firstName}>
-                                                <FormLabel ml={'8px'} color={'text.300'}>First Name</FormLabel>
-                                                <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='First Name' />
-                                                <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                                                  <FormLabel ml={'8px'} color={'text.300'}>First Name</FormLabel>
+                                                  <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...field} placeholder='First Name' />
+                                                  <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
                                                 </FormControl> 
                                             )}
                                         </Field>
@@ -272,7 +279,7 @@ export default function Checkout(){
                                        size='lg'
                                        type="submit"
                                        > 
-                                      Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}
+                                      {priceInfo.unitPrice === 0 ? 'Get Free Tickets' :`Checkout for ${(priceInfo.quantity*priceInfo.unitPrice)/100}`}
                                    </Button>
                                    <Text mt={3} textAlign={'center'} textStyle={'secondary'} color={'text.200'}>
                                     If you are buying a ticket for someone else, the DAT will not show up in your account but rather in the account of the person you are buying the ticket for

@@ -1,24 +1,36 @@
 
-
-import { extendTheme, type ThemeConfig } from "@chakra-ui/react"
+import { inputAnatomy } from '@chakra-ui/anatomy'
+import { createMultiStyleConfigHelpers, extendTheme, type ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools'
 
 const config: ThemeConfig ={
     initialColorMode: 'dark',
-    useSystemColorMode: true 
+    useSystemColorMode: false
 }
+ 
+
 
  const theme = extendTheme({
     ...config,
-    shadows:{
+    shadows:{ 
       outline:'brand.200',
 
     },
     components:{
       Input:{
         defaultProps:{
-          focusBorderColor:'brand.200'
+          focusBorderColor:'brand.200',
         }
+      },
+      Textarea:{
+        baseStyle:{
+          colorScheme:'red',
+          focusBorderColor: ''
+        },
+        // defaultProps:{
+        //   focusBorderColor:'brand.200',
+          
+        // }
       },
       Select:{
          defaultProps:{
@@ -40,6 +52,12 @@ const config: ThemeConfig ={
             color:'text.200',
             backgroundColor:'#464646',
             borderRadius: '50px'
+          },
+          outline:{
+            fontWeight:650,
+            color:'text.200',
+            borderColor:'#464646',
+            borderRadius: '50px',
           },
           activeGhost:{
             fontWeight:650,

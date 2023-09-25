@@ -29,8 +29,6 @@ import { convertToAmericanFormat } from '../../utils/phoneNumberFormatter'
 export default function CommunityPage(){
     
 
-    
-
     const router = useRouter();
 
 
@@ -65,7 +63,8 @@ export default function CommunityPage(){
 
 
 
-     
+    
+    
 
     
     // const activeServiceItems = serviceItemsQuery.data && serviceItemsQuery.data.filter((serviceItem: any)=>communityItem.status == 1)
@@ -163,6 +162,7 @@ export default function CommunityPage(){
                         />
                         <Divider orientation='vertical' borderLeftWidth={'2px'} borderColor='brand.disabled' height='40px'/>
                         <TicketButtonAction
+                            quantity={ticketData.quantity}
                             isAuthenticated = {isAuthenticated}
                             isMinQuantity = {isMinQuantity}
                             isBuyingTicket = {isProceedingToPayment}

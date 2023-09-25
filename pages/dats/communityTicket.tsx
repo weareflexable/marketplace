@@ -31,7 +31,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityDetails, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -91,7 +91,7 @@ export default function Ticket(){
 const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${id}&venueId=${selectedVenue.id}`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${communityBookingId}&venueId=${selectedVenue.id}`,{
             headers:{
                 "Authorization": paseto
             }
@@ -110,27 +110,15 @@ function refreshAggregateAndHistory(){
     redeemHistoryQuery.refetch()
 }
 
-   async function generateApplePass(){ 
+async function generateApplePass(){ 
 
     setIsGenereatingPass(true)
-
-    const payload = {
-        qrCode: qrCodePayload,
-        expiryDate: dayjs(expirationDate).format('MMM DD, YYYY'), // add 30 days
-        ticketSecret: selectedVenue.ticketSecret,
-        targetDate: dayjs(expirationDate).format('MMM DD, YYYY'),
-        quantity: quantity,
-        price: communityDats.price/100,
-        communityVenueName: selectedVenue.name,
-        communityName: communityDats.name,
-    }
-
-    const body = await fetch('/api/generateCommunityPass',{
-        method:'POST',
-        body: JSON.stringify(payload),
+   
+    const body = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apple-pass?ticketId=${id}&ticketType=community`,{
+        method:'GET',
         headers:{
             "Content-Type": "application/vnd.apple.pkpass"
-       }  
+        } 
     })
 
 
@@ -195,7 +183,7 @@ function refreshAggregateAndHistory(){
    : redemptionAggregateQuery.isError
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.100'}>Redemption aggregate currently unavailable</Text>
    : <Flex  width={'100%'} px={2} mb={5} justifyContent='space-between'> 
-        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate.redeemCount}/{ quantity} redeemed</Text>   
+        <Text  textStyle={'body'} color={'text.200'}>{redemptionAggregate && redemptionAggregate?.redeemCount}/{ quantity} redeemed</Text>   
         <Button  onClick={refreshAggregateAndHistory} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} leftIcon={<RepeatIcon/>} aria-label={'Refresh aggregate'}>Refresh</Button>
     </Flex>
 
@@ -251,9 +239,9 @@ function refreshAggregateAndHistory(){
                                     <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
                                  </Flex>
                                 :<Flex width={'100%'} direction='column'>
-                                    <HStack w='100%' mt={3} justifyContent={'center'} mb='2'>
+                                    <HStack w='100%' mt={3}  justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
-                                        <Text color='accent.200' mt='3'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
+                                        <Text color='accent.200'  textStyle={'body'}>{selectedVenue.ticketSecret}</Text>
                                     </HStack>
                                     <Flex bg={'#ffffff'} justifyContent={'center'} alignItems={'center'} borderEndRadius={4} p='7'>  
                                       <QRCode height={'25px'} width='100%' value={JSON.stringify(qrCodePayload)}/>

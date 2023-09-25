@@ -1,1 +1,2 @@
 export const IMAGE_PLACEHOLDER_HASH='bafkreiexo2kwvwmgfhutm7k4y6oaqo7vawlwlg6je55pqho6ch3ooxjiqa'
+export const PLACEHOLDER_HASH = 'bafkreie7d2zcwfc64wdkrlijqgm4nbeqxbhpycxtwu5iie5rshx3szconq'
