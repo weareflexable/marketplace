@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton, Link } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Header from "../../components/shared/Header/Header";
 import Layout from "../../components/shared/Layout/Layout";
@@ -183,7 +183,6 @@ function BasicForm({prev,next}:StepProps){
     const serviceItemTypeName  =   serviceItemTypesQuery?.data?.find((serviceType:any)=>serviceType.id === watchServiceItemTypeId)?.name
 
 
-    console.log(serviceItemTypeName)
 
   
 
@@ -253,8 +252,13 @@ function BasicForm({prev,next}:StepProps){
         <form onSubmit={methods.handleSubmit(submitForm)}>
             <Stack w={'100%'} mt={'4rem'} spacing={8}>
  
-               { userOrgsQuery.isLoading
+               { userOrgsQuery.isLoading || userOrgsQuery.isRefetching
                ? <Spinner/>
+               : userOrgsQuery.isError
+               ?  <Flex p={8} justifyContent={'center'} direction={'column'} alignItems={'center'} border={'1px solid'}>
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It appears we had a problem fetching your organizations, please try it again</Text>
+                    <Button mt={3} variant={'link'} onClick={()=>userOrgsQuery.refetch()}>Try again</Button> 
+                </Flex>
                : userOrgsQuery?.data?.length < 1
                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
                :<Box>
@@ -278,10 +282,17 @@ function BasicForm({prev,next}:StepProps){
                 watchOrgId !== undefined 
                 ?
                 <>
-                 {orgServicesQuery.isLoading
+                 {orgServicesQuery.isLoading || orgServicesQuery.isRefetching
                  ?<Spinner/> 
-                 : orgServicesQuery?.data?.length < 1  
-                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
+                 : orgServicesQuery.isError 
+                 ?   <Flex p={8} justifyContent={'center'} direction={'column'} alignItems={'center'} border={'1px solid'}>
+                        <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It appears we had a problem fetching your services, please try it again</Text>
+                        <Button mt={3} variant={'link'} onClick={()=>orgServicesQuery.refetch()}>Try again</Button> 
+                    </Flex> 
+                 :orgServicesQuery?.data?.length < 1  
+                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
+                        <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a service created under the selected organization. Try selecting a different organization or configure a new one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>flexable portal</Link></Text> 
+                    </Flex>
                  : <Box>
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
                         <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
@@ -293,8 +304,7 @@ function BasicForm({prev,next}:StepProps){
                                            {service.name}
                                          </option>
                                         ))
-                                    }
-
+                                }
                             </Select>
                             {/* <FormHelperText color={'text.200'}> 
                                 Your exclusive access will be created under this organization
@@ -315,11 +325,11 @@ function BasicForm({prev,next}:StepProps){
                  {serviceItemTypesQuery.isLoading
                  ?<Spinner/> 
                  : serviceItemTypesQuery?.data.length < 1  
-                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a services created under the selected organization. Try selecting a different organization or create a new one on flexable portal</Text> </Flex>
+                 ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}> <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>Sorry it seems as though they are not exclusive access types available on the platform, please reach out to support team for assistance. Thank you</Text> </Flex>
                  : <Box>
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
                         <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
-                            <FormLabel ml={'.8rem'} color={'text.300'}>Select service item type</FormLabel>
+                            <FormLabel ml={'.8rem'} color={'text.300'}>Select exclusive access type</FormLabel>
                             <Select textStyle={'secondary'} color='text.300' placeholder="Select service item type"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('serviceItemTypeId',{required:true})}>
                                 {
                                     serviceItemTypesQuery?.data.map((type:any)=>(
@@ -429,7 +439,6 @@ function BasicForm({prev,next}:StepProps){
 
 function CustomAvailability({serviceItemId}:{serviceItemId:string}){
 
-    console.log('E don reach sha', serviceItemId)
 
     const {paseto} = useAuthContext()
 
@@ -486,8 +495,6 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
         }
 
         availabilityMutation.mutate(payload)
-
-        console.log(values)
     }
 
     const newCustomDate = {
