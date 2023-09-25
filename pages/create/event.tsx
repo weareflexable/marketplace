@@ -146,25 +146,32 @@ export default function Event(){
                     <form onSubmit={methods.handleSubmit(submitForm)}>
                         <Stack w={'100%'} spacing={8}>
 
-                              { userOrgsQuery.isLoading
-                                ? <Spinner/> 
-                                : userOrgsQuery?.data?.length < 1
-                                ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
-                                :<Box>
-                                        <FormControl mb={'1rem'} px={['1rem']} w={['100%','100%','100%','70%']}>
-                                            <FormLabel ml={'.8rem'} color={'text.300'}>Select your organization</FormLabel>
-                                            <Select textStyle={'secondary'} color='text.300'  size='lg' placeholder="Select organization" borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId')}>
-                                                {userOrgsQuery?.data?.map((userOrg:any)=>(
-                                                    <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
-                                                ))}
-                                                {/* <option value="principle">Principle organization</option>
-                                                <option value="Magerine">Magerine organization</option> */}
-                                            </Select>
-                                            <FormHelperText color={'text.200'}> 
-                                                Your exclusive access will be created under this organization
-                                            </FormHelperText>
-                                        </FormControl>
-                                    </Box>}
+                        { userOrgsQuery.isLoading || userOrgsQuery.isRefetching
+                            ? <Spinner/>
+                            : userOrgsQuery.isError
+                            ?  <Flex p={8} justifyContent={'center'} direction={'column'} alignItems={'center'} border={'1px solid'}>
+                                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It appears we had a problem fetching your organizations, please try it again</Text>
+                                    <Button mt={3} variant={'link'} onClick={()=>userOrgsQuery.refetch()}>Try again</Button> 
+                                </Flex>
+                            : userOrgsQuery?.data?.length < 1
+                            ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one. Please register an organization on flexable portal</Text>
+                            :<Box>
+                                    <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
+                                        <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
+                                        <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
+                                            {userOrgsQuery?.data?.map((userOrg:any)=>(
+                                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                                            ))}
+                                            {/* <option value="principle">Principle organization</option>
+                                            <option value="Magerine">Magerine organization</option> */}
+                                        </Select>
+                                        <FormHelperText color={'text.200'}> 
+                                            Your exclusive access will be created under this organization
+                                        </FormHelperText>
+                                    </FormControl>
+                                </Box>
+                                }
+
 
                            { watchOrgId !== undefined && watchOrgId !== '' 
                            ? <>
