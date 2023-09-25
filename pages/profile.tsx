@@ -14,6 +14,7 @@ import { getPlatformPaseto } from '../utils/storage'
 import { asyncStore } from '../utils/nftStorage'
 import Head from 'next/head'
 import { CopyIcon } from '@chakra-ui/icons'
+import { PLACEHOLDER_HASH } from '../constants'
 
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
@@ -68,9 +69,10 @@ export default function Profile(){
     </Head>
     <Layout>
             <Grid
-                mx="1em"
+                px="1em"
                 minH="inherit"
                 h="100%"
+                width={"100%"} 
                 templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
                 gap={6}
                 >
@@ -94,10 +96,10 @@ export default function Profile(){
                         <EditableLastName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
                         <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data[0]}/> 
                         {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
-                        <Flex my={6} direction={'column'}>  
+                        <Flex my={6} width={'100%'}  direction={'column'}>  
                         <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Wallet Address</Text>
-                        <Flex style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
-                          <Text textStyle={'secondary'} color='text.200'>{userQuery?.data?.[0].walletaddress}</Text>
+                        <Flex  style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
+                          <Text width={'80%'}  textStyle={'secondary'} color='text.200'>{userQuery?.data?.[0].walletaddress}</Text>
                           <Tooltip  isOpen={hasCopied} label='Copied!'>
                             <IconButton onClick={copyAddress} size={'sm'} colorScheme='brand' variant={'ghost'} icon={<CopyIcon />} aria-label={'copy address button'}/>
                           </Tooltip> 
@@ -504,7 +506,7 @@ function EditableLastName({selectedRecord}:EditableProp){
        style={{ marginTop:'.5rem' }}
        onSubmit={formik.handleSubmit}
        >
-        <FormControl is={formik.errors.lastName}  mb={'5'}>
+        <FormControl is={formik.errors.lastName}   mb={'5'}>
             {/* <FormLabel htmlFor='email' textStyle={'secondary'} color='text.300'>Email</FormLabel> */}
             <Input  
                 // id='fullname'
@@ -529,7 +531,7 @@ function EditableLastName({selectedRecord}:EditableProp){
     )
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
-        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Last Name</Text>
+        <Text color='text.300' textStyle={'secondary'}  style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Last Name</Text>
       {isEditMode?editable:readOnly}
       </div>
     )
@@ -614,9 +616,9 @@ function EditableImage({selectedRecord}:EditableProp){
   
   const readOnly = (
       <div style={{width:'100%', marginTop:'1rem', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord && selectedRecord.profilePic}`}/>
+        <Image style={{width:'150px', height:'150px', objectFit:'cover', borderRadius:'50%', border:'1px solid #333333'}} alt={`Profile pic`}  src={selectedRecord?.profilePic.length < 10?`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${PLACEHOLDER_HASH}`:`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${selectedRecord?.profilePic}`}/>
         <Button variant={'link'} onClick={toggleEdit}>Edit</Button>
-      </div>
+      </div> 
   )
   
   
@@ -652,7 +654,7 @@ function EditableImage({selectedRecord}:EditableProp){
     return(
       <div style={{width:'100%', display:'flex', marginTop:'1rem', flexDirection:'column'}}>
         <Text textStyle="secondary" color='text.300' style={{ marginRight: '2rem',}}>Profile Picture</Text>
-        {isEditMode?editable:readOnly}
+        {isEditMode?editable:readOnly} 
       </div>
     )
   }
