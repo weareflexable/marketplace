@@ -11,18 +11,22 @@ import { deleteStorage, getStorage, setStorage } from "../utils/localStorage";
 import axios from 'axios'
 import dayjs from "dayjs";
 
+import {useQuery, useQueryClient} from '@tanstack/react-query'
+
 
 
 
 // const PUBLIC_KEY = '1eb9dbbbbc047c03fd70604e0071f0987e16b28b757225c11f00415d0e20b1a2'
 
 const AuthContext = createContext(undefined);
-
+ 
 const AuthContextProvider = ({ children }) => {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const router = useRouter();
+
+  // const queryClient = useQueryClient() 
 
   const [paseto, setPaseto] =useState(()=>{
     const storedPaseto = getStorage('PLATFORM_PASETO') 
@@ -132,8 +136,52 @@ const AuthContextProvider = ({ children }) => {
 //   console.log(pasetoFromUrl)
 }, [pasetoFromUrl])
 
+    async function fetchUserDetails(){
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`,{
+        headers:{
+          "Authorization": paseto
+        }
+      })
+      return res.data.data
+    }
 
-  
+    const userQuery = useQuery({
+      queryKey:['user'],  
+      queryFn: fetchUserDetails,
+      cacheTime: Infinity,
+      staleTime:Infinity,
+      enabled:paseto!=='' ,
+      retry: (failureCount, error) =>{
+        if(failureCount >2) return false
+        return true  
+      },
+      // onSettled:(res)=>{
+      //     console.log(res)
+      // },
+      onSuccess:(res)=>{
+          const statusCode = res.status
+          if(statusCode === 401){
+              //@ts-ignore
+              setIsAuthenticated(false)
+              // clear all caches
+              localStorage.clear() 
+              return
+          } 
+          const user = res[0]
+          setCurrentUser(user)
+          // console.log(res)
+      },
+      onError:(error)=>{
+          const statusCode = error.status
+          if(statusCode === 401){
+              //@ts-ignore
+              setIsAuthenticated(false)
+              // clear all caches
+              localStorage.clear()
+          }
+      }
+    })
+      
 
 
   const values = {
@@ -159,3 +207,4 @@ const useAuthContext = () => {
 };
 
 export { useAuthContext, AuthContext, AuthContextProvider };
+

@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useAuthContext } from '../../../context/AuthContext';
 import { usePaymentContext } from '../../../context/PaymentContext';
+import useRoleName from '../../../hooks/useRoleName';
 
 interface CheckoutProps{
   paymentIntentId: string
@@ -19,7 +20,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
   const {paseto} = useAuthContext()
   const {stripePayload} = usePaymentContext()
 
-  // const history = useLastVisitedPage()
+  const roleName = useRoleName()
 
   const stripe = useStripe();
   const elements = useElements();
@@ -85,7 +86,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
   };
 
   const mutatePayment = useMutation(async(payload:any)=>{
-    const data = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users/cancel-payment`,payload,{
+    const data = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/cancel-payment`,payload,{
       headers:{
         'Authorization': paseto
       }

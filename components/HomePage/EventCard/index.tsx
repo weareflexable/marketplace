@@ -29,7 +29,7 @@ export const EventCard = ({data}:EventCardProps) =>{
         router.push(`/events/${eventId}`)
     }
 
-    const isFree = data?.price === 0
+    const isFree = data?.price == 0
 
     const coverImageHash = data?.coverImageHash
 

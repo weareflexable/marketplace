@@ -1,4 +1,4 @@
-import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, FormHelperText,  Image, FormLabel, Grid, GridItem, HStack, Heading, Input, Select, Stack, Spinner, InputLeftAddon, InputGroup, Textarea, InputRightAddon, ButtonGroup, Button, useToast, Step, StepDescription, StepIcon, StepIndicator, StepNumber, StepSeparator, StepStatus, StepTitle, Stepper, chakra, Popover, PopoverBody, PopoverContent, UnorderedList, PopoverTrigger, Portal, ListItem, Card, CardBody, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton, Link } from "@chakra-ui/react";
 import  {useForm, FormProvider, useFormContext, useFieldArray} from 'react-hook-form'
 import Layout from "../../components/shared/Layout/Layout";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import { ArrowUpIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
 import { PLACEHOLDER_HASH } from "../../constants";
+import useRoleName from "../../hooks/useRoleName";
 
 
 type Community = {
@@ -130,22 +131,24 @@ function BasicForm({prev,next}:StepProps){
 
     const toast = useToast()
 
+    const roleName = useRoleName()
+
     const userOrgsQuery = useQuery({
         queryKey:['user-organizations',paseto],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/orgs?pageNumber=1&pageSize=30&status=1`,{
                 headers:{
                     'Authorization': paseto 
                 }
             }) 
             return res.data.data
         },
-        enabled: paseto !== undefined || paseto !== null 
+        enabled: paseto !== undefined && paseto !== null && roleName !== ''
     })  
 
     const communityMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/community`,payload,{
                 headers:{
                     'Authorization': paseto
                 }
@@ -173,14 +176,6 @@ function BasicForm({prev,next}:StepProps){
                 position:'top-right'
             })
         }
-    })
-
-    const communityQuery = useQuery({
-        queryFn:async()=>{
-            const res = await axios.get('')
-            return res.data
-        },
-        enabled: false
     })
 
 
@@ -226,7 +221,9 @@ function BasicForm({prev,next}:StepProps){
                     <Button mt={3} variant={'link'} onClick={()=>userOrgsQuery.refetch()}>Try again</Button> 
                 </Flex>
                : userOrgsQuery?.data?.length < 1
-               ? <Text textAlign={'center'} textStyle={'body'} width={'70%'}>It seems like you do not have a registered organization neither are you a part of one</Text>
+               ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.staging.flexabledats.com`}>flexable portal</Link></Text> 
+                </Flex>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
@@ -245,7 +242,7 @@ function BasicForm({prev,next}:StepProps){
                 }
 
 
-                {watchOrgId !== undefined ?
+                {watchOrgId !== undefined  && watchOrgId !== '' ? 
                 <>
                 <Box>
                     <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
@@ -311,13 +308,15 @@ function VenueForm({communityId}:{communityId:string}){
       name: "venues", // unique name for your Field Array
     });
 
+    const roleName = useRoleName()
+
     const {paseto} = useAuthContext()
     const router = useRouter()
     const toast = useToast()
 
     const venuesMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community-venues`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/community-venues`,payload,{
                 headers: {
                     'Authorization': paseto
                 }

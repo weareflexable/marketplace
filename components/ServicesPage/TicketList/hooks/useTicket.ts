@@ -8,6 +8,7 @@ import axios from 'axios'
 import { usePaymentContext } from '../../../../context/PaymentContext'
 import { useToast } from '@chakra-ui/react'
 import useLocalStorage from '../../../../hooks/useLocalStorage'
+import useRoleName from '../../../../hooks/useRoleName'
 
 // TODO: Have a separate context for handling cart items
 
@@ -54,6 +55,8 @@ const useTicket = (data:any)=>{
 
      const subTotal =  ticketData.quantity * (ticketData.price/100)
 
+     const roleName = useRoleName()
+
  
      const proceedToPayment = ()=>{
         // Timeout in order to show loading state
@@ -77,7 +80,7 @@ const useTicket = (data:any)=>{
 
      async function fetchSecret(payload:any) {
           try{
-          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/payment-intents/buy-now`,payload,{
             headers:{
               'Authorization': paseto
             }
