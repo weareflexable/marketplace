@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { usePaymentContext } from '../context/PaymentContext';
 import axios from 'axios';
 import { useAuthContext } from '../context/AuthContext';
+import useRoleName from '../hooks/useRoleName';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY||'');
 
@@ -23,13 +24,14 @@ const Payments = () => {
     const [payload, setPayload] = useState<any>({})
 
     
+    const roleName = useRoleName()
 
 
 
     useEffect(()=>{
       async function fetchSecret(payload:any) {
         try{
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/payment-intents/buy-now`,payload,{
           headers:{
             'Authorization': paseto
           }
