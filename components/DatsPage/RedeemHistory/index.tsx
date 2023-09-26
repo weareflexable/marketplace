@@ -1,10 +1,6 @@
 import { Flex, Text, Box, Skeleton, Image, List, ListIcon, ListItem, HStack, Button, IconButton } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { MdCheckCircle, MdSettings } from "react-icons/md";
-import { useAuthContext } from "../../../context/AuthContext";
+
 import dayjs from "dayjs";
-import { RepeatIcon } from "@chakra-ui/icons";
 
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
@@ -24,20 +20,6 @@ interface Props{
 
 
 export default function RedeemHistory({historyQuery,quantity,type}:Props){
-
-
-    // const redeemHistoryQuery = useQuery({
-    //     queryKey:['redeem-history', id], 
-    //     queryFn:async()=>{
-    //         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=${type}&pageSize=50&pageNumber=1`,{
-    //             headers:{
-    //                 "Authorization": paseto
-    //             }
-    //         }) 
-    //         return res.data.data
-    //     },
-    //     enabled: id !== undefined,
-    // })
 
 
     const history = historyQuery && historyQuery.data;

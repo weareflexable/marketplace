@@ -18,7 +18,7 @@ export default function Header(){
     const {push, asPath, replace, basePath} = useRouter()
 
     async function fetchUserDetails(){
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`,{
           headers:{
             "Authorization": paseto
           }

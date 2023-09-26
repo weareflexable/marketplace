@@ -11,6 +11,8 @@ import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import { PLACEHOLDER_HASH } from "../../constants";
+import useRole from "../../hooks/useRole";
+import useRoleName from "../../hooks/useRoleName";
 
 
 type IExclusiveAccess = {
@@ -120,6 +122,9 @@ function BasicForm({prev,next}:StepProps){
     const [selectedLogoImage, setSelectedLogoImage] = useState<string|undefined>()
 
 
+
+
+
     const methods = useForm<IExclusiveAccess>({
     })
 
@@ -134,31 +139,33 @@ function BasicForm({prev,next}:StepProps){
     const watchServiceItemTypeId = methods.watch('serviceItemTypeId')
 
  
+    const roleName = useRoleName()
+    
 
     const userOrgsQuery = useQuery({
         queryKey:['user-organizations',paseto],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/orgs?pageNumber=1&pageSize=30&status=1`,{
                 headers:{
                     'Authorization': paseto 
                 }
             }) 
             return res.data.data
         },
-        enabled: paseto !== undefined || paseto !== null 
+        enabled: paseto !== undefined && paseto !== null && roleName !== ''
     })
 
     const orgServicesQuery = useQuery({
         queryKey:['orgs-service',paseto,watchOrgId],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/services?pageNumber=1&pageSize=10&orgId=${watchOrgId}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/services?pageNumber=1&pageSize=50&orgId=${watchOrgId}`,{
                 headers:{
                     'Authorization': paseto
                 }
             }) 
             return res.data.data
         },
-        enabled: watchOrgId !== undefined || paseto !== null 
+        enabled: watchOrgId !== undefined && paseto !== null && watchOrgId !== ''  
     })
 
     const serviceTypeId = orgServicesQuery?.data?.find((service:any)=>service.id === watchServiceType)?.serviceTypeId
@@ -169,7 +176,7 @@ function BasicForm({prev,next}:StepProps){
     const serviceItemTypesQuery = useQuery({
         queryKey:['service-item-types',paseto,serviceTypeId],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/service-item-types?pageNumber=1&pageSize=10&serviceTypeId=${serviceTypeId}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/service-item-types?pageNumber=1&pageSize=50&serviceTypeId=${serviceTypeId}`,{
                 headers:{
                     'Authorization': paseto 
                 }
@@ -188,7 +195,7 @@ function BasicForm({prev,next}:StepProps){
 
     const exclusiveAccessMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/service-items`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/service-items`,payload,{
                 headers:{
                     'Authorization': paseto
                 }
@@ -281,11 +288,11 @@ function BasicForm({prev,next}:StepProps){
                 }
 
                 {
-                watchOrgId !== undefined 
+                watchOrgId !== undefined  && watchOrgId !== ''
                 ?
                 <>
-                 {orgServicesQuery.isLoading || orgServicesQuery.isRefetching
-                 ?<Spinner/> 
+                 { orgServicesQuery.isLoading || orgServicesQuery.isRefetching
+                 ? <Spinner/> 
                  : orgServicesQuery.isError 
                  ?   <Flex p={8} justifyContent={'center'} direction={'column'} alignItems={'center'} border={'1px solid'}>
                         <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It appears we had a problem fetching your services, please try it again</Text>
@@ -441,6 +448,7 @@ function BasicForm({prev,next}:StepProps){
 
 function CustomAvailability({serviceItemId}:{serviceItemId:string}){
 
+    const roleName = useRoleName()
 
     const {paseto} = useAuthContext()
 
@@ -455,7 +463,7 @@ function CustomAvailability({serviceItemId}:{serviceItemId:string}){
 
     const availabilityMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/service-items/availability`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/service-items/availability`,payload,{
                 headers:{
                     'Authorization': paseto
                 }

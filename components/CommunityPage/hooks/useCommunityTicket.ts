@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import { usePaymentContext } from '../../../context/PaymentContext'
 import useLocalStorage from '../../../hooks/useLocalStorage'
+import useRoleName from '../../../hooks/useRoleName'
 
 // TODO: Have a separate context for handling cart items
 
@@ -55,11 +56,13 @@ const useCommunityTicket = (data:any)=>{
      const isMinQuantity = ticketData.quantity <= 0
      const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
 
+     const roleName = useRoleName()
+
      const subTotal =  ticketData.quantity * (data && data.price /100)
 
      async function fetchSecret(payload:any) {
       try{
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/payment-intents/buy-now`,payload,{
         headers:{
           'Authorization': paseto
         }

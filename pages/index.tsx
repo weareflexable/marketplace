@@ -1,15 +1,7 @@
 import Head from 'next/head'
-import StoreCard from '../components/HomePage/VenueCard/StoreCard'
 import {Button, Flex,Skeleton,Text,Wrap,WrapItem} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
-import {Store} from '../Types/Stores.types'
-import {useInfiniteQuery, useQuery} from '@tanstack/react-query'
-import { useRouter } from 'next/router'
-import { mockData } from '../data/events'
-import SkeletonList from '../components/HomePage/SkeletonList/SkeletonList'
-import axios from 'axios'
-import React, { useState } from 'react'
-import EmptyServices from '../components/shared/EmptyServices/EmptyServices'
+import React from 'react'
 import VenuePanel from '../components/HomePage/VenuePanel'
 import CommunityPanel from '../components/HomePage/CommunityPanel'
 import EventPanel from '../components/HomePage/EventPanel'
@@ -19,8 +11,6 @@ import EventPanel from '../components/HomePage/EventPanel'
 const PAGE_SIZE = 10;
 
 export default function Home() {
-
-
 
  
   return (

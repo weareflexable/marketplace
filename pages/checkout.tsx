@@ -10,6 +10,7 @@ import usePath from '../hooks/usePath'
 import { usePaymentContext } from '../context/PaymentContext'
 import { useTimer } from 'react-timer-hook';
 import dayjs from 'dayjs'
+import useRoleName from '../hooks/useRoleName'
 
 
 export default function Checkout(){
@@ -47,26 +48,12 @@ export default function Checkout(){
 
     },[])
 
+    const roleName = useRoleName()
 
-    function createUserList(quantity:number){
-       let users = []
-       for(let i=0; i<quantity;i++){
-        users.push({firstName: '', lastName:'', email: ''})
-       }
-       return users
-    }
-
-    // const userList = createUserList(quantity)
-    // console.log(quantity)
-
-    // console.log(userList)
-
-
-    // console.log(userList)
  
     async function fetchSecret(payload:any) {
         try{
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/payment-intents/buy-now`,payload,{
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/payment-intents/buy-now`,payload,{
           headers:{
             'Authorization': paseto
           }

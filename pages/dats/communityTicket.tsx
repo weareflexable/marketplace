@@ -14,6 +14,7 @@ import axios from 'axios'
 import Head from 'next/head'
 import RedeemHistory from '../../components/DatsPage/RedeemHistory'
 import { useAuthContext } from '../../context/AuthContext'
+import useRoleName from '../../hooks/useRoleName'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -38,6 +39,8 @@ export default function Ticket(){
     const redeemInstructions = serviceTypeName === 'Restaurant' ? 'Please show this QR code to the hostess at the restaurant' : 'Cut the line and show this QR code to the bouncer to redeem it'
 
 
+    const roleName = useRoleName()
+    
     const communityDats = communityDetails && communityDetails 
 
 
@@ -77,7 +80,7 @@ export default function Ticket(){
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
             headers:{
                 "Authorization": paseto 
             }
@@ -91,7 +94,7 @@ export default function Ticket(){
 const redemptionAggregateQuery = useQuery({
     queryKey:['redeem-history', id, selectedVenue], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redemption-aggregate?bookingId=${communityBookingId}&venueId=${selectedVenue.id}`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redemption-aggregate?bookingId=${communityBookingId}&venueId=${selectedVenue.id}`,{
             headers:{
                 "Authorization": paseto
             }
