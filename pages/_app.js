@@ -25,8 +25,8 @@ function MyApp({ Component, pageProps }) {
   })
 
   return ( 
-    <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
+    <AuthContextProvider>
         <PaymentContextProvider> 
                 <CheckoutContextProvider>
            <DatContextProvider>
@@ -37,8 +37,8 @@ function MyApp({ Component, pageProps }) {
                 </CheckoutContextProvider>
               <ReactQueryDevtools initialIsOpen={false} />
         </PaymentContextProvider> 
-    </QueryClientProvider>
       </AuthContextProvider> 
+    </QueryClientProvider> 
   ) 
 }
 

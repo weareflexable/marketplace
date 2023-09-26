@@ -11,6 +11,7 @@ import { ArrowUpIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
 import { PLACEHOLDER_HASH } from "../../constants";
+import useRoleName from "../../hooks/useRoleName";
 
 
 type Community = {
@@ -130,10 +131,12 @@ function BasicForm({prev,next}:StepProps){
 
     const toast = useToast()
 
+    const roleName = useRoleName()
+
     const userOrgsQuery = useQuery({
         queryKey:['user-organizations',paseto],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=30&status=1`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/orgs?pageNumber=1&pageSize=30&status=1`,{
                 headers:{
                     'Authorization': paseto 
                 }
@@ -145,7 +148,7 @@ function BasicForm({prev,next}:StepProps){
 
     const communityMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/community`,payload,{
                 headers:{
                     'Authorization': paseto
                 }
@@ -173,14 +176,6 @@ function BasicForm({prev,next}:StepProps){
                 position:'top-right'
             })
         }
-    })
-
-    const communityQuery = useQuery({
-        queryFn:async()=>{
-            const res = await axios.get('')
-            return res.data
-        },
-        enabled: false
     })
 
 
@@ -247,7 +242,7 @@ function BasicForm({prev,next}:StepProps){
                 }
 
 
-                {watchOrgId !== undefined ?
+                {watchOrgId !== undefined  && watchOrgId !== '' ? 
                 <>
                 <Box>
                     <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
@@ -313,13 +308,15 @@ function VenueForm({communityId}:{communityId:string}){
       name: "venues", // unique name for your Field Array
     });
 
+    const roleName = useRoleName()
+
     const {paseto} = useAuthContext()
     const router = useRouter()
     const toast = useToast()
 
     const venuesMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/community-venues`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/community-venues`,payload,{
                 headers: {
                     'Authorization': paseto
                 }

@@ -14,6 +14,7 @@ import axios from 'axios'
 import Head from 'next/head'
 import RedeemHistory from '../../components/DatsPage/RedeemHistory'
 import { useAuthContext } from '../../context/AuthContext'
+import useRoleName from '../../hooks/useRoleName'
 var utc = require("dayjs/plugin/utc")
 var timezone = require("dayjs/plugin/timezone")
 var advanced = require("dayjs/plugin/advancedFormat")
@@ -36,6 +37,8 @@ export default function EventTicket(){
     const isRedeemed = ticketStatus === 'redeemed'
 
     const isTxHash = transactionHash !== ''
+
+    const roleName = useRoleName()
 
     useEffect(() => {
 
@@ -62,13 +65,10 @@ export default function EventTicket(){
   }, [id, quantity, eventDetails, targetUserId, ticketSecret]) 
 
   
-console.log(ctx_currentDat)
 
    async function generateApplePass(){ 
 
     setIsGeneratingPass(true)
-    
-
 
     const body = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apple-pass?ticketId=${id}&ticketType=event`,{
         method:'GET',
@@ -100,7 +100,7 @@ console.log(ctx_currentDat)
    const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets/redeem-history?bookingId=${eventBookingId}&ticketType=event&pageSize=50&pageNumber=1`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${eventBookingId}&ticketType=event&pageSize=50&pageNumber=1`,{
             headers:{
                 "Authorization": paseto
             }

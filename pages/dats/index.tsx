@@ -25,6 +25,7 @@ import OrderListSkeleton from '../../components/DatsPage/OrderList/SkeletonList'
 import { useDatContext } from "../../context/DatContext";
 import {RepeatIcon} from '@chakra-ui/icons'
 import Head from "next/head";
+import useRoleName from "../../hooks/useRoleName";
 
 
 const fetchWithError = async(url:string, options:any)=>{
@@ -54,6 +55,7 @@ export default function MyDats() {
 
   const [currentFilter, setCurrentFilter] = useState<{key:string,label:string}>(datsFilter[0])
 
+  const roleName = useRoleName()
 
   // Effect to check localstorage for filter value provided at the time of checkout
   useEffect(()=>{
@@ -118,7 +120,7 @@ export default function MyDats() {
   const datsQuery = useInfiniteQuery(["dats",currentFilter], async ({pageParam=1}) => {
     const paseto = getPlatformPaseto();
     const res = await fetchWithError( 
-      `${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets?pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
       {
         method: "GET",
         //@ts-ignore
@@ -131,7 +133,6 @@ export default function MyDats() {
   },
   {
     getNextPageParam:(lastPage, pages)=>{
-      // console.log(lastPage)
 
       // fetchedDataLength: pageSize and multiply by pages.length+1
       // if dataLength > fetchedDataLength, hasNextPage is true, else false
@@ -142,21 +143,23 @@ export default function MyDats() {
       if(totalDataLength < fetchedDataLength) return undefined
       return pages.length 
     },
-    enabled:isAuthenticated && !isDelaying && !isLoadingFilters
+    enabled:isAuthenticated && !isDelaying && !isLoadingFilters && roleName !== ''
   }
   );
 
+ 
+
   const totalDatsQuery = useQuery(['totalDats',currentFilter.key],async()=>{
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/tickets?pageNumber=1&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets?pageNumber=1&pageSize=${PAGE_SIZE}&ticketType=${currentFilter.key}`,
     {
        //@ts-ignore
       headers: {
         Authorization: paseto,
-      }
+      } 
     })
     return res.data.dataLength
   },{
-    enabled: isAuthenticated && !isDelaying
+    enabled: isAuthenticated && !isDelaying && roleName !== ''
   }
   )
 

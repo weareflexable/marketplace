@@ -1,6 +1,5 @@
 import { Box, Button, Divider, Flex, HStack, IconButton, Text} from "@chakra-ui/react"
 import { ReactNode } from "react"
-import { MdRemove, MdAdd } from "react-icons/md"
 
 
 

@@ -14,6 +14,7 @@ import { ArrowUpIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import { PLACEHOLDER_HASH } from "../../constants";
 import { timezones } from "../../data/timezones";
+import useRoleName from "../../hooks/useRoleName";
 
 
 type Event = {
@@ -50,10 +51,12 @@ export default function Event(){
     const router = useRouter()
     const toast = useToast()
 
+    const roleName = useRoleName()
+
     const userOrgsQuery = useQuery({
         queryKey:['user-organizations',paseto],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/orgs?pageNumber=1&pageSize=300&status=1`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/orgs?pageNumber=1&pageSize=300&status=1`,{
                 headers:{
                     'Authorization': paseto 
                 }
@@ -66,7 +69,7 @@ export default function Event(){
     
     const eventMutation = useMutation({
         mutationFn: async(payload:any)=>{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/events`,payload,{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/events`,payload,{
                 headers:{
                     'Authorization': paseto
                 }
