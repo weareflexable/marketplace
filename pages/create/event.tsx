@@ -63,7 +63,7 @@ export default function Event(){
             }) 
             return res.data.data
         },
-        enabled: paseto !== undefined || paseto !== null 
+        enabled: paseto !== undefined && paseto !== null && roleName !== ''
     })
 
     
