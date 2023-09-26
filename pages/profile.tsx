@@ -3,14 +3,10 @@ import Layout from '../components/shared/Layout/Layout'
 import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
 import { useAuthContext } from '../context/AuthContext'
 import {Formik, Field, Form, useFormik, FormikProps} from 'formik'
-import * as Yup from 'yup';
 
-const countryList = require('country-list')
-import codes from 'country-calling-code';
 import axios from 'axios'
 import { useMutation, useQueryClient,useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { getPlatformPaseto } from '../utils/storage'
 import { asyncStore } from '../utils/nftStorage'
 import Head from 'next/head'
 import { CopyIcon } from '@chakra-ui/icons'
@@ -19,16 +15,11 @@ import { PLACEHOLDER_HASH } from '../constants'
 export default function Profile(){
     const {isAuthenticated,paseto} = useAuthContext()
 
-    const { onCopy, value, setValue, hasCopied } = useClipboard("");
-
-    console.log('wallet',value)
-    console.log('has value',hasCopied)
-
-  
+    const { onCopy, value, setValue, hasCopied } = useClipboard("");  
 
 
       async function fetchUserDetails(){
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user`,{
           headers:{
             "Authorization": paseto
           }
@@ -43,8 +34,6 @@ export default function Profile(){
         // staleTime: Infinity
     })
 
-
-    // console.log(userQuery.data.data)  
        
 
     function copyAddress(){
@@ -144,8 +133,7 @@ function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
         onSubmit: (values,actions) => {
             // e.preventDefault() 
             const payload = {
-                key:'email',
-                value:values.email,
+                email:values.email,
               }
               mutation.mutate(payload)
         },
@@ -154,7 +142,7 @@ function EditableEmail({selectedRecord,isReadOnly}:EditableProp){
    
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -256,10 +244,8 @@ function EditableGender({selectedRecord}:EditableProp){
       function handleSubmit(values:any,actions:any){
         //  preventDefault() 
         const payload = {
-            key:'gender',
-            value:value,
+            gender:value,
           }
-          console.log(payload)
           mutation.mutate(payload)
      }
 
@@ -271,7 +257,7 @@ function EditableGender({selectedRecord}:EditableProp){
    
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -367,8 +353,7 @@ function EditableFirstName({selectedRecord}:EditableProp){
         onSubmit: (values,actions) => {
             // e.preventDefault() 
             const payload = {
-                key:'first_name',
-                value:values.firstName,
+                firstName:values.firstName,
               }
               mutation.mutate(payload)
         },
@@ -377,7 +362,7 @@ function EditableFirstName({selectedRecord}:EditableProp){
    
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -463,8 +448,7 @@ function EditableLastName({selectedRecord}:EditableProp){
         onSubmit: (values,actions) => {
             // e.preventDefault() 
             const payload = {
-                key:'last_name',
-                value:values.lastName,
+                lastName:values.lastName,
               }
               mutation.mutate(payload)
         },
@@ -473,7 +457,7 @@ function EditableLastName({selectedRecord}:EditableProp){
    
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -572,8 +556,7 @@ function EditableImage({selectedRecord}:EditableProp){
         
         
             const payload = {
-              key:'profile_pic',
-              value: profilePicHash,
+              profilePic: profilePicHash,
             }
             setUpdatedProfilePicHash(profilePicHash)
 
@@ -583,7 +566,7 @@ function EditableImage({selectedRecord}:EditableProp){
 
   
     const mutationHandler = async(updatedItem:any)=>{
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/users`,updatedItem,{
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user`,updatedItem,{
         headers:{
             //@ts-ignore
             "Authorization": paseto
@@ -612,7 +595,6 @@ function EditableImage({selectedRecord}:EditableProp){
       return e;
       }
   
-    //  return e?.fileList;
   };
   
   const readOnly = (
