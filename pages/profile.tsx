@@ -264,6 +264,7 @@ function EditableGender({selectedRecord}:EditableProp){
      }
 
      function handleChange(value:any){
+      console.log(value)
       setValue(value)
      }
 
@@ -315,11 +316,11 @@ function EditableGender({selectedRecord}:EditableProp){
                 onChange={handleChange}
                 // {...formik.getFieldProps('gender')}
                 defaultValue={value}
-              >
-                  {/* <Stack direction='row' spacing={6}> */}
-                      <Radio value='Male'>Male</Radio>
-                      <Radio value='Female'>Female</Radio>
-                  {/* </Stack> */}
+              > 
+                  <Stack mb={3} direction='row' spacing={6}>
+                      <Radio colorScheme='brand' name='gender' value='Male'>Male</Radio>
+                      <Radio colorScheme='brand' name='gender' value='Female'>Female</Radio>
+                  </Stack> 
               </RadioGroup>
               <Text as='button' onClick={toggleEdit} color={'text.300'} style={{marginRight:'.9rem'}} colorScheme={'brand'}>
                   Cancel
