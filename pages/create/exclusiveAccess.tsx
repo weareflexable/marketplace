@@ -232,7 +232,7 @@ function BasicForm({prev,next}:StepProps){
             validityStartDate: dayjs(values.validityStartDate).format(),
             validityEndDate: dayjs(values.validityEndDate).format(),
             orgServiceId: values.serviceType,
-            price: values.price * 100 // convert price to cents before sending to backend
+            price: String(values.price * 100) // convert price to cents before sending to backend
         }
         delete payload.organizationId
         delete payload.serviceType
