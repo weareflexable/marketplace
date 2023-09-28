@@ -86,7 +86,7 @@ const CheckoutForm = ({paymentIntentId}:CheckoutProps) => {
   };
 
   const mutatePayment = useMutation(async(payload:any)=>{
-    const data = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/cancel-payment`,payload,{
+    const data = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user/cancel-payment`,payload,{
       headers:{
         'Authorization': paseto
       }

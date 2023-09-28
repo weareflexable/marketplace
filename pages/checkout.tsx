@@ -53,7 +53,7 @@ export default function Checkout(){
  
     async function fetchSecret(payload:any) {
         try{
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/payment-intents/buy-now`,payload,{
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/payment-intents/buy-now`,payload,{
           headers:{
             'Authorization': paseto
           }
