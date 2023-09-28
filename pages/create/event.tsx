@@ -112,7 +112,7 @@ export default function Event(){
             arworkImageHash: values.logoImageHash, 
             duration: values.duration * 60,
             startTime: dayjs(values.startTime).format(),
-            price: values.price * 100 // convert to cents
+            price: String(values.price * 100) // convert to cents
         }
         delete payload.organizationId
         delete payload.location
