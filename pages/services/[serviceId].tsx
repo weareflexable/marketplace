@@ -91,7 +91,7 @@ export default function ServicesPage(){
     const serviceQuery = useQuery({
         queryKey:['single-service',serviceId], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=1&pageSize=12&key2=id&value2=${serviceId}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?status=1&pageNumber=1&pageSize=12&id=${serviceId}`) 
             return res.data
         },
         enabled: serviceId !== undefined,
@@ -124,7 +124,7 @@ export default function ServicesPage(){
     const serviceItemsQuery = useQuery({
         queryKey:['serviceItems',serviceId,selectedDate], 
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items-using-date?key=org_service_id&value=${serviceId}&pageNumber=1&pageSize=50&key2=date&value2=${selectedDate}`) 
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-items-using-date?orgServiceId=${serviceId}&pageNumber=1&pageSize=50&date=${selectedDate}`) 
             return res.data.data
         },
         enabled: shouldFetchServiceItems,
