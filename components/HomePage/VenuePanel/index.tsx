@@ -25,7 +25,7 @@ export default function VenuePanel(){
   const serviceTypesQuery = useQuery({
     queryKey:['seviceTypes']
   , queryFn:async()=>{
-    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?key=status&value=1&pageSize=10&pageNumber=1`)
+    const res =  await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/service-types?tatus=1&pageSize=10&pageNumber=1`)
     return res.data.data
   },
   onSuccess:(data)=>{
