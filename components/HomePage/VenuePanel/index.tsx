@@ -42,7 +42,7 @@ export default function VenuePanel(){
     ['services',serviceFilter], 
     //@ts-ignore
     async({pageParam=1})=>{
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?key=status&value=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&key2=service_type_id&value2=${serviceFilter}&itemStatus=active`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/services?status=1&pageNumber=${pageParam}&pageSize=${PAGE_SIZE}&serviceTypeId=${serviceFilter}&itemStatus=active`)
       return res.data
     },
     {
