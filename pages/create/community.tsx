@@ -156,11 +156,11 @@ function BasicForm({prev,next}:StepProps){
             return res.data.data
         },
         onSuccess:(data)=>{
-            const res = data[0] 
+            const res = data
             console.log('res',res)
             toast({
                 title: 'Successfully created community',
-                status: 'success',
+                status: 'success', 
                 duration: 6000,
                 isClosable: true,
                 position:'top-right'
