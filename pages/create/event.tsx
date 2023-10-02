@@ -110,7 +110,7 @@ export default function Event(){
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
             arworkImageHash: values.logoImageHash, 
-            duration: values.duration * 60,
+            duration: String(values.duration * 60),
             startTime: dayjs(values.startTime).format(),
             price: String(values.price * 100) // convert to cents
         }
@@ -198,7 +198,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Price</FormLabel>
                                         <InputGroup size={'lg'}>
                                         <InputLeftAddon color={'text.300'}  borderColor={'#2c2c2c'} bg={'#121212'}>$</InputLeftAddon>
-                                        <Input isDisabled={isEventFree} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{valueAsNumber:true,required:true})}/>
+                                        <Input isDisabled={isEventFree} textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('price',{required:true})}/>
                                         <Checkbox color={'text.300'} onChange={makeEventFree} colorScheme="brand" ml={'2rem'}>Free</Checkbox>
                                         </InputGroup> 
                                     </FormControl>
@@ -207,7 +207,7 @@ export default function Event(){
                                     <FormControl >
                                         <FormLabel color={'text.300'}>Available DATs</FormLabel>
                                         <InputGroup w={['70%','40%','40%']} size={'lg'}>
-                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('totalTickets',{valueAsNumber:true,required:true})}/>
+                                        <Input  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('totalTickets',{required:true})}/>
                                         </InputGroup> 
                                         <FormHelperText color={'text.200'}>
                                             This specifies the total number of DATs available for sale
@@ -276,7 +276,7 @@ export default function Event(){
                                 <FormControl w={['70%','30%','20%']}>
                                     <FormLabel color={'text.300'}>Duration</FormLabel>
                                     <InputGroup size={'lg'}>
-                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{valueAsNumber:true,required:true})}/>
+                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{required:true})}/>
                                     <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
                                     </InputGroup> 
                                 </FormControl>
