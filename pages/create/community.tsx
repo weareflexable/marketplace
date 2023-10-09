@@ -44,7 +44,7 @@ export default function Community(){
 
     const [createdCommunityId, setCreatedCommunityId] = useState('')
     
-    const [activeStep, setActiveStep] = useState(1);
+    const [activeStep, setActiveStep] = useState(0); 
 
     const handleNext = (data:any) => {
         setCreatedCommunityId(data.id)
@@ -393,7 +393,7 @@ function VenueForm({communityId}:{communityId:string}){
                  <FormLabel color={'text.300'}>Promotion</FormLabel>
                     <Textarea
                         rows={2}
-                        textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'}
+                        focusBorderColor="brand.200"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} 
                         placeholder="Buy 3 get 1 free"
                          // important to include key with field's id
                         {...register(`venues.${index}.promotion`,{required:true})} 

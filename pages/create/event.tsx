@@ -43,6 +43,9 @@ type Event = {
 
 export default function Event(){
     const methods = useForm<Event>({
+      defaultValues:{
+        timezone: 'EST'
+      }
     })
 
     const [isEventFree, setIsEventFree] = useState(false)
@@ -218,7 +221,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Start Time</FormLabel>
                                         <InputGroup size={'lg'}>
                                         <Input type="datetime-local" borderTopRightRadius={0} borderBottomRightRadius={0}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
-                                        <Select width={'50%'} color={'text.200'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone')}>
+                                        <Select width={'70%'} color={'text.200'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone',{required:true})}>
                                             {
                                                 timezones.map((timezone:string)=>(
                                                     <option key={timezone} value={timezone}>{timezone}</option>
@@ -276,7 +279,7 @@ export default function Event(){
                                 <FormControl w={['70%','30%','20%']}>
                                     <FormLabel color={'text.300'}>Duration</FormLabel>
                                     <InputGroup size={'lg'}>
-                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="2" {...methods.register('duration',{required:true})}/>
+                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
                                     <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
                                     </InputGroup> 
                                 </FormControl>
