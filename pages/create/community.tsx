@@ -44,7 +44,7 @@ export default function Community(){
 
     const [createdCommunityId, setCreatedCommunityId] = useState('')
     
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(0); 
 
     const handleNext = (data:any) => {
         setCreatedCommunityId(data.id)
@@ -222,7 +222,7 @@ function BasicForm({prev,next}:StepProps){
                 </Flex>
                : userOrgsQuery?.data?.length < 1
                ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
-                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.staging.flexabledats.com`}>flexable portal</Link></Text> 
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Flexable Portal</Link></Text> 
                 </Flex>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
@@ -300,9 +300,8 @@ function BasicForm({prev,next}:StepProps){
 
 function VenueForm({communityId}:{communityId:string}){
 
-    console.log(communityId)
 
-    const { control, register, handleSubmit, setValue } = useForm();
+    const { control, register, handleSubmit, formState, setValue, getValues } = useForm();
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
       control, // control props comes from useForm (optional: if you are using FormContext)
       name: "venues", // unique name for your Field Array
@@ -366,6 +365,8 @@ function VenueForm({communityId}:{communityId:string}){
 
     }
 
+    const addedVenues = getValues()
+
     const newVenue = {
         name: '',
         promotion: '',
@@ -387,15 +388,15 @@ function VenueForm({communityId}:{communityId:string}){
                     <FormLabel color={'text.300'}>Name</FormLabel>
                     <Input textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...register(`venues.${index}.name`,{required:true})} />
                 </FormControl>
-
+ 
                 <FormControl>
                  <FormLabel color={'text.300'}>Promotion</FormLabel>
                     <Textarea
                         rows={2}
-                        textStyle={'secondary'} color='text.300' size='lg' borderColor={'#2c2c2c'}  variant={'outline'}
+                        focusBorderColor="brand.200"  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} 
                         placeholder="Buy 3 get 1 free"
                          // important to include key with field's id
-                        {...register(`venues.${index}.promotion`)} 
+                        {...register(`venues.${index}.promotion`,{required:true})} 
                         />
                 </FormControl> 
 
@@ -444,13 +445,13 @@ function VenueForm({communityId}:{communityId:string}){
                 mt={8}>Add Venue
                 </Button>
                 
-                <Box my={'2rem'}>
-                    <Button isLoading={venuesMutation.isLoading} colorScheme="brand" type="submit">Create Venues</Button>
+                <Box my={'2rem'}> 
+                   { addedVenues?.venues?.length < 1? null:  <Button isDisabled={!formState.isValid } isLoading={venuesMutation.isLoading} colorScheme="brand" type="submit">Create Venues</Button>}
                 </Box>
             </Box>
         </form>
-    )
-}
+    ) 
+} 
 
 
 

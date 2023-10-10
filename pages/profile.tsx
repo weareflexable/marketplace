@@ -1,4 +1,4 @@
-import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, Box, Text, FormControl, FormLabel, Input, FormHelperText, RadioGroup, Stack, Radio, IconButton, useClipboard, Tooltip} from '@chakra-ui/react'
+import {Grid, GridItem, Select, Image, Button, Avatar, Flex, FormErrorMessage, Box, Text, FormControl, FormLabel, Input, FormHelperText, RadioGroup, Stack, Radio, IconButton, useClipboard, Tooltip, Hide, Show} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import UnAuthenticated from '../components/shared/UnAuthenticated/UnAuthenticated'
 import { useAuthContext } from '../context/AuthContext'
@@ -61,7 +61,7 @@ export default function Profile(){
                 px="1em"
                 minH="inherit"
                 h="100%"
-                width={"100%"} 
+                // width={"100%"} 
                 templateColumns={["1fr", "1fr", "1fr", "repeat(5, 1fr)"]}
                 gap={6}
                 >
@@ -75,7 +75,7 @@ export default function Profile(){
                                 mt="10"
                                 mb="6"
                             >
-                            My Profile
+                             My Profile
                             </Text>  
                         </Box> 
 
@@ -85,14 +85,20 @@ export default function Profile(){
                         <EditableLastName selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/> 
                         <EditableGender selectedRecord={userQuery && userQuery.data  && userQuery.data[0]}/> 
                         {userQuery.isLoading?<Text>Loading email</Text>:<EditableEmail isReadOnly selectedRecord={userQuery && userQuery.data && userQuery.data[0]}/>}
+
                         <Flex my={6} width={'100%'}  direction={'column'}>  
-                        <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Wallet Address</Text>
-                        <Flex  style={{width:'100%',  marginTop:'.6rem', background:'#333333', padding:'1rem', borderRadius:'4px', justifyContent:'space-between', alignItems:'center'}}>
-                          <Text width={'80%'}  textStyle={'secondary'} color='text.200'>{userQuery?.data?.[0].walletaddress}</Text>
-                          <Tooltip  isOpen={hasCopied} label='Copied!'>
-                            <IconButton onClick={copyAddress} size={'sm'} colorScheme='brand' variant={'ghost'} icon={<CopyIcon />} aria-label={'copy address button'}/>
-                          </Tooltip> 
-                        </Flex> 
+                          <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Wallet Address</Text>
+                          <Flex w={'100%'} position={'relative'} width={'90%'} style={{  marginTop:'.6rem', background:'#333333', padding:'1rem', justifyContent:'space-between', borderRadius:'4px', alignItems:'center'}}>
+                             <Text textStyle={'secondary'} color='text.200'>{`${userQuery?.data?.[0].walletaddress.substring(0,9)} ... ${userQuery?.data?.[0].walletaddress.slice(-9)}`}</Text> 
+                            {/* <Show above='md'> 
+                             <Text textStyle={'secondary'} color='text.200'>{`${userQuery?.data?.[0].walletaddress.substring(0,5)} ... ${userQuery?.data?.[0].walletaddress.slice(-5)}`}</Text> 
+                            </Show>  */}
+                            {/* <Box >  */}
+                              <Tooltip  isOpen={hasCopied} label='Copied!'> 
+                                <IconButton onClick={copyAddress} size={'sm'} colorScheme='brand' variant={'ghost'} icon={<CopyIcon />} aria-label={'copy address button'}/>
+                              </Tooltip>  
+                            {/* </Box> */} 
+                          </Flex>    
                         </Flex> 
       
                             

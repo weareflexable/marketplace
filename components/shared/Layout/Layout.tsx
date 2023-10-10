@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import {Flex,Box,SimpleGrid} from '@chakra-ui/react'
 import Header from '../Header/Header'
-import { useRouter } from 'next/router'
 
 
 interface LayoutProps{
