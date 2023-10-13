@@ -222,7 +222,7 @@ function BasicForm({prev,next}:StepProps){
                 </Flex>
                : userOrgsQuery?.data?.length < 1
                ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
-                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Flexable Portal</Link></Text> 
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.flexabledats.com`}>Flexable Portal</Link></Text> 
                 </Flex>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
