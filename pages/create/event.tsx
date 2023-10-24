@@ -117,7 +117,7 @@ export default function Event(){
             ...values,
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
-            address: isEventVirtual ? '': values.address,
+            address: isEventVirtual ? {}: values.address,
             locationName: isEventVirtual? '': values.locationName,
             arworkImageHash: values.logoImageHash, 
             duration: String(values.duration * 60),
@@ -273,9 +273,9 @@ export default function Event(){
                                             <Radio {...methods.register('eventLocation')} value='virtual'>Virtual</Radio> 
                                         </HStack>
                                     </RadioGroup>
-                                    <FormHelperText color={'text.200'}>
+                                    {/* <FormHelperText color={'text.200'}>
                                         Determine whether or not your event gets listed on marketplace or shared privately from the portal
-                                    </FormHelperText>
+                                    </FormHelperText> */}
                                 </FormControl>
 
                                 {/* event link form=== */}
