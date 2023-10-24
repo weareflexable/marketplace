@@ -51,7 +51,7 @@ export default function EventPage(){
     // Confirming object is not undefined before accessing fields
     const event = eventQuery && eventQuery.data && eventQuery.data.data[0] 
     
-    const isEventVirtual = event?.isVirtual === 'true'? true : false
+    const isEventVirtual = event?.isVirtual
 
     
     const {

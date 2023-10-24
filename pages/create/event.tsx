@@ -230,7 +230,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Start Time</FormLabel>
                                         <InputGroup size={'lg'}>
                                         <Input type="datetime-local" borderTopRightRadius={0} borderBottomRightRadius={0}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
-                                        <Select width={'70%'} color={'text.200'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone',{required:true})}>
+                                        <Select width={'70%'} color={'text.300'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone',{required:true})}>
                                             {
                                                 timezones.map((timezone:string)=>(
                                                     <option key={timezone} value={timezone}>{timezone}</option>
@@ -265,7 +265,7 @@ export default function Event(){
                             <Box >
                                  <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Location Info</Heading>
 
-                                 <FormControl> 
+                                 <FormControl ml={'.4rem'} mb={'1rem'}> 
                                     {/* <FormLabel color={'text.300'}>Privacy</FormLabel> */}
                                     <RadioGroup defaultValue="physical"  size={'lg'} colorScheme="brand">
                                         <HStack mb={'.5rem'} color={'text.300'} spacing={6}> 
@@ -273,9 +273,9 @@ export default function Event(){
                                             <Radio {...methods.register('eventLocation')} value='virtual'>Virtual</Radio> 
                                         </HStack>
                                     </RadioGroup>
-                                    {/* <FormHelperText color={'text.200'}>
-                                        Determine whether or not your event gets listed on marketplace or shared privately from the portal
-                                    </FormHelperText> */}
+                                    <FormHelperText color={'text.200'}>
+                                        Decide if your event is physical or virtual
+                                    </FormHelperText>
                                 </FormControl>
 
                                 {/* event link form=== */}
