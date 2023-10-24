@@ -31,7 +31,7 @@ export default function EventTicket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
     const [isGeneratingPass, setIsGeneratingPass] = useState(false)
-    const {ticketSecret,  quantity, ticketStatus, targetUserId,  eventBookingId,   eventDetails, transactionHash,  id} = ctx_currentDat;
+    const {ticketSecret,  quantity, ticketStatus, targetUserId, isVirtual, eventBookingId,   eventDetails, transactionHash,  id} = ctx_currentDat;
 
     
     const isRedeemed = ticketStatus === 'redeemed'
@@ -215,17 +215,29 @@ export default function EventTicket(){
                                 <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs().isAfter(dayjs(eventDetails.startTime).add(eventDetails.duration/60,'h').tz("UTC").format('MMM DD, YYYY h A'))}</Text></Flex> 
                             </HStack>
 
+                           
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Location</Text></Flex> 
-                                <Flex flex={7}>
-                                    <Text color='brand.200' textStyle={'secondary'}> 
+                                 <Flex flex={7}>
+                                {/* {
+                                    isVirtual 
+                                    ? <Text color='brand.200' textStyle={'secondary'}> 
+                                            <a href={eventDetails?.eventDetails}>{eventDetails?.eventLink}</a> 
+                                        </Text>
+                                   : 
+                                   <Text color='brand.200' textStyle={'secondary'}> 
+                                        <a href={`https://www.google.com/maps/search/?api=1&query=${eventDetails.address.latitude},${eventDetails.address.longitude}`}>{eventDetails.address.street}</a> 
+                                    </Text>
+
+                                } */}
+                                   <Text color='brand.200' textStyle={'secondary'}> 
                                         <a href={`https://www.google.com/maps/search/?api=1&query=${eventDetails.address.latitude},${eventDetails.address.longitude}`}>{eventDetails.address.street}</a> 
                                     </Text>
                                 </Flex>
                             </HStack> 
 
                             <HStack w='100%' justifyContent={'space-between'}   alignItems='flex-start' mb='1'>
-                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Phone Number</Text></Flex>
+                                <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Contact Number</Text></Flex>
                                 <Flex flex={7}><Text color='brand.200' textStyle={'secondary'}> <a href={`tel:${eventDetails.contactNumber}`}>{`+1 (${eventDetails.contactNumber.substring(2,5)}) ${eventDetails.contactNumber.substring(5,8)}-${eventDetails.contactNumber.substring(8)}`}</a></Text></Flex>
                             </HStack>
 
