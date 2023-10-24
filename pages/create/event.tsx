@@ -30,6 +30,8 @@ type Event = {
     startTime: string,
     type: string,
     duration: number,
+    eventLocation: string,
+    eventLink?:string,
     locationName: string,
     contactNumber: string,
     logoImageHash?: string | null | any,
@@ -106,12 +108,17 @@ export default function Event(){
   
 
     const watchOrgId = methods.watch('organizationId')
+    const eventLocationValue = methods.watch('eventLocation')
+
+    const isEventVirtual = eventLocationValue === 'virtual'? true: false
 
     function submitForm(values: any){
         const payload = {
             ...values,
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
+            address: isEventVirtual ? '': values.address,
+            locationName: isEventVirtual? '': values.locationName,
             arworkImageHash: values.logoImageHash, 
             duration: String(values.duration * 60),
             startTime: dayjs(values.startTime).format(),
@@ -119,6 +126,7 @@ export default function Event(){
         }
         delete payload.organizationId
         delete payload.location
+        delete payload.eventLocation
 
         console.log(payload)
         eventMutation.mutate(payload)
@@ -191,6 +199,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Title</FormLabel>
                                         <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('name',{required:true})}/>
                                     </FormControl>
+                                   
 
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Description</FormLabel>
@@ -255,13 +264,49 @@ export default function Event(){
 
                             <Box >
                                  <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Location Info</Heading>
-                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
-                                <FormControl>
-                                    <FormLabel color={'text.300'}>Venue Name</FormLabel>
-                                    <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName',{required:true})}/>
+
+                                 <FormControl> 
+                                    {/* <FormLabel color={'text.300'}>Privacy</FormLabel> */}
+                                    <RadioGroup defaultValue="physical"  size={'lg'} colorScheme="brand">
+                                        <HStack mb={'.5rem'} color={'text.300'} spacing={6}> 
+                                            <Radio {...methods.register('eventLocation')} value='physical'>Physical</Radio>
+                                            <Radio {...methods.register('eventLocation')} value='virtual'>Virtual</Radio> 
+                                        </HStack>
+                                    </RadioGroup>
+                                    <FormHelperText color={'text.200'}>
+                                        Determine whether or not your event gets listed on marketplace or shared privately from the portal
+                                    </FormHelperText>
                                 </FormControl>
 
-                                <Address/>
+                                {/* event link form=== */}
+                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
+                                {
+                                    isEventVirtual
+                                    ? <FormControl>
+                                        <FormLabel color={'text.300'}>Event Link</FormLabel>
+                                        <Input type='url' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Your event link here" {...methods.register('eventLink',{required:true})}/>
+                                    </FormControl>
+                                    :
+                                    <>
+                                    <FormControl>
+                                        <FormLabel color={'text.300'}>Venue Name</FormLabel>
+                                        <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName',{required:true})}/>
+                                    </FormControl>
+
+                                    <Address/>
+                                    </>
+                                }
+
+                               
+                                </Stack>
+                            </Box>
+
+                            
+                            {/* contact info */}
+
+                            <Box >
+                                 <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Contact Info</Heading>
+                                 <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
 
                                 <FormControl>
                                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
@@ -276,14 +321,14 @@ export default function Event(){
                                     </InputGroup> */}
                                 </FormControl>
 
-                                <FormControl w={['70%','30%','20%']}>
-                                    <FormLabel color={'text.300'}>Duration</FormLabel>
-                                    <InputGroup size={'lg'}>
-                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
-                                    <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
-                                    </InputGroup> 
-                                </FormControl>
-                                </Stack>
+                                    <FormControl w={['70%','30%','20%']}>
+                                        <FormLabel color={'text.300'}>Duration</FormLabel>
+                                        <InputGroup size={'lg'}>
+                                        <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
+                                        <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
+                                        </InputGroup> 
+                                    </FormControl>
+                                 </Stack>
                             </Box>
 
                             <Box >
