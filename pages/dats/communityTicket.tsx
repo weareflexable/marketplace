@@ -32,7 +32,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const { quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const { quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, ticketDetails, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -291,7 +291,7 @@ async function generateApplePass(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(expirationDate).format('MMM DD, YYYY')}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(ticketDetails?.[0]?.expirationDate).format('MMM DD, YYYY')}</Text></Flex>
                             </HStack>
 
 
