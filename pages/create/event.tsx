@@ -120,6 +120,7 @@ export default function Event(){
             address: isEventVirtual ? {}: values.address,
             locationName: isEventVirtual? '': values.locationName,
             arworkImageHash: values.logoImageHash, 
+            coverImageHash: values.logoImageHash,
             duration: String(values.duration * 60),
             startTime: dayjs(values.startTime).format(),
             price: String(values.price * 100) // convert to cents
