@@ -2,6 +2,7 @@ export type Event = {
     id: string,
     name: string,
     price: number,
+    isVirtual?:boolean,
     coverImageHash: string,
     date: string,
     startTime: string,

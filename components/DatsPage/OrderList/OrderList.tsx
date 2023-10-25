@@ -116,17 +116,25 @@ function EventListItem({order, gotoEventPage}:EventProps){
     <Flex mt={3} alignItems={'center'}>
       
       <Flex direction={'column'}>
-        <Text color="whiteAlpha.900" as="h4" textStyle="body">
-          {order.eventDetails.name} 
-        </Text>
-        <HStack mt="1" spacing="1">
+        <HStack>
+          <Text color="whiteAlpha.900" as="h4" textStyle="body">
+            {order.eventDetails.name} 
+          </Text>
+         { order?.eventDetails?.isVirtual 
+         ? <Tag size={'sm'} width={'fit-content'} borderRadius='3xl' variant={'subtle'} textTransform={'uppercase'} textStyle={'caption'}  ml="1">
+            Virtual
+          </Tag>
+          :null
+          }
+        </HStack>
+        {/* <HStack mt="1" spacing="1">
           <Text textStyle={'secondary'} color="text.100">
             By
           </Text>
           <Text textStyle={'secondary'} color="text.200">
             {order.eventDetails.name}
           </Text>
-        </HStack>
+        </HStack> */}
       </Flex>
     </Flex>
 
