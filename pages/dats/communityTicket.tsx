@@ -242,7 +242,7 @@ async function generateApplePass(){
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
                                     <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
                                  </Flex>
-                                :dayjs().isAfter(dayjs(expirationDate))
+                                :dayjs().isAfter(dayjs(ticketDetails?.[0]?.expirationDate))
                                 ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
                                     <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
                                 </Flex>
