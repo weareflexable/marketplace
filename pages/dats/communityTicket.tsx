@@ -32,7 +32,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const { quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -181,6 +181,8 @@ async function generateApplePass(){
 
    }
 
+  
+
    const aggregateDisplay = redemptionAggregateQuery.isLoading || redemptionAggregateQuery.isRefetching
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
    : redemptionAggregateQuery.isError
@@ -212,7 +214,6 @@ async function generateApplePass(){
                     </HStack>
                 </Flex> 
                 }
-
             {isGeneratingCode
             ?<TicketSkeleton/> 
             :
@@ -241,6 +242,10 @@ async function generateApplePass(){
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
                                     <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
                                  </Flex>
+                                :dayjs().isAfter(dayjs(expirationDate))
+                                ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
+                                    <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
+                                </Flex>
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3}  justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
