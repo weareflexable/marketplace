@@ -47,7 +47,7 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
             <Flex mb={'2rem'} alignItems={['flex-start','flex-start','center','center']} direction={['column','column','row','row']}  justifyContent={'space-between'}  mx='4' > 
                 <Box mt={9}> 
                     <Flex width={'100%'}>
-                        <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${price/100}</Text>
+                        <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${(price/100).toLocaleString()}</Text>
                     </Flex>
                     <Text color={'white'} mt={3} textStyle={'h1'} as='h2' size='lg'>{name}</Text>
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
