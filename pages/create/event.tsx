@@ -55,6 +55,7 @@ export default function Event(){
     const {paseto} = useAuthContext()
     const router = useRouter()
     const toast = useToast()
+    const [isHashingImage, setIsHashingImage] = useState(false)
 
     const roleName = useRoleName()
 
@@ -112,26 +113,33 @@ export default function Event(){
 
     const isEventVirtual = eventLocationValue === 'virtual'? true: false
 
-    function submitForm(values: any){
+    async function submitForm(values: any){
+
+        setIsHashingImage(true)
+        const imageHash = await asyncStore(values.logoImageHash[0])
+        setIsHashingImage(false)
+
+
         const payload = {
             ...values,
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
-            address: isEventVirtual ? {}: values.address,
+            address: isEventVirtual ? {}: values.address, 
             locationName: isEventVirtual? '': values.locationName,
-            arworkImageHash: values.logoImageHash, 
-            coverImageHash: values.logoImageHash,
+            arworkImageHash: imageHash,  
+            coverImageHash: imageHash,
             duration: String(values.duration * 60),
             startTime: dayjs(values.startTime).format(),
             price: String(values.price * 100) // convert to cents
         }
         delete payload.organizationId
-        delete payload.location
+        delete payload.location 
         delete payload.eventLocation
+        delete payload.logoImageHash
 
         console.log(payload)
-        eventMutation.mutate(payload)
-        // console.log(payload)
+        // eventMutation.mutate(payload)
+
     } 
 
     function handleCoverImage(imageHash:string){
@@ -334,7 +342,7 @@ export default function Event(){
 
                             <Box >
                                 <Heading color={'text.300'} mb={'2rem'} mt={'2rem'}  size={'md'}>Upload Cover Image</Heading>
-                                <DirectImageUploader name="coverImageHash" onSelectLogoImage={handleCoverImage}/>
+                                <DirectImageUploader name="logoImageHash" onSelectLogoImage={handleCoverImage}/>
                             </Box>
 
                             {/* <Box mb={'5rem'} >
