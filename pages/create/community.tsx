@@ -348,7 +348,7 @@ function VenueForm({communityId}:{communityId:string}){
         const transformedVenues = values.venues.map((venue:any)=>{
             const addressObj = {
                 ...venue,
-                marketValue: venue.marketValue * 100, // convert to cents
+                marketValue: String(venue.marketValue * 100), // convert to cents
                 contactNumber: `+1${venue.contactNumber}`,
                 address: {...venue.address}
             }
