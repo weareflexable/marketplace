@@ -138,7 +138,7 @@ export default function Event(){
         delete payload.logoImageHash
 
         console.log(payload)
-        // eventMutation.mutate(payload)
+        eventMutation.mutate(payload)
 
     } 
 
@@ -351,7 +351,7 @@ export default function Event(){
                             </Box> */} 
                             <ButtonGroup mb={'3rem'} mt={'2rem'} spacing={2}>
                                 <Button size={'lg'} disabled={eventMutation.isLoading} variant={'outline'} onClick={()=>router.back()}>Cancel</Button>
-                                <Button size={'lg'} isLoading={eventMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
+                                <Button size={'lg'} isLoading={eventMutation.isLoading || isHashingImage} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
                             </ButtonGroup>
                             </>
                             :null}
