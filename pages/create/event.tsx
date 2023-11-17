@@ -357,7 +357,7 @@ export default function Event(){
                             :null}
                         </Stack>
                     </form>
-                </GridItem>
+                </GridItem> 
             </FormProvider>
         </Grid>
      </Layout>

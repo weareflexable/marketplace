@@ -109,7 +109,7 @@ export default function EventTicket(){
         return res.data.data
     },
     
-    enabled: eventBookingId !== undefined,
+    enabled: eventBookingId !== undefined && roleName !== '',
 })
 
 

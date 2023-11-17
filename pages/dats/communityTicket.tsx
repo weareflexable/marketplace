@@ -76,6 +76,7 @@ export default function Ticket(){
   }, [id, quantity, selectedVenue, serviceItemsDetails, targetUserID, validityEnd]) 
 
   
+  console.log('roleName',roleName)
 
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
@@ -88,7 +89,7 @@ export default function Ticket(){
         return res.data.data
     },
     
-    enabled: id !== undefined,
+    enabled: id !== undefined && roleName !== '',
 })
 
 const redemptionAggregateQuery = useQuery({
@@ -102,7 +103,7 @@ const redemptionAggregateQuery = useQuery({
         return res.data.data
     },
     cacheTime:0,
-    enabled: id !== undefined,
+    enabled: id !== undefined && roleName !== '',
 })
 
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
