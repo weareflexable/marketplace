@@ -81,7 +81,7 @@ export default function Ticket(){
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${communityBookingId}&ticketType=community&pageSize=50&pageNumber=1`,{
             headers:{
                 "Authorization": paseto 
             }
@@ -89,7 +89,7 @@ export default function Ticket(){
         return res.data.data
     },
     
-    enabled: id !== undefined && roleName !== '',
+    enabled: communityBookingId !== undefined && roleName !== '',
 })
 
 const redemptionAggregateQuery = useQuery({
@@ -103,7 +103,7 @@ const redemptionAggregateQuery = useQuery({
         return res.data.data
     },
     cacheTime:0,
-    enabled: id !== undefined && roleName !== '',
+    enabled: communityBookingId !== undefined && roleName !== '',
 })
 
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
@@ -196,6 +196,7 @@ async function generateApplePass(){
 //    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
    const venueIsRedeemed = redemptionAggregate && quantity - redemptionAggregate.redeemCount === 0 // determine agg using ticketsLeftToRedeem value
      
+   console.log('bookingId',communityBookingId)
 
     return(
         <>
