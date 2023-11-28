@@ -30,6 +30,8 @@ type Event = {
     startTime: string,
     type: string,
     duration: number,
+    eventLocation: string,
+    eventLink?:string,
     locationName: string,
     contactNumber: string,
     logoImageHash?: string | null | any,
@@ -53,6 +55,7 @@ export default function Event(){
     const {paseto} = useAuthContext()
     const router = useRouter()
     const toast = useToast()
+    const [isHashingImage, setIsHashingImage] = useState(false)
 
     const roleName = useRoleName()
 
@@ -106,23 +109,37 @@ export default function Event(){
   
 
     const watchOrgId = methods.watch('organizationId')
+    const eventLocationValue = methods.watch('eventLocation')
 
-    function submitForm(values: any){
+    const isEventVirtual = eventLocationValue === 'virtual'? true: false
+
+    async function submitForm(values: any){
+
+        setIsHashingImage(true)
+        const imageHash = await asyncStore(values.logoImageHash[0])
+        setIsHashingImage(false)
+
+
         const payload = {
             ...values,
             contactNumber: `+1${values.contactNumber}`,
             orgId: watchOrgId,
-            arworkImageHash: values.logoImageHash, 
+            address: isEventVirtual ? {}: values.address, 
+            locationName: isEventVirtual? '': values.locationName,
+            arworkImageHash: imageHash,  
+            coverImageHash: imageHash,
             duration: String(values.duration * 60),
             startTime: dayjs(values.startTime).format(),
             price: String(values.price * 100) // convert to cents
         }
         delete payload.organizationId
-        delete payload.location
+        delete payload.location 
+        delete payload.eventLocation
+        delete payload.logoImageHash
 
         console.log(payload)
         eventMutation.mutate(payload)
-        // console.log(payload)
+
     } 
 
     function handleCoverImage(imageHash:string){
@@ -191,6 +208,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Title</FormLabel>
                                         <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'}  {...methods.register('name',{required:true})}/>
                                     </FormControl>
+                                   
 
                                     <FormControl>
                                         <FormLabel color={'text.300'}>Description</FormLabel>
@@ -221,7 +239,7 @@ export default function Event(){
                                         <FormLabel color={'text.300'}>Start Time</FormLabel>
                                         <InputGroup size={'lg'}>
                                         <Input type="datetime-local" borderTopRightRadius={0} borderBottomRightRadius={0}  textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="332" {...methods.register('startTime',{required:true})}/>
-                                        <Select width={'70%'} color={'text.200'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone',{required:true})}>
+                                        <Select width={'70%'} color={'text.300'} borderTopLeftRadius={0} borderBottomLeftRadius={0} {...methods.register('timezone',{required:true})}>
                                             {
                                                 timezones.map((timezone:string)=>(
                                                     <option key={timezone} value={timezone}>{timezone}</option>
@@ -255,13 +273,49 @@ export default function Event(){
 
                             <Box >
                                  <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Location Info</Heading>
-                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
-                                <FormControl>
-                                    <FormLabel color={'text.300'}>Venue Name</FormLabel>
-                                    <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName',{required:true})}/>
+
+                                 <FormControl ml={'.4rem'} mb={'1rem'}> 
+                                    {/* <FormLabel color={'text.300'}>Privacy</FormLabel> */}
+                                    <RadioGroup defaultValue="physical"  size={'lg'} colorScheme="brand">
+                                        <HStack mb={'.5rem'} color={'text.300'} spacing={6}> 
+                                            <Radio {...methods.register('eventLocation')} value='physical'>Physical</Radio>
+                                            <Radio {...methods.register('eventLocation')} value='virtual'>Virtual</Radio> 
+                                        </HStack>
+                                    </RadioGroup>
+                                    <FormHelperText color={'text.200'}>
+                                        Decide if your event is physical or virtual
+                                    </FormHelperText>
                                 </FormControl>
 
-                                <Address/>
+                                {/* event link form=== */}
+                                <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
+                                {
+                                    isEventVirtual
+                                    ? <FormControl>
+                                        <FormLabel color={'text.300'}>Event Link</FormLabel>
+                                        <Input type='url' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="Your event link here" {...methods.register('eventLink',{required:true})}/>
+                                    </FormControl>
+                                    :
+                                    <>
+                                    <FormControl>
+                                        <FormLabel color={'text.300'}>Venue Name</FormLabel>
+                                        <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('locationName',{required:true})}/>
+                                    </FormControl>
+
+                                    <Address/>
+                                    </>
+                                }
+
+                               
+                                </Stack>
+                            </Box>
+
+                            
+                            {/* contact info */}
+
+                            <Box >
+                                 <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Contact Info</Heading>
+                                 <Stack spacing={5} p={'1rem'} border={'1px solid #333333'} borderRadius={5}>
 
                                 <FormControl>
                                     <FormLabel color={'text.300'}>Contact Number</FormLabel>
@@ -276,19 +330,19 @@ export default function Event(){
                                     </InputGroup> */}
                                 </FormControl>
 
-                                <FormControl w={['70%','30%','20%']}>
-                                    <FormLabel color={'text.300'}>Duration</FormLabel>
-                                    <InputGroup size={'lg'}>
-                                    <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
-                                    <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
-                                    </InputGroup> 
-                                </FormControl>
-                                </Stack>
+                                    <FormControl w={['70%','30%','20%']}>
+                                        <FormLabel color={'text.300'}>Duration</FormLabel>
+                                        <InputGroup size={'lg'}>
+                                        <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
+                                        <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
+                                        </InputGroup> 
+                                    </FormControl>
+                                 </Stack>
                             </Box>
 
                             <Box >
                                 <Heading color={'text.300'} mb={'2rem'} mt={'2rem'}  size={'md'}>Upload Cover Image</Heading>
-                                <DirectImageUploader name="coverImageHash" onSelectLogoImage={handleCoverImage}/>
+                                <DirectImageUploader name="logoImageHash" onSelectLogoImage={handleCoverImage}/>
                             </Box>
 
                             {/* <Box mb={'5rem'} >
@@ -297,13 +351,13 @@ export default function Event(){
                             </Box> */} 
                             <ButtonGroup mb={'3rem'} mt={'2rem'} spacing={2}>
                                 <Button size={'lg'} disabled={eventMutation.isLoading} variant={'outline'} onClick={()=>router.back()}>Cancel</Button>
-                                <Button size={'lg'} isLoading={eventMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
+                                <Button size={'lg'} isLoading={eventMutation.isLoading || isHashingImage} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
                             </ButtonGroup>
                             </>
                             :null}
                         </Stack>
                     </form>
-                </GridItem>
+                </GridItem> 
             </FormProvider>
         </Grid>
      </Layout>

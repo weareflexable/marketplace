@@ -32,7 +32,7 @@ export default function Ticket(){
     const [qrCodePayload, setQrCodePayload] = useState({})
     const [isGeneratingPass, setIsGenereatingPass] = useState(false)
     const [isGeneratingCode, setIsGeneratingCode] = useState(true)
-    const {  quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
+    const { quantity,  targetUserID, createdAt, expirationDate, ticketStatus, communityId, ticketDetails, communityDetails, communityBookingId, validityEnd,  serviceDetails, transactionHash, serviceItemsDetails, id} = ctx_currentDat;
     const [selectedVenue, setSelectedVenue] = useState({name:'', id: '',ticketSecret:''})
 
     const serviceTypeName = serviceDetails && serviceDetails[0]?.serviceType[0]?.name;
@@ -76,11 +76,12 @@ export default function Ticket(){
   }, [id, quantity, selectedVenue, serviceItemsDetails, targetUserID, validityEnd]) 
 
   
+  console.log('roleName',roleName)
 
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
     queryFn:async()=>{
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${id}&ticketType=community&pageSize=50&pageNumber=1`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/tickets/redeem-history?bookingId=${communityBookingId}&ticketType=community&pageSize=50&pageNumber=1`,{
             headers:{
                 "Authorization": paseto 
             }
@@ -88,7 +89,7 @@ export default function Ticket(){
         return res.data.data
     },
     
-    enabled: id !== undefined,
+    enabled: communityBookingId !== undefined && roleName !== '',
 })
 
 const redemptionAggregateQuery = useQuery({
@@ -102,7 +103,7 @@ const redemptionAggregateQuery = useQuery({
         return res.data.data
     },
     cacheTime:0,
-    enabled: id !== undefined,
+    enabled: communityBookingId !== undefined && roleName !== '',
 })
 
 const redemptionAggregate = redemptionAggregateQuery && redemptionAggregateQuery.data
@@ -181,6 +182,8 @@ async function generateApplePass(){
 
    }
 
+  
+
    const aggregateDisplay = redemptionAggregateQuery.isLoading || redemptionAggregateQuery.isRefetching
    ? <Text ml={4} textStyle={'body'} mb={5} color={'text.200'}>Fetching aggregate...</Text> 
    : redemptionAggregateQuery.isError
@@ -193,6 +196,7 @@ async function generateApplePass(){
 //    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
    const venueIsRedeemed = redemptionAggregate && quantity - redemptionAggregate.redeemCount === 0 // determine agg using ticketsLeftToRedeem value
      
+   console.log('bookingId',communityBookingId)
 
     return(
         <>
@@ -212,7 +216,6 @@ async function generateApplePass(){
                     </HStack>
                 </Flex> 
                 }
-
             {isGeneratingCode
             ?<TicketSkeleton/> 
             :
@@ -241,6 +244,10 @@ async function generateApplePass(){
                                 ?<Flex justifyContent={'center'} mt={3} border={'1px solid #333333'} height={'140px'}  direction='column'  alignItems='center' w='100%'>
                                     <Text textStyle={'body'} color={'text.200'}>Loading...</Text> 
                                  </Flex>
+                                :dayjs().isAfter(dayjs(ticketDetails?.[0]?.expirationDate))
+                                ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
+                                    <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
+                                </Flex>
                                 :<Flex width={'100%'} direction='column'>
                                     <HStack w='100%' mt={3}  justifyContent={'center'} mb='2'>
                                         <Text color='text.200' textStyle={'body'}>Redemption Code:</Text>
@@ -286,7 +293,7 @@ async function generateApplePass(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(expirationDate).format('MMM DD, YYYY')}</Text></Flex>
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(ticketDetails?.[0]?.expirationDate).format('MMM DD, YYYY')}</Text></Flex>
                             </HStack>
 
 

@@ -111,7 +111,7 @@ export default function Ticket(){
         return res.data.data
     },
     
-    enabled: serviceBookingId !== undefined,
+    enabled: serviceBookingId !== undefined && roleName !== '',
 })
 
 
