@@ -3,6 +3,7 @@ import { Flex, Box, Heading, Avatar, Link, Image, HStack,Text, Button, IconButto
 import { handleShareFacebook, handleShareLinkedIn, handleShareTwitter, handleShareWhatsapp } from '../../../utils/socialShare';
 import { TwitterIcon, LinkedinIcon, WhatsappIcon, FacebookIcon } from '../../../customIcons';
 import { CopyIcon } from '@chakra-ui/icons';
+import { useRouter } from 'next/router';
 // import Image from 'next/image'
 
 
@@ -16,18 +17,31 @@ interface Props{
 }
 export default function HeroSection({logoImageHash, coverImageHash, description, artworkHash, price, name}:Props){
 
+    const router = useRouter()
+
     const coverImage = coverImageHash && coverImageHash 
+
     
     const isFree = price === 0;
 
-    const {value, setValue, onCopy, hasCopied} = useClipboard('')
-
-    function handleCopyLink(){
-        onCopy()
-        console.log(window.location.href)
-        setValue(window.location.href)
-    }
+    const [isLinkCopied, setIsLinkCopied] = useState(false)
     
+    function copyLink(){
+        navigator.clipboard.writeText('')
+         // Copy the text inside the text field
+         navigator.clipboard.writeText(window.location.href);
+         setIsLinkCopied(true)
+      } 
+
+      useEffect(()=>{
+        if(isLinkCopied){
+            setTimeout(()=>{
+                setIsLinkCopied(false)
+            },3000)
+        }
+      },[isLinkCopied])
+
+      
 
     return(
         <Flex mb={9}  w='100%' position={"relative"} direction='column'>
@@ -51,18 +65,15 @@ export default function HeroSection({logoImageHash, coverImageHash, description,
                     <Text color={'white'} mt={3} textStyle={'h1'} as='h2' size='lg'>{name}</Text>
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
                 </Box>
+                
                 <HStack mb={['1rem']} spacing={3}>
                     <IconButton variant={'ghost'}  onClick={handleShareTwitter} colorScheme='brand' aria-label='twitter-share' icon={<TwitterIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
-                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
+                    <Button variant={'ghost'}  onClick={copyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{isLinkCopied? "Copied": 'Copy Link'}</Button>
                 </HStack>
             </Flex>
-            {/* <Flex mx={4}  w='100' mb='1rem' direction={'column'}> 
-                <Text textStyle={'h3'} mb={3} layerStyle={'highPop'}>What you get</Text>
-                <Text textStyle={'body'} layerStyle={'mediumPop'}>This key gives you promotions to some to some of the venues that you otherwise wouldn't have access to</Text>
-            </Flex> */}
         </Flex>
     )
 }
