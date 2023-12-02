@@ -35,7 +35,6 @@ export default function CommunityPage(){
     const communityId  = router.query.communityId;
     
     
-    
     const communityQuery = useQuery({
         queryKey:['single-community',communityId], 
         queryFn:async()=>{

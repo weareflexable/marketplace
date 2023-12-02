@@ -46,7 +46,6 @@ export default function EventTicket(){
         let qrCodePayload;
     
 
-        console.log( dayjs(eventDetails.startTime).add(eventDetails.duration/60, 'h').tz("UTC").format())
 
           qrCodePayload = {
             item:{

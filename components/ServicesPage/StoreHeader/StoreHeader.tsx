@@ -20,13 +20,24 @@ export default function StoreHeader({logoImageHash, street, storeName, city, sta
 
     const coverImage = logoImageHash && logoImageHash 
     
-    const {value, setValue, onCopy, hasCopied} = useClipboard('')
+    const [isLinkCopied, setIsLinkCopied] = useState(false)
+    
+    function copyLink(){
+        navigator.clipboard.writeText('')
+         // Copy the text inside the text field
+         navigator.clipboard.writeText(window.location.href);
+         setIsLinkCopied(true)
+      } 
 
-    function handleCopyLink(){
-        onCopy()
-        console.log(window.location.href)
-        setValue(window.location.href)
-    }
+      useEffect(()=>{
+        if(isLinkCopied){
+            setTimeout(()=>{
+                setIsLinkCopied(false)
+            },3000)
+        }
+      },[isLinkCopied])
+
+
     
 
     return(
@@ -58,7 +69,7 @@ export default function StoreHeader({logoImageHash, street, storeName, city, sta
                     <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
-                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
+                    <Button variant={'ghost'}  onClick={copyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{isLinkCopied? "Copied": 'Copy Link'}</Button>
                 </HStack>
             </Flex>
         </Flex>

@@ -33,6 +33,8 @@ export default function EventPage(){
 
     const router = useRouter();
 
+    
+
 
     const eventId  = router.query.eventId;
     
@@ -46,6 +48,8 @@ export default function EventPage(){
         enabled: eventId !== undefined,
         staleTime: Infinity
     })
+
+   
 
     
     // Confirming object is not undefined before accessing fields

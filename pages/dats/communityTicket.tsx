@@ -53,6 +53,7 @@ export default function Ticket(){
         setSelectedVenue({name: firstVenue.name, id: firstVenue.id, ticketSecret:firstVenue.ticketSecret})
     },[])
 
+    
     useEffect(() => {
 
         let qrCodePayload;

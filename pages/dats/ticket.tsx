@@ -170,7 +170,7 @@ export default function Ticket(){
                         ?<Flex justifyContent={'flex-start'} height={'40px'}  direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has already been redeemed</Text>
                         </Flex>
-                        :dayjs().isAfter(dayjs(validityEnd))
+                        :dayjs().tz('UTC').isAfter(dayjs(validityEnd).tz('UTC'))
                         ?<Flex justifyContent={'center'} height={'20vh'} direction='column' alignItems='center' w='100%'>
                             <Text mb='3' textAlign={'center'} textStyle={'body'} color='text.200'>DAT has expired</Text>
                         </Flex>
@@ -189,7 +189,7 @@ export default function Ticket(){
                             </Flex>
                         </>
                         }
-                        {isRedeemed||dayjs().isAfter(dayjs(validityEnd))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
+                        {isRedeemed||dayjs().tz('UTC').isAfter(dayjs(validityEnd).tz('UTC'))?null:<Button mt={4} isLoading={isGeneratingPass} loadingText='Generating Apple Pass ...' colorScheme={'brand'} variant={'activeGhost'} onClick={generateApplePass}>Add Pass to Apple Wallet</Button>}
                     </Flex>  
 
                     <Divider borderColor={'#2b2b2b'}/>
@@ -198,7 +198,7 @@ export default function Ticket(){
                         <VStack w='100%' spacing={2}>
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>DAT Status</Text></Flex>
-                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().isAfter(dayjs(validityEnd))? 'Expired': 'Valid'}</Text> </Flex>
+                                <Flex flex={7}> <Text color='text.300' textStyle={'secondary'}>{isRedeemed ? 'Redeemed': dayjs().tz('UTC').isAfter(dayjs(validityEnd).tz('UTC'))? 'Expired': 'Valid'}</Text> </Flex>
                             </HStack>
 
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
@@ -216,7 +216,7 @@ export default function Ticket(){
                             <HStack w='100%' spacing='2' justifyContent={'space-between'} alignItems='flex-start' mb='1'>
                                 <Flex flex={3}><Text color='text.200' textStyle={'secondary'}>Valid Until</Text></Flex>
                                 {/* @ts-ignore */}
-                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('America/New_York').format('MMM DD, YYYY HA z ')}</Text></Flex> 
+                                <Flex flex={7}><Text color='text.300' textStyle={'secondary'}>{dayjs(validityEnd).tz('UTC').format('MMM DD, YYYY HA z ')}</Text></Flex> 
                             </HStack>
 
                             <HStack w='100%'  justifyContent={'space-between'} alignItems='flex-start' mb='1'>
