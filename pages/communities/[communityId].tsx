@@ -24,6 +24,7 @@ import useCommunityTicket from '../../components/CommunityPage/hooks/useCommunit
 import TicketButtonAction from '../../components/ServicesPage/TicketList/TicketButton/TicketButtonAction'
 import { useAuthContext } from '../../context/AuthContext'
 import { convertToAmericanFormat } from '../../utils/phoneNumberFormatter'
+import { ChevronLeftIcon } from '@chakra-ui/icons'
 
 
 export default function CommunityPage(){
@@ -84,9 +85,9 @@ export default function CommunityPage(){
             }  
             <SimpleGrid mt='2'  minH={'100%'} h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column' >
-                    
+                <IconButton width={'fit-content'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} size={'lg'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
-                       ?<Skeleton mx='1rem' mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
+                       ?<Skeleton mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<HeroSection 
                          name={community && community.name} 
                          price={community && community.price}
