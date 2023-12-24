@@ -42,8 +42,8 @@ export const StoreCard = ({data}:StoreCardProps) =>{
             </Box>
             <Flex px='2' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
-                <Flex ml={[3,3,4]} direction='column'>
-                    <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
+                <Flex ml={[2,2,4]} direction='column'>
+                    <Text textStyle={'h4'} mb={'2'} layerStyle={'highPop'} as='h4' noOfLines={2}>
                         {data.name} 
                     </Text>
                     <Text color='gray.300' textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 

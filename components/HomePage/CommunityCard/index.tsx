@@ -43,7 +43,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
             <Flex px='0' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
                 <Flex ml={[3,3,4]} direction='column'>
-                    <Text textStyle={'body'} layerStyle={'highPop'} as='h4' lineHeight='tight' noOfLines={2}>
+                    <Text textStyle={'h4'} layerStyle={'highPop'} as='h5' mb={'3'} noOfLines={2}>
                         {data.name} 
                     </Text>
                     <Text color='gray.300' noOfLines={[1, 2, 3]} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
@@ -53,7 +53,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                         <Text mr='2' color='text.200' textDecoration={'line-through'} textStyle={'secondary'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                             ${data.totalMarketValue/100} Market Value
                         </Text>
-                        <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
+                        <Text color='text.300' mt={3} textStyle={'bodyBold'} textTransform='capitalize' layerStyle={'mediumPop'}> 
                             {`$${numberFormatter.from(data.price/100)}`}
                         </Text> 
                     </Flex>
