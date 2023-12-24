@@ -5,7 +5,7 @@ import {MdLocationPin} from 'react-icons/md'
 import { useRouter } from 'next/router';
 import { handleShareFacebook, handleShareLinkedIn, handleShareTwitter, handleShareWhatsapp } from '../../../utils/socialShare';
 import { TwitterIcon, LinkedinIcon, WhatsappIcon, FacebookIcon } from '../../../customIcons';
-import { CopyIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, CopyIcon } from '@chakra-ui/icons';
 
 interface StoreHeaderProps{
     storeName: string,
@@ -19,6 +19,8 @@ interface StoreHeaderProps{
 export default function StoreHeader({logoImageHash, street, storeName, city, state, lat, lon}:StoreHeaderProps){
 
     const coverImage = logoImageHash && logoImageHash 
+
+    const router = useRouter()
     
     const [isLinkCopied, setIsLinkCopied] = useState(false)
     
