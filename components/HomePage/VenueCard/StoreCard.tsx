@@ -25,7 +25,21 @@ export const StoreCard = ({data}:StoreCardProps) =>{
 
     return(
         <Flex width={'100%'}  direction={'column'}  cursor='pointer' onClick={()=>navigateToServicePage(data.id)}>
-            <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`} m='0' maxW='100%' width='100%' height='250' alt={'Thumbnail image for cover'}/>
+              <Box 
+                height='250px'
+                bgImage={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}
+                backgroundPosition={'50%'} 
+                backgroundSize={'cover'}  
+                backgroundRepeat={'no-repeat'} 
+                borderRadius={'8px'}
+                width={'100%'}
+                position={"relative"} 
+                maxW='100%'
+              > 
+                <Box h={'100%'} zIndex={0} w={'100%'} bg={'rgba(255, 255, 255, .2)'} backdropFilter={'blur(17px)'} position={'absolute'} top={0} left={0}>
+                    <Image border={'1px solid #333333'} borderRadius='6px'  src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`} m='0' objectFit={'contain'}  height='250px'  maxW='100%' width='100%' alt={'Thumbnail image for cover'}/>
+                </Box>
+            </Box>
             <Flex px='2' mt={[4]} width={'100%'} alignItems={'center'}>
                 {/* <Avatar size={['md']} name='logo-image' src={`${process.env.NEXT_PUBLIC_NFT_STORAGE_PREFIX_URL}/${imageHash}`}/> */}
                 <Flex ml={[3,3,4]} direction='column'>
