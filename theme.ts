@@ -192,7 +192,7 @@ const config: ThemeConfig ={
     h2:{
       fontWeight: '700',
       fontFamily: 'body',
-      fontSize: ['24px','32px'],
+      fontSize: ['32px','36px'],
       letterSpacing: '-0.3px',
       color:'text.300'
     },

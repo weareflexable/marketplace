@@ -85,7 +85,7 @@ export default function CommunityPage(){
             }  
             <SimpleGrid mt='2'  minH={'100%'} h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column' >
-                <IconButton width={'fit-content'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} size={'lg'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
+                <IconButton mx={['1rem','1rem','1rem',0]} width={'fit-content'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} size={'lg'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
                        { communityQuery.isLoading || community === undefined || communityQuery.isError
                        ?<Skeleton mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 
                        :<HeroSection 
@@ -105,7 +105,7 @@ export default function CommunityPage(){
                             <React.Fragment key={venue.id}>
                                 <Accordion mb={'3'} px={3}  defaultIndex={[0]} allowMultiple>
                                     <AccordionItem  background={'#333333'} borderRadius={'4px'} border={'none'}>
-                                        <Box p={3} borderRadius={'4px'} background={'#2b2b2b'}>
+                                        <Box py={3} borderRadius={'4px'} background={'#2b2b2b'}>
                                             <AccordionButton display={'flex'} alignItems={'center'}>
                                                 <Box as="span" flex='1' textAlign='left'>
                                                     <Text textStyle={'body'} layerStyle={'highPop'} flex={1}>{venue.name}</Text>
