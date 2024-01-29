@@ -33,6 +33,8 @@ export default function EventPage(){
 
     const router = useRouter();
 
+    
+
 
     const eventId  = router.query.eventId;
     
@@ -47,9 +49,13 @@ export default function EventPage(){
         staleTime: Infinity
     })
 
+   
+
     
     // Confirming object is not undefined before accessing fields
     const event = eventQuery && eventQuery.data && eventQuery.data.data[0] 
+    
+    const isEventVirtual = event?.isVirtual
 
     
     const {
@@ -108,7 +114,7 @@ export default function EventPage(){
 
                                             <Flex direction={'column'} >
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Tickets Left</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.ticketsAvailable}`}</Text>
+                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${Number(event.ticketsAvailable).toLocaleString()}`}</Text> 
                                             </Flex>
 
                                             <Flex direction={'column'} >
@@ -125,18 +131,35 @@ export default function EventPage(){
                                                 <Text textStyle={'body'} layerStyle={'mediumPop'}>{`${event.duration/60} Hrs`}</Text>
                                             </Flex>
 
+                                            {/* <Text mt={'2rem'} mb={'1rem'} textStyle={'h3'}>Location</Text> */}
+
+                                        {/* ==== */}
+                                        {
+                                            isEventVirtual
+                                            ?
+                                            <>
+                                                 <Flex direction={'column'} >
+                                                    <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Location</Text>
+                                                    <Text textStyle={'body'} layerStyle={'mediumPop'}>Online</Text>
+                                                </Flex>
+                                            </>
+                                            :<>
+                                                <Flex direction={'column'} >
+                                                    <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Venue name</Text>
+                                                    <Text textStyle={'body'} layerStyle={'mediumPop'}>{event.locationName}</Text>
+                                                </Flex>
 
                                             <Flex direction={'column'} >
-                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Venue name</Text>
-                                                <Text textStyle={'body'} layerStyle={'mediumPop'}>{event.locationName}</Text>
-                                            </Flex>
-
-                                            <Flex direction={'column'} >
-                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Location</Text>
+                                                <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Address</Text>
                                                 <Text color='brand.100' textStyle={'body'}> 
                                                     <a href={`https://www.google.com/maps/place/?q=place_id:${event.address.placeId}`}>{event.address.fullAddress}</a> 
                                                 </Text>
                                             </Flex>
+                                            </>
+                                        }
+                                            
+
+                                            {/* === */}
 
                                             <Flex direction={'column'}>
                                                 <Text textStyle={'caption'} mb={3} letterSpacing={1}  textTransform={'uppercase'} layerStyle={'highPop'}>Contact </Text>

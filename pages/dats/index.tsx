@@ -12,7 +12,6 @@ import Layout from "../../components/shared/Layout/Layout";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../../context/AuthContext";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import { getPlatformPaseto } from "../../utils/storage";
 import axios from "axios";
 import UnAuthenticated from "../../components/shared/UnAuthenticated/UnAuthenticated";

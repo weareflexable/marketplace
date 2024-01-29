@@ -19,14 +19,23 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
 
     const coverImage = artworkHash && artworkHash 
 
-    const {value, setValue, onCopy, hasCopied} = useClipboard('')
-
-    function handleCopyLink(){
-        onCopy()
-        console.log(window.location.href)
-        setValue(window.location.href)
-    }
+    const [isLinkCopied, setIsLinkCopied] = useState(false)
     
+    function copyLink(){
+        navigator.clipboard.writeText('')
+         // Copy the text inside the text field
+         navigator.clipboard.writeText(window.location.href);
+         setIsLinkCopied(true)
+      } 
+
+      useEffect(()=>{
+        if(isLinkCopied){
+            setTimeout(()=>{
+                setIsLinkCopied(false)
+            },3000)
+        }
+      },[isLinkCopied])
+
 
     return(
         <Flex mb={9}  w='100%' position={"relative"} direction='column'>
@@ -47,7 +56,7 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
             <Flex mb={'2rem'} alignItems={['flex-start','flex-start','center','center']} direction={['column','column','row','row']}  justifyContent={'space-between'}  mx='4' > 
                 <Box mt={9}> 
                     <Flex width={'100%'}>
-                        <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${price/100}</Text>
+                        <Text mb={4} textStyle={'h3'} color={'accent.200'} as='h1'>${(price/100).toLocaleString()}</Text>
                     </Flex>
                     <Text color={'white'} mt={3} textStyle={'h1'} as='h2' size='lg'>{name}</Text>
                     <Text mt={3} mb={9} textStyle={'body'} layerStyle={'mediumPop'}>{description}</Text>
@@ -58,7 +67,7 @@ export default function HeroSection({logoImageHash, description, artworkHash, pr
                     <IconButton variant={'ghost'} onClick={handleShareLinkedIn}   colorScheme='brand' aria-label='linkedin-share' icon={<LinkedinIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'} onClick={handleShareWhatsapp}   colorScheme='brand' aria-label='whatsapp-share' icon={<WhatsappIcon color={'brand.200'}/>}/>
                     <IconButton variant={'ghost'}  onClick={handleShareFacebook} colorScheme='brand' aria-label='facebook-share' icon={<FacebookIcon color={'brand.200'}/>} />
-                    <Button variant={'ghost'}  onClick={handleCopyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{hasCopied? "Copied": 'Copy Link'}</Button>
+                    <Button variant={'ghost'}  onClick={copyLink} colorScheme='brand' leftIcon={<CopyIcon/>} >{isLinkCopied? "Copied": 'Copy Link'}</Button>
                 </HStack>
             </Flex>
             <Flex mx={4}  w='100' mb='1rem' direction={'column'}> 

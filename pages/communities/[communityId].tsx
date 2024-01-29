@@ -35,7 +35,6 @@ export default function CommunityPage(){
     const communityId  = router.query.communityId;
     
     
-    
     const communityQuery = useQuery({
         queryKey:['single-community',communityId], 
         queryFn:async()=>{
@@ -101,7 +100,7 @@ export default function CommunityPage(){
                         
                        
 
-                        {community && community.venuesDetails && community.venuesDetails.map((venue:any)=>(
+                        { community?.venuesDetails?.map((venue:any)=>(
                             <React.Fragment key={venue.id}>
                                 <Accordion mb={'3'} px={3}  defaultIndex={[0]} allowMultiple>
                                     <AccordionItem  background={'#333333'} borderRadius={'4px'} border={'none'}>

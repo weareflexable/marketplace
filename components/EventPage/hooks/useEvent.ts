@@ -46,7 +46,7 @@ const useEventTicket = (data:any)=>{
     quantity:0
   })
   
-  console.log('is free',isEventFree)
+
 
   const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
   const {setState:setSubTotal} = useLocalStorage('subTotal',0)
@@ -56,14 +56,16 @@ const useEventTicket = (data:any)=>{
   const maxPurchasableTickets = data?.ticketsAvailable < MAX_PURCHASABLE_TICKETS ? data.ticketsAvailable : MAX_PURCHASABLE_TICKETS
 
 // console.log(data) 
-  const isTicketAvailable =  data?.ticketsAvailable > 1
+  const isTicketAvailable =  data?.ticketsAvailable > 0
 
 
   const isTicketExpired = dayjs().isAfter(dayjs(data?.startTime).add(data?.duration/60,'h').tz("UTC"))
  
  
      const isMinQuantity = ticketData.quantity <= 0
-     const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
+     const isMaxQuantity = ticketData.quantity >= maxPurchasableTickets
+
+     console.log(maxPurchasableTickets)
 
      const subTotal =  ticketData.quantity * (data?.price /100)
  
