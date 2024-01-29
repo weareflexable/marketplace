@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {Box, Button, Flex,Skeleton,Image,Text,Wrap,WrapItem, Hide} from '@chakra-ui/react'
+import {Box, Button, Flex,Skeleton,Image,Text,Wrap,WrapItem, Hide, Grid} from '@chakra-ui/react'
 import Layout from '../components/shared/Layout/Layout'
 import React from 'react'
 import VenuePanel from '../components/HomePage/VenuePanel'
@@ -39,7 +39,7 @@ export default function Home() {
                 </Flex> */}
                 <Box width={'100%'} height={'400px'} mx={[0,0]}>
                   <Hide below='md'>
-                   <Image height={'100%'} width={'100%'} objectFit={'contain'} src={'/tickets -with-stripes.png'}/>
+                   <Image height={'100%'} width={'100%'} objectFit={'contain'} src={'new-variant.png'}/>
                   </Hide>
                   <Hide above='md'>
                   <Image height={'100%'} width={'100%'} objectFit={'contain'} src={'/jumbotron-mobile.png'}/>
@@ -57,9 +57,11 @@ export default function Home() {
                   </Slider> */}
                 </Box>
  
-                <VenuePanel/>
-                <CommunityPanel/>
-                <EventPanel/>
+                <Grid templateColumns={['repeat(8,1fr)']}>
+                  <VenuePanel/>
+                  <CommunityPanel/>
+                  <EventPanel/>
+                </Grid>
 
          </Layout>
          </>

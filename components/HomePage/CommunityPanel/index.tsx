@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast, GridItem } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -52,6 +52,7 @@ if(infiniteCommunityQuery.isError){
 
 
     return(
+      <GridItem colStart={2} colEnd={8}>
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
@@ -69,7 +70,7 @@ if(infiniteCommunityQuery.isError){
                       {page.data.length==0
                         ?<EmptyServices/>
                         :page.data.map((data:Community)=>(
-                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
+                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','30%']} maxWidth={['100%','34%']}>
                              <Skeleton w={'100%'} isLoaded={!infiniteCommunityQuery.isLoading}>
                              <CommunityCard data={data}/>
                             </Skeleton>
@@ -88,5 +89,6 @@ if(infiniteCommunityQuery.isError){
                : null
                 }
         </Flex>
+        </GridItem>
     )
 }
