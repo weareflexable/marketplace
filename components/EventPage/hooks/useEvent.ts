@@ -56,7 +56,7 @@ const useEventTicket = (data:any)=>{
   const maxPurchasableTickets = data?.ticketsAvailable < MAX_PURCHASABLE_TICKETS ? data.ticketsAvailable : MAX_PURCHASABLE_TICKETS
 
 // console.log(data) 
-  const isTicketAvailable =  data?.ticketsAvailable > 1
+  const isTicketAvailable =  data?.ticketsAvailable > 0
 
 
   const isTicketExpired = dayjs().isAfter(dayjs(data?.startTime).add(data?.duration/60,'h').tz("UTC"))
