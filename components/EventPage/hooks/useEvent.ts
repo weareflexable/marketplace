@@ -46,7 +46,7 @@ const useEventTicket = (data:any)=>{
     quantity:0
   })
   
-  console.log('is free',isEventFree)
+
 
   const {setState:setItemPayload} = useLocalStorage('itemPayload',{})
   const {setState:setSubTotal} = useLocalStorage('subTotal',0)
@@ -63,7 +63,9 @@ const useEventTicket = (data:any)=>{
  
  
      const isMinQuantity = ticketData.quantity <= 0
-     const isMaxQuantity = ticketData.quantity === maxPurchasableTickets
+     const isMaxQuantity = ticketData.quantity >= maxPurchasableTickets
+
+     console.log(maxPurchasableTickets)
 
      const subTotal =  ticketData.quantity * (data?.price /100)
  
