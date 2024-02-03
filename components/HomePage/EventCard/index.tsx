@@ -81,7 +81,7 @@ export const EventCard = ({data}:EventCardProps) =>{
                     
                     <Flex alignItems={'baseline'}  w={'100%'}>
                         <Text color='text.300' mt={3} textStyle={'bodyBold'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                        {isFree?'Free':`$${numberFormatter.from(data.price/100)}`}
+                        {isFree?'Free':`$${(data.price/100).toLocaleString()}`}
                         </Text> 
                     </Flex>
                 </Flex>
