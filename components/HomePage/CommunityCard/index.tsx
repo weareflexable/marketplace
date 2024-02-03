@@ -40,7 +40,7 @@ export const CommunityCard = ({data}:CommunityCardProps) =>{
                             ${data.totalMarketValue/100} Market Value
                         </Text>
                         <Text color='text.300' mt={3} textStyle={'body'} textTransform='capitalize' layerStyle={'mediumPop'}> 
-                            {`$${numberFormatter.from(data.price/100)}`}
+                            {`$${(data.price/100).toLocaleString()}`}
                         </Text> 
                     </Flex>
                 </Flex>
