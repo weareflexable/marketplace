@@ -248,6 +248,14 @@ export default function Event(){
                                         </Select>
                                         </InputGroup>  
                                     </FormControl>
+
+                                    <FormControl w={['70%','30%','20%']}>
+                                        <FormLabel color={'text.300'}>Duration</FormLabel>
+                                        <InputGroup size={'lg'}>
+                                        <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
+                                        <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
+                                        </InputGroup> 
+                                    </FormControl>
  
                                    
                                 </Stack>
@@ -330,13 +338,7 @@ export default function Event(){
                                     </InputGroup> */}
                                 </FormControl>
 
-                                    <FormControl w={['70%','30%','20%']}>
-                                        <FormLabel color={'text.300'}>Duration</FormLabel>
-                                        <InputGroup size={'lg'}>
-                                        <Input type="number" textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="0" {...methods.register('duration',{required:true})}/>
-                                        <InputRightAddon borderColor={'#2c2c2c'} color={'text.200'} bg={'#121212'}>Hrs</InputRightAddon>
-                                        </InputGroup> 
-                                    </FormControl>
+                        
                                  </Stack>
                             </Box>
 
