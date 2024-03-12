@@ -10,7 +10,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { asyncStore } from "../../utils/nftStorage";
-import { ArrowUpIcon } from "@chakra-ui/icons";
+import { ArrowUpIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import { PLACEHOLDER_HASH } from "../../constants";
 import { timezones } from "../../data/timezones";
@@ -105,11 +105,16 @@ export default function Event(){
             })
         }
     })
-
+ 
   
 
-    const watchOrgId = methods.watch('organizationId')
+    const watchOrg = methods.watch('organizationId')
     const eventLocationValue = methods.watch('eventLocation')
+
+    const parsedSelectedOrg = watchOrg && JSON.parse(watchOrg)
+    const extractedOrgId =  parsedSelectedOrg && parsedSelectedOrg.orgId
+    const isBankConnected = parsedSelectedOrg?.isBankConnected
+    console.log(isBankConnected)
 
     const isEventVirtual = eventLocationValue === 'virtual'? true: false
 
@@ -123,7 +128,8 @@ export default function Event(){
         const payload = {
             ...values,
             contactNumber: `+1${values.contactNumber}`,
-            orgId: watchOrgId,
+            orgId: extractedOrgId,
+            status: isBankConnected || isEventFree ? '1': '4',
             address: isEventVirtual ? {}: values.address, 
             locationName: isEventVirtual? '': values.locationName,
             arworkImageHash: imageHash,  
@@ -185,20 +191,32 @@ export default function Event(){
                                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
                                         <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                                             {userOrgsQuery?.data?.map((userOrg:any)=>(
-                                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
-                                            ))}
+                                                <option key={userOrg.orgId} value={JSON.stringify(userOrg)}>{userOrg.name}</option> 
+                                            ))} 
                                             {/* <option value="principle">Principle organization</option>
                                             <option value="Magerine">Magerine organization</option> */}
                                         </Select>
                                         <FormHelperText color={'text.200'}> 
-                                            Your exclusive access will be created under this organization
+                                            Your event will be created under this organization
                                         </FormHelperText>
                                     </FormControl>
                                 </Box>
                                 }
 
+                            {watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
+                                ? 
+                                <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
+                                    <HStack mb={2}>
+                                        <InfoOutlineIcon color={'yellow.300'} /> 
+                                        <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
+                                    </HStack>
+                                    <Text color={'text.300'}>Your events will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
+                                </Box>
+                                :null
+                            }    
 
-                           { watchOrgId !== undefined && watchOrgId !== '' 
+
+                           { watchOrg !== undefined && watchOrg !== '' 
                            ? <>
                             
                             <Box> 
@@ -353,7 +371,7 @@ export default function Event(){
                             </Box> */} 
                             <ButtonGroup mb={'3rem'} mt={'2rem'} spacing={2}>
                                 <Button size={'lg'} disabled={eventMutation.isLoading} variant={'outline'} onClick={()=>router.back()}>Cancel</Button>
-                                <Button size={'lg'} isLoading={eventMutation.isLoading || isHashingImage} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">Create Event</Button>
+                                <Button size={'lg'} isLoading={eventMutation.isLoading || isHashingImage} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">{isBankConnected || isEventFree ?'Create Event':'Save as draft'}</Button>
                             </ButtonGroup>
                             </>
                             :null}
