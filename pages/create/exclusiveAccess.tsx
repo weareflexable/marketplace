@@ -275,7 +275,7 @@ function BasicForm({prev,next}:StepProps){
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
                         <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                             {userOrgsQuery?.data?.map((userOrg:any)=>(
-                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                                <option key={userOrg.orgId} value={JSON.stringify(userOrg)}>{userOrg.name}</option> 
                             ))}
                             {/* <option value="principle">Principle organization</option>
                             <option value="Magerine">Magerine organization</option> */}
@@ -286,6 +286,23 @@ function BasicForm({prev,next}:StepProps){
                     </FormControl>
                 </Box>
                 }
+
+                  {
+                    watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
+                    ? 
+                    <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
+                        <Flex mb={2} justifyContent={'space-between'}>
+                            <HStack >
+                                <InfoOutlineIcon color={'yellow.300'} /> 
+                                <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
+                            </HStack>
+                            <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
+                        </Flex>
+                        <Text color={'text.300'}>Your exclusive access will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
+                    </Box>
+                    :null
+                }    
+
 
                 {
                 watchOrg !== undefined  && watchOrg !== ''
@@ -359,23 +376,7 @@ function BasicForm({prev,next}:StepProps){
                  </> 
                 :
                 null
-                } 
-
-                   {
-                        watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
-                        ? 
-                        <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
-                            <Flex mb={2} justifyContent={'space-between'}>
-                                <HStack >
-                                    <InfoOutlineIcon color={'yellow.300'} /> 
-                                    <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
-                                </HStack>
-                                <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
-                            </Flex>
-                            <Text color={'text.300'}>Your events will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
-                        </Box>
-                        :null
-                    }    
+                }   
  
                 {watchServiceItemTypeId !== undefined && watchServiceType !== undefined && watchServiceType !== '' && watchServiceItemTypeId !== '' &&  orgServicesQuery?.data?.length > 0 ? 
                 <>
