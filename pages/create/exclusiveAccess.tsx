@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { AddIcon, ArrowUpIcon, MinusIcon } from "@chakra-ui/icons";
+import { AddIcon, ArrowUpIcon, InfoOutlineIcon, MinusIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
 import dayjs from "dayjs";
@@ -134,9 +134,14 @@ function BasicForm({prev,next}:StepProps){
 
     const toast = useToast()
 
-    const watchOrgId = methods.watch('organizationId')
+    const watchOrg = methods.watch('organizationId')
     const watchServiceType = methods.watch('serviceType')
     const watchServiceItemTypeId = methods.watch('serviceItemTypeId')
+
+
+    const parsedSelectedOrg = watchOrg && JSON.parse(watchOrg)
+    const extractedOrgId =  parsedSelectedOrg && parsedSelectedOrg.orgId
+    const isBankConnected = parsedSelectedOrg?.isBankConnected
 
  
     const roleName = useRoleName()
@@ -156,16 +161,16 @@ function BasicForm({prev,next}:StepProps){
     })
 
     const orgServicesQuery = useQuery({
-        queryKey:['orgs-service',paseto,watchOrgId],
+        queryKey:['orgs-service',paseto,watchOrg],
         queryFn:async()=>{
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/services?pageNumber=1&pageSize=50&orgId=${watchOrgId}`,{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/${roleName}/services?pageNumber=1&pageSize=50&orgId=${watchOrg}`,{
                 headers:{
                     'Authorization': paseto
                 }
             }) 
             return res.data.data
         },
-        enabled: watchOrgId !== undefined && paseto !== null && watchOrgId !== ''  
+        enabled: watchOrg !== undefined && paseto !== null && watchOrg !== ''  
     })
 
     const serviceTypeId = orgServicesQuery?.data?.find((service:any)=>service.id === watchServiceType)?.serviceTypeId
@@ -231,12 +236,13 @@ function BasicForm({prev,next}:StepProps){
             ...values, 
             validityStartDate: dayjs(values.validityStartDate).format(),
             validityEndDate: dayjs(values.validityEndDate).format(),
+            status: isBankConnected? '1': '4',
             orgServiceId: values.serviceType,
             price: String(values.price * 100) // convert price to cents before sending to backend
         }
         delete payload.organizationId
         delete payload.serviceType
-        console.log(payload)
+
         exclusiveAccessMutation.mutate(payload)
     }
 
@@ -247,12 +253,6 @@ function BasicForm({prev,next}:StepProps){
         methods.setValue('logoImageHash',imageHash) 
     }
 
-    // function handleLogoImage(imageHash:string){
-    //     // set image state
-    //     setSelectedLogoImage(imageHash) 
-    //     // set value in form
-    //     methods.setValue('logoImageHash',imageHash) 
-    // }
 
     return(
         <FormProvider {...methods}>    
@@ -288,7 +288,7 @@ function BasicForm({prev,next}:StepProps){
                 }
 
                 {
-                watchOrgId !== undefined  && watchOrgId !== ''
+                watchOrg !== undefined  && watchOrg !== ''
                 ?
                 <>
                  { orgServicesQuery.isLoading || orgServicesQuery.isRefetching
@@ -360,6 +360,22 @@ function BasicForm({prev,next}:StepProps){
                 :
                 null
                 } 
+
+                   {
+                        watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
+                        ? 
+                        <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
+                            <Flex mb={2} justifyContent={'space-between'}>
+                                <HStack >
+                                    <InfoOutlineIcon color={'yellow.300'} /> 
+                                    <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
+                                </HStack>
+                                <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
+                            </Flex>
+                            <Text color={'text.300'}>Your events will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
+                        </Box>
+                        :null
+                    }    
  
                 {watchServiceItemTypeId !== undefined && watchServiceType !== undefined && watchServiceType !== '' && watchServiceItemTypeId !== '' &&  orgServicesQuery?.data?.length > 0 ? 
                 <>
@@ -435,7 +451,7 @@ function BasicForm({prev,next}:StepProps){
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
                     <Button variant={'outline'} isDisabled={exclusiveAccessMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand"  isDisabled={!methods.formState.isValid}  isLoading={exclusiveAccessMutation.isLoading} type="submit">Create Reservation</Button>
+                    <Button size={'lg'} isLoading={exclusiveAccessMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">{isBankConnected ?'Create Reservation':'Save as draft'}</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}

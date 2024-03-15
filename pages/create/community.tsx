@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import usePlacesAutocomplete, { getDetails, getGeocode, getLatLng } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
-import { ArrowUpIcon } from "@chakra-ui/icons";
+import { ArrowUpIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { asyncStore } from "../../utils/nftStorage";
 import { useAuthContext } from "../../context/AuthContext";
 import { PLACEHOLDER_HASH } from "../../constants";
@@ -121,11 +121,15 @@ function BasicForm({prev,next}:StepProps){
     const methods = useForm<Community>({
     })
 
-    const watchOrgId = methods.watch('organizationId')
+    const watchOrg = methods.watch('organizationId')
 
     const {paseto} = useAuthContext()
 
-    console.log('watch org', watchOrgId)
+
+    const parsedSelectedOrg = watchOrg && JSON.parse(watchOrg)
+    const extractedOrgId =  parsedSelectedOrg && parsedSelectedOrg.orgId
+    const isBankConnected = parsedSelectedOrg?.isBankConnected
+
 
     const router = useRouter()
 
@@ -183,18 +187,16 @@ function BasicForm({prev,next}:StepProps){
 
         const payload = {
             ...values,
-            orgId: values.organizationId,
+            orgId: extractedOrgId,
             price: String(values.price * 100), // convert to cents.
             name: `Key to: ${values.name}`,
+            status: isBankConnected? '1': '4',
             currency: 'USD'
         }
 
         delete payload.organizationId
 
         communityMutation.mutate(payload)
-
-        console.log(values)
-        // next()
     }
 
     function handleCoverImage(imageHash:string){
@@ -229,7 +231,7 @@ function BasicForm({prev,next}:StepProps){
                         <FormLabel ml={'.8rem'} color={'text.300'}>Organization</FormLabel>
                         <Select textStyle={'secondary'} color='text.300' placeholder="Select organization"  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} {...methods.register('organizationId',{required:true})}>
                             {userOrgsQuery?.data?.map((userOrg:any)=>(
-                                <option key={userOrg.orgId} value={userOrg.orgId}>{userOrg.name}</option> 
+                                <option key={userOrg.orgId} value={JSON.stringify(userOrg)}>{userOrg.name}</option> 
                             ))}
                             {/* <option value="principle">Principle organization</option>
                             <option value="Magerine">Magerine organization</option> */}
@@ -241,8 +243,24 @@ function BasicForm({prev,next}:StepProps){
                 </Box>
                 }
 
+                 {
+                    watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
+                    ? 
+                    <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
+                        <Flex mb={2} justifyContent={'space-between'}>
+                            <HStack >
+                                <InfoOutlineIcon color={'yellow.300'} /> 
+                                <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
+                            </HStack>
+                             <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
+                        </Flex>
+                        <Text color={'text.300'}>Your communities will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
+                    </Box>
+                    :null
+                }    
 
-                {watchOrgId !== undefined  && watchOrgId !== '' ? 
+
+                {watchOrg !== undefined  && watchOrg !== '' ? 
                 <>
                 <Box>
                     <Heading ml='.6rem' mt={'3rem'}  mb={'2rem'} color={'text.300'} size={'md'}>Basic Info</Heading>
@@ -289,7 +307,7 @@ function BasicForm({prev,next}:StepProps){
                 <Box>
                 <ButtonGroup mt={'2rem'} mb={'4rem'} spacing={2}> 
                     <Button variant={'outline'} isDisabled={communityMutation.isLoading} colorScheme="brand" onClick={()=>router.back()}>Cancel</Button>
-                    <Button colorScheme="brand" isDisabled={!methods.formState.isValid} isLoading={communityMutation.isLoading} type="submit">Create Community</Button>
+                     <Button size={'lg'} isLoading={communityMutation.isLoading} isDisabled={!methods.formState.isValid} colorScheme="brand" type="submit">{isBankConnected ?'Create Community':'Save as draft'}</Button>
                 </ButtonGroup>
                 </Box>
                 </>: null}

@@ -203,13 +203,17 @@ export default function Event(){
                                 </Box>
                                 }
 
-                            {watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
+                            {
+                             watchOrg !== undefined && watchOrg !== ''  && !isBankConnected
                                 ? 
                                 <Box p='1rem' bgColor={'#281706'} border={'1px solid'} borderColor={'yellow.700'} borderRadius={5}>
-                                    <HStack mb={2}>
-                                        <InfoOutlineIcon color={'yellow.300'} /> 
-                                        <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
-                                    </HStack>
+                                    <Flex mb={2} justifyContent={'space-between'}>
+                                        <HStack >
+                                            <InfoOutlineIcon color={'yellow.300'} /> 
+                                            <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
+                                        </HStack>
+                                        <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
+                                    </Flex>
                                     <Text color={'text.300'}>Your events will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
                                 </Box>
                                 :null
