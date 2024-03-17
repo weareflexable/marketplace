@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast, GridItem } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Store } from "../../../Types/Stores.types";
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -75,17 +75,22 @@ if(infiniteServices.isError){
 
 
     return(
+      <GridItem colStart={2} colEnd={8}>
         <Flex mt={'7rem'}  direction={"column"}>
 
+              {/* headers */}
               <Flex mx={'1rem'} mb='2rem' direction={'column'}>  
                 <Text  as='h4' w='100' mb={3} textStyle={'h2'}>Exclusive Access</Text>
                 <Text  color={'text.200'} w='100' textStyle={'body'}>Line skips, last minute reservations, events and more near you</Text>
               </Flex>
+
+              {/* filters */}
               <Flex mx={'1rem'} mb='1rem'>
                   {serviceTypesQuery.data && serviceTypesQuery.data.map((serviceType:any)=>(
                     <Button variant={serviceType.id === serviceFilter?'accentSolid':'ghost'} colorScheme={'brand'} onClick={()=>changeServiceFilter(serviceType.id)}  textStyle={'body'} ml='.3rem' layerStyle={'highPop'} key={serviceType.id}>{serviceType.name}</Button>
                   ))}
-                </Flex>
+              </Flex>
+
                 { infiniteServices.isLoading 
                  ?<SkeletonList/>
                 
@@ -96,7 +101,7 @@ if(infiniteServices.isError){
                       {page.data.length==0
                         ?<EmptyServices/>
                         :page.data.map((data:Store)=>(
-                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
+                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','30%']} maxWidth={['100%','34%']}>
                              <Skeleton w={'100%'} isLoaded={!infiniteServices.isLoading}>
                              <StoreCard data={data}/>
                             </Skeleton>
@@ -107,13 +112,14 @@ if(infiniteServices.isError){
                     ))
                   }
                  </Wrap> 
+                 }
 
-               }
-               {
-               infiniteServices.hasNextPage
-               ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
-               : null
-                }
+                {
+                    infiniteServices.hasNextPage
+                    ?<Button my='6' ml={'6'} colorScheme={'brand'} variant='ghost' isLoading={infiniteServices.isFetchingNextPage} loadingText={'Loading more...'} onClick={()=>infiniteServices.fetchNextPage()}>Load more services</Button>
+                    : null
+                  }
         </Flex>
+      </GridItem>
     )
 }

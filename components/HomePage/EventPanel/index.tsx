@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Skeleton, Wrap, WrapItem, Text, useToast, GridItem } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import EmptyServices from "../../shared/EmptyServices/EmptyServices";
@@ -55,6 +55,7 @@ if(infiniteEventQuery.isError){
 
 
     return(
+      <GridItem colStart={2} colEnd={8}>
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>
@@ -72,7 +73,7 @@ if(infiniteEventQuery.isError){
                       {page.data.length==0
                         ?<EmptyServices/>
                         :page.data.map((data:Event)=>(
-                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','22%']} maxWidth={['100%','24%']}>
+                          <WrapItem key={data.id} flexGrow={'1'} flexBasis={['100%','30%']} maxWidth={['100%','34%']}>
                              <Skeleton w={'100%'} isLoaded={!infiniteEventQuery.isLoading}>
                              <EventCard data={data}/>
                             </Skeleton>
@@ -91,5 +92,6 @@ if(infiniteEventQuery.isError){
                : null
                 }
         </Flex>
+        </GridItem>
     )
 }

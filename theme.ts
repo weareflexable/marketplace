@@ -192,7 +192,7 @@ const config: ThemeConfig ={
     h2:{
       fontWeight: '700',
       fontFamily: 'body',
-      fontSize: ['24px','32px'],
+      fontSize: ['32px','36px'],
       letterSpacing: '-0.3px',
       color:'text.300'
     },
@@ -210,8 +210,8 @@ const config: ThemeConfig ={
       color: '#ffffff' ,
       fontFamily:'body',
       marginBottom:'0',
-      lineHeight:1,
-      fontSize:'1.4rem',
+      lineHeight:1.4,
+      fontSize:'1.2rem',
       fontWeight: '650'
     },
     h5:{
@@ -248,6 +248,13 @@ const config: ThemeConfig ={
     body:{
       fontFamily: 'body',
       fontWeight:'450',
+      fontSize:'1.2rem',
+      lineHeight: 1.4,
+      letterSpacing: '-.1px'
+    },
+    bodyBold: {
+      fontFamily: 'body',
+      fontWeight:'550',
       fontSize:'1.2rem',
       lineHeight: 1.4,
       letterSpacing: '-.1px'

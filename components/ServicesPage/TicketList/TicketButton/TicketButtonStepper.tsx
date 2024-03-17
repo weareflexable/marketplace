@@ -20,7 +20,7 @@ export default function TicketButtonStepper({isMinQuantity, decrementQuantity, i
                     <Text textStyle={'secondary'}  color={isMinQuantity?'text.100':'text.300'}>{quantity}</Text>
                     <Text textStyle={'secondary'} color={'text.200'}>{label}</Text>
                 </HStack>
-                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} bg='brand.400' isDisabled={isMaxQuantity}  isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
+                <IconButton colorScheme={'brand.200'} textStyle={'buttonLabel'} bg='brand.400' isDisabled={isMaxQuantity} isRound onClick={incrementQuantity} size='sm' color='text.300' icon={<MdAdd/>} aria-label='increment-item-quantity'/>
             </Flex>
     )
 }
