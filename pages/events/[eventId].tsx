@@ -91,7 +91,7 @@ export default function EventPage(){
             }  
             <SimpleGrid mt='2'  minH={'100%'} h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  mb='6rem'  position={"relative"}  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column' >
-                  <IconButton width={'fit-content'} size={'lg'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
+                  <IconButton width={'fit-content'} mx={['1rem','1rem','1rem',0]} size={'lg'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
 
                        { eventQuery.isLoading || event === undefined || eventQuery.isError
                        ?<Skeleton  mt='1rem' startColor='#2b2b2b' endColor="#464646" height={'4.5rem'}/> 

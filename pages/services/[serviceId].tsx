@@ -256,7 +256,7 @@ export default function ServicesPage(){
             }  
             <SimpleGrid mt='2' h={'100%'} columns={8} spacing='2'>
                 <Flex h='100%'  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} direction='column'  flex='2'>
-                <IconButton size={'lg'} mx={['1rem','1rem',0]} width={'fit-content'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
+                <IconButton size={'lg'} mx={['1rem','1rem','1rem',0]}width={'fit-content'} onClick={()=>router.back()} my={'1rem'} variant={'ghost'} colorScheme='brand' aria-label={'back to marketplace listing'} icon={<ChevronLeftIcon/>}/>
                        { serviceQuery.isLoading || service === undefined || serviceQuery.isError
                        ?<Skeleton mb='1rem' startColor='#2b2b2b' endColor="#464646" height={'40vh'}/> 
                        :<StoreHeader 
