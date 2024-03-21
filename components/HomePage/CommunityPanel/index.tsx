@@ -52,7 +52,7 @@ if(infiniteCommunityQuery.isError){
 
 
     return(
-      <GridItem colStart={2} colEnd={8}>
+      <GridItem colStart={[1,1,1,2]} colEnd={[9,9,9,8]}>
         <Flex mt={'5rem'}  direction={"column"}>
 
               <Flex mx={'1rem'} mb='3rem' w={'100'} direction={'column'}>

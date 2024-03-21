@@ -173,7 +173,7 @@ export default function EventPage(){
             </SimpleGrid>
 
             <SimpleGrid width={'100%'} position={'fixed'} bottom={'0'}  borderTop={"1px solid"} bg={"#2b2b2b"} columns={8} spacing='2'>
-            <Flex  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} py={2} px={3}  width={'100%'}  alignItems={"baseline"} >
+            <Flex  gridColumnStart={[1,1,1,2]} gridColumnEnd={[9,9,9,8]} zIndex={5} py={2} px={3}  width={'100%'}  alignItems={"baseline"} >
                 <Text textStyle={"body"} display={['none','block']}  layerStyle={"highPop"}>{event && event.name}</Text>
                 <Flex px='1em' py='.5em' width={['100%','370px']}  alignItems='center' justifyContent={['space-between','center','flex-start']} >
                     <TicketButton
