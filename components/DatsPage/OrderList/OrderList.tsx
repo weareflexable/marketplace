@@ -32,6 +32,20 @@ interface OrderListProps {
 
 export function OrderList({ orders, currentFilter, gotoTicketPage, gotoEventPage, gotoCommunityPage }: OrderListProps) {
 
+  console.log(currentFilter)
+
+  function sortByDate(orderA:any,orderB:any){
+    const dateACheck = currentFilter === 'communities' ? orderA.createdAt : currentFilter === 'events' ? orderA?.eventDetails?.startTime : orderA?.targetDate
+    const dateBCheck = currentFilter === 'communities' ? orderB.createdAt : currentFilter === 'events' ? orderB?.eventDetails?.startTime : orderB?.targetDate
+    console.log(dateACheck,dateBCheck)
+    const dateA:any = new Date(dateACheck)
+    const dateB:any = new Date(dateBCheck)
+    return dateB - dateA 
+  }
+
+  //  console.log('by date',ordersSortedByDate)
+  // console.log('orders',orders)
+
   return (
 
     <Flex direction="column" w="100%">
@@ -41,7 +55,8 @@ export function OrderList({ orders, currentFilter, gotoTicketPage, gotoEventPage
             {
               page.data && page.data.length === 0
               ?<NoData/>
-              : page.data && page.data.map((order:any)=>{
+              : page.data && page.data.sort(sortByDate).map((order:any)=>{
+                console.log(order)
                 // const isCommunity = order.communityDetails.length !== 0
                 if(currentFilter==='communities'){
                   return <CommunityListItem key={order.id} gotoCommunityPage={gotoCommunityPage} order={order}/>

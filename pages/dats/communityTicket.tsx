@@ -45,9 +45,8 @@ export default function Ticket(){
 
 
     const isTxHash = transactionHash !== ''
-    // const serviceItemName = serviceItemDetails[0].name
-    // const address = serviceDetails[0].street
 
+    // set the first venue of the community to be invitial value for the venue select element
     useEffect(()=>{
         const firstVenue = communityDats.venuesDetails[0]
         setSelectedVenue({name: firstVenue.name, id: firstVenue.id, ticketSecret:firstVenue.ticketSecret})
@@ -77,7 +76,6 @@ export default function Ticket(){
   }, [id, quantity, selectedVenue, serviceItemsDetails, targetUserID, validityEnd]) 
 
   
-  console.log('roleName',roleName)
 
   const redeemHistoryQuery = useQuery({
     queryKey:['redeem-history', id], 
@@ -194,10 +192,10 @@ async function generateApplePass(){
         <Button  onClick={refreshAggregateAndHistory} isLoading={redemptionAggregateQuery.isRefetching} variant={'link'} leftIcon={<RepeatIcon/>} aria-label={'Refresh aggregate'}>Refresh</Button>
     </Flex>
 
-//    const venueIsRedeemed = redemptionAggregate && redemptionAggregate.ticketsLeftToRedeem === 0 // determine agg using ticketsLeftToRedeem value
+
    const venueIsRedeemed = redemptionAggregate && quantity - redemptionAggregate.redeemCount === 0 // determine agg using ticketsLeftToRedeem value
      
-   console.log('bookingId',communityBookingId)
+
 
     return(
         <>

@@ -162,7 +162,7 @@ export default function MyDats() {
   }
   )
 
-  console.log('total dats query',totalDatsQuery)
+  // console.log('total dats query',totalDatsQuery)
 
 
 function changeDatsFilter(filter:{key:string,label:string}){
