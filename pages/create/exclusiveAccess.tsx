@@ -268,7 +268,7 @@ function BasicForm({prev,next}:StepProps){
                 </Flex>
                : userOrgsQuery?.data?.length < 1
                ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
-                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Flexable Portal</Link></Text> 
+                    <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you are not a part of any organization. Get started creating one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.staging.flexabledats.com`}>Flexable Portal</Link></Text> 
                 </Flex>
                :<Box>
                     <FormControl mb={'1rem'} px={['1rem']} w={['90%','100%','70%']}>
@@ -296,7 +296,7 @@ function BasicForm({prev,next}:StepProps){
                                 <InfoOutlineIcon color={'yellow.300'} /> 
                                 <Heading color={'text.300'} size={'sm'}>Connect an account</Heading>
                             </HStack>
-                            <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Connect</Link>
+                            <Link color={'yellow.300'} target="_blank" textDecoration={'none'} colorScheme="brand" href={`https://portal.staging.flexabledats.com`}>Connect</Link>
                         </Flex>
                         <Text color={'text.300'}>Your exclusive access will not be listed on marketplace because you are still yet to add a bank account. Your events will be saved as drafts until an account is linked to your profile. However, free events can be created without an account connected </Text>
                     </Box>
@@ -317,7 +317,7 @@ function BasicForm({prev,next}:StepProps){
                     </Flex> 
                  :orgServicesQuery?.data?.length < 1  
                  ? <Flex p={8} justifyContent={'center'} alignItems={'center'} border={'1px solid'}>
-                        <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a service created under the selected organization. Try selecting a different organization or configure a new one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.dev.flexabledats.com`}>Flexable Portal</Link></Text> 
+                        <Text textAlign={'center'} color={'text.200'} textStyle={'body'} width={'100%'}>It seems like you do not have a service created under the selected organization. Try selecting a different organization or configure a new one on <Link color={'brand.300'} target="_blank" textDecoration={'underline'} colorScheme="brand" href={`https://portal.staging.flexabledats.com`}>Flexable Portal</Link></Text> 
                     </Flex>
                  : <Box>
                         {/* <Heading mb={'2rem'} ml={'1rem'} size={'md'}>Select your organization</Heading>  */}
