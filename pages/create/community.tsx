@@ -189,7 +189,7 @@ function BasicForm({prev,next}:StepProps){
             ...values,
             orgId: extractedOrgId,
             price: String(values.price * 100), // convert to cents.
-            name: `Key to: ${values.name}`,
+            name: values.name,
             status: isBankConnected? '1': '4',
             currency: 'USD'
         }
@@ -268,9 +268,6 @@ function BasicForm({prev,next}:StepProps){
                         <FormControl>
                             <FormLabel color={'text.300'}>Name</FormLabel>
                             <InputGroup size={'lg'}>
-                                <InputLeftAddon border={'inherit'} bg={'#222222'} color={'text.200'}>
-                                    Key to:
-                                </InputLeftAddon>
                                 <Input type='string' textStyle={'secondary'} color='text.300'  size='lg' borderColor={'#2c2c2c'}  variant={'outline'} placeholder="" {...methods.register('name',{required:true})}/>
                             </InputGroup>
                         </FormControl>
