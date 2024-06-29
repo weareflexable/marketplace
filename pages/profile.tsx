@@ -88,7 +88,7 @@ export default function Profile(){
 
                         <Flex my={6} width={'100%'}  direction={'column'}>  
                           <Text color='text.300' textStyle={'secondary'} style={{ marginRight: '2rem', marginBottom:'.3rem'}}>Wallet Address</Text>
-                          <Flex w={'100%'} position={'relative'} width={'90%'} style={{  marginTop:'.6rem', background:'#333333', padding:'1rem', justifyContent:'space-between', borderRadius:'4px', alignItems:'center'}}>
+                          <Flex w={'100%'} position={'relative'} width={'100%'} style={{  marginTop:'.6rem', background:'#333333', padding:'1rem', justifyContent:'space-between', borderRadius:'4px', alignItems:'center'}}>
                              <Text textStyle={'secondary'} color='text.200'>{`${userQuery?.data?.[0].walletaddress.substring(0,9)} ... ${userQuery?.data?.[0].walletaddress.slice(-9)}`}</Text> 
                             {/* <Show above='md'> 
                              <Text textStyle={'secondary'} color='text.200'>{`${userQuery?.data?.[0].walletaddress.substring(0,5)} ... ${userQuery?.data?.[0].walletaddress.slice(-5)}`}</Text> 
@@ -98,6 +98,7 @@ export default function Profile(){
                                 <IconButton onClick={copyAddress} size={'sm'} colorScheme='brand' variant={'ghost'} icon={<CopyIcon />} aria-label={'copy address button'}/>
                               </Tooltip>  
                             {/* </Box> */} 
+                            <w3m-button />
                           </Flex>    
                         </Flex> 
       

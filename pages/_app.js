@@ -11,20 +11,27 @@ import {AuthContextProvider} from '../context/AuthContext'
 import {DatContextProvider} from '../context/DatContext'
 import {PaymentContextProvider} from '../context/PaymentContext'
 import { useEffect } from 'react'
+import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { State, WagmiProvider } from 'wagmi'
+import { config, projectId } from '../config'
+const queryClient = new QueryClient()
 
- 
+if (!projectId) throw new Error('Project ID is not defined')
 
- 
-function MyApp({ Component, pageProps }) {
-
-
-  const queryClient = new QueryClient({})
-
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId,
+  enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  enableOnramp: true // Optional - false as default
+})
+function Web3ModalProvider({ Component, pageProps }) {
+  // const queryClient = new QueryClient({})
   useEffect(()=>{
     localStorage.setItem('chakra-ui-color-mode','dark')
   })
 
   return ( 
+    <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
     <AuthContextProvider>
         <PaymentContextProvider> 
@@ -39,7 +46,8 @@ function MyApp({ Component, pageProps }) {
         </PaymentContextProvider> 
       </AuthContextProvider> 
     </QueryClientProvider> 
+   </WagmiProvider>
   ) 
 }
 
-export default MyApp
+export default Web3ModalProvider
