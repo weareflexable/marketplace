@@ -58,9 +58,9 @@ export default function Profile(){
           status: account.status,
       };
       try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/manager/register`, data, {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/admin/register`, data, {
           headers: {
-            "Authorization": `Bearer ${paseto}`
+            "Authorization": paseto
         }
         });
         console.log(res.data, "response data");
