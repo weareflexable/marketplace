@@ -11,8 +11,11 @@ import { asyncStore } from '../utils/nftStorage'
 import Head from 'next/head'
 import { CopyIcon } from '@chakra-ui/icons'
 import { PLACEHOLDER_HASH } from '../constants'
+import { Connector, useAccount } from 'wagmi'
+import { Chain } from 'viem'
 
 export default function Profile(){
+  const account = useAccount()
     const {isAuthenticated,paseto} = useAuthContext()
 
     const { onCopy, value, setValue, hasCopied } = useClipboard("");  
@@ -24,9 +27,16 @@ export default function Profile(){
             "Authorization": paseto
           }
         })
+        console.log(res.data.data[0].walletaddress,"walletaddress")
+        localStorage.setItem("walletaddress" ,res.data.data[0].walletaddress )
+        console.log(res.data.data,"data")
         return res.data.data 
       }
- 
+      console.log(account, "account")
+      console.log(account.address, "account")
+      console.log(account.chainId, "chainid")
+      console.log(account.status, "status")
+
      const userQuery = useQuery({
         queryKey:['user'],  
         queryFn: fetchUserDetails,
@@ -34,7 +44,33 @@ export default function Profile(){
         // staleTime: Infinity
     })
 
-       
+    if(account.address){
+      registerAccount(account)
+    }
+
+    async function registerAccount(account: { address: `0x${string}`; addresses: readonly [`0x${string}`, ...`0x${string}`[]]; chain: Chain | undefined; chainId: number; connector: Connector; isConnected: true; isConnecting: false; isDisconnected: false; isReconnecting: false; status: "connected" } | { address: `0x${string}` | undefined; addresses: readonly `0x${string}`[] | undefined; chain: Chain | undefined; chainId: number | undefined; connector: Connector | undefined; isConnected: boolean; isConnecting: false; isDisconnected: false; isReconnecting: true; status: "reconnecting" } | { address: `0x${string}` | undefined; addresses: readonly `0x${string}`[] | undefined; chain: Chain | undefined; chainId: number | undefined; connector: Connector | undefined; isConnected: false; isReconnecting: false; isConnecting: true; isDisconnected: false; status: "connecting" }) {
+    if(account.address){
+    const walletaddress =  localStorage.getItem("walletaddress")
+      if(account.address !== walletaddress){
+        const data = {
+          address: account.address ,
+          chainId: account.chainId,
+          status: account.status,
+      };
+      try {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/manager/register`, data, {
+          headers: {
+            "Authorization": `Bearer ${paseto}`
+        }
+        });
+        console.log(res.data, "response data");
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+      }
+    }
+  }
 
     function copyAddress(){
       onCopy()
